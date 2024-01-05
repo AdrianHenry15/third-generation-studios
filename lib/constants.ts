@@ -5,18 +5,18 @@ export const NavMenuItems: NavMenu[] = [
         title: "Home",
         link: "/",
     },
-    // {
-    //     title: "Exterior Cleaning",
-    //     link: "/exterior-cleaning",
-    // },
-    // {
-    //     title: "Landscape Lighting",
-    //     link: "/landscape-lighting",
-    // },
-    // {
-    //     title: "Christmas Lighting",
-    //     link: "/christmas-lighting",
-    // },
+    {
+        title: "Websites",
+        link: "/websites",
+    },
+    {
+        title: "Music",
+        link: "/music",
+    },
+    {
+        title: "Stock Tips",
+        link: "/stock-tips",
+    },
 ];
 export const NavMenuAltItems: NavMenu[] = [
     {

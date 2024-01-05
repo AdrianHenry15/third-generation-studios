@@ -31,10 +31,10 @@ export default function Navbar() {
                         <Image className="" src={Logo} alt="logo" width={100} />
                     </Link>
                     {/* LINKS  */}
-                    <ul className="hidden text-gray-600 items-center lg:flex">
+                    <ul className="hidden text-white items-center lg:flex">
                         {NavMenuItems.map((item: NavMenu) => (
                             <li
-                                className={`mx-2 transition-all duration-300 ease-in-out hover:text-blue-700 hover:underline ${
+                                className={`mx-2 transition-all duration-300 ease-in-out hover:text-red-700 hover:underline ${
                                     pathname === item.link ? "underline" : ""
                                 }`}
                                 key={item.title}

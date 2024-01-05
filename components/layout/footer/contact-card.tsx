@@ -9,17 +9,15 @@ const ContactCard = () => {
                     Contact Us
                 </Link>
                 <div className="w-full">
-                    <address className="text-gray-400 pb-4">
-                        10130 Mallard Creek Rd. Suite 300 Charlotte, NC 28262
-                    </address>
+                    <address className="text-gray-400 pb-4">2211 Allen Lane Winter Park, FL 32792</address>
                     <div className="flex flex-col text-gray-400">
                         <span className="pb-4">
                             <label>Office: </label>
-                            <Link href="tel:7049445574">704-944-5574</Link>
+                            <Link href="tel:3213700836">321-370-0836</Link>
                         </span>
                         <span className="pb-4">
                             <label>Email: </label>
-                            <Link href="email:info@britellc.net">info@britellc.net</Link>
+                            <Link href="email:adrianhenry2115@gmail.com">adrianhenry2115@gmail.com</Link>
                         </span>
                     </div>
                 </div>

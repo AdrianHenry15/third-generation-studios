@@ -15,6 +15,11 @@ p {
     color: gray;
 }
 
+.swiper-button-prev,
+.swiper-button-next {
+    color: red !important;
+}
+
 .fade-in {
     opacity: 0;
     transform: translateY(-20px);

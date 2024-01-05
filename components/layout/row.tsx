@@ -1,45 +1,53 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState } from "react"
-import Project from "./project"
-import { MdChevronLeft, MdChevronRight } from "react-icons/md"
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, A11y } from "swiper/modules";
 
-const Row = ({ title, rowID }: { title: string; rowID: string }) => {
-  const [movies, setMovies] = useState([])
+import "swiper/css";
+import "swiper/css/navigation";
 
-  const slideLeft = () => {
-    var slider = document.getElementById("slider" + rowID)
-    slider!.scrollLeft = slider!.scrollLeft - 500
-  }
-  const slideRight = () => {
-    var slider = document.getElementById("slider" + rowID)
-    slider!.scrollLeft = slider!.scrollLeft + 500
-  }
+import Project from "./project";
 
-  return (
-    <>
-      <h2 className="text-white font-bold md:text-xl p-4">{title}</h2>
-      <div className="relative flex items-center group">
-        <MdChevronLeft
-          onClick={slideLeft}
-          className="bg-white left-0 rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 hidden group-hover:block"
-          size={40}
-        />
-        <div
-          id={"slider" + rowID}
-          className="w-full h-full overflow-x-scroll whitespace-nowrap scroll-smooth scrollbar-hide relative">
-          {movies.map((item, id) => (
-            <Project key={id} item={item} />
-          ))}
-        </div>
-        <MdChevronRight
-          onClick={slideRight}
-          className="bg-white right-0 rounded-full absolute opacity-50 hover:opacity-100 cursor-pointer z-10 hidden group-hover:block"
-          size={40}
-        />
-      </div>
-    </>
-  )
-}
+const Row = () => {
+    return (
+        <section className="bg-black text-white flex flex-col h-[300px] p-10">
+            <h5 className="text-white font-semibold text-3xl">Websites</h5>
+            <Swiper
+                modules={[Navigation, A11y]}
+                navigation
+                className="overflow-scroll w-full"
+                spaceBetween={0}
+                slidesPerView={2}
+                breakpoints={{
+                    499: {
+                        slidesPerView: 3,
+                        spaceBetween: 50,
+                    },
+                    1300: {
+                        slidesPerView: 6,
+                        spaceBetween: 50,
+                    },
+                }}
+                onSlideChange={() => console.log("slide change")}
+                onSwiper={(swiper) => console.log(swiper)}
+            >
+                <SwiperSlide>
+                    <Project />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <Project />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <Project />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <Project />
+                </SwiperSlide>
+                ...
+            </Swiper>
+        </section>
+    );
+};
 
-export default Row
+export default Row;

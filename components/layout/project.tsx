@@ -1,44 +1,35 @@
-import React, { useState } from "react"
-import { FaHeart, FaRegHeart } from "react-icons/fa"
-import Image from "next/image"
+import React, { useState } from "react";
+import Image from "next/image";
 
-const Project = ({ item }: { item: string }) => {
-  const [like, setLike] = useState(false)
-  const [saved, setSaved] = useState(false)
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-  // const saveShow = async () => {
-  //   if (user?.email) {
-  //     setLike(!like);
-  //     setSaved(true);
-  //     await updateDoc(movieID, {
-  //       savedShows: arrayUnion({
-  //         id: item.id,
-  //         title: item.title,
-  //         img: item.backdrop_path,
-  //       }),
-  //     });
-  //   } else {
-  //     alert('Please log in to save a movie');
-  //   }
-  // };
+import Inception from "@/public/music/inception.jpg";
 
-  return (
-    <div className="w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2">
-      <Image className="w-full h-auto block" src={``} alt={item} />
-      <div className="absolute top-0 left-0 w-full h-full hover:bg-black/80 opacity-0 hover:opacity-100 text-white">
-        <p className="white-space-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center">
-          {item}
-        </p>
-        <p onClick={() => {}}>
-          {like ? (
-            <FaHeart className="absolute top-4 left-4 text-gray-300" />
-          ) : (
-            <FaRegHeart className="absolute top-4 left-4 text-gray-300" />
-          )}
-        </p>
-      </div>
-    </div>
-  )
-}
+const Project = () => {
+    const [like, setLike] = useState(false);
+    const [saved, setSaved] = useState(false);
 
-export default Project
+    return (
+        <div className="w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] cursor-pointer relative p-2 flex flex-col">
+            <Image className="w-full h-[100px] object-cover md:h-[125px] lg:h-[150px]" src={Inception} alt="item" />
+            {/* LIKE IS OVERLAY ON TOP OF IMAGE */}
+            {/* ADD MORE ACTIONS IF NECESSARY */}
+            <div className="absolute top-4 left-4 ">
+                <p>{like ? <FaHeart className="text-gray-300" /> : <FaRegHeart className="text-gray-300" />}</p>
+            </div>
+            {/* PROJECT INFO */}
+            <div className="flex flex-col justify-between flex-1">
+                <div className="flex flex-col justify-between flex-1">
+                    <h6 className="text-white font-semibold text-sm">Inception</h6>
+                    <p className="text-gray-400 text-xs">Music</p>
+                </div>
+                <div className="flex flex-col justify-between flex-1">
+                    <p className="text-gray-400 text-xs">2021</p>
+                    <p className="text-gray-400 text-xs">1:30</p>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Project;
