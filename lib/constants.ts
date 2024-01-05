@@ -14,8 +14,12 @@ export const NavMenuItems: NavMenu[] = [
         link: "/music",
     },
     {
-        title: "Stock Tips",
-        link: "/stock-tips",
+        title: "Movie Picks",
+        link: "/movie-picks",
+    },
+    {
+        title: "Stock Picks",
+        link: "/stock-picks",
     },
 ];
 export const NavMenuAltItems: NavMenu[] = [
