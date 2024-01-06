@@ -20,7 +20,7 @@ export const WebsiteProjects: ProjectType[] = [
         title: "Brite Lighting LLC",
         genre: "Website",
         technologies: "Javascript, Typescript, React, Nextjs, TailwindCSS",
-        description: "A Building and Housing Maintenance Application",
+        description: "A Building Maintenance Application",
         year: "Last Updated: 2024",
         link: "https://brite-adrianhenry15.vercel.app/",
     },
