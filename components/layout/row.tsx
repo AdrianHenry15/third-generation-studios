@@ -10,8 +10,14 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import Project from "./project";
+import { WebsiteProjects } from "@/lib/projects";
+import { ProjectType } from "@/lib/types";
 
-const Row = () => {
+interface IRowProps {
+    item: ProjectType[];
+}
+
+const Row = (props: IRowProps) => {
     return (
         <section className="bg-black text-white flex flex-col h-[400px] p-10">
             <h5 className="text-white font-semibold text-3xl">Websites</h5>
@@ -34,16 +40,11 @@ const Row = () => {
                 onSlideChange={() => console.log("slide change")}
                 onSwiper={(swiper) => console.log(swiper)}
             >
-                <SwiperSlide>
-                    <Project
-                        img={Mollys}
-                        title={"Molly's Specialty Sweets"}
-                        genre={"Website"}
-                        technologies={"Javascript, Typescript, React, Nextjs, TailwindCSS"}
-                        description={"A Bakery Application"}
-                        year={"Last Updated: 2024"}
-                    />
-                </SwiperSlide>
+                {props.item.map((project) => (
+                    <SwiperSlide key={project.id} className="flex">
+                        <Project item={project} />
+                    </SwiperSlide>
+                ))}
             </Swiper>
         </section>
     );

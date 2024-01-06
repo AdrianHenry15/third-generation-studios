@@ -25,9 +25,9 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     return (
         <ClerkProvider>
             <html lang="en">
-                <link rel="icon" href="/triforce-9.png" sizes="96x96" />
-                <link rel="icon" href="/triforce-32.png" sizes="32x32" />
-                <link rel="icon" href="/triforce-16.png" sizes="16x16" />
+                <link rel="icon" href="/triangle-96.png" sizes="96x96" />
+                <link rel="icon" href="/triangle-32.png" sizes="32x32" />
+                <link rel="icon" href="/triangle-16.png" sizes="16x16" />
                 <body className={inter.variable}>
                     <Toaster />
                     <div className="flex flex-col">

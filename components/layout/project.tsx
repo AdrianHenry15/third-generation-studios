@@ -2,15 +2,11 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 import { FaHeart, FaRegHeart, FaRegBookmark, FaBookmark } from "react-icons/fa";
+import OpenLinkModal from "../modals/open-link-modal";
+import { ProjectType } from "@/lib/types";
 
 interface IProjectProps {
-    img: any;
-    title: string;
-    genre: string;
-    technologies: string;
-    description: string;
-    year: string;
-    duration?: string;
+    item: ProjectType;
 }
 
 const Project = (props: IProjectProps) => {
@@ -25,7 +21,7 @@ const Project = (props: IProjectProps) => {
             onClick={() => setOpenLinkModal(true)}
             className="w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] cursor-pointer relative p-2 flex flex-col"
         >
-            <Image className="w-full h-[100px] object-cover md:h-[125px] lg:h-[150px]" src={props.img} alt={props.title} />
+            <Image className="w-full h-[100px] object-cover md:h-[125px] lg:h-[150px]" src={props.item.img} alt={props.item.title} />
             {/* LIKE IS OVERLAY ON TOP OF IMAGE */}
             {/* ADD MORE ACTIONS IF NECESSARY */}
             <div className="absolute top-4 left-4 flex">
@@ -35,18 +31,20 @@ const Project = (props: IProjectProps) => {
             {/* PROJECT INFO */}
             <div className="flex flex-col justify-between flex-1">
                 {/* TITLE */}
-                <h6 className={`${HoverClass} text-white font-semibold text-sm`}>{props.title}</h6>
+                <h6 className={`${HoverClass} text-white font-semibold text-sm`}>{props.item.title}</h6>
                 {/* DESCRIPTION */}
-                <p className="text-xs text-gray-300">{props.description}</p>
+                <p className="text-xs text-gray-300">{props.item.description}</p>
                 {/* GENRE */}
-                <p className="text-gray-400 text-xs">{props.genre}</p>
+                <p className="text-gray-400 text-xs">{props.item.genre}</p>
                 {/* FOR WEBSITE & MOVIES => TECHNOLOGIES */}
-                <p className="text-xs">{props.technologies}</p>
-                {/* YEAR CREATED */}
-                <p className="text-gray-400 text-xs">{props.year}</p>
+                <p className="text-xs italic">{props.item.technologies}</p>
+                {/* LAST UPDATED */}
+                <p className="text-gray-400 text-[11px] italic">{props.item.year}</p>
                 {/* DURATION */}
-                <p className="text-gray-400 text-xs">{props.duration}</p>
+                <p className="text-gray-400 text-xs">{props.item.duration}</p>
             </div>
+            {/* LINK MODAL */}
+            <OpenLinkModal link={props.item.link} isOpen={openLinkModal} closeModal={() => setOpenLinkModal(false)} />
         </div>
     );
 };
