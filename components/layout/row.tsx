@@ -27,6 +27,7 @@ const Row = (props: IRowProps) => {
                 className="overflow-scroll w-full"
                 spaceBetween={0}
                 slidesPerView={2}
+                loop={true}
                 breakpoints={{
                     499: {
                         slidesPerView: 3,
