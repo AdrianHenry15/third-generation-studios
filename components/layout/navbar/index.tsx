@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 
-import Logo from "@/public/3rdgen-logo-red.png";
+import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
 import MobileHeader from "@/components/layout/navbar/mobile-menu";
 import { NavMenuItems } from "@/lib/constants";
@@ -28,7 +28,7 @@ export default function Navbar() {
                 <div className="flex items-center">
                     <Link href="/" className="lg:mr-10">
                         {/* TODO: LOGO */}
-                        <Image className="" src={Logo} alt="logo" width={100} />
+                        <Image className="" src={Logo} alt="logo" width={200} />
                     </Link>
                     {/* LINKS  */}
                     <ul className="hidden text-white items-center lg:flex">
