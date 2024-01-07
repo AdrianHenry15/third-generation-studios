@@ -15,6 +15,11 @@ p {
     color: gray;
 }
 
+.keen-slider__slide {
+    /* min-width: 100% !important; */
+    /* max-width: 100% !important; */
+}
+
 .swiper-button-prev,
 .swiper-button-next {
     color: red !important;

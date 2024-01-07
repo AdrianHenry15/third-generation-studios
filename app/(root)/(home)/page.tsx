@@ -1,12 +1,17 @@
 import Row from "@/components/layout/row";
 import VideoPlayer from "@/components/video-player";
-import { WebsiteProjects } from "@/lib/projects";
+import { ClientProjects, PersonalProjects, SchoolProjects } from "@/lib/projects";
 
 export default function HomePage() {
+    const CarouselClient = [...ClientProjects, ...ClientProjects, ...ClientProjects];
+    const CarouselPersonal = [...PersonalProjects, ...PersonalProjects, ...PersonalProjects];
+    const CarouselSchool = [...SchoolProjects, ...SchoolProjects, ...SchoolProjects];
     return (
         <div>
-            <VideoPlayer src="/web-nodes.mp4" />
-            <Row item={WebsiteProjects} />
+            <VideoPlayer src="/videos/web-nodes.mp4" />
+            <Row name="Client Websites" item={CarouselClient} />
+            <Row name="Personal Projects" item={CarouselPersonal} />
+            <Row name="School Projects" item={CarouselSchool} />
         </div>
     );
 }
