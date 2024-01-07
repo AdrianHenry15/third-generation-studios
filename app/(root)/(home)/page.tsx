@@ -1,17 +1,21 @@
+import dynamic from "next/dynamic";
+
 import Row from "@/components/layout/row";
-import VideoPlayer from "@/components/video-player";
-import { ClientProjects, PersonalProjects, SchoolProjects } from "@/lib/projects";
+import { ClientProjects } from "@/lib/projects";
+
+const LazyVideoPlayer = dynamic(() => import("@/components/video-player"), { ssr: false });
 
 export default function HomePage() {
     const CarouselClient = [...ClientProjects, ...ClientProjects, ...ClientProjects];
-    const CarouselPersonal = [...PersonalProjects, ...PersonalProjects, ...PersonalProjects];
-    const CarouselSchool = [...SchoolProjects, ...SchoolProjects, ...SchoolProjects];
+
     return (
         <div>
-            <VideoPlayer src="/videos/web-nodes.mp4" />
+            <LazyVideoPlayer src="/videos/web-nodes.mp4" />
+            {/* WEBSITES */}
             <Row name="Client Websites" item={CarouselClient} />
-            <Row name="Personal Projects" item={CarouselPersonal} />
-            <Row name="School Projects" item={CarouselSchool} />
+            {/* MUSIC */}
+            {/* MOVIE PICKS */}
+            {/* STOCK PICKS */}
         </div>
     );
 }
