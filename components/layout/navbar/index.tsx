@@ -18,7 +18,7 @@ export default function Navbar() {
     const pathname = usePathname();
 
     return (
-        <nav className={`text-sm whitespace-nowrap font-semibold flex w-full self-center bg-transparent absolute top-0 z-50 h-[50px]`}>
+        <nav className={`text-sm whitespace-nowrap font-semibold flex w-full self-center bg-zinc-900 top-0 z-50 h-[50px]`}>
             {/* MOBILE CONTAINER */}
             <div className="absolute self-center right-0 lg:hidden">
                 <MobileHeader />

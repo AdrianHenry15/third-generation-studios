@@ -11,7 +11,7 @@ export default function MusicPage() {
     const CarouselSchool = [...SchoolProjects, ...SchoolProjects, ...SchoolProjects];
     return (
         <div>
-            <LazyVideoPlayer src="/videos/music-colors.mp4" />
+            {/* <LazyVideoPlayer src="/videos/music-colors.mp4" /> */}
             <Row name="Client Websites" item={CarouselClient} />
             <Row name="Personal Projects" item={CarouselPersonal} />
             <Row name="School Projects" item={CarouselSchool} />
