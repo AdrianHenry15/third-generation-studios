@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 
-import Row from "@/components/layout/row";
 import { ClientProjects } from "@/lib/projects";
+import WebsiteRow from "@/components/layout/rows/website-row";
 
 const LazyVideoPlayer = dynamic(() => import("@/components/video-player"), { ssr: false });
 
@@ -12,7 +12,7 @@ export default function HomePage() {
         <div>
             <LazyVideoPlayer src="/videos/web-nodes.mp4" />
             {/* WEBSITES */}
-            <Row name="Client Websites" item={CarouselClient} />
+            <WebsiteRow name="Client Websites" item={CarouselClient} />
             {/* MUSIC */}
             {/* MOVIE PICKS */}
             {/* STOCK PICKS */}

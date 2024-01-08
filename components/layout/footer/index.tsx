@@ -6,10 +6,14 @@ import SocialsCard from "./socials-card";
 import FooterMenu from "./footer-menu";
 import LogoCard from "./logo-card";
 
-const Footer = () => {
+interface IFooterProps {
+    className?: string;
+}
+
+const Footer = (props: IFooterProps) => {
     return (
         // FULL CONTAINER
-        <footer className="w-full bg-black text-white flex flex-col justify-center px-4">
+        <footer className={`${props.className} w-full bg-black text-white flex flex-col justify-center px-4`}>
             {/* FOOTER MENU */}
             <div className="flex flex-col self-center w-full md:flex-row md:py-2">
                 <LogoCard />

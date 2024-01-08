@@ -3,7 +3,7 @@ export type NavMenu = {
     link: string;
 };
 
-export type ProjectType = {
+export type WebsiteProjectType = {
     id: number;
     img: any;
     title: string;

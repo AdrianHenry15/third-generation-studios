@@ -1,4 +1,4 @@
-import { ProjectType } from "./types";
+import { WebsiteProjectType } from "./types";
 
 import Mollys from "@/public/websites/mollys-edit.png";
 import Brite from "@/public/websites/brite-edit.png";
@@ -14,7 +14,7 @@ import GitBook from "@/public/websites/git-book-edit.png";
 import BudgetTracker from "@/public/websites/budget-tracker-edit.png";
 import Portfolio from "@/public/websites/past-portfolio-edit.png";
 
-export const PersonalProjects: ProjectType[] = [
+export const PersonalProjects: WebsiteProjectType[] = [
     {
         id: 1,
         img: Gameboy,
@@ -36,7 +36,7 @@ export const PersonalProjects: ProjectType[] = [
         link: "https://react-portfolio-2.vercel.app/",
     },
 ];
-export const SchoolProjects: ProjectType[] = [
+export const SchoolProjects: WebsiteProjectType[] = [
     {
         id: 1,
         img: Zoo,
@@ -109,7 +109,7 @@ export const SchoolProjects: ProjectType[] = [
     },
 ];
 
-export const ClientProjects: ProjectType[] = [
+export const ClientProjects: WebsiteProjectType[] = [
     {
         id: 1,
         img: Mollys,

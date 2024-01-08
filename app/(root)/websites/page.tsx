@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 
-import Row from "@/components/layout/row";
+import Row from "@/components/layout/rows/website-row";
 import { ClientProjects, PersonalProjects, SchoolProjects } from "@/lib/projects";
 import ImgTextOverlay from "@/components/layout/img-text-overlay";
 

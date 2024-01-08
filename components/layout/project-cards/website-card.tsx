@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 import { FaHeart, FaRegHeart, FaRegBookmark, FaBookmark } from "react-icons/fa";
-import OpenLinkModal from "../modals/open-link-modal";
-import { ProjectType } from "@/lib/types";
+import OpenLinkModal from "../../modals/open-link-modal";
+import { WebsiteProjectType } from "@/lib/types";
 
-interface IProjectProps {
-    item: ProjectType;
+interface IWebsiteCardProps {
+    item: WebsiteProjectType;
 }
 
-const Project = (props: IProjectProps) => {
+const WebsiteCard = (props: IWebsiteCardProps) => {
     const [like, setLike] = useState(false);
     const [saved, setSaved] = useState(false);
     const [openLinkModal, setOpenLinkModal] = useState(false);
@@ -49,4 +49,4 @@ const Project = (props: IProjectProps) => {
     );
 };
 
-export default Project;
+export default WebsiteCard;
