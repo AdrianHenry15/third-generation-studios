@@ -14,7 +14,7 @@ const SignInBtn = () => {
                 <UserButton afterSignOutUrl="/" />
             ) : (
                 // IF SIGNED OUT
-                <Link className="px-6 py-2 rounded-full text-xs text-white bg-transparent border-white border-[1px]" href={"/sign-in"}>
+                <Link className="px-4 py-2 rounded-full text-xs text-white bg-transparent border-white border-[1px]" href={"/sign-in"}>
                     Sign In
                 </Link>
             )}

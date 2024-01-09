@@ -4,7 +4,7 @@ import React from "react";
 import { IoHomeSharp, IoSearchOutline } from "react-icons/io5";
 import { BiLibrary } from "react-icons/bi";
 
-const MobileNavbar = () => {
+const MobileMusicNavbar = () => {
     return (
         <nav className="flex justify-around bg-zinc-800 bottom-0 fixed w-full py-2">
             {/* HOME */}
@@ -26,4 +26,4 @@ const MobileNavbar = () => {
     );
 };
 
-export default MobileNavbar;
+export default MobileMusicNavbar;

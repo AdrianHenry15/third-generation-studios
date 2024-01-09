@@ -1,17 +1,17 @@
 import React from "react";
 
-import MusicImgTextOverlay from "./music-img-text-overlay";
-import MusicPlayerHeader from "./music-player-header";
+import MobileMusicImgTextOverlay from "../mobile-music/mobile-music-img-text-overlay";
+import MobileMusicPlayerHeader from "../mobile-music/mobile-music-player-header";
 
-const MainMusicSection = () => {
+const MobileMainMusicSection = () => {
     return (
         <div className="relative">
-            <MusicImgTextOverlay />
+            <MobileMusicImgTextOverlay />
             <div className="h-full">
-                <MusicPlayerHeader />
+                <MobileMusicPlayerHeader />
             </div>
         </div>
     );
 };
 
-export default MainMusicSection;
+export default MobileMainMusicSection;

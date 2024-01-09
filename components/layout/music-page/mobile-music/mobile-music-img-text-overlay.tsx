@@ -3,7 +3,7 @@ import React from "react";
 
 import Plane from "@/public/music/plane.jpg";
 
-const MusicImgTextOverlay = () => {
+const MobileMusicImgTextOverlay = () => {
     return (
         <div className="relative">
             <Image src={Plane} alt="plane" />
@@ -14,4 +14,4 @@ const MusicImgTextOverlay = () => {
     );
 };
 
-export default MusicImgTextOverlay;
+export default MobileMusicImgTextOverlay;
