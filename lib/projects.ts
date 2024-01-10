@@ -1,5 +1,6 @@
-import { WebsiteProjectType } from "./types";
+import { ArtistType, MusicProjectType, WebsiteProjectType } from "./types";
 
+// WEBSITES IMAGES
 import Mollys from "@/public/websites/mollys-edit.png";
 import Brite from "@/public/websites/brite-edit.png";
 import TaharkaDemo from "@/public/websites/taharka-vercel-shopify-edit.png";
@@ -13,6 +14,15 @@ import Taskinator from "@/public/websites/taskinator-edit.png";
 import GitBook from "@/public/websites/git-book-edit.png";
 import BudgetTracker from "@/public/websites/budget-tracker-edit.png";
 import Portfolio from "@/public/websites/past-portfolio-edit.png";
+
+// ARTIST IMAGES
+import Search from "@/public/music/plane.jpg";
+// MUSIC IMAGES
+import Jack from "@/public/music/jack.jpg";
+import Succession from "@/public/music/succession.jpg";
+import Timb from "@/public/music/timb.jpg";
+import Uzi from "@/public/music/uzivert.jpg";
+import Lotus from "@/public/music/wlotus.jpg";
 
 export const PersonalProjects: WebsiteProjectType[] = [
     {
@@ -149,5 +159,87 @@ export const ClientProjects: WebsiteProjectType[] = [
         description: "An Ice Cream Shop Application",
         year: "Last Updated: 2023",
         link: "https://taharkabrothers.com/",
+    },
+];
+
+export const Artists: ArtistType[] = [
+    {
+        id: 1,
+        img: Search,
+        name: "Search",
+        // genre: "Hip-Hop/Rap",
+        // description: "A Hip-Hop/Rap Artist",
+        // link: "https://www.instagram.com/jafarri_/",
+    },
+    {
+        id: 1,
+        img: Search,
+        name: "Jafarri",
+        // genre: "Hip-Hop/Rap",
+        // description: "A Hip-Hop/Rap Artist",
+        // link: "https://www.instagram.com/jafarri_/",
+    },
+];
+
+export const SearchOriginalProjects: MusicProjectType[] = [
+    {
+        id: 1,
+        img: Jack,
+        songName: "Song 1",
+        albumName: "Search",
+        artist: "Original",
+        genre: "Hip-Hop/Rap",
+        year: 2021,
+        duration: "2:33",
+        plays: 0,
+        song: "",
+    },
+    {
+        id: 2,
+        img: Timb,
+        songName: "Song 2",
+        albumName: "Search",
+        artist: "Original",
+        genre: "Hip-Hop/Rap",
+        year: 2021,
+        duration: "2:33",
+        plays: 0,
+        song: "",
+    },
+    {
+        id: 3,
+        img: Succession,
+        songName: "Song 3",
+        albumName: "Search",
+        artist: "Original",
+        genre: "Hip-Hop/Rap",
+        year: 2021,
+        duration: "2:33",
+        plays: 0,
+        song: "",
+    },
+    {
+        id: 4,
+        img: Uzi,
+        songName: "Song 3",
+        albumName: "Search",
+        artist: "Original",
+        genre: "Hip-Hop/Rap",
+        year: 2021,
+        duration: "2:33",
+        plays: 0,
+        song: "",
+    },
+    {
+        id: 5,
+        img: Lotus,
+        songName: "Song 3",
+        albumName: "Search",
+        artist: "Original",
+        genre: "Hip-Hop/Rap",
+        year: 2021,
+        duration: "2:33",
+        plays: 0,
+        song: "",
     },
 ];

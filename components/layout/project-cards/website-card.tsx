@@ -41,7 +41,7 @@ const WebsiteCard = (props: IWebsiteCardProps) => {
                 {/* LAST UPDATED */}
                 <p className="text-gray-400 text-[11px] italic">{props.item.year}</p>
                 {/* DURATION */}
-                <p className="text-gray-400 text-xs">{props.item.duration}</p>
+                {/* <p className="text-gray-400 text-xs">{}</p> */}
             </div>
             {/* LINK MODAL */}
             <OpenLinkModal link={props.item.link} isOpen={openLinkModal} closeModal={() => setOpenLinkModal(false)} />

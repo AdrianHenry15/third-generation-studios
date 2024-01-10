@@ -11,6 +11,28 @@ export type WebsiteProjectType = {
     technologies: string;
     description: string;
     year: string;
-    duration?: string;
+    link: string;
+};
+
+export type MusicProjectType = {
+    id: number;
+    img: any;
+    songName: string;
+    albumName?: string;
+    lyrics?: string;
+    artist: string;
+    genre: string;
+    year: number;
+    duration: string;
+    plays: number;
+    song: any;
+};
+
+export type ArtistType = {
+    id: number;
+    img: any;
+    name: string;
+    genre?: string;
+    description?: string;
     link?: string;
 };
