@@ -17,7 +17,10 @@ const WebsiteRow = (props: IWebsiteRowProps) => {
             <div className="w-full h-[320px] overflow-x-auto pb-6 pt-1 my-14">
                 <ul className="flex animate-carousel">
                     {props.item.map((project) => (
-                        <li key={project.title} className="relative h-[30vh] max-h-[275px] w-2/3 max-w-[450px] flex-none md:w-1/3">
+                        <li
+                            key={project.title}
+                            className="relative h-[30vh] max-h-[275px] max-w-[450px] flex-none xs:w-[200px] sm:w-[250px] md:w-[400px]"
+                        >
                             <WebsiteCard item={project} />
                         </li>
                     ))}

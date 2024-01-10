@@ -6,7 +6,7 @@ export default async function MusicLayout({ children }: { children: React.ReactN
         <div className="bg-black text-white h-full">
             <Navbar className="md:flex" />
             {children}
-            <Footer className="hidden md:flex" />
+            <Footer className="md:flex" />
         </div>
     );
 }

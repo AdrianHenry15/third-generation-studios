@@ -167,6 +167,7 @@ export const Artists: ArtistType[] = [
         id: 1,
         img: Search,
         name: "Search",
+        label: "Third Generation Studios",
         // genre: "Hip-Hop/Rap",
         // description: "A Hip-Hop/Rap Artist",
         // link: "https://www.instagram.com/jafarri_/",
@@ -175,9 +176,25 @@ export const Artists: ArtistType[] = [
         id: 1,
         img: Search,
         name: "Jafarri",
+        label: "Third Generation Studios",
         // genre: "Hip-Hop/Rap",
         // description: "A Hip-Hop/Rap Artist",
         // link: "https://www.instagram.com/jafarri_/",
+    },
+];
+
+export const JafarriProjects: MusicProjectType[] = [
+    {
+        id: 1,
+        img: Jack,
+        songName: "Song 1",
+        albumName: "Search",
+        artist: "Original",
+        genre: "Hip-Hop/Rap",
+        year: 2021,
+        duration: "2:33",
+        plays: 0,
+        song: "",
     },
 ];
 

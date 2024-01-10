@@ -22,9 +22,7 @@ export default function Navbar(props: INavbarProps) {
     const pathname = usePathname();
 
     return (
-        <nav
-            className={`${props.className} text-sm whitespace-nowrap font-semibold flex w-full self-center bg-zinc-900 top-0 z-50 h-[50px]`}
-        >
+        <nav className={`${props.className} text-sm whitespace-nowrap font-semibold flex w-full self-center bg-black top-0 z-50 h-[50px]`}>
             {/* MOBILE CONTAINER */}
             <div className="absolute self-center right-0 lg:hidden">
                 <MobileHeader />

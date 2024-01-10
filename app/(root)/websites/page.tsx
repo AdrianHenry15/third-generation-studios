@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 
-import Row from "@/components/layout/rows/website-row";
+import WebsiteRow from "@/components/layout/rows/website-row";
 import { ClientProjects, PersonalProjects, SchoolProjects } from "@/lib/projects";
 import ImgTextOverlay from "@/components/layout/img-text-overlay";
 
@@ -14,9 +14,9 @@ export default function WebsitesPage() {
         <div>
             {/* <LazyVideoPlayer src="/videos/digi-earth.mp4" /> */}
             {/* <ImgTextOverlay src={ClientProjects[0].img} name="Websites" /> */}
-            <Row name="Client Websites" item={CarouselClient} />
-            <Row name="Personal Projects" item={CarouselPersonal} />
-            <Row name="School Projects" item={CarouselSchool} />
+            <WebsiteRow name="Client Websites" item={CarouselClient} />
+            <WebsiteRow name="Personal Projects" item={CarouselPersonal} />
+            <WebsiteRow name="School Projects" item={CarouselSchool} />
         </div>
     );
 }

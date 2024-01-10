@@ -35,4 +35,5 @@ export type ArtistType = {
     genre?: string;
     description?: string;
     link?: string;
+    label?: string;
 };

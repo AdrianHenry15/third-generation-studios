@@ -1,6 +1,6 @@
 import React from "react";
+
 import MusicImage from "./music-image";
-import Image from "next/image";
 import { MusicProjectType } from "@/lib/types";
 
 interface IMusicProjectProps {
@@ -10,7 +10,7 @@ interface IMusicProjectProps {
 
 const MusicProject = (props: IMusicProjectProps) => {
     return (
-        <div className={`${props.className} my-4 mr-4 min-w-[150px]`}>
+        <div className={`${props.className} my-4 mr-10 min-w-[150px]`}>
             {/* {props.artist.toLowerCase() === "search" ? <MusicImage img={props.img} /> : <Image src={props.img} alt="" />} */}
             <MusicImage artist={props.project.artist} img={props.project.img} />
             <div>

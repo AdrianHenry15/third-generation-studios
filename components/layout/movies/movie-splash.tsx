@@ -3,13 +3,13 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 
-interface IImgTextProps {
+interface IMovieSplashProps {
     src: any;
     name: string;
     imgClass?: string;
 }
 
-const ImgTextOverlay = (props: IImgTextProps) => {
+const MovieSplash = (props: IMovieSplashProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -58,4 +58,4 @@ const ImgTextOverlay = (props: IImgTextProps) => {
     );
 };
 
-export default ImgTextOverlay;
+export default MovieSplash;
