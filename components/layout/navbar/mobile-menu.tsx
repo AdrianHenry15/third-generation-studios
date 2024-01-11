@@ -47,12 +47,12 @@ export default function MobileMenu() {
                         as={Fragment}
                         enter="transition-all ease-in-out duration-300"
                         enterFrom="translate-x-[100%]"
-                        enterTo="translate-x-[0%]"
+                        enterTo="translate-x-[0%] sm:translate-x-[45%] md:translate-x-[60%]"
                         leave="transition-all ease-in-out duration-300"
                         leaveFrom="translate-x-0"
-                        leaveTo="translate-x-[-100%]"
+                        leaveTo="translate-x-[100%]"
                     >
-                        <Dialog.Panel className="fixed bottom-0 left-0 right-0 top-0 flex h-full flex-col bg-white pb-6 w-full">
+                        <Dialog.Panel className="fixed bottom-0 left-0 right-0 top-0 flex h-full flex-col bg-white pb-6">
                             <div className="p-4">
                                 <div className="flex items-center justify-between">
                                     <button
@@ -83,19 +83,22 @@ export default function MobileMenu() {
                                 </ul>
                             </div>
                             {/* NAV BUTTONS */}
-                            <ul className="bottom-0 mb-36 fixed flex flex-col self-center w-full">
-                                <Link onClick={closeMobileMenu} className="w-full px-10 flex justify-center" href={"/contact-us"}>
+                            <ul className="bottom-0 fixed flex flex-col self-start w-full">
+                                <Link onClick={closeMobileMenu} className="w-full px-10 justify-start hidden sm:flex" href={"/contact-us"}>
+                                    <Button roundedFull className="mb-4 w-full py-4 flex justify-center sm:w-[300px]" name="Sign In" />
+                                </Link>
+                                <Link onClick={closeMobileMenu} className="w-full px-10 flex justify-start" href={"/contact-us"}>
                                     <Button
                                         roundedFull
-                                        className="mb-4 w-full py-4 flex justify-center md:w-1/2"
+                                        className="mb-4 w-full py-4 flex justify-center sm:w-[300px]"
                                         name="Contact Us"
                                         altColor
                                     />
                                 </Link>
-                                <Link onClick={closeMobileMenu} className="w-full px-10 flex justify-center" href={"/estimate"}>
+                                <Link onClick={closeMobileMenu} className="w-full px-10 flex justify-start" href={"/estimate"}>
                                     <Button
                                         roundedFull
-                                        className="mb-4 w-full py-4 flex justify-center md:w-1/2"
+                                        className="mb-4 w-full py-4 flex justify-center sm:w-[300px]"
                                         name="Get Your Free Estimate"
                                     />
                                 </Link>

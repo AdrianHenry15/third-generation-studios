@@ -21,6 +21,10 @@ export const NavMenuItems: NavMenu[] = [
         title: "Stock Picks",
         link: "/stock-picks",
     },
+    {
+        title: "Pricing",
+        link: "/pricing",
+    },
 ];
 export const NavMenuAltItems: NavMenu[] = [
     {
