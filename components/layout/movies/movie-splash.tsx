@@ -3,6 +3,10 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Navigation } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
 
 interface IMovieSplashProps {
     src: any;
@@ -37,7 +41,7 @@ const MovieSplash = (props: IMovieSplashProps) => {
 
     return (
         <section ref={containerRef} className="fade-in relative flex w-full bg-black">
-            <Swiper>
+            <Swiper spaceBetween={0} slidesPerView={1} navigation modules={[Navigation, A11y]}>
                 <SwiperSlide>
                     <Image
                         width={1000}

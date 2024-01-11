@@ -26,7 +26,7 @@ export default function MobileMenu() {
             <button
                 onClick={openMobileMenu}
                 aria-label="Open mobile menu"
-                className="flex h-11 w-11 items-center justify-center rounded-full text-black transition-colors overflow-hidden lg:hidden"
+                className="flex h-11 w-11 items-center justify-center rounded-full text-black transition-colors overflow-hidden"
             >
                 <Bars3Icon className="h-6 text-white" />
             </button>

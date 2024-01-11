@@ -24,7 +24,7 @@ export default function Navbar(props: INavbarProps) {
     return (
         <nav className={`${props.className} text-sm whitespace-nowrap font-semibold flex w-full self-center bg-black top-0 z-50 h-[50px]`}>
             {/* MOBILE CONTAINER */}
-            <div className="absolute self-center right-0 lg:hidden">
+            <div className="absolute self-center right-0 xl:hidden">
                 <MobileHeader />
             </div>
             {/* TITLE & LINKS  */}
@@ -35,7 +35,7 @@ export default function Navbar(props: INavbarProps) {
                         <Image className="" src={Logo} alt="logo" width={200} />
                     </Link>
                     {/* LINKS  */}
-                    <ul className="hidden text-white items-center lg:flex">
+                    <ul className="hidden text-white items-center xl:flex">
                         {NavMenuItems.map((item: NavMenu) => (
                             <li
                                 className={`mx-2 transition-all duration-300 ease-in-out hover:text-red-700 hover:underline ${
@@ -51,7 +51,7 @@ export default function Navbar(props: INavbarProps) {
                     </ul>
                 </div>
                 {/* NAV BUTTONS */}
-                <ul className="hidden items-center lg:flex">
+                <ul className="hidden items-center xl:flex">
                     <Link className="mr-4" href={"/contact-us"}>
                         <Button roundedFull name="Contact Us" altColor />
                     </Link>
@@ -60,7 +60,7 @@ export default function Navbar(props: INavbarProps) {
                     </Link>
                 </ul>
                 {/* USER ICON */}
-                <div className="hidden lg:flex lg:items-center">
+                <div className="hidden xl:flex xl:items-center">
                     <UserIcon />
                 </div>
             </div>
