@@ -9,8 +9,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 interface IMovieSplashProps {
-    src: any;
-    name: string;
+    item: any;
     imgClass?: string;
 }
 
@@ -49,8 +48,8 @@ const MovieSplash = (props: IMovieSplashProps) => {
                         priority
                         loading="eager"
                         className={`${props.imgClass} object-cover w-full h-[80vh] md:h-[80vh] lg:h-[75vh] opacity-75`}
-                        src={props.src}
-                        alt={props.name}
+                        src={`https://image.tmdb.org/t/p/w500/${props.item?.backdrop_path}`}
+                        alt={props.item.name}
                     />
 
                     {/* Text overlay */}
@@ -58,7 +57,7 @@ const MovieSplash = (props: IMovieSplashProps) => {
                         className={`absolute w-full flex top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-around flex-col items-center`}
                     >
                         <h5 className={`font-semibold tracking-wider underline-offset-2 italic text-5xl p-4 text-white drop-shadow-xl`}>
-                            {props.name}
+                            {props.item.name}
                         </h5>
                     </div>
                 </SwiperSlide>

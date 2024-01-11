@@ -37,3 +37,8 @@ export type ArtistType = {
     link?: string;
     label?: string;
 };
+
+export type MovieType = {
+    id: number;
+    title: string;
+};

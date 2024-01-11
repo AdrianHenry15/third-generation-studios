@@ -1,31 +1,13 @@
-import axios from "axios";
-
-// API key and host for streaming availability API
-const streamingAvailabilityApiKey = "10253f2aadmsh1a6744a84a4e18bp10c58fjsnfc1d2f172ccd";
-const streamingAvailabilityApiHost = "streaming-availability.p.rapidapi.com";
-
-const streamingAvailabilityApiBaseUrl = "https://streaming-availability.p.rapidapi.com";
+//api key from movie api
+const key = "5922dac6653fc080eddeaddc4dd0afd1";
 
 const requests = {
-    // Function to get streaming availability data
-    requestStreamingAvailability: async () => {
-        const options = {
-            method: "GET",
-            url: `${streamingAvailabilityApiBaseUrl}/countries`,
-            headers: {
-                "X-RapidAPI-Key": streamingAvailabilityApiKey,
-                "X-RapidAPI-Host": streamingAvailabilityApiHost,
-            },
-        };
-
-        try {
-            const response = await axios.request(options);
-            return response.data;
-        } catch (error) {
-            console.error(error);
-            throw error; // Re-throw the error to handle it where the request is made
-        }
-    },
+    // endpoints from movie api
+    requestPopular: `https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=en-US&page=1`,
+    requestTopRated: `https://api.themoviedb.org/3/movie/top_rated?api_key=${key}&language=en-US&page=1`,
+    requestTrending: `https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=en-US&page=2`,
+    requestUpcoming: `https://api.themoviedb.org/3/movie/upcoming?api_key=${key}&language=en-US&page=1`,
+    requestNowPlaying: `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=en-US&page=1`,
 };
 
 export default requests;
