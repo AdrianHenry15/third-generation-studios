@@ -1,5 +1,5 @@
 //api key from movie api
-const key = "5922dac6653fc080eddeaddc4dd0afd1";
+const key = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 const requests = {
     // endpoints from movie api
