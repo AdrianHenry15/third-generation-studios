@@ -24,7 +24,7 @@ const MovieItem: React.FC<MovieProps> = ({ item }) => {
                 <p className="white-space-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center">
                     {item?.title}
                 </p>
-                <p>
+                <p onClick={() => setLike(!like)}>
                     {like ? (
                         <FaHeart className="absolute top-4 left-4 text-gray-300" />
                     ) : (
