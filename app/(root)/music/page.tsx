@@ -4,7 +4,7 @@ import { SearchOriginalProjects } from "@/lib/projects";
 
 export default function MusicPage() {
     return (
-        <div className="p-4 flex flex-col h-screen bg-black">
+        <div className="px-10 flex flex-col h-screen bg-black">
             <ArtistRow />
             <MusicRow title="Original Tracks By Search" projects={SearchOriginalProjects} />
         </div>

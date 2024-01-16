@@ -5,11 +5,11 @@ import { FaHeart, FaRegHeart, FaRegBookmark, FaBookmark } from "react-icons/fa";
 import OpenLinkModal from "../../modals/open-link-modal";
 import { WebsiteProjectType } from "@/lib/types";
 
-interface IWebsiteCardProps {
+interface IWebsiteItemProps {
     item: WebsiteProjectType;
 }
 
-const WebsiteCard = (props: IWebsiteCardProps) => {
+const WebsiteItem = (props: IWebsiteItemProps) => {
     const [like, setLike] = useState(false);
     const [saved, setSaved] = useState(false);
     const [openLinkModal, setOpenLinkModal] = useState(false);
@@ -19,7 +19,7 @@ const WebsiteCard = (props: IWebsiteCardProps) => {
     return (
         <div
             onClick={() => setOpenLinkModal(true)}
-            className="w-[160px] hover:scale-105 transition duration-300 ease-in-out sm:w-[200px] md:w-[240px] lg:w-[280px] cursor-pointer relative p-2 flex flex-col"
+            className="hover:scale-105 transition duration-300 ease-in-out w-[160px] sm:w-[200px] md:w-[250px] lg:w-[280px] cursor-pointer relative p-2 flex flex-col"
         >
             <Image className="w-full h-[100px] object-cover md:h-[125px] lg:h-[150px]" src={props.item.img} alt={props.item.title} />
             {/* LIKE IS OVERLAY ON TOP OF IMAGE */}
@@ -49,4 +49,4 @@ const WebsiteCard = (props: IWebsiteCardProps) => {
     );
 };
 
-export default WebsiteCard;
+export default WebsiteItem;
