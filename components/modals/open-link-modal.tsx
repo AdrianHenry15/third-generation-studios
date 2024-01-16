@@ -5,7 +5,8 @@ import Button from "../button";
 interface IOpenLinkModalProps {
     isOpen: boolean;
     closeModal: () => void;
-    link?: string;
+    title: string;
+    link: string;
 }
 
 const OpenLinkModal = (props: IOpenLinkModalProps) => {
@@ -42,7 +43,7 @@ const OpenLinkModal = (props: IOpenLinkModalProps) => {
                             >
                                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-                                        Open Website
+                                        {`Open ${props.title}`}
                                     </Dialog.Title>
                                     <div className="mt-2">
                                         <p className="text-sm text-gray-500">This will open a new tab and take you to the website.</p>

@@ -59,16 +59,6 @@ export const SchoolProjects: WebsiteProjectType[] = [
     },
     {
         id: 2,
-        img: Osk,
-        title: "Zoo Keeper Store",
-        genre: "Website",
-        technologies: "JavaScript, Handlebars, CSS, Node, Express, MySQL, Sequelize, Heroku, JawsDB, Git, GitHub",
-        description: "An Animal Organization Application",
-        year: "Last Updated: 2022",
-        link: "https://zookeepr.vercel.app/",
-    },
-    {
-        id: 3,
         img: Calendar,
         title: "Calendar Application",
         genre: "Website",
@@ -78,7 +68,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://adrianhenry15.github.io/Calendar-Application/",
     },
     {
-        id: 4,
+        id: 3,
         img: Taskmaster,
         title: "Taskmaster Pro",
         genre: "Website",
@@ -88,7 +78,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://adrianhenry15.github.io/Task-Master-Pro-App/",
     },
     {
-        id: 5,
+        id: 4,
         img: Taskinator,
         title: "Taskinator",
         genre: "Website",
@@ -98,7 +88,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://adrianhenry15.github.io/Taskinator-Website/",
     },
     {
-        id: 6,
+        id: 5,
         img: GitBook,
         title: "Git Book",
         genre: "Website",
@@ -108,7 +98,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://adrianhenry15.github.io/Git-Book/",
     },
     {
-        id: 7,
+        id: 6,
         img: BudgetTracker,
         title: "Budget Tracker",
         genre: "Website",

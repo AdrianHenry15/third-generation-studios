@@ -34,17 +34,14 @@ const WebsiteItem = (props: IWebsiteItemProps) => {
                 <h6 className={`${HoverClass} text-white font-semibold text-sm`}>{props.item.title}</h6>
                 {/* DESCRIPTION */}
                 <p className="text-xs text-gray-300">{props.item.description}</p>
-                {/* GENRE */}
-                <p className="text-gray-400 text-xs">{props.item.genre}</p>
-                {/* FOR WEBSITE & MOVIES => TECHNOLOGIES */}
-                <p className="text-xs italic">{props.item.technologies}</p>
-                {/* LAST UPDATED */}
-                <p className="text-gray-400 text-[11px] italic">{props.item.year}</p>
-                {/* DURATION */}
-                {/* <p className="text-gray-400 text-xs">{}</p> */}
             </div>
             {/* LINK MODAL */}
-            <OpenLinkModal link={props.item.link} isOpen={openLinkModal} closeModal={() => setOpenLinkModal(false)} />
+            <OpenLinkModal
+                title={props.item.title}
+                link={props.item.link}
+                isOpen={openLinkModal}
+                closeModal={() => setOpenLinkModal(false)}
+            />
         </div>
     );
 };

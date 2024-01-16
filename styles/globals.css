@@ -15,11 +15,6 @@ p {
     color: gray;
 }
 
-.keen-slider__slide {
-    /* min-width: 100% !important; */
-    /* max-width: 100% !important; */
-}
-
 .swiper-button-prev,
 .swiper-button-next {
     color: red !important;
@@ -46,4 +41,15 @@ p {
 .fade-in.show {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
