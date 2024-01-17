@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import MusicProject from "../music/music-project";
+import MusicProject from "../layout/music/music-item";
 
 import { MusicProjectType } from "@/lib/types";
 
@@ -55,7 +55,7 @@ const MusicRow = (props: IMusicRowProps) => {
                         {props.projects.map((project) => (
                             <SwiperSlide key={project.id}>
                                 <li className="relative max-w-[450px] flex-none xs:w-[200px] sm:w-[200px] md:w-[250px] lg:w-[300px]">
-                                    <MusicProject project={project} />
+                                    {/* <MusicProject project={project} /> */}
                                 </li>
                             </SwiperSlide>
                         ))}

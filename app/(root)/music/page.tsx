@@ -1,5 +1,5 @@
-import ArtistRow from "@/components/layout/rows/artist-row";
-import MusicRow from "@/components/layout/rows/music-row";
+import ArtistRow from "@/components/rows/artist-row";
+import MusicRow from "@/components/rows/music-row";
 import { SearchOriginalProjects } from "@/lib/projects";
 
 export default function MusicPage() {

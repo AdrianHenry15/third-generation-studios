@@ -3,7 +3,7 @@
 import React from "react";
 
 import { WebsiteProjectType } from "@/lib/types";
-import WebsiteItem from "../websites/website-item";
+import WebsiteItem from "../layout/websites/website-item";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -20,7 +20,7 @@ const WebsiteRow = (props: IWebsiteRowProps) => {
     return (
         <section className="bg-black relative text-white flex flex-col h-min-content p-10">
             <h5 className="text-white font-semibold text-3xl">{props.name}</h5>
-            <div className="w-full overflow-x-auto scrollbar-hide">
+            <div className="w-full overflow-x-auto">
                 <Swiper
                     slidesPerView={1}
                     spaceBetween={10}

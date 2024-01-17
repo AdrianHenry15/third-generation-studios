@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Artists } from "@/lib/projects";
-import ArtistIcon from "../music/artist/artist-icon";
+import ArtistIcon from "../layout/music/artist/artist-icon";
 
 interface IArtistRowProps {
     className?: string;

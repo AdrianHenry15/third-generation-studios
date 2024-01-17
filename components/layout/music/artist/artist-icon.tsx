@@ -15,11 +15,6 @@ const ArtistIcon = (props: IArtistIconProps) => {
             <ArtistImage artist={props.artist.name} img={props.artist.img} />
             <div>
                 <p className="text-white">{props.artist.name}</p>
-                {/* <p className="text-sm">{props.project.duration}</p> */}
-                {/* <p className="text-sm">{props.project.genre}</p> */}
-                {/* <p className="text-sm">{props.project.plays}</p> */}
-                {/* <p className="text-sm">{props.project.year}</p> */}
-                {/* <p className="text-sm">{props.project.}</p> */}
             </div>
         </div>
     );
