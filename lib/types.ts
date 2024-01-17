@@ -10,19 +10,20 @@ export type WebsiteProjectType = {
     genre: string;
     technologies: string;
     description: string;
-    year: string;
+    last_updated: string;
     link: string;
 };
 
 export type MusicProjectType = {
     id: number;
     img: any;
-    songName: string;
-    albumName?: string;
+    title: string;
+    album_name?: string;
+    description?: string;
     lyrics?: string;
     artist: string;
     genre: string;
-    year: number;
+    release_date: number;
     duration: string;
     plays: number;
     song: any;
@@ -42,4 +43,6 @@ export type MovieType = {
     id: number;
     title: string;
     backdrop_path: string;
+    release_date: string;
+    overview: string;
 };

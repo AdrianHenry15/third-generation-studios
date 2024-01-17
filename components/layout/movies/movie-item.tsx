@@ -30,15 +30,6 @@ const MovieItem = ({ item }: IMovieItemProps) => {
             </ImageContainer>
             {/* ACTION OVERLAY */}
             <ActionOverlay />
-            {/* <div className="absolute top-0 left-0 w-full h-full hover:bg-black/80 opacity-0 hover:opacity-100 text-white">
-                <p>
-                    {like ? (
-                        <FaHeart className="absolute top-4 left-4 text-gray-300" />
-                    ) : (
-                        <FaRegHeart className="absolute top-4 left-4 text-gray-300" />
-                    )}
-                </p>
-            </div> */}
             {/* TITLE AND INFO */}
             <p className="text-white text-sm font-bold">{item.title}</p>
         </ItemContainer>
