@@ -71,7 +71,7 @@ const MovieSplash = (props: IMovieSplashProps) => {
                     width={1000}
                     height={1000}
                     className="w-full h-full object-cover object-top"
-                    src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
+                    src={`https://image.tmdb.org/t/p/original/${movie?.img}`}
                     alt={movie?.title}
                 />
                 <div className="absolute w-full top-[30%] p-4 md:p-8">
