@@ -1,5 +1,5 @@
 import MovieSplash from "@/components/layout/movies/movie-splash";
-import MovieRow from "@/components/rows/movie-row";
+import MovieRow from "@/components/layout/movies/movie-row";
 import requests from "@/lib/movie-requests";
 
 export default function MoviePicksPage() {

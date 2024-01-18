@@ -6,13 +6,15 @@ import ImageContainer from "@/components/containers/image-container";
 import ItemContainer from "@/components/containers/item-container";
 
 interface IMovieItemProps {
-    item: {
-        backdrop_path: string;
-        title: string;
-    };
+    // item: {
+    //     backdrop_path: string;
+    //     title: string;
+    // };
+    img: any;
+    title: string;
 }
 
-const MovieItem = ({ item }: IMovieItemProps) => {
+const MovieItem = ({ img, title }: IMovieItemProps) => {
     return (
         // <ItemContainer className="w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2">
         <ItemContainer>
@@ -22,14 +24,14 @@ const MovieItem = ({ item }: IMovieItemProps) => {
                     width={1000}
                     height={1000}
                     className="w-full h-auto block"
-                    src={`https://image.tmdb.org/t/p/w500/${item.backdrop_path}`}
-                    alt={item.title}
+                    src={`https://image.tmdb.org/t/p/w500/${img}`}
+                    alt={title}
                 />
+                {/* ACTION OVERLAY */}
+                <ActionOverlay />
             </ImageContainer>
-            {/* ACTION OVERLAY */}
-            <ActionOverlay />
             {/* TITLE AND INFO */}
-            <p className="text-white text-sm font-bold">{item.title}</p>
+            <p className="text-white font-semibold text-sm w-[80%]">{title}</p>
         </ItemContainer>
     );
 };

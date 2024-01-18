@@ -24,7 +24,7 @@ const Item = (props: ItemProps) => {
                 <ActionOverlay />
             </ImageContainer>
             {/* TITLE AND INFO */}
-            <p className="text-zinc-300 text-sm w-[80%]">{props.title}</p>
+            <p className="text-white font-semibold text-sm w-[80%]">{props.title}</p>
         </ItemContainer>
     );
 };

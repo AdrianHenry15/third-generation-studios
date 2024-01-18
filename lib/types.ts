@@ -10,7 +10,7 @@ export type WebsiteProjectType = {
     genre: string;
     technologies: string;
     description: string;
-    last_updated: string;
+    release_date: string;
     link: string;
 };
 
@@ -32,7 +32,7 @@ export type MusicProjectType = {
 export type ArtistType = {
     id: number;
     img: any;
-    name: string;
+    title: string;
     genre?: string;
     description?: string;
     link?: string;
@@ -42,7 +42,7 @@ export type ArtistType = {
 export type MovieType = {
     id: number;
     title: string;
-    backdrop_path: string;
+    img: any;
     release_date: string;
     overview: string;
 };

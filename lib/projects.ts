@@ -32,7 +32,7 @@ export const PersonalProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "React, SCSS, TypeScript, Git, GitHub",
         description: "A Gameboy Display Application",
-        last_updated: "Last Updated: 2023",
+        release_date: "2023",
         link: "https://gameboy-sim.vercel.app/",
     },
     {
@@ -42,7 +42,7 @@ export const PersonalProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "React, TailwindCSS JavaScript, Git, Github, HTML",
         description: "A Portfolio",
-        last_updated: "Last Updated: 2022",
+        release_date: "2022",
         link: "https://react-portfolio-2.vercel.app/",
     },
 ];
@@ -54,7 +54,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "JavaScript, Insomnia, Vercel, Node, Express, Git, GitHub",
         description: "An Ice Cream Shop Application",
-        last_updated: "Last Updated: 2022",
+        release_date: "2022",
         link: "https://zookeepr.vercel.app/",
     },
     {
@@ -64,7 +64,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "HTML, CSS, JavaScript, Moment.js, jQuery, Git, GitHub",
         description: "A Calendar Application",
-        last_updated: "Last Updated: 2022",
+        release_date: "2022",
         link: "https://adrianhenry15.github.io/Calendar-Application/",
     },
     {
@@ -74,7 +74,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "HTML, CSS, JavaScript, jQuery, Git, GitHub",
         description: "A Tasking Application",
-        last_updated: "Last Updated: 2022",
+        release_date: "2022",
         link: "https://adrianhenry15.github.io/Task-Master-Pro-App/",
     },
     {
@@ -84,7 +84,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "HTML, CSS, JavaScript, Web Storage API, Git, GitHub",
         description: "A Tasking Application",
-        last_updated: "Last Updated: 2022",
+        release_date: "2022",
         link: "https://adrianhenry15.github.io/Taskinator-Website/",
     },
     {
@@ -94,7 +94,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "HTML, CSS, JavaScript, Server-Side APIs, Git, GitHub",
         description: "A Github Search Application",
-        last_updated: "Last Updated: 2022",
+        release_date: "2022",
         link: "https://adrianhenry15.github.io/Git-Book/",
     },
     {
@@ -104,7 +104,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "HTML, CSS, Node, Mongoose, IndexedDB, Service Workers, Express, JavaScript, Git, GitHub",
         description: "A Budget Tracker Application",
-        last_updated: "Last Updated: 2022",
+        release_date: "2022",
         link: "https://budget-tracker-nn0wutpe9-adrianhenry15.vercel.app/",
     },
 ];
@@ -117,7 +117,7 @@ export const ClientProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "JavaScript, TypeScript, React, Nextjs, TailwindCSS, Vercel, Git, GitHub",
         description: "A Bakery Application",
-        last_updated: "Last Updated: 2024",
+        release_date: "2024",
         link: "https://mollyspecialtysweets-git-main-adrianhenry15.vercel.app/",
     },
     {
@@ -127,7 +127,7 @@ export const ClientProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "JavaScript, TypeScript, React, Nextjs, TailwindCSS, Vercel, Git, GitHub",
         description: "A Building Maintenance Application",
-        last_updated: "Last Updated: 2024",
+        release_date: "2024",
         link: "https://brite-adrianhenry15.vercel.app/",
     },
     {
@@ -137,7 +137,7 @@ export const ClientProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "JavaScript, TypeScript, React, Nextjs, TailwindCSS, Shopify, Vercel, Git, GitHub",
         description: "An Ice Cream Shop Application",
-        last_updated: "Last Updated: 2024",
+        release_date: "2024",
         link: "https://taharka-abh3na2sk-adrianhenry15.vercel.app/",
     },
     {
@@ -147,7 +147,7 @@ export const ClientProjects: WebsiteProjectType[] = [
         genre: "Website",
         technologies: "Shopify",
         description: "An Ice Cream Shop Application",
-        last_updated: "Last Updated: 2023",
+        release_date: "2023",
         link: "https://taharkabrothers.com/",
     },
 ];
@@ -156,7 +156,7 @@ export const Artists: ArtistType[] = [
     {
         id: 1,
         img: Search,
-        name: "Search",
+        title: "Search",
         label: "Third Generation Studios",
         // genre: "Hip-Hop/Rap",
         // description: "A Hip-Hop/Rap Artist",
@@ -165,7 +165,7 @@ export const Artists: ArtistType[] = [
     {
         id: 1,
         img: Search,
-        name: "Jafarri",
+        title: "Jafarri",
         label: "Third Generation Studios",
         // genre: "Hip-Hop/Rap",
         // description: "A Hip-Hop/Rap Artist",

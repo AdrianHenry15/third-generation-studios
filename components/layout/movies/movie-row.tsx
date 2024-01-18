@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import MovieItem from "../layout/movies/movie-item";
+import MovieItem from "./movie-item";
 
 interface RowProps {
     title: string;
@@ -22,9 +22,9 @@ const MovieRow: React.FC<RowProps> = ({ title, fetchURL }) => {
 
     return (
         <div className="relative h-max px-10">
-            <h2 className="text-white font-bold md:text-xl py-2">{title}</h2>
+            <h2 className="text-white font-bold text-xl lg:text-2xl py-2">{title}</h2>
             <div className="relative flex group items-center">
-                <div className="w-full h-[170px] overflow-hidden flex scroll-smooth relative">
+                <div className="w-full h-full overflow-hidden flex scroll-smooth relative">
                     <Swiper
                         slidesPerView={1}
                         spaceBetween={10}
@@ -58,7 +58,7 @@ const MovieRow: React.FC<RowProps> = ({ title, fetchURL }) => {
                         <ul>
                             {movies.map((item, id) => (
                                 <SwiperSlide key={id}>
-                                    <MovieItem item={item} />
+                                    <MovieItem img={item.backdrop_path} title={item.title} />
                                 </SwiperSlide>
                             ))}
                         </ul>

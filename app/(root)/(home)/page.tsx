@@ -1,6 +1,6 @@
 import { ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "@/lib/projects";
 
-import MovieRow from "@/components/rows/movie-row";
+import MovieRow from "@/components/layout/movies/movie-row";
 import requests from "@/lib/movie-requests";
 import HomeSplash from "@/components/layout/home/home-splash";
 import Row from "@/components/row";
