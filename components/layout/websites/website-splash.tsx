@@ -6,7 +6,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay, Navigation } from "swiper/modules";
 
 import { ClientProjects } from "@/lib/projects";
-
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
 import "swiper/css";
@@ -45,7 +44,7 @@ const WebsiteSplash = () => {
     };
 
     return (
-        <div ref={containerRef} className="w-[100%] h-[750px] self-center text-white">
+        <div ref={containerRef} className="fade-in w-[100%] h-[750px] self-center text-white">
             <div className="w-full h-full">
                 <Swiper
                     modules={[Navigation, A11y, Autoplay]}
@@ -55,28 +54,28 @@ const WebsiteSplash = () => {
                     slidesPerView={1}
                     autoplay={{ delay: 5000 }}
                 >
-                    {ClientProjects.map((project) => (
-                        <SwiperSlide key={project.id}>
+                    {ClientProjects.map((website) => (
+                        <SwiperSlide key={website.id}>
                             <div className="absolute w-full h-[750px] bg-gradient-to-r from-black"></div>
                             <div className="w-full h-full flex justify-center items-center">
                                 <Image
                                     width={1000}
                                     height={1000}
-                                    className="w-full object-cover h-[50%] md:h-[35%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
-                                    src={project?.img}
-                                    alt={project?.title}
+                                    className="w-full object-cover h-[50%] md:h-[50%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
+                                    src={website.img}
+                                    alt={website.title}
                                 />
                             </div>
-                            <div className="absolute w-full top-[30%] left-10 p-4 md:p-8">
+                            <div className="absolute w-full top-[37%] left-10 p-4 md:top-[35%] md:p-8">
                                 <Image src={Logo} alt="logo" className="w-24 py-2" />
-                                <h1 className="text-white text-3x1 md:text-5xl">{project?.title}</h1>
+                                <h1 className="text-white text-[30px] md:text-5xl">{website.title}</h1>
                                 <div className="my-4">
                                     <button className="border bg-gray-300 text-black border-gray-300 py-2 px-5">Play</button>
                                     <button className="border  text-white border-gray-300 py-2 px-5 ml-4">Watch Later</button>
                                 </div>
-                                <p className="text-gray-400 text-sm">{project?.last_updated}</p>
+                                <p className="text-gray-400 text-sm">Released: {website.last_updated}</p>
                                 <p className="w-full md:max-w-[70%] lg:max-w-[50%] xl:max-w-[35%] text-gray-200">
-                                    {truncateString(project.description!, 150)}
+                                    {truncateString(website.description, 150)}
                                 </p>
                             </div>
                         </SwiperSlide>

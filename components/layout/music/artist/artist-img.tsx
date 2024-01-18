@@ -10,9 +10,9 @@ interface IArtistImageProps {
 
 const ArtistImage = (props: IArtistImageProps) => {
     return (
-        <div className="relative w-36 h-36">
-            <Image width={200} height={200} src={props.img} alt="pic" className="rounded-full w-full h-full object-cover" />
-            {props.artist.toLowerCase() === "search" ? <Image src={logo} alt="logo" className="absolute w-4 top-0" /> : null}
+        <div className="relative w-24 h-24 md:w-36 md:h-36">
+            <Image src={props.img} alt="pic" className="rounded-full w-full h-full object-cover" />
+            {/* {props.artist.toLowerCase() === "search" ? <Image src={logo} alt="logo" className="absolute w-4 top-0" /> : null} */}
         </div>
     );
 };

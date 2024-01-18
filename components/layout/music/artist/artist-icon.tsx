@@ -10,7 +10,7 @@ interface IArtistIconProps {
 
 const ArtistIcon = (props: IArtistIconProps) => {
     return (
-        <div className={`${props.className} my-4 mr-10 min-w-[150px]`}>
+        <div className={`${props.className} my-4 mr-10 min-w-[120px]`}>
             {/* {props.artist.toLowerCase() === "search" ? <MusicImage img={props.img} /> : <Image src={props.img} alt="" />} */}
             <ArtistImage artist={props.artist.name} img={props.artist.img} />
             <div>

@@ -16,15 +16,15 @@ const Item = (props: ItemProps) => {
             {/* IMAGE */}
             <ImageContainer>
                 <Image
-                    className="w-full h-auto max-h-[100px] md:max-h-[130px] xl:max-h-full block object-center object-cover"
+                    className="w-full h-auto max-h-[80px] md:max-h-[130px] xl:max-h-[200px] block object-center object-cover"
                     src={props.img}
                     alt={props.title}
                 />
+                {/* ACTION OVERLAY */}
+                <ActionOverlay />
             </ImageContainer>
-            {/* ACTION OVERLAY */}
-            <ActionOverlay />
             {/* TITLE AND INFO */}
-            <p className="text-white text-sm font-bold">{props.title}</p>
+            <p className="text-zinc-300 text-sm w-[80%]">{props.title}</p>
         </ItemContainer>
     );
 };

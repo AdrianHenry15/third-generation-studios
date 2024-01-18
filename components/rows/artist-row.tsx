@@ -9,8 +9,8 @@ interface IArtistRowProps {
 
 const ArtistRow = (props: IArtistRowProps) => {
     return (
-        <div className={`${props.className} flex flex-col`}>
-            <h5 className="text-white font-semibold mt-4 text-4xl">Artists</h5>
+        <div className={`${props.className} flex flex-col px-10`}>
+            <h2 className="text-white font-bold md:text-xl py-2">Artists:</h2>
             <div className="flex">
                 {Artists.map((project) => (
                     <ArtistIcon artist={project} key={project.id} />
