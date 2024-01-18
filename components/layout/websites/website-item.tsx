@@ -4,9 +4,14 @@ import Image from "next/image";
 import { FaHeart, FaRegHeart, FaRegBookmark, FaBookmark } from "react-icons/fa";
 import OpenLinkModal from "../../modals/open-link-modal";
 import { WebsiteProjectType } from "@/lib/types";
+import ItemContainer from "@/components/containers/item-container";
+import ImageContainer from "@/components/containers/image-container";
+import ActionOverlay from "@/components/action-overlay";
 
 interface IWebsiteItemProps {
-    item: WebsiteProjectType;
+    // item: WebsiteProjectType;
+    title: string;
+    img: any;
 }
 
 const WebsiteItem = (props: IWebsiteItemProps) => {
@@ -17,30 +22,20 @@ const WebsiteItem = (props: IWebsiteItemProps) => {
     const HoverClass = "transition-all ease-in-out duration-300 hover:text-red-600 focus:text-red-600";
 
     return (
-        <div
-            onClick={() => setOpenLinkModal(true)}
-            className="hover:scale-105 transition duration-300 ease-in-out w-[160px] sm:w-[200px] md:w-[250px] lg:w-[280px] cursor-pointer relative p-2 flex flex-col"
-        >
+        <ItemContainer>
             {/* IMAGE */}
-            <Image className="w-full h-[100px] object-cover md:h-[125px] lg:h-[150px]" src={props.item.img} alt={props.item.title} />
+            <ImageContainer>
+                <Image
+                    className="w-full h-auto max-h-[100px] md:max-h-[130px] xl:max-h-full block object-center object-cover"
+                    src={props.img}
+                    alt={props.title}
+                />
+            </ImageContainer>
             {/* ACTION OVERLAY */}
-            <div className="absolute top-4 left-4 flex">
-                <p>{like ? <FaHeart className="text-gray-300" /> : <FaRegHeart className="text-gray-300" />}</p>
-                <p className="ml-4">{saved ? <FaBookmark className="text-gray-300" /> : <FaRegBookmark className="text-gray-300" />}</p>
-            </div>
-            {/* PROJECT INFO */}
-            <div className="flex flex-col justify-between flex-1">
-                {/* TITLE */}
-                <h6 className={`${HoverClass} text-white font-semibold text-sm`}>{props.item.title}</h6>
-            </div>
-            {/* LINK MODAL */}
-            <OpenLinkModal
-                title={props.item.title}
-                link={props.item.link}
-                isOpen={openLinkModal}
-                closeModal={() => setOpenLinkModal(false)}
-            />
-        </div>
+            <ActionOverlay />
+            {/* TITLE AND INFO */}
+            <p className="text-white text-sm font-bold">{props.title}</p>
+        </ItemContainer>
     );
 };
 

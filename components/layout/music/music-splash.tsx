@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Navigation } from "swiper/modules";
+import { A11y, Autoplay, Navigation } from "swiper/modules";
 
 import { SearchOriginalProjects } from "@/lib/projects";
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
@@ -47,7 +47,7 @@ const MusicSplash = () => {
         <div ref={containerRef} className="fade-in w-[100%] h-[750px] self-center text-white">
             <div className="w-full h-full">
                 <Swiper
-                    modules={[Navigation, A11y]}
+                    modules={[Navigation, A11y, Autoplay]}
                     className="h-full"
                     navigation
                     spaceBetween={0}
@@ -61,12 +61,12 @@ const MusicSplash = () => {
                                 <Image
                                     width={1000}
                                     height={1000}
-                                    className="h-full w-[50%] object-cover rounded-full"
+                                    className="w-full object-cover h-[50%] md:h-[50%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
                                     src={music?.img}
                                     alt={music?.title}
                                 />
                             </div>
-                            <div className="absolute w-full top-[30%] p-4 md:p-8">
+                            <div className="absolute w-full top-[30%] left-10 p-4 md:p-8">
                                 <Image src={Logo} alt="logo" className="w-24 py-2" />
                                 <h1 className="text-white text-3x1 md:text-5xl">{music?.title}</h1>
                                 <div className="my-4">

@@ -1,9 +1,9 @@
+import Image from "next/image";
+import React from "react";
+
 import ActionOverlay from "@/components/action-overlay";
 import ImageContainer from "@/components/containers/image-container";
 import ItemContainer from "@/components/containers/item-container";
-import Image from "next/image";
-import React, { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 interface IMovieItemProps {
     item: {
@@ -13,8 +13,6 @@ interface IMovieItemProps {
 }
 
 const MovieItem = ({ item }: IMovieItemProps) => {
-    const [like, setLike] = useState(false);
-
     return (
         // <ItemContainer className="w-[160px] sm:w-[200px] md:w-[240px] lg:w-[280px] inline-block cursor-pointer relative p-2">
         <ItemContainer>

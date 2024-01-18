@@ -12,7 +12,7 @@ import Logo from "@/public/logos/thirdgenstudios-logo.png";
 import "swiper/css";
 import "swiper/css/navigation";
 
-const WebsiteSplash = () => {
+const HomeSplash = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const WebsiteSplash = () => {
     };
 
     return (
-        <div ref={containerRef} className="w-[100%] h-[750px] self-center text-white">
+        <div className="w-[100%] h-[750px] self-center text-white">
             <div className="w-full h-full">
                 <Swiper
                     modules={[Navigation, A11y, Autoplay]}
@@ -67,9 +67,9 @@ const WebsiteSplash = () => {
                                     alt={project?.title}
                                 />
                             </div>
-                            <div className="absolute w-full top-[30%] left-10 p-4 md:p-8">
+                            <div className="absolute w-full top-[35%] p-4 left-10 md:p-8">
                                 <Image src={Logo} alt="logo" className="w-24 py-2" />
-                                <h1 className="text-white text-3x1 md:text-5xl">{project?.title}</h1>
+                                <h1 className="text-white text-[40px] md:text-5xl">{project?.title}</h1>
                                 <div className="my-4">
                                     <button className="border bg-gray-300 text-black border-gray-300 py-2 px-5">Play</button>
                                     <button className="border  text-white border-gray-300 py-2 px-5 ml-4">Watch Later</button>
@@ -87,4 +87,4 @@ const WebsiteSplash = () => {
     );
 };
 
-export default WebsiteSplash;
+export default HomeSplash;
