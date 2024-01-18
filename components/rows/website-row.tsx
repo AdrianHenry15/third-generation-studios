@@ -1,10 +1,8 @@
 "use client";
 
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import MovieItem from "../layout/movies/movie-item";
 import { WebsiteProjectType } from "@/lib/types";
 import WebsiteItem from "../layout/websites/website-item";
 

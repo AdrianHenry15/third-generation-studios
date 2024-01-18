@@ -1,20 +1,20 @@
+"use client";
+
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-import { MusicProjectType } from "@/lib/types";
-import WebsiteItem from "../layout/websites/website-item";
+import Item from "./item";
 
 interface IMusicRowProps {
     title: string;
-    item: MusicProjectType[];
+    item: any[];
 }
 
-const MusicRow: React.FC<IMusicRowProps> = ({ title, item }) => {
+const Row: React.FC<IMusicRowProps> = ({ title, item }) => {
     return (
         <div className="relative h-max px-10">
             <h2 className="text-white font-bold md:text-xl py-2">{title}</h2>
             <div className="relative flex group items-center">
-                <div className="w-full h-[170px] overflow-hidden flex scroll-smooth relative">
+                <div className="w-full h-max overflow-hidden flex scroll-smooth relative">
                     <Swiper
                         slidesPerView={1}
                         spaceBetween={10}
@@ -48,7 +48,7 @@ const MusicRow: React.FC<IMusicRowProps> = ({ title, item }) => {
                         <ul>
                             {item.map((item, id) => (
                                 <SwiperSlide key={id}>
-                                    <WebsiteItem title={item.title} img={item.img} />
+                                    <Item title={item.title} img={item.img} />
                                 </SwiperSlide>
                             ))}
                         </ul>
@@ -59,4 +59,4 @@ const MusicRow: React.FC<IMusicRowProps> = ({ title, item }) => {
     );
 };
 
-export default MusicRow;
+export default Row;

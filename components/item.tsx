@@ -5,12 +5,12 @@ import ItemContainer from "@/components/containers/item-container";
 import ImageContainer from "@/components/containers/image-container";
 import ActionOverlay from "@/components/action-overlay";
 
-interface IWebsiteItemProps {
+interface ItemProps {
     title: string;
     img: any;
 }
 
-const WebsiteItem = (props: IWebsiteItemProps) => {
+const Item = (props: ItemProps) => {
     return (
         <ItemContainer>
             {/* IMAGE */}
@@ -29,4 +29,4 @@ const WebsiteItem = (props: IWebsiteItemProps) => {
     );
 };
 
-export default WebsiteItem;
+export default Item;
