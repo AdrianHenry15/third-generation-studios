@@ -2,8 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Navigation } from "swiper/modules";
 import axios from "axios";
 
 import "swiper/css";
@@ -14,12 +12,7 @@ import Logo from "@/public/logos/thirdgenstudios-logo.png";
 import requests from "@/lib/movie-requests";
 import { MovieType } from "@/lib/types";
 
-interface IMovieSplashProps {
-    // item: any;
-    imgClass?: string;
-}
-
-const MovieSplash = (props: IMovieSplashProps) => {
+const MovieSplash = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     // get movies from api
     const [movies, setMovies] = useState<MovieType[]>([]);
@@ -71,7 +64,7 @@ const MovieSplash = (props: IMovieSplashProps) => {
                     width={1000}
                     height={1000}
                     className="w-full h-full object-cover object-top"
-                    src={`https://image.tmdb.org/t/p/original/${movie?.img}`}
+                    src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
                     alt={movie?.title}
                 />
                 <div className="absolute w-full top-[30%] p-4 md:p-8">

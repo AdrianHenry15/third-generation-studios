@@ -3,6 +3,16 @@ export type NavMenu = {
     link: string;
 };
 
+export type UniversalProjectType = {
+    id: number;
+    img: any;
+    title: string;
+    genre: string;
+    description: string;
+    release_date: string;
+    link: string;
+};
+
 export type WebsiteProjectType = {
     id: number;
     img: any;
@@ -42,7 +52,7 @@ export type ArtistType = {
 export type MovieType = {
     id: number;
     title: string;
-    img: any;
+    backdrop_path: string;
     release_date: string;
     overview: string;
 };

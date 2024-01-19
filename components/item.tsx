@@ -8,6 +8,8 @@ import ActionOverlay from "@/components/action-overlay";
 interface ItemProps {
     title: string;
     img: any;
+    movie?: boolean;
+    music?: boolean;
 }
 
 const Item = (props: ItemProps) => {
@@ -16,12 +18,14 @@ const Item = (props: ItemProps) => {
             {/* IMAGE */}
             <ImageContainer>
                 <Image
-                    className="w-full h-auto max-h-[80px] md:max-h-[130px] xl:max-h-[200px] block object-center object-cover"
-                    src={props.img}
+                    width={props.movie ? 1000 : 0}
+                    height={props.movie ? 1000 : 0}
+                    className="w-full max-h-[200px] md:max-h-[130px] xl:max-h-[200px] block object-center object-cover"
+                    src={props.movie ? `https://image.tmdb.org/t/p/w500/${props.img}` : props.img}
                     alt={props.title}
                 />
                 {/* ACTION OVERLAY */}
-                <ActionOverlay />
+                <ActionOverlay music={props.music} />
             </ImageContainer>
             {/* TITLE AND INFO */}
             <p className="text-white font-semibold text-sm w-[80%]">{props.title}</p>

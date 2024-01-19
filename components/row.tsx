@@ -1,15 +1,31 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Item from "./item";
+import axios from "axios";
 
 interface IMusicRowProps {
     title: string;
-    item: any[];
+    item?: any[];
+    fetchURL?: string;
+    movie?: boolean;
+    music?: boolean;
 }
 
-const Row: React.FC<IMusicRowProps> = ({ title, item }) => {
+const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, music }) => {
+    const [items, setItems] = useState<any[]>([]); // Adjust 'any' to the actual type of your movie data
+
+    const ItemList = item ? item : [];
+
+    useEffect(() => {
+        if (fetchURL) {
+            axios.get(fetchURL).then((response) => {
+                setItems(response.data.results);
+            });
+        }
+    }, [fetchURL]);
+
     return (
         <div className="relative h-max px-10 py-6">
             <h2 className="text-white font-bold text-xl lg:text-2xl py-2">{title}</h2>
@@ -45,13 +61,25 @@ const Row: React.FC<IMusicRowProps> = ({ title, item }) => {
                         }}
                         style={{ width: "100%", height: "100%" }}
                     >
-                        <ul>
-                            {item.map((item, id) => (
-                                <SwiperSlide key={id}>
-                                    <Item title={item.title} img={item.img} />
-                                </SwiperSlide>
-                            ))}
-                        </ul>
+                        {/* MOVIE ITEM */}
+                        {movie ? (
+                            <ul>
+                                {items.map((item, id) => (
+                                    <SwiperSlide key={id}>
+                                        <Item movie title={item.title} img={item.backdrop_path} />
+                                    </SwiperSlide>
+                                ))}
+                            </ul>
+                        ) : (
+                            // MUSIC, WEBSITE ITEM (DEFAULT)
+                            <ul>
+                                {ItemList.map((item, id) => (
+                                    <SwiperSlide key={id}>
+                                        <Item music={music} title={item.title} img={item.img} />
+                                    </SwiperSlide>
+                                ))}
+                            </ul>
+                        )}
                     </Swiper>
                 </div>
             </div>
