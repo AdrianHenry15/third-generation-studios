@@ -3,7 +3,6 @@ import { ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, Sear
 import requests from "@/lib/movie-requests";
 import HomeSplash from "@/components/layout/home/home-splash";
 import Row from "@/components/row";
-import Image from "next/image";
 
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 

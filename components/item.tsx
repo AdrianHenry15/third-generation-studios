@@ -23,7 +23,7 @@ const Item = (props: ItemProps) => {
                 <Image
                     width={props.movie ? 1000 : 0}
                     height={props.movie ? 1000 : 0}
-                    className="w-full max-h-[200px] block object-center object-cover md:max-h-[130px] xl:max-h-[200px]"
+                    className="w-full block object-center object-cover md:max-h-[130px] xl:max-h-[200px]"
                     src={props.movie ? `https://image.tmdb.org/t/p/w500/${props.img}` : props.img}
                     alt={props.title}
                 />

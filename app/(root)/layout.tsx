@@ -6,7 +6,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <div>
             <Navbar />
             {children}
-            <Footer />
+            <div className="bg-black pb-10">
+                <Footer />
+            </div>
         </div>
     );
 }

@@ -29,7 +29,7 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, website, 
     }, [fetchURL]);
 
     return (
-        <div className="relative h-max px-10 py-6">
+        <div className="relative h-max px-4 py-4 md:px-10">
             <h2 className="text-white font-bold text-xl lg:text-2xl py-2">{title}</h2>
             <div className="relative flex group items-center">
                 <div className="w-full h-max overflow-hidden flex scroll-smooth relative">

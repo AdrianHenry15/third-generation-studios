@@ -11,7 +11,7 @@ const OpenButton = (props: IOpenButtonProps) => {
         <p onClick={props.onClick} className="z-20">
             <IoOpenOutline
                 size={20}
-                className="scale-100 hover:scale-125 transition-transform duration-300 text-white absolute top-4 right-4"
+                className="scale-100 hover:scale-125 transition-transform duration-300 text-white absolute top-3 right-3"
             />
         </p>
     );
