@@ -6,9 +6,9 @@ export default function WebsitesPage() {
     return (
         <div className="bg-black">
             <WebsiteSplash />
-            <Row title="Client Websites" item={ClientProjects} />
-            <Row title="Personal Projects" item={PersonalProjects} />
-            <Row title="School Projects" item={SchoolProjects} />
+            <Row website title="Client Websites" item={ClientProjects} />
+            <Row website title="Personal Projects" item={PersonalProjects} />
+            <Row website title="School Projects" item={SchoolProjects} />
         </div>
     );
 }

@@ -6,7 +6,7 @@ export default function MusicPage() {
     return (
         <div className="px-10 flex flex-col h-full bg-black">
             <MusicSplash />
-            <Row title="Artists" item={Artists} />
+            <Row artist title="Artists" item={Artists} />
             <Row music title="Original Tracks By Search" item={SearchOriginalProjects} />
         </div>
     );

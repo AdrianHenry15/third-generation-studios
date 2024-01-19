@@ -11,8 +11,8 @@ export default function HomePage() {
     return (
         <div className="bg-black">
             <HomeSplash />
-            <Row title="All Websites" item={AllProjects} />
-            <Row title="All Music" item={AllMusic} />
+            <Row website title="All Websites" item={AllProjects} />
+            <Row music title="All Music" item={AllMusic} />
             <Row movie title="Now Playing" fetchURL={requests.requestNowPlaying} />
         </div>
     );

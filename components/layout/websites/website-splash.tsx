@@ -10,6 +10,7 @@ import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
 import "swiper/css";
 import "swiper/css/navigation";
+import Link from "next/link";
 
 const WebsiteSplash = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -70,10 +71,18 @@ const WebsiteSplash = () => {
                                 <Image src={Logo} alt="logo" className="w-24 py-2" />
                                 <h1 className="text-white text-[30px] md:text-5xl">{website.title}</h1>
                                 <div className="my-4">
-                                    <button className="border bg-gray-300 text-black border-gray-300 py-2 px-5">Play</button>
-                                    <button className="border  text-white border-gray-300 py-2 px-5 ml-4">Watch Later</button>
+                                    <Link
+                                        target="_blank"
+                                        href={website.link}
+                                        className="border bg-gray-300 text-black border-gray-300 py-2 px-5"
+                                    >
+                                        Go To Website
+                                    </Link>
+                                    <Link href={"/contact-us"} className="border text-white border-gray-300 py-2 px-5 ml-4">
+                                        Make Inquiry
+                                    </Link>
                                 </div>
-                                <p className="text-gray-400 text-sm">Released: {website.last_updated}</p>
+                                <p className="text-gray-400 text-sm">Released: {website.release_date}</p>
                                 <p className="w-full md:max-w-[70%] lg:max-w-[50%] xl:max-w-[35%] text-gray-200">
                                     {truncateString(website.description, 150)}
                                 </p>

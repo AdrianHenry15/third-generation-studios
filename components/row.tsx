@@ -11,9 +11,11 @@ interface IMusicRowProps {
     fetchURL?: string;
     movie?: boolean;
     music?: boolean;
+    website?: boolean;
+    artist?: boolean;
 }
 
-const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, music }) => {
+const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, website, music, artist }) => {
     const [items, setItems] = useState<any[]>([]); // Adjust 'any' to the actual type of your movie data
 
     const ItemList = item ? item : [];
@@ -66,7 +68,7 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, music }) 
                             <ul>
                                 {items.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <Item movie title={item.title} img={item.backdrop_path} />
+                                        <Item movie={movie} title={item.title} img={item.backdrop_path} />
                                     </SwiperSlide>
                                 ))}
                             </ul>
@@ -75,7 +77,14 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, music }) 
                             <ul>
                                 {ItemList.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <Item music={music} title={item.title} img={item.img} />
+                                        <Item
+                                            websiteLink={item.link}
+                                            artist={artist}
+                                            website={website}
+                                            music={music}
+                                            title={item.title}
+                                            img={item.img}
+                                        />
                                     </SwiperSlide>
                                 ))}
                             </ul>
