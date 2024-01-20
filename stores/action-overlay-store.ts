@@ -1,15 +1,15 @@
 import { create } from "zustand";
 
 interface ActionOverlayState {
-    liked: boolean;
-    saved: boolean;
-    setLiked: () => void;
-    setSaved: () => void;
+    isLiked: boolean;
+    isSaved: boolean;
+    like: () => void;
+    save: () => void;
 }
 
 export const useActionsOverlayStore = create<ActionOverlayState>((set) => ({
-    liked: false,
-    saved: false,
-    setLiked: () => set((state) => ({ liked: !state.liked })),
-    setSaved: () => set((state) => ({ saved: !state.saved })),
+    isLiked: false,
+    isSaved: false,
+    like: () => set((state) => ({ isLiked: !state.isLiked })),
+    save: () => set((state) => ({ isSaved: !state.isSaved })),
 }));
