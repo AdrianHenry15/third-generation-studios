@@ -1,10 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 
 import Pic from "@/public/music/jack.jpg";
-import { FaHeart } from "react-icons/fa6";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
+import { useSongActionStore } from "stores/song-action-store";
+import { useItemStore } from "stores/item-store";
 
 const TrackDisplay = () => {
+    const { isSongLiked, likeSong } = useSongActionStore();
+    const { currentItemID } = useItemStore();
+
+    const handleLike = () => {
+        likeSong(currentItemID!);
+    };
     return (
         <div className="relative flex items-center">
             {/* IMAGE */}
@@ -17,9 +27,13 @@ const TrackDisplay = () => {
                 <p className="text-gray-400 text-xs">Artist Name</p>
             </div>
             {/* LIKE BUTTON */}
-            <div>
-                <FaHeart />
-            </div>
+            <p className="z-20" onClick={handleLike}>
+                {isSongLiked ? (
+                    <FaHeart className="text-white hover:scale-125 scale-100 transition-transform duration-300" />
+                ) : (
+                    <FaRegHeart className="text-white hover:scale-125 scale-100 transition-transform duration-300" />
+                )}
+            </p>
         </div>
     );
 };

@@ -4,7 +4,7 @@ export type NavMenu = {
 };
 
 export type ProjectType = {
-    id: number;
+    id: string;
     img: any;
     title: string;
     genre?: string;

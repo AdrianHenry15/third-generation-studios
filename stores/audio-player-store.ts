@@ -3,11 +3,11 @@
 import { create } from "zustand";
 import { useItemStore } from "./item-store";
 
-const { setItemId } = useItemStore.getState();
+const { setCurrentItemID } = useItemStore.getState();
 
 interface AudioPlayerState {
     isPlaying: boolean;
-    play: (itemId: string) => void;
+    play: (itemID: string) => void;
     pause: () => void;
     isShuffled: boolean;
     isRepeat: boolean;
@@ -21,8 +21,8 @@ interface AudioPlayerState {
 
 export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
     isPlaying: false,
-    play: (itemId: string) => {
-        setItemId(itemId);
+    play: (itemID: string) => {
+        setCurrentItemID(itemID);
         set({ isPlaying: true });
     },
     pause: () => set({ isPlaying: false }),

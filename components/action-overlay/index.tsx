@@ -15,7 +15,7 @@ interface IActionOverlayProps {
     artist?: boolean;
     websiteLink?: string;
     websiteTitle?: string;
-    itemId?: string;
+    currentItemID?: string;
 }
 
 const ActionOverlay = (props: IActionOverlayProps) => {
@@ -31,13 +31,13 @@ const ActionOverlay = (props: IActionOverlayProps) => {
     return (
         <div className="absolute cursor-pointer top-0 left-0 w-full h-full bg-black/20 text-white">
             {/* LIKE */}
-            <LikeButton />
+            <LikeButton currentItemID={props.currentItemID!} />
 
             {/* SAVE */}
             <SaveButton />
 
             {/* PLAY/PAUSE BUTTON */}
-            {props.music && <PlayButton itemId={props.itemId!} />}
+            {props.music && <PlayButton currentItemID={props.currentItemID!} />}
 
             {/* WEBSITE OPEN BUTTON */}
             {props.website && <OpenButton onClick={() => openWebsite()} />}

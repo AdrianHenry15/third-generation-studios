@@ -26,7 +26,7 @@ import Lotus from "@/public/music/wlotus.jpg";
 
 export const PersonalProjects: WebsiteProjectType[] = [
     {
-        id: 1,
+        id: "website-1",
         img: Gameboy,
         title: "Sound Boy",
         genre: "Website",
@@ -36,7 +36,7 @@ export const PersonalProjects: WebsiteProjectType[] = [
         link: "https://gameboy-sim.vercel.app/",
     },
     {
-        id: 2,
+        id: "website-2",
         img: Portfolio,
         title: "Past Portfolio",
         genre: "Website",
@@ -48,7 +48,7 @@ export const PersonalProjects: WebsiteProjectType[] = [
 ];
 export const SchoolProjects: WebsiteProjectType[] = [
     {
-        id: 1,
+        id: "website-3",
         img: Zoo,
         title: "Zoo Keeper Store",
         genre: "Website",
@@ -58,7 +58,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://zookeepr.vercel.app/",
     },
     {
-        id: 2,
+        id: "website-4",
         img: Calendar,
         title: "Calendar Application",
         genre: "Website",
@@ -68,7 +68,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://adrianhenry15.github.io/Calendar-Application/",
     },
     {
-        id: 3,
+        id: "website-5",
         img: Taskmaster,
         title: "Taskmaster Pro",
         genre: "Website",
@@ -78,7 +78,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://adrianhenry15.github.io/Task-Master-Pro-App/",
     },
     {
-        id: 4,
+        id: "website-6",
         img: Taskinator,
         title: "Taskinator",
         genre: "Website",
@@ -88,7 +88,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://adrianhenry15.github.io/Taskinator-Website/",
     },
     {
-        id: 5,
+        id: "website-7",
         img: GitBook,
         title: "Git Book",
         genre: "Website",
@@ -98,7 +98,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
         link: "https://adrianhenry15.github.io/Git-Book/",
     },
     {
-        id: 6,
+        id: "website-8",
         img: BudgetTracker,
         title: "Budget Tracker",
         genre: "Website",
@@ -111,7 +111,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
 
 export const ClientProjects: WebsiteProjectType[] = [
     {
-        id: 1,
+        id: "website-9",
         img: Mollys,
         title: "Molly's Specialty Sweets",
         genre: "Website",
@@ -121,7 +121,7 @@ export const ClientProjects: WebsiteProjectType[] = [
         link: "https://mollyspecialtysweets-git-main-adrianhenry15.vercel.app/",
     },
     {
-        id: 2,
+        id: "website-10",
         img: Brite,
         title: "Brite Lighting LLC",
         genre: "Website",
@@ -131,7 +131,7 @@ export const ClientProjects: WebsiteProjectType[] = [
         link: "https://brite-adrianhenry15.vercel.app/",
     },
     {
-        id: 3,
+        id: "website-11",
         img: TaharkaDemo,
         title: "Taharka Demo",
         genre: "Website",
@@ -141,7 +141,7 @@ export const ClientProjects: WebsiteProjectType[] = [
         link: "https://taharka-abh3na2sk-adrianhenry15.vercel.app/",
     },
     {
-        id: 4,
+        id: "website-12",
         img: TaharkaShopify,
         title: "Taharka Shopify Store",
         genre: "Website",
@@ -154,7 +154,7 @@ export const ClientProjects: WebsiteProjectType[] = [
 
 export const Artists: ArtistType[] = [
     {
-        id: 1,
+        id: "artist-1",
         img: Search,
         title: "Search",
         genre: "Hip-Hop/Rap",
@@ -162,7 +162,7 @@ export const Artists: ArtistType[] = [
         release_date: "2024",
     },
     {
-        id: 1,
+        id: "artist-2",
         img: Search,
         title: "Jafarri",
         genre: "Hip-Hop/Rap",
@@ -173,7 +173,7 @@ export const Artists: ArtistType[] = [
 
 export const JafarriProjects: MusicProjectType[] = [
     {
-        id: 1,
+        id: "song-1",
         img: Jack,
         title: "Song 1",
         album_name: "Search",
@@ -188,7 +188,7 @@ export const JafarriProjects: MusicProjectType[] = [
 
 export const SearchOriginalProjects: MusicProjectType[] = [
     {
-        id: 1,
+        id: "song-2",
         img: Jack,
         title: "Song 1",
         album_name: "Search",
@@ -200,7 +200,7 @@ export const SearchOriginalProjects: MusicProjectType[] = [
         song: "",
     },
     {
-        id: 2,
+        id: "artist-3",
         img: Timb,
         title: "Song 2",
         album_name: "Search",
@@ -212,7 +212,7 @@ export const SearchOriginalProjects: MusicProjectType[] = [
         song: "",
     },
     {
-        id: 3,
+        id: "artist-4",
         img: Succession,
         title: "Song 3",
         album_name: "Search",
@@ -224,7 +224,7 @@ export const SearchOriginalProjects: MusicProjectType[] = [
         song: "",
     },
     {
-        id: 4,
+        id: "artist-5",
         img: Uzi,
         title: "Song 3",
         album_name: "Search",
@@ -236,7 +236,7 @@ export const SearchOriginalProjects: MusicProjectType[] = [
         song: "",
     },
     {
-        id: 5,
+        id: "artist-6",
         img: Lotus,
         title: "Song 3",
         album_name: "Search",
