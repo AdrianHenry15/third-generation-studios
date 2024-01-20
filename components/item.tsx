@@ -13,6 +13,7 @@ interface ItemProps {
     website?: boolean;
     artist?: boolean;
     websiteLink?: string;
+    itemId?: string;
 }
 
 const Item = (props: ItemProps) => {
@@ -35,6 +36,7 @@ const Item = (props: ItemProps) => {
                     music={props.music}
                     websiteTitle={props.title}
                     websiteLink={props.websiteLink}
+                    itemId={props.itemId}
                 />
             </ImageContainer>
             {/* TITLE AND INFO */}

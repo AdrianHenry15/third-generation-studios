@@ -1,14 +1,10 @@
 import { create } from "zustand";
 
 interface AudioPlayerState {
-    isPlaying: boolean;
     isShuffled: boolean;
     isRepeat: boolean;
     playlist: string[];
     currentTrackIndex: number;
-    trackStates: Record<string, boolean>;
-    play: (itemId?: string) => void;
-    pause: (itemId?: string) => void;
     toggleShuffle: () => void;
     toggleRepeat: () => void;
     playNextTrack: () => void;
@@ -16,22 +12,10 @@ interface AudioPlayerState {
 }
 
 export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
-    isPlaying: false,
     isShuffled: false,
     isRepeat: false,
     playlist: [], // Your playlist items here
     currentTrackIndex: 0,
-    trackStates: {}, // Your track states here
-    play: (itemId) =>
-        set((state) => {
-            const updatedTrackStates = { ...state.trackStates, [itemId || state.playlist[state.currentTrackIndex]]: true };
-            return { isPlaying: true, trackStates: updatedTrackStates };
-        }),
-    pause: (itemId) =>
-        set((state) => {
-            const updatedTrackStates = { ...state.trackStates, [itemId || state.playlist[state.currentTrackIndex]]: false };
-            return { isPlaying: false, trackStates: updatedTrackStates };
-        }),
     toggleShuffle: () =>
         set((state) => {
             const clonedPlaylist = [...state.playlist];

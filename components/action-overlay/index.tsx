@@ -37,7 +37,7 @@ const ActionOverlay = (props: IActionOverlayProps) => {
             <SaveButton />
 
             {/* PLAY/PAUSE BUTTON */}
-            {props.music && <PlayButton />}
+            {props.music && <PlayButton itemId={props.itemId!} />}
 
             {/* WEBSITE OPEN BUTTON */}
             {props.website && <OpenButton onClick={() => openWebsite()} />}

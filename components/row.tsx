@@ -84,6 +84,7 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, website, 
                                             music={music}
                                             title={item.title}
                                             img={item.img}
+                                            itemId={item.id}
                                         />
                                     </SwiperSlide>
                                 ))}
