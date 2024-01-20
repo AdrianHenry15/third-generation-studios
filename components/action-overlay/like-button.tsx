@@ -10,7 +10,7 @@ interface ILikeButtonProps {
 
 const LikeButton = (props: ILikeButtonProps) => {
     const { isSongLiked, likeSong } = useSongActionStore();
-    const { currentItemID, setCurrentItemID } = useItemStore();
+    const { currentItemID } = useItemStore();
 
     const handleLike = () => {
         if (!isSongLiked || props.currentItemID === currentItemID) {
