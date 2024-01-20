@@ -1,11 +1,17 @@
 import React from "react";
+import LeftPanel from "./left-panel";
+import MiddlePanel from "./middle-panel";
+import RightPanel from "./right-panel";
 
 const AudioPlayer = () => {
     return (
-        <div className="bg-purple-300 z-50 text-white fixed bottom-0 w-full h-[75px] flex items-center">
+        <div className="bg-black z-50 px-4 py-10 text-white fixed justify-between bottom-0 w-full h-[75px] flex items-center">
             {/* ARTWORK, ARTIST, SONG, LIKE BUTTON */}
+            <LeftPanel />
             {/* AUDIO ACTIONS AND DURATION */}
+            <MiddlePanel />
             {/* VOLUME */}
+            <RightPanel />
         </div>
     );
 };

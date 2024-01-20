@@ -15,6 +15,7 @@ interface IActionOverlayProps {
     artist?: boolean;
     websiteLink?: string;
     websiteTitle?: string;
+    itemId?: string;
 }
 
 const ActionOverlay = (props: IActionOverlayProps) => {
