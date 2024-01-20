@@ -1,14 +1,14 @@
 import React from "react";
 
 import { IoPauseCircle, IoPlayCircle } from "react-icons/io5";
-import { usePlayButtonStore } from "stores/play-button-store";
+import { useAudioPlayerStore } from "stores/audio-player-store";
 
 interface IPlayButtonProps {
     itemId: string;
 }
 
 const PlayButton = (props: IPlayButtonProps) => {
-    const { isPlaying, itemId, play, pause } = usePlayButtonStore();
+    const { isPlaying, itemId, play, pause } = useAudioPlayerStore();
 
     const handleClick = () => {
         if (isPlaying && itemId === props.itemId) {

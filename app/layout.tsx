@@ -9,6 +9,7 @@ import { Suspense } from "react";
 import { Loader } from "@/components/loader";
 import { ClerkProvider } from "@clerk/nextjs";
 import AudioPlayer from "@/components/audio-player";
+import { ItemProvider } from "context/item-context";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -24,21 +25,23 @@ export const metadata: Metadata = {
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
     return (
-        <ClerkProvider>
-            <html lang="en">
-                <link rel="icon" href="/logos/triangle.png" sizes="96x96" />
-                {/* <link rel="icon" href="/triangle-32.png" sizes="32x32" />
+        <ItemProvider>
+            <ClerkProvider>
+                <html lang="en">
+                    <link rel="icon" href="/logos/triangle.png" sizes="96x96" />
+                    {/* <link rel="icon" href="/triangle-32.png" sizes="32x32" />
                 <link rel="icon" href="/triangle-16.png" sizes="16x16" /> */}
-                <body className={inter.variable}>
-                    <Toaster />
-                    <div className="flex flex-col">
-                        <Suspense fallback={<Loader />}>
-                            {children}
-                            <AudioPlayer />
-                        </Suspense>
-                    </div>
-                </body>
-            </html>
-        </ClerkProvider>
+                    <body className={inter.variable}>
+                        <Toaster />
+                        <div className="flex flex-col">
+                            <Suspense fallback={<Loader />}>
+                                {children}
+                                <AudioPlayer />
+                            </Suspense>
+                        </div>
+                    </body>
+                </html>
+            </ClerkProvider>
+        </ItemProvider>
     );
 }

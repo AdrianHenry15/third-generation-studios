@@ -4,7 +4,7 @@ import React from "react";
 import Pic from "@/public/music/jack.jpg";
 import { FaHeart } from "react-icons/fa6";
 
-const LeftPanel = () => {
+const TrackDisplay = () => {
     return (
         <div className="relative flex items-center">
             {/* IMAGE */}
@@ -24,4 +24,4 @@ const LeftPanel = () => {
     );
 };
 
-export default LeftPanel;
+export default TrackDisplay;

@@ -1,9 +1,13 @@
 import { create } from "zustand";
 
 interface AudioPlayerState {
+    isPlaying: boolean;
+    itemId: string | null; // Store id of currently playing item
+    play: (itemId: string) => void;
+    pause: () => void;
     isShuffled: boolean;
     isRepeat: boolean;
-    playlist: string[];
+    playlist: any[];
     currentTrackIndex: number;
     toggleShuffle: () => void;
     toggleRepeat: () => void;
@@ -12,6 +16,10 @@ interface AudioPlayerState {
 }
 
 export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
+    isPlaying: false,
+    itemId: null,
+    play: (itemId: string) => set({ isPlaying: true, itemId: itemId }),
+    pause: () => set({ isPlaying: false }),
     isShuffled: false,
     isRepeat: false,
     playlist: [], // Your playlist items here
@@ -41,18 +49,3 @@ export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
         // Update currentTrackIndex accordingly
     },
 }));
-
-interface PlayButtonState {
-    isPlaying: boolean;
-    play: (trackId?: string) => void;
-    pause: (trackId?: string) => void;
-}
-
-type PlayButtonStores = Record<string, PlayButtonState>;
-
-export const usePlayButtonInstanceStore = (itemId: string) =>
-    create<PlayButtonState>((set) => ({
-        isPlaying: false,
-        play: () => set({ isPlaying: true }),
-        pause: () => set({ isPlaying: false }),
-    }));
