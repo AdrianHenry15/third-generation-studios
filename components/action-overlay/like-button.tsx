@@ -28,12 +28,11 @@ const LikeButton = (props: ILikeButtonProps) => {
     };
 
     return (
-        <p className="z-20" onClick={handleLike}>
-            {isItemLiked ? (
-                <FaHeart className="absolute top-4 left-4 text-white hover:scale-125 scale-100 transition-transform duration-300" />
-            ) : (
-                <FaRegHeart className="absolute top-4 left-4 text-white hover:scale-125 scale-100 transition-transform duration-300" />
-            )}
+        <p
+            className="z-20 absolute top-4 left-4 text-white hover:scale-125 scale-100 transition-transform duration-300"
+            onClick={handleLike}
+        >
+            {isItemLiked ? <FaHeart /> : <FaRegHeart />}
         </p>
     );
 };
