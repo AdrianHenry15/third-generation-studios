@@ -1,13 +1,15 @@
 "use client";
 
 import { create } from "zustand";
-import { useItemStore } from "./item-store";
 
-const { setCurrentItemID } = useItemStore.getState();
+import { useItemStore } from "./item-store";
+import { ItemType } from "@/lib/types";
+
+const { setCurrentItemID, setCurrentItemType } = useItemStore.getState();
 
 interface AudioPlayerState {
     isPlaying: boolean;
-    play: (itemID: string) => void;
+    play: (itemID: string, itemType: ItemType) => void;
     pause: () => void;
     isShuffled: boolean;
     isRepeat: boolean;
@@ -21,9 +23,12 @@ interface AudioPlayerState {
 
 export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
     isPlaying: false,
-    play: (itemID: string) => {
+    play: (itemID, itemType) => {
         setCurrentItemID(itemID);
-        set({ isPlaying: true });
+        setCurrentItemType(itemType);
+        set((state) => ({
+            isPlaying: true,
+        }));
     },
     pause: () => set({ isPlaying: false }),
     isShuffled: false,

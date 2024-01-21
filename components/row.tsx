@@ -4,18 +4,20 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Item from "./item";
 import axios from "axios";
+import { ItemType } from "@/lib/types";
 
 interface IMusicRowProps {
     title: string;
     item?: any[];
     fetchURL?: string;
-    movie?: boolean;
-    music?: boolean;
-    website?: boolean;
-    artist?: boolean;
+    itemType: ItemType;
+    // movie?: boolean;
+    // music?: boolean;
+    // website?: boolean;
+    // artist?: boolean;
 }
 
-const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, website, music, artist }) => {
+const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, itemType }) => {
     const [items, setItems] = useState<any[]>([]); // Adjust 'any' to the actual type of your movie data
 
     const ItemList = item ? item : [];
@@ -64,11 +66,11 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, website, 
                         style={{ width: "100%", height: "100%" }}
                     >
                         {/* MOVIE ITEM */}
-                        {movie ? (
+                        {itemType === ItemType.MOVIE ? (
                             <ul>
                                 {items.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <Item movie={movie} title={item.title} img={item.backdrop_path} />
+                                        <Item itemID={item.id} itemType={itemType} title={item.title} img={item.backdrop_path} />
                                     </SwiperSlide>
                                 ))}
                             </ul>
@@ -79,12 +81,13 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, movie, website, 
                                     <SwiperSlide key={id}>
                                         <Item
                                             websiteLink={item.link}
-                                            artist={artist}
-                                            website={website}
-                                            music={music}
+                                            // artist={artist}
+                                            // website={website}
+                                            // music={music}
                                             title={item.title}
                                             img={item.img}
-                                            currentItemID={item.id}
+                                            itemID={item.id}
+                                            itemType={itemType}
                                         />
                                     </SwiperSlide>
                                 ))}

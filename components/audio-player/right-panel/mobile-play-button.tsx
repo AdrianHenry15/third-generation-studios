@@ -1,9 +1,12 @@
+"use client";
+
 import React from "react";
-import { IoPauseCircle, IoPlayCircle } from "react-icons/io5";
+
+import { IoIosPause, IoIosPlay } from "react-icons/io";
 import { useAudioPlayerStore } from "stores/audio-player-store";
 import { useItemStore } from "stores/item-store";
 
-const AudioPlayerPlayButton = () => {
+const MobilePlayButton = () => {
     const { isPlaying, play, pause } = useAudioPlayerStore();
     const { currentItemID, currentItemType } = useItemStore();
     const handlePlayPause = () => {
@@ -11,9 +14,9 @@ const AudioPlayerPlayButton = () => {
     };
     return (
         <p className="cursor-pointer scale-100 hover:scale-110 transition-transform duration-300 ease-in-out" onClick={handlePlayPause}>
-            {isPlaying ? <IoPauseCircle size={40} className="text-white" /> : <IoPlayCircle size={40} className="text-white" />}
+            {isPlaying ? <IoIosPause size={25} className="text-white" /> : <IoIosPlay size={25} className="text-white" />}
         </p>
     );
 };
 
-export default AudioPlayerPlayButton;
+export default MobilePlayButton;

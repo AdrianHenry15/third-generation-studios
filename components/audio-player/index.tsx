@@ -1,6 +1,6 @@
 import React from "react";
 
-import RightPanel from "./volume-panel";
+import RightPanel from "./right-panel";
 import TrackDisplay from "./track-display";
 import Controls from "./controls";
 

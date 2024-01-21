@@ -1,26 +1,35 @@
-import React, { useState } from "react";
+"use client";
+
+import { ItemType } from "@/lib/types";
+import React from "react";
 
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
-import { useItemStore } from "stores/item-store";
-import { useSongActionStore } from "stores/song-action-store";
+import { useLikeStore } from "stores/like-store";
 
 interface ILikeButtonProps {
-    currentItemID: string;
+    itemType: ItemType;
+    itemID: string;
 }
 
 const LikeButton = (props: ILikeButtonProps) => {
-    const { isSongLiked, likeSong } = useSongActionStore();
-    const { currentItemID } = useItemStore();
+    const likeStore = useLikeStore();
+    const isItemLiked =
+        props.itemType &&
+        props.itemID &&
+        Array.isArray(likeStore.likedItems[props.itemType]) &&
+        likeStore.likedItems[props.itemType].includes(props.itemID);
 
     const handleLike = () => {
-        if (!isSongLiked || props.currentItemID === currentItemID) {
-            likeSong(props.currentItemID);
+        if (isItemLiked) {
+            likeStore.unlikeItem(props.itemType, props.itemID);
+        } else {
+            likeStore.likeItem(props.itemType, props.itemID);
         }
     };
 
     return (
         <p className="z-20" onClick={handleLike}>
-            {isSongLiked && props.currentItemID === currentItemID ? (
+            {isItemLiked ? (
                 <FaHeart className="absolute top-4 left-4 text-white hover:scale-125 scale-100 transition-transform duration-300" />
             ) : (
                 <FaRegHeart className="absolute top-4 left-4 text-white hover:scale-125 scale-100 transition-transform duration-300" />

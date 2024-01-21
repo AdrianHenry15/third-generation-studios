@@ -3,6 +3,14 @@ export type NavMenu = {
     link: string;
 };
 
+export enum ItemType {
+    WEBSITE = "Website",
+    MUSIC = "Music",
+    ARTIST = "Artist",
+    MOVIE = "Movie",
+    NONE = "",
+}
+
 export type ProjectType = {
     id: string;
     img: any;
