@@ -11,10 +11,6 @@ interface IMusicRowProps {
     item?: any[];
     fetchURL?: string;
     itemType: ItemType;
-    // movie?: boolean;
-    // music?: boolean;
-    // website?: boolean;
-    // artist?: boolean;
 }
 
 const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, itemType }) => {

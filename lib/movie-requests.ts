@@ -1,7 +1,7 @@
 //api key from movie api
 const key = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
-const requests = {
+const MovieRequests = {
     // endpoints from movie api
     requestPopular: `https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=en-US&page=1`,
     requestTopRated: `https://api.themoviedb.org/3/movie/top_rated?api_key=${key}&language=en-US&page=1`,
@@ -10,4 +10,4 @@ const requests = {
     requestNowPlaying: `https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=en-US&page=1`,
 };
 
-export default requests;
+export default MovieRequests;
