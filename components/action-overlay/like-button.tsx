@@ -1,7 +1,7 @@
 "use client";
 
 import { ItemType } from "@/lib/types";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { useLikeStore } from "stores/like-store";
@@ -13,11 +13,7 @@ interface ILikeButtonProps {
 
 const LikeButton = (props: ILikeButtonProps) => {
     const likeStore = useLikeStore();
-    const isItemLiked =
-        props.itemType &&
-        props.itemID &&
-        Array.isArray(likeStore.likedItems[props.itemType]) &&
-        likeStore.likedItems[props.itemType].includes(props.itemID);
+    const [isItemLiked, setIsItemLiked] = useState<boolean | null>(null);
 
     const handleLike = () => {
         if (isItemLiked) {

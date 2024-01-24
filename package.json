@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@clerk/clerk-js": "^4.68.1",
+    "@clerk/clerk-sdk-node": "^4.13.7",
     "@clerk/nextjs": "^4.29.1",
     "@emailjs/browser": "^3.11.0",
     "@emotion/react": "^11.11.3",
@@ -28,6 +29,7 @@
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.12.0",
     "react-spinners": "^0.13.8",
+    "svix": "^1.15.0",
     "swiper": "^11.0.5"
   },
   "devDependencies": {

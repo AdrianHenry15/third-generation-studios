@@ -19,55 +19,89 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type Address = $Result.DefaultSelection<Prisma.$AddressPayload>
 /**
- * Model WebsiteProject
+ * Model Like
  * 
  */
-export type WebsiteProject = $Result.DefaultSelection<Prisma.$WebsiteProjectPayload>
+export type Like = $Result.DefaultSelection<Prisma.$LikePayload>
 /**
- * Model WebsiteProjectComment
+ * Model Comment
  * 
  */
-export type WebsiteProjectComment = $Result.DefaultSelection<Prisma.$WebsiteProjectCommentPayload>
+export type Comment = $Result.DefaultSelection<Prisma.$CommentPayload>
+/**
+ * Model Card
+ * 
+ */
+export type Card = $Result.DefaultSelection<Prisma.$CardPayload>
+/**
+ * Model Movie
+ * 
+ */
+export type Movie = $Result.DefaultSelection<Prisma.$MoviePayload>
+/**
+ * Model Website
+ * 
+ */
+export type Website = $Result.DefaultSelection<Prisma.$WebsitePayload>
 /**
  * Model Song
  * 
  */
 export type Song = $Result.DefaultSelection<Prisma.$SongPayload>
 /**
- * Model SongComment
- * 
- */
-export type SongComment = $Result.DefaultSelection<Prisma.$SongCommentPayload>
-/**
- * Model UserLikedSong
- * 
- */
-export type UserLikedSong = $Result.DefaultSelection<Prisma.$UserLikedSongPayload>
-/**
  * Model User
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
- * Model UserLikedWebsite
- * 
- */
-export type UserLikedWebsite = $Result.DefaultSelection<Prisma.$UserLikedWebsitePayload>
-/**
  * Model Artist
  * 
  */
 export type Artist = $Result.DefaultSelection<Prisma.$ArtistPayload>
+
 /**
- * Model ArtistComment
- * 
+ * Enums
  */
-export type ArtistComment = $Result.DefaultSelection<Prisma.$ArtistCommentPayload>
-/**
- * Model UserLikedArtist
- * 
- */
-export type UserLikedArtist = $Result.DefaultSelection<Prisma.$UserLikedArtistPayload>
+export namespace $Enums {
+  export const Category: {
+  ARTIST: 'ARTIST',
+  SONG: 'SONG',
+  WEBSITE: 'WEBSITE',
+  MOVIE: 'MOVIE'
+};
+
+export type Category = (typeof Category)[keyof typeof Category]
+
+
+export const TransactionType: {
+  PURCHASE: 'PURCHASE',
+  REFUND: 'REFUND'
+};
+
+export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
+
+
+export const Status: {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
+
+export type Status = (typeof Status)[keyof typeof Status]
+
+}
+
+export type Category = $Enums.Category
+
+export const Category: typeof $Enums.Category
+
+export type TransactionType = $Enums.TransactionType
+
+export const TransactionType: typeof $Enums.TransactionType
+
+export type Status = $Enums.Status
+
+export const Status: typeof $Enums.Status
 
 /**
  * ##  Prisma Client ʲˢ
@@ -76,8 +110,8 @@ export type UserLikedArtist = $Result.DefaultSelection<Prisma.$UserLikedArtistPa
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more WebsiteProjects
- * const websiteProjects = await prisma.websiteProject.findMany()
+ * // Fetch zero or more Likes
+ * const likes = await prisma.like.findMany()
  * ```
  *
  * 
@@ -97,8 +131,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more WebsiteProjects
-   * const websiteProjects = await prisma.websiteProject.findMany()
+   * // Fetch zero or more Likes
+   * const likes = await prisma.like.findMany()
    * ```
    *
    * 
@@ -160,24 +194,54 @@ export class PrismaClient<
   $extends: $Extensions.ExtendsHook<'extends', Prisma.TypeMapCb, ExtArgs>
 
       /**
-   * `prisma.websiteProject`: Exposes CRUD operations for the **WebsiteProject** model.
+   * `prisma.like`: Exposes CRUD operations for the **Like** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more WebsiteProjects
-    * const websiteProjects = await prisma.websiteProject.findMany()
+    * // Fetch zero or more Likes
+    * const likes = await prisma.like.findMany()
     * ```
     */
-  get websiteProject(): Prisma.WebsiteProjectDelegate<ExtArgs>;
+  get like(): Prisma.LikeDelegate<ExtArgs>;
 
   /**
-   * `prisma.websiteProjectComment`: Exposes CRUD operations for the **WebsiteProjectComment** model.
+   * `prisma.comment`: Exposes CRUD operations for the **Comment** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more WebsiteProjectComments
-    * const websiteProjectComments = await prisma.websiteProjectComment.findMany()
+    * // Fetch zero or more Comments
+    * const comments = await prisma.comment.findMany()
     * ```
     */
-  get websiteProjectComment(): Prisma.WebsiteProjectCommentDelegate<ExtArgs>;
+  get comment(): Prisma.CommentDelegate<ExtArgs>;
+
+  /**
+   * `prisma.card`: Exposes CRUD operations for the **Card** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Cards
+    * const cards = await prisma.card.findMany()
+    * ```
+    */
+  get card(): Prisma.CardDelegate<ExtArgs>;
+
+  /**
+   * `prisma.movie`: Exposes CRUD operations for the **Movie** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Movies
+    * const movies = await prisma.movie.findMany()
+    * ```
+    */
+  get movie(): Prisma.MovieDelegate<ExtArgs>;
+
+  /**
+   * `prisma.website`: Exposes CRUD operations for the **Website** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Websites
+    * const websites = await prisma.website.findMany()
+    * ```
+    */
+  get website(): Prisma.WebsiteDelegate<ExtArgs>;
 
   /**
    * `prisma.song`: Exposes CRUD operations for the **Song** model.
@@ -190,26 +254,6 @@ export class PrismaClient<
   get song(): Prisma.SongDelegate<ExtArgs>;
 
   /**
-   * `prisma.songComment`: Exposes CRUD operations for the **SongComment** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more SongComments
-    * const songComments = await prisma.songComment.findMany()
-    * ```
-    */
-  get songComment(): Prisma.SongCommentDelegate<ExtArgs>;
-
-  /**
-   * `prisma.userLikedSong`: Exposes CRUD operations for the **UserLikedSong** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more UserLikedSongs
-    * const userLikedSongs = await prisma.userLikedSong.findMany()
-    * ```
-    */
-  get userLikedSong(): Prisma.UserLikedSongDelegate<ExtArgs>;
-
-  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -220,16 +264,6 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs>;
 
   /**
-   * `prisma.userLikedWebsite`: Exposes CRUD operations for the **UserLikedWebsite** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more UserLikedWebsites
-    * const userLikedWebsites = await prisma.userLikedWebsite.findMany()
-    * ```
-    */
-  get userLikedWebsite(): Prisma.UserLikedWebsiteDelegate<ExtArgs>;
-
-  /**
    * `prisma.artist`: Exposes CRUD operations for the **Artist** model.
     * Example usage:
     * ```ts
@@ -238,26 +272,6 @@ export class PrismaClient<
     * ```
     */
   get artist(): Prisma.ArtistDelegate<ExtArgs>;
-
-  /**
-   * `prisma.artistComment`: Exposes CRUD operations for the **ArtistComment** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ArtistComments
-    * const artistComments = await prisma.artistComment.findMany()
-    * ```
-    */
-  get artistComment(): Prisma.ArtistCommentDelegate<ExtArgs>;
-
-  /**
-   * `prisma.userLikedArtist`: Exposes CRUD operations for the **UserLikedArtist** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more UserLikedArtists
-    * const userLikedArtists = await prisma.userLikedArtist.findMany()
-    * ```
-    */
-  get userLikedArtist(): Prisma.UserLikedArtistDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -728,16 +742,14 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    WebsiteProject: 'WebsiteProject',
-    WebsiteProjectComment: 'WebsiteProjectComment',
+    Like: 'Like',
+    Comment: 'Comment',
+    Card: 'Card',
+    Movie: 'Movie',
+    Website: 'Website',
     Song: 'Song',
-    SongComment: 'SongComment',
-    UserLikedSong: 'UserLikedSong',
     User: 'User',
-    UserLikedWebsite: 'UserLikedWebsite',
-    Artist: 'Artist',
-    ArtistComment: 'ArtistComment',
-    UserLikedArtist: 'UserLikedArtist'
+    Artist: 'Artist'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -754,155 +766,377 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'websiteProject' | 'websiteProjectComment' | 'song' | 'songComment' | 'userLikedSong' | 'user' | 'userLikedWebsite' | 'artist' | 'artistComment' | 'userLikedArtist'
+      modelProps: 'like' | 'comment' | 'card' | 'movie' | 'website' | 'song' | 'user' | 'artist'
       txIsolationLevel: never
     },
     model: {
-      WebsiteProject: {
-        payload: Prisma.$WebsiteProjectPayload<ExtArgs>
-        fields: Prisma.WebsiteProjectFieldRefs
+      Like: {
+        payload: Prisma.$LikePayload<ExtArgs>
+        fields: Prisma.LikeFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.WebsiteProjectFindUniqueArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload> | null
+            args: Prisma.LikeFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.WebsiteProjectFindUniqueOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload>
+            args: Prisma.LikeFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload>
           }
           findFirst: {
-            args: Prisma.WebsiteProjectFindFirstArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload> | null
+            args: Prisma.LikeFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.WebsiteProjectFindFirstOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload>
+            args: Prisma.LikeFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload>
           }
           findMany: {
-            args: Prisma.WebsiteProjectFindManyArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload>[]
+            args: Prisma.LikeFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload>[]
           }
           create: {
-            args: Prisma.WebsiteProjectCreateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload>
+            args: Prisma.LikeCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload>
           }
           createMany: {
-            args: Prisma.WebsiteProjectCreateManyArgs<ExtArgs>,
+            args: Prisma.LikeCreateManyArgs<ExtArgs>,
             result: Prisma.BatchPayload
           }
           delete: {
-            args: Prisma.WebsiteProjectDeleteArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload>
+            args: Prisma.LikeDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload>
           }
           update: {
-            args: Prisma.WebsiteProjectUpdateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload>
+            args: Prisma.LikeUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload>
           }
           deleteMany: {
-            args: Prisma.WebsiteProjectDeleteManyArgs<ExtArgs>,
+            args: Prisma.LikeDeleteManyArgs<ExtArgs>,
             result: Prisma.BatchPayload
           }
           updateMany: {
-            args: Prisma.WebsiteProjectUpdateManyArgs<ExtArgs>,
+            args: Prisma.LikeUpdateManyArgs<ExtArgs>,
             result: Prisma.BatchPayload
           }
           upsert: {
-            args: Prisma.WebsiteProjectUpsertArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectPayload>
+            args: Prisma.LikeUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$LikePayload>
           }
           aggregate: {
-            args: Prisma.WebsiteProjectAggregateArgs<ExtArgs>,
-            result: $Utils.Optional<AggregateWebsiteProject>
+            args: Prisma.LikeAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateLike>
           }
           groupBy: {
-            args: Prisma.WebsiteProjectGroupByArgs<ExtArgs>,
-            result: $Utils.Optional<WebsiteProjectGroupByOutputType>[]
+            args: Prisma.LikeGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<LikeGroupByOutputType>[]
           }
           findRaw: {
-            args: Prisma.WebsiteProjectFindRawArgs<ExtArgs>,
+            args: Prisma.LikeFindRawArgs<ExtArgs>,
             result: Prisma.JsonObject
           }
           aggregateRaw: {
-            args: Prisma.WebsiteProjectAggregateRawArgs<ExtArgs>,
+            args: Prisma.LikeAggregateRawArgs<ExtArgs>,
             result: Prisma.JsonObject
           }
           count: {
-            args: Prisma.WebsiteProjectCountArgs<ExtArgs>,
-            result: $Utils.Optional<WebsiteProjectCountAggregateOutputType> | number
+            args: Prisma.LikeCountArgs<ExtArgs>,
+            result: $Utils.Optional<LikeCountAggregateOutputType> | number
           }
         }
       }
-      WebsiteProjectComment: {
-        payload: Prisma.$WebsiteProjectCommentPayload<ExtArgs>
-        fields: Prisma.WebsiteProjectCommentFieldRefs
+      Comment: {
+        payload: Prisma.$CommentPayload<ExtArgs>
+        fields: Prisma.CommentFieldRefs
         operations: {
           findUnique: {
-            args: Prisma.WebsiteProjectCommentFindUniqueArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload> | null
+            args: Prisma.CommentFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload> | null
           }
           findUniqueOrThrow: {
-            args: Prisma.WebsiteProjectCommentFindUniqueOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload>
+            args: Prisma.CommentFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
           }
           findFirst: {
-            args: Prisma.WebsiteProjectCommentFindFirstArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload> | null
+            args: Prisma.CommentFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload> | null
           }
           findFirstOrThrow: {
-            args: Prisma.WebsiteProjectCommentFindFirstOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload>
+            args: Prisma.CommentFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
           }
           findMany: {
-            args: Prisma.WebsiteProjectCommentFindManyArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload>[]
+            args: Prisma.CommentFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>[]
           }
           create: {
-            args: Prisma.WebsiteProjectCommentCreateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload>
+            args: Prisma.CommentCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
           }
           createMany: {
-            args: Prisma.WebsiteProjectCommentCreateManyArgs<ExtArgs>,
+            args: Prisma.CommentCreateManyArgs<ExtArgs>,
             result: Prisma.BatchPayload
           }
           delete: {
-            args: Prisma.WebsiteProjectCommentDeleteArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload>
+            args: Prisma.CommentDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
           }
           update: {
-            args: Prisma.WebsiteProjectCommentUpdateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload>
+            args: Prisma.CommentUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
           }
           deleteMany: {
-            args: Prisma.WebsiteProjectCommentDeleteManyArgs<ExtArgs>,
+            args: Prisma.CommentDeleteManyArgs<ExtArgs>,
             result: Prisma.BatchPayload
           }
           updateMany: {
-            args: Prisma.WebsiteProjectCommentUpdateManyArgs<ExtArgs>,
+            args: Prisma.CommentUpdateManyArgs<ExtArgs>,
             result: Prisma.BatchPayload
           }
           upsert: {
-            args: Prisma.WebsiteProjectCommentUpsertArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$WebsiteProjectCommentPayload>
+            args: Prisma.CommentUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CommentPayload>
           }
           aggregate: {
-            args: Prisma.WebsiteProjectCommentAggregateArgs<ExtArgs>,
-            result: $Utils.Optional<AggregateWebsiteProjectComment>
+            args: Prisma.CommentAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateComment>
           }
           groupBy: {
-            args: Prisma.WebsiteProjectCommentGroupByArgs<ExtArgs>,
-            result: $Utils.Optional<WebsiteProjectCommentGroupByOutputType>[]
+            args: Prisma.CommentGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<CommentGroupByOutputType>[]
           }
           findRaw: {
-            args: Prisma.WebsiteProjectCommentFindRawArgs<ExtArgs>,
+            args: Prisma.CommentFindRawArgs<ExtArgs>,
             result: Prisma.JsonObject
           }
           aggregateRaw: {
-            args: Prisma.WebsiteProjectCommentAggregateRawArgs<ExtArgs>,
+            args: Prisma.CommentAggregateRawArgs<ExtArgs>,
             result: Prisma.JsonObject
           }
           count: {
-            args: Prisma.WebsiteProjectCommentCountArgs<ExtArgs>,
-            result: $Utils.Optional<WebsiteProjectCommentCountAggregateOutputType> | number
+            args: Prisma.CommentCountArgs<ExtArgs>,
+            result: $Utils.Optional<CommentCountAggregateOutputType> | number
+          }
+        }
+      }
+      Card: {
+        payload: Prisma.$CardPayload<ExtArgs>
+        fields: Prisma.CardFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CardFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CardFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          findFirst: {
+            args: Prisma.CardFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CardFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          findMany: {
+            args: Prisma.CardFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>[]
+          }
+          create: {
+            args: Prisma.CardCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          createMany: {
+            args: Prisma.CardCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.CardDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          update: {
+            args: Prisma.CardUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          deleteMany: {
+            args: Prisma.CardDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CardUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.CardUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$CardPayload>
+          }
+          aggregate: {
+            args: Prisma.CardAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateCard>
+          }
+          groupBy: {
+            args: Prisma.CardGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<CardGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.CardFindRawArgs<ExtArgs>,
+            result: Prisma.JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.CardAggregateRawArgs<ExtArgs>,
+            result: Prisma.JsonObject
+          }
+          count: {
+            args: Prisma.CardCountArgs<ExtArgs>,
+            result: $Utils.Optional<CardCountAggregateOutputType> | number
+          }
+        }
+      }
+      Movie: {
+        payload: Prisma.$MoviePayload<ExtArgs>
+        fields: Prisma.MovieFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MovieFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MovieFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+          }
+          findFirst: {
+            args: Prisma.MovieFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MovieFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+          }
+          findMany: {
+            args: Prisma.MovieFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload>[]
+          }
+          create: {
+            args: Prisma.MovieCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+          }
+          createMany: {
+            args: Prisma.MovieCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.MovieDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+          }
+          update: {
+            args: Prisma.MovieUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+          }
+          deleteMany: {
+            args: Prisma.MovieDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MovieUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.MovieUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$MoviePayload>
+          }
+          aggregate: {
+            args: Prisma.MovieAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateMovie>
+          }
+          groupBy: {
+            args: Prisma.MovieGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<MovieGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.MovieFindRawArgs<ExtArgs>,
+            result: Prisma.JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.MovieAggregateRawArgs<ExtArgs>,
+            result: Prisma.JsonObject
+          }
+          count: {
+            args: Prisma.MovieCountArgs<ExtArgs>,
+            result: $Utils.Optional<MovieCountAggregateOutputType> | number
+          }
+        }
+      }
+      Website: {
+        payload: Prisma.$WebsitePayload<ExtArgs>
+        fields: Prisma.WebsiteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WebsiteFindUniqueArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WebsiteFindUniqueOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload>
+          }
+          findFirst: {
+            args: Prisma.WebsiteFindFirstArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WebsiteFindFirstOrThrowArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload>
+          }
+          findMany: {
+            args: Prisma.WebsiteFindManyArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload>[]
+          }
+          create: {
+            args: Prisma.WebsiteCreateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload>
+          }
+          createMany: {
+            args: Prisma.WebsiteCreateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          delete: {
+            args: Prisma.WebsiteDeleteArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload>
+          }
+          update: {
+            args: Prisma.WebsiteUpdateArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload>
+          }
+          deleteMany: {
+            args: Prisma.WebsiteDeleteManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WebsiteUpdateManyArgs<ExtArgs>,
+            result: Prisma.BatchPayload
+          }
+          upsert: {
+            args: Prisma.WebsiteUpsertArgs<ExtArgs>,
+            result: $Utils.PayloadToResult<Prisma.$WebsitePayload>
+          }
+          aggregate: {
+            args: Prisma.WebsiteAggregateArgs<ExtArgs>,
+            result: $Utils.Optional<AggregateWebsite>
+          }
+          groupBy: {
+            args: Prisma.WebsiteGroupByArgs<ExtArgs>,
+            result: $Utils.Optional<WebsiteGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.WebsiteFindRawArgs<ExtArgs>,
+            result: Prisma.JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.WebsiteAggregateRawArgs<ExtArgs>,
+            result: Prisma.JsonObject
+          }
+          count: {
+            args: Prisma.WebsiteCountArgs<ExtArgs>,
+            result: $Utils.Optional<WebsiteCountAggregateOutputType> | number
           }
         }
       }
@@ -980,154 +1214,6 @@ export namespace Prisma {
           }
         }
       }
-      SongComment: {
-        payload: Prisma.$SongCommentPayload<ExtArgs>
-        fields: Prisma.SongCommentFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.SongCommentFindUniqueArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.SongCommentFindUniqueOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload>
-          }
-          findFirst: {
-            args: Prisma.SongCommentFindFirstArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.SongCommentFindFirstOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload>
-          }
-          findMany: {
-            args: Prisma.SongCommentFindManyArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload>[]
-          }
-          create: {
-            args: Prisma.SongCommentCreateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload>
-          }
-          createMany: {
-            args: Prisma.SongCommentCreateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          delete: {
-            args: Prisma.SongCommentDeleteArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload>
-          }
-          update: {
-            args: Prisma.SongCommentUpdateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload>
-          }
-          deleteMany: {
-            args: Prisma.SongCommentDeleteManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          updateMany: {
-            args: Prisma.SongCommentUpdateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          upsert: {
-            args: Prisma.SongCommentUpsertArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$SongCommentPayload>
-          }
-          aggregate: {
-            args: Prisma.SongCommentAggregateArgs<ExtArgs>,
-            result: $Utils.Optional<AggregateSongComment>
-          }
-          groupBy: {
-            args: Prisma.SongCommentGroupByArgs<ExtArgs>,
-            result: $Utils.Optional<SongCommentGroupByOutputType>[]
-          }
-          findRaw: {
-            args: Prisma.SongCommentFindRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          aggregateRaw: {
-            args: Prisma.SongCommentAggregateRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          count: {
-            args: Prisma.SongCommentCountArgs<ExtArgs>,
-            result: $Utils.Optional<SongCommentCountAggregateOutputType> | number
-          }
-        }
-      }
-      UserLikedSong: {
-        payload: Prisma.$UserLikedSongPayload<ExtArgs>
-        fields: Prisma.UserLikedSongFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.UserLikedSongFindUniqueArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.UserLikedSongFindUniqueOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload>
-          }
-          findFirst: {
-            args: Prisma.UserLikedSongFindFirstArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.UserLikedSongFindFirstOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload>
-          }
-          findMany: {
-            args: Prisma.UserLikedSongFindManyArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload>[]
-          }
-          create: {
-            args: Prisma.UserLikedSongCreateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload>
-          }
-          createMany: {
-            args: Prisma.UserLikedSongCreateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          delete: {
-            args: Prisma.UserLikedSongDeleteArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload>
-          }
-          update: {
-            args: Prisma.UserLikedSongUpdateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload>
-          }
-          deleteMany: {
-            args: Prisma.UserLikedSongDeleteManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          updateMany: {
-            args: Prisma.UserLikedSongUpdateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          upsert: {
-            args: Prisma.UserLikedSongUpsertArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedSongPayload>
-          }
-          aggregate: {
-            args: Prisma.UserLikedSongAggregateArgs<ExtArgs>,
-            result: $Utils.Optional<AggregateUserLikedSong>
-          }
-          groupBy: {
-            args: Prisma.UserLikedSongGroupByArgs<ExtArgs>,
-            result: $Utils.Optional<UserLikedSongGroupByOutputType>[]
-          }
-          findRaw: {
-            args: Prisma.UserLikedSongFindRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          aggregateRaw: {
-            args: Prisma.UserLikedSongAggregateRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          count: {
-            args: Prisma.UserLikedSongCountArgs<ExtArgs>,
-            result: $Utils.Optional<UserLikedSongCountAggregateOutputType> | number
-          }
-        }
-      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -1202,80 +1288,6 @@ export namespace Prisma {
           }
         }
       }
-      UserLikedWebsite: {
-        payload: Prisma.$UserLikedWebsitePayload<ExtArgs>
-        fields: Prisma.UserLikedWebsiteFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.UserLikedWebsiteFindUniqueArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.UserLikedWebsiteFindUniqueOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload>
-          }
-          findFirst: {
-            args: Prisma.UserLikedWebsiteFindFirstArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.UserLikedWebsiteFindFirstOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload>
-          }
-          findMany: {
-            args: Prisma.UserLikedWebsiteFindManyArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload>[]
-          }
-          create: {
-            args: Prisma.UserLikedWebsiteCreateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload>
-          }
-          createMany: {
-            args: Prisma.UserLikedWebsiteCreateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          delete: {
-            args: Prisma.UserLikedWebsiteDeleteArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload>
-          }
-          update: {
-            args: Prisma.UserLikedWebsiteUpdateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload>
-          }
-          deleteMany: {
-            args: Prisma.UserLikedWebsiteDeleteManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          updateMany: {
-            args: Prisma.UserLikedWebsiteUpdateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          upsert: {
-            args: Prisma.UserLikedWebsiteUpsertArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedWebsitePayload>
-          }
-          aggregate: {
-            args: Prisma.UserLikedWebsiteAggregateArgs<ExtArgs>,
-            result: $Utils.Optional<AggregateUserLikedWebsite>
-          }
-          groupBy: {
-            args: Prisma.UserLikedWebsiteGroupByArgs<ExtArgs>,
-            result: $Utils.Optional<UserLikedWebsiteGroupByOutputType>[]
-          }
-          findRaw: {
-            args: Prisma.UserLikedWebsiteFindRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          aggregateRaw: {
-            args: Prisma.UserLikedWebsiteAggregateRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          count: {
-            args: Prisma.UserLikedWebsiteCountArgs<ExtArgs>,
-            result: $Utils.Optional<UserLikedWebsiteCountAggregateOutputType> | number
-          }
-        }
-      }
       Artist: {
         payload: Prisma.$ArtistPayload<ExtArgs>
         fields: Prisma.ArtistFieldRefs
@@ -1347,154 +1359,6 @@ export namespace Prisma {
           count: {
             args: Prisma.ArtistCountArgs<ExtArgs>,
             result: $Utils.Optional<ArtistCountAggregateOutputType> | number
-          }
-        }
-      }
-      ArtistComment: {
-        payload: Prisma.$ArtistCommentPayload<ExtArgs>
-        fields: Prisma.ArtistCommentFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ArtistCommentFindUniqueArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ArtistCommentFindUniqueOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload>
-          }
-          findFirst: {
-            args: Prisma.ArtistCommentFindFirstArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ArtistCommentFindFirstOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload>
-          }
-          findMany: {
-            args: Prisma.ArtistCommentFindManyArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload>[]
-          }
-          create: {
-            args: Prisma.ArtistCommentCreateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload>
-          }
-          createMany: {
-            args: Prisma.ArtistCommentCreateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          delete: {
-            args: Prisma.ArtistCommentDeleteArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload>
-          }
-          update: {
-            args: Prisma.ArtistCommentUpdateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload>
-          }
-          deleteMany: {
-            args: Prisma.ArtistCommentDeleteManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ArtistCommentUpdateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          upsert: {
-            args: Prisma.ArtistCommentUpsertArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$ArtistCommentPayload>
-          }
-          aggregate: {
-            args: Prisma.ArtistCommentAggregateArgs<ExtArgs>,
-            result: $Utils.Optional<AggregateArtistComment>
-          }
-          groupBy: {
-            args: Prisma.ArtistCommentGroupByArgs<ExtArgs>,
-            result: $Utils.Optional<ArtistCommentGroupByOutputType>[]
-          }
-          findRaw: {
-            args: Prisma.ArtistCommentFindRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          aggregateRaw: {
-            args: Prisma.ArtistCommentAggregateRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          count: {
-            args: Prisma.ArtistCommentCountArgs<ExtArgs>,
-            result: $Utils.Optional<ArtistCommentCountAggregateOutputType> | number
-          }
-        }
-      }
-      UserLikedArtist: {
-        payload: Prisma.$UserLikedArtistPayload<ExtArgs>
-        fields: Prisma.UserLikedArtistFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.UserLikedArtistFindUniqueArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.UserLikedArtistFindUniqueOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload>
-          }
-          findFirst: {
-            args: Prisma.UserLikedArtistFindFirstArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.UserLikedArtistFindFirstOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload>
-          }
-          findMany: {
-            args: Prisma.UserLikedArtistFindManyArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload>[]
-          }
-          create: {
-            args: Prisma.UserLikedArtistCreateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload>
-          }
-          createMany: {
-            args: Prisma.UserLikedArtistCreateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          delete: {
-            args: Prisma.UserLikedArtistDeleteArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload>
-          }
-          update: {
-            args: Prisma.UserLikedArtistUpdateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload>
-          }
-          deleteMany: {
-            args: Prisma.UserLikedArtistDeleteManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          updateMany: {
-            args: Prisma.UserLikedArtistUpdateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          upsert: {
-            args: Prisma.UserLikedArtistUpsertArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$UserLikedArtistPayload>
-          }
-          aggregate: {
-            args: Prisma.UserLikedArtistAggregateArgs<ExtArgs>,
-            result: $Utils.Optional<AggregateUserLikedArtist>
-          }
-          groupBy: {
-            args: Prisma.UserLikedArtistGroupByArgs<ExtArgs>,
-            result: $Utils.Optional<UserLikedArtistGroupByOutputType>[]
-          }
-          findRaw: {
-            args: Prisma.UserLikedArtistFindRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          aggregateRaw: {
-            args: Prisma.UserLikedArtistAggregateRawArgs<ExtArgs>,
-            result: Prisma.JsonObject
-          }
-          count: {
-            args: Prisma.UserLikedArtistCountArgs<ExtArgs>,
-            result: $Utils.Optional<UserLikedArtistCountAggregateOutputType> | number
           }
         }
       }
@@ -1631,45 +1495,89 @@ export namespace Prisma {
 
 
   /**
-   * Count Type WebsiteProjectCountOutputType
+   * Count Type MovieCountOutputType
    */
 
-  export type WebsiteProjectCountOutputType = {
+  export type MovieCountOutputType = {
+    likes: number
     comments: number
-    likedByUsers: number
   }
 
-  export type WebsiteProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    comments?: boolean | WebsiteProjectCountOutputTypeCountCommentsArgs
-    likedByUsers?: boolean | WebsiteProjectCountOutputTypeCountLikedByUsersArgs
+  export type MovieCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    likes?: boolean | MovieCountOutputTypeCountLikesArgs
+    comments?: boolean | MovieCountOutputTypeCountCommentsArgs
   }
 
   // Custom InputTypes
 
   /**
-   * WebsiteProjectCountOutputType without action
+   * MovieCountOutputType without action
    */
-  export type WebsiteProjectCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type MovieCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProjectCountOutputType
+     * Select specific fields to fetch from the MovieCountOutputType
      */
-    select?: WebsiteProjectCountOutputTypeSelect<ExtArgs> | null
+    select?: MovieCountOutputTypeSelect<ExtArgs> | null
   }
 
 
   /**
-   * WebsiteProjectCountOutputType without action
+   * MovieCountOutputType without action
    */
-  export type WebsiteProjectCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WebsiteProjectCommentWhereInput
+  export type MovieCountOutputTypeCountLikesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LikeWhereInput
   }
 
 
   /**
-   * WebsiteProjectCountOutputType without action
+   * MovieCountOutputType without action
    */
-  export type WebsiteProjectCountOutputTypeCountLikedByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedWebsiteWhereInput
+  export type MovieCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommentWhereInput
+  }
+
+
+
+  /**
+   * Count Type WebsiteCountOutputType
+   */
+
+  export type WebsiteCountOutputType = {
+    likes: number
+    comments: number
+  }
+
+  export type WebsiteCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    likes?: boolean | WebsiteCountOutputTypeCountLikesArgs
+    comments?: boolean | WebsiteCountOutputTypeCountCommentsArgs
+  }
+
+  // Custom InputTypes
+
+  /**
+   * WebsiteCountOutputType without action
+   */
+  export type WebsiteCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WebsiteCountOutputType
+     */
+    select?: WebsiteCountOutputTypeSelect<ExtArgs> | null
+  }
+
+
+  /**
+   * WebsiteCountOutputType without action
+   */
+  export type WebsiteCountOutputTypeCountLikesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LikeWhereInput
+  }
+
+
+  /**
+   * WebsiteCountOutputType without action
+   */
+  export type WebsiteCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommentWhereInput
   }
 
 
@@ -1680,12 +1588,10 @@ export namespace Prisma {
 
   export type SongCountOutputType = {
     comments: number
-    likedByUsers: number
   }
 
   export type SongCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comments?: boolean | SongCountOutputTypeCountCommentsArgs
-    likedByUsers?: boolean | SongCountOutputTypeCountLikedByUsersArgs
   }
 
   // Custom InputTypes
@@ -1705,15 +1611,7 @@ export namespace Prisma {
    * SongCountOutputType without action
    */
   export type SongCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SongCommentWhereInput
-  }
-
-
-  /**
-   * SongCountOutputType without action
-   */
-  export type SongCountOutputTypeCountLikedByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedSongWhereInput
+    where?: CommentWhereInput
   }
 
 
@@ -1723,15 +1621,11 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    likedWebsites: number
-    likedSongs: number
-    likedArtists: number
+    likes: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    likedWebsites?: boolean | UserCountOutputTypeCountLikedWebsitesArgs
-    likedSongs?: boolean | UserCountOutputTypeCountLikedSongsArgs
-    likedArtists?: boolean | UserCountOutputTypeCountLikedArtistsArgs
+    likes?: boolean | UserCountOutputTypeCountLikesArgs
   }
 
   // Custom InputTypes
@@ -1750,24 +1644,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountLikedWebsitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedWebsiteWhereInput
-  }
-
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountLikedSongsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedSongWhereInput
-  }
-
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountLikedArtistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedArtistWhereInput
+  export type UserCountOutputTypeCountLikesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LikeWhereInput
   }
 
 
@@ -1777,13 +1655,15 @@ export namespace Prisma {
    */
 
   export type ArtistCountOutputType = {
+    likes: number
     comments: number
-    likedByUsers: number
+    songs: number
   }
 
   export type ArtistCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    likes?: boolean | ArtistCountOutputTypeCountLikesArgs
     comments?: boolean | ArtistCountOutputTypeCountCommentsArgs
-    likedByUsers?: boolean | ArtistCountOutputTypeCountLikedByUsersArgs
+    songs?: boolean | ArtistCountOutputTypeCountSongsArgs
   }
 
   // Custom InputTypes
@@ -1802,16 +1682,24 @@ export namespace Prisma {
   /**
    * ArtistCountOutputType without action
    */
-  export type ArtistCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ArtistCommentWhereInput
+  export type ArtistCountOutputTypeCountLikesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LikeWhereInput
   }
 
 
   /**
    * ArtistCountOutputType without action
    */
-  export type ArtistCountOutputTypeCountLikedByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedArtistWhereInput
+  export type ArtistCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommentWhereInput
+  }
+
+
+  /**
+   * ArtistCountOutputType without action
+   */
+  export type ArtistCountOutputTypeCountSongsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SongWhereInput
   }
 
 
@@ -1888,26 +1776,4221 @@ export namespace Prisma {
 
 
   /**
-   * Model WebsiteProject
+   * Model Like
    */
 
-  export type AggregateWebsiteProject = {
-    _count: WebsiteProjectCountAggregateOutputType | null
-    _avg: WebsiteProjectAvgAggregateOutputType | null
-    _sum: WebsiteProjectSumAggregateOutputType | null
-    _min: WebsiteProjectMinAggregateOutputType | null
-    _max: WebsiteProjectMaxAggregateOutputType | null
+  export type AggregateLike = {
+    _count: LikeCountAggregateOutputType | null
+    _min: LikeMinAggregateOutputType | null
+    _max: LikeMaxAggregateOutputType | null
   }
 
-  export type WebsiteProjectAvgAggregateOutputType = {
-    likes: number | null
+  export type LikeMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    category: $Enums.Category | null
+    itemId: string | null
+    timestamp: Date | null
+    websiteId: string | null
+    artistId: string | null
+    movieId: string | null
   }
 
-  export type WebsiteProjectSumAggregateOutputType = {
-    likes: number | null
+  export type LikeMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    category: $Enums.Category | null
+    itemId: string | null
+    timestamp: Date | null
+    websiteId: string | null
+    artistId: string | null
+    movieId: string | null
   }
 
-  export type WebsiteProjectMinAggregateOutputType = {
+  export type LikeCountAggregateOutputType = {
+    id: number
+    userId: number
+    category: number
+    itemId: number
+    timestamp: number
+    websiteId: number
+    artistId: number
+    movieId: number
+    _all: number
+  }
+
+
+  export type LikeMinAggregateInputType = {
+    id?: true
+    userId?: true
+    category?: true
+    itemId?: true
+    timestamp?: true
+    websiteId?: true
+    artistId?: true
+    movieId?: true
+  }
+
+  export type LikeMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    category?: true
+    itemId?: true
+    timestamp?: true
+    websiteId?: true
+    artistId?: true
+    movieId?: true
+  }
+
+  export type LikeCountAggregateInputType = {
+    id?: true
+    userId?: true
+    category?: true
+    itemId?: true
+    timestamp?: true
+    websiteId?: true
+    artistId?: true
+    movieId?: true
+    _all?: true
+  }
+
+  export type LikeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Like to aggregate.
+     */
+    where?: LikeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Likes to fetch.
+     */
+    orderBy?: LikeOrderByWithRelationInput | LikeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LikeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Likes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Likes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Likes
+    **/
+    _count?: true | LikeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LikeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LikeMaxAggregateInputType
+  }
+
+  export type GetLikeAggregateType<T extends LikeAggregateArgs> = {
+        [P in keyof T & keyof AggregateLike]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLike[P]>
+      : GetScalarType<T[P], AggregateLike[P]>
+  }
+
+
+
+
+  export type LikeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LikeWhereInput
+    orderBy?: LikeOrderByWithAggregationInput | LikeOrderByWithAggregationInput[]
+    by: LikeScalarFieldEnum[] | LikeScalarFieldEnum
+    having?: LikeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LikeCountAggregateInputType | true
+    _min?: LikeMinAggregateInputType
+    _max?: LikeMaxAggregateInputType
+  }
+
+  export type LikeGroupByOutputType = {
+    id: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp: Date
+    websiteId: string | null
+    artistId: string | null
+    movieId: string | null
+    _count: LikeCountAggregateOutputType | null
+    _min: LikeMinAggregateOutputType | null
+    _max: LikeMaxAggregateOutputType | null
+  }
+
+  type GetLikeGroupByPayload<T extends LikeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LikeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LikeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LikeGroupByOutputType[P]>
+            : GetScalarType<T[P], LikeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LikeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    category?: boolean
+    itemId?: boolean
+    timestamp?: boolean
+    websiteId?: boolean
+    artistId?: boolean
+    movieId?: boolean
+    Website?: boolean | Like$WebsiteArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
+    Artist?: boolean | Like$ArtistArgs<ExtArgs>
+    Movie?: boolean | Like$MovieArgs<ExtArgs>
+  }, ExtArgs["result"]["like"]>
+
+  export type LikeSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    category?: boolean
+    itemId?: boolean
+    timestamp?: boolean
+    websiteId?: boolean
+    artistId?: boolean
+    movieId?: boolean
+  }
+
+  export type LikeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Website?: boolean | Like$WebsiteArgs<ExtArgs>
+    User?: boolean | UserDefaultArgs<ExtArgs>
+    Artist?: boolean | Like$ArtistArgs<ExtArgs>
+    Movie?: boolean | Like$MovieArgs<ExtArgs>
+  }
+
+
+  export type $LikePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Like"
+    objects: {
+      Website: Prisma.$WebsitePayload<ExtArgs> | null
+      User: Prisma.$UserPayload<ExtArgs>
+      Artist: Prisma.$ArtistPayload<ExtArgs> | null
+      Movie: Prisma.$MoviePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      category: $Enums.Category
+      itemId: string
+      timestamp: Date
+      websiteId: string | null
+      artistId: string | null
+      movieId: string | null
+    }, ExtArgs["result"]["like"]>
+    composites: {}
+  }
+
+
+  type LikeGetPayload<S extends boolean | null | undefined | LikeDefaultArgs> = $Result.GetResult<Prisma.$LikePayload, S>
+
+  type LikeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<LikeFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: LikeCountAggregateInputType | true
+    }
+
+  export interface LikeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Like'], meta: { name: 'Like' } }
+    /**
+     * Find zero or one Like that matches the filter.
+     * @param {LikeFindUniqueArgs} args - Arguments to find a Like
+     * @example
+     * // Get one Like
+     * const like = await prisma.like.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends LikeFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, LikeFindUniqueArgs<ExtArgs>>
+    ): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Like that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {LikeFindUniqueOrThrowArgs} args - Arguments to find a Like
+     * @example
+     * // Get one Like
+     * const like = await prisma.like.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends LikeFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, LikeFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Like that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikeFindFirstArgs} args - Arguments to find a Like
+     * @example
+     * // Get one Like
+     * const like = await prisma.like.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends LikeFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, LikeFindFirstArgs<ExtArgs>>
+    ): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Like that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikeFindFirstOrThrowArgs} args - Arguments to find a Like
+     * @example
+     * // Get one Like
+     * const like = await prisma.like.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends LikeFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, LikeFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Likes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikeFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Likes
+     * const likes = await prisma.like.findMany()
+     * 
+     * // Get first 10 Likes
+     * const likes = await prisma.like.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const likeWithIdOnly = await prisma.like.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends LikeFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, LikeFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Like.
+     * @param {LikeCreateArgs} args - Arguments to create a Like.
+     * @example
+     * // Create one Like
+     * const Like = await prisma.like.create({
+     *   data: {
+     *     // ... data to create a Like
+     *   }
+     * })
+     * 
+    **/
+    create<T extends LikeCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, LikeCreateArgs<ExtArgs>>
+    ): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Likes.
+     *     @param {LikeCreateManyArgs} args - Arguments to create many Likes.
+     *     @example
+     *     // Create many Likes
+     *     const like = await prisma.like.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends LikeCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, LikeCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Like.
+     * @param {LikeDeleteArgs} args - Arguments to delete one Like.
+     * @example
+     * // Delete one Like
+     * const Like = await prisma.like.delete({
+     *   where: {
+     *     // ... filter to delete one Like
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends LikeDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, LikeDeleteArgs<ExtArgs>>
+    ): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Like.
+     * @param {LikeUpdateArgs} args - Arguments to update one Like.
+     * @example
+     * // Update one Like
+     * const like = await prisma.like.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends LikeUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, LikeUpdateArgs<ExtArgs>>
+    ): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Likes.
+     * @param {LikeDeleteManyArgs} args - Arguments to filter Likes to delete.
+     * @example
+     * // Delete a few Likes
+     * const { count } = await prisma.like.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends LikeDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, LikeDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Likes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Likes
+     * const like = await prisma.like.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends LikeUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, LikeUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Like.
+     * @param {LikeUpsertArgs} args - Arguments to update or create a Like.
+     * @example
+     * // Update or create a Like
+     * const like = await prisma.like.upsert({
+     *   create: {
+     *     // ... data to create a Like
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Like we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends LikeUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, LikeUpsertArgs<ExtArgs>>
+    ): Prisma__LikeClient<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Likes that matches the filter.
+     * @param {LikeFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const like = await prisma.like.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+    **/
+    findRaw(
+      args?: LikeFindRawArgs
+    ): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Like.
+     * @param {LikeAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const like = await prisma.like.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+    **/
+    aggregateRaw(
+      args?: LikeAggregateRawArgs
+    ): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Count the number of Likes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikeCountArgs} args - Arguments to filter Likes to count.
+     * @example
+     * // Count the number of Likes
+     * const count = await prisma.like.count({
+     *   where: {
+     *     // ... the filter for the Likes we want to count
+     *   }
+     * })
+    **/
+    count<T extends LikeCountArgs>(
+      args?: Subset<T, LikeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LikeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Like.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LikeAggregateArgs>(args: Subset<T, LikeAggregateArgs>): Prisma.PrismaPromise<GetLikeAggregateType<T>>
+
+    /**
+     * Group by Like.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LikeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LikeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LikeGroupByArgs['orderBy'] }
+        : { orderBy?: LikeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LikeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLikeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Like model
+   */
+  readonly fields: LikeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Like.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LikeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+    Website<T extends Like$WebsiteArgs<ExtArgs> = {}>(args?: Subset<T, Like$WebsiteArgs<ExtArgs>>): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+
+    User<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
+
+    Artist<T extends Like$ArtistArgs<ExtArgs> = {}>(args?: Subset<T, Like$ArtistArgs<ExtArgs>>): Prisma__ArtistClient<$Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+
+    Movie<T extends Like$MovieArgs<ExtArgs> = {}>(args?: Subset<T, Like$MovieArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the Like model
+   */ 
+  interface LikeFieldRefs {
+    readonly id: FieldRef<"Like", 'String'>
+    readonly userId: FieldRef<"Like", 'String'>
+    readonly category: FieldRef<"Like", 'Category'>
+    readonly itemId: FieldRef<"Like", 'String'>
+    readonly timestamp: FieldRef<"Like", 'DateTime'>
+    readonly websiteId: FieldRef<"Like", 'String'>
+    readonly artistId: FieldRef<"Like", 'String'>
+    readonly movieId: FieldRef<"Like", 'String'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * Like findUnique
+   */
+  export type LikeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * Filter, which Like to fetch.
+     */
+    where: LikeWhereUniqueInput
+  }
+
+
+  /**
+   * Like findUniqueOrThrow
+   */
+  export type LikeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * Filter, which Like to fetch.
+     */
+    where: LikeWhereUniqueInput
+  }
+
+
+  /**
+   * Like findFirst
+   */
+  export type LikeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * Filter, which Like to fetch.
+     */
+    where?: LikeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Likes to fetch.
+     */
+    orderBy?: LikeOrderByWithRelationInput | LikeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Likes.
+     */
+    cursor?: LikeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Likes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Likes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Likes.
+     */
+    distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
+  }
+
+
+  /**
+   * Like findFirstOrThrow
+   */
+  export type LikeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * Filter, which Like to fetch.
+     */
+    where?: LikeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Likes to fetch.
+     */
+    orderBy?: LikeOrderByWithRelationInput | LikeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Likes.
+     */
+    cursor?: LikeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Likes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Likes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Likes.
+     */
+    distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
+  }
+
+
+  /**
+   * Like findMany
+   */
+  export type LikeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * Filter, which Likes to fetch.
+     */
+    where?: LikeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Likes to fetch.
+     */
+    orderBy?: LikeOrderByWithRelationInput | LikeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Likes.
+     */
+    cursor?: LikeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Likes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Likes.
+     */
+    skip?: number
+    distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
+  }
+
+
+  /**
+   * Like create
+   */
+  export type LikeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Like.
+     */
+    data: XOR<LikeCreateInput, LikeUncheckedCreateInput>
+  }
+
+
+  /**
+   * Like createMany
+   */
+  export type LikeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Likes.
+     */
+    data: LikeCreateManyInput | LikeCreateManyInput[]
+  }
+
+
+  /**
+   * Like update
+   */
+  export type LikeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Like.
+     */
+    data: XOR<LikeUpdateInput, LikeUncheckedUpdateInput>
+    /**
+     * Choose, which Like to update.
+     */
+    where: LikeWhereUniqueInput
+  }
+
+
+  /**
+   * Like updateMany
+   */
+  export type LikeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Likes.
+     */
+    data: XOR<LikeUpdateManyMutationInput, LikeUncheckedUpdateManyInput>
+    /**
+     * Filter which Likes to update
+     */
+    where?: LikeWhereInput
+  }
+
+
+  /**
+   * Like upsert
+   */
+  export type LikeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Like to update in case it exists.
+     */
+    where: LikeWhereUniqueInput
+    /**
+     * In case the Like found by the `where` argument doesn't exist, create a new Like with this data.
+     */
+    create: XOR<LikeCreateInput, LikeUncheckedCreateInput>
+    /**
+     * In case the Like was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LikeUpdateInput, LikeUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Like delete
+   */
+  export type LikeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    /**
+     * Filter which Like to delete.
+     */
+    where: LikeWhereUniqueInput
+  }
+
+
+  /**
+   * Like deleteMany
+   */
+  export type LikeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Likes to delete
+     */
+    where?: LikeWhereInput
+  }
+
+
+  /**
+   * Like findRaw
+   */
+  export type LikeFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Like aggregateRaw
+   */
+  export type LikeAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Like.Website
+   */
+  export type Like$WebsiteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Website
+     */
+    select?: WebsiteSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: WebsiteInclude<ExtArgs> | null
+    where?: WebsiteWhereInput
+  }
+
+
+  /**
+   * Like.Artist
+   */
+  export type Like$ArtistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Artist
+     */
+    select?: ArtistSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ArtistInclude<ExtArgs> | null
+    where?: ArtistWhereInput
+  }
+
+
+  /**
+   * Like.Movie
+   */
+  export type Like$MovieArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    where?: MovieWhereInput
+  }
+
+
+  /**
+   * Like without action
+   */
+  export type LikeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model Comment
+   */
+
+  export type AggregateComment = {
+    _count: CommentCountAggregateOutputType | null
+    _min: CommentMinAggregateOutputType | null
+    _max: CommentMaxAggregateOutputType | null
+  }
+
+  export type CommentMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    category: $Enums.Category | null
+    itemId: string | null
+    comment: string | null
+    timestamp: Date | null
+    websiteId: string | null
+    songId: string | null
+    artistId: string | null
+    movieId: string | null
+  }
+
+  export type CommentMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    category: $Enums.Category | null
+    itemId: string | null
+    comment: string | null
+    timestamp: Date | null
+    websiteId: string | null
+    songId: string | null
+    artistId: string | null
+    movieId: string | null
+  }
+
+  export type CommentCountAggregateOutputType = {
+    id: number
+    userId: number
+    category: number
+    itemId: number
+    comment: number
+    timestamp: number
+    websiteId: number
+    songId: number
+    artistId: number
+    movieId: number
+    _all: number
+  }
+
+
+  export type CommentMinAggregateInputType = {
+    id?: true
+    userId?: true
+    category?: true
+    itemId?: true
+    comment?: true
+    timestamp?: true
+    websiteId?: true
+    songId?: true
+    artistId?: true
+    movieId?: true
+  }
+
+  export type CommentMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    category?: true
+    itemId?: true
+    comment?: true
+    timestamp?: true
+    websiteId?: true
+    songId?: true
+    artistId?: true
+    movieId?: true
+  }
+
+  export type CommentCountAggregateInputType = {
+    id?: true
+    userId?: true
+    category?: true
+    itemId?: true
+    comment?: true
+    timestamp?: true
+    websiteId?: true
+    songId?: true
+    artistId?: true
+    movieId?: true
+    _all?: true
+  }
+
+  export type CommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Comment to aggregate.
+     */
+    where?: CommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Comments to fetch.
+     */
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Comments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Comments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Comments
+    **/
+    _count?: true | CommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CommentMaxAggregateInputType
+  }
+
+  export type GetCommentAggregateType<T extends CommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateComment[P]>
+      : GetScalarType<T[P], AggregateComment[P]>
+  }
+
+
+
+
+  export type CommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CommentWhereInput
+    orderBy?: CommentOrderByWithAggregationInput | CommentOrderByWithAggregationInput[]
+    by: CommentScalarFieldEnum[] | CommentScalarFieldEnum
+    having?: CommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CommentCountAggregateInputType | true
+    _min?: CommentMinAggregateInputType
+    _max?: CommentMaxAggregateInputType
+  }
+
+  export type CommentGroupByOutputType = {
+    id: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp: Date
+    websiteId: string | null
+    songId: string | null
+    artistId: string | null
+    movieId: string | null
+    _count: CommentCountAggregateOutputType | null
+    _min: CommentMinAggregateOutputType | null
+    _max: CommentMaxAggregateOutputType | null
+  }
+
+  type GetCommentGroupByPayload<T extends CommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CommentGroupByOutputType[P]>
+            : GetScalarType<T[P], CommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    category?: boolean
+    itemId?: boolean
+    comment?: boolean
+    timestamp?: boolean
+    websiteId?: boolean
+    songId?: boolean
+    artistId?: boolean
+    movieId?: boolean
+    website?: boolean | Comment$websiteArgs<ExtArgs>
+    Song?: boolean | Comment$SongArgs<ExtArgs>
+    Artist?: boolean | Comment$ArtistArgs<ExtArgs>
+    Movie?: boolean | Comment$MovieArgs<ExtArgs>
+  }, ExtArgs["result"]["comment"]>
+
+  export type CommentSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    category?: boolean
+    itemId?: boolean
+    comment?: boolean
+    timestamp?: boolean
+    websiteId?: boolean
+    songId?: boolean
+    artistId?: boolean
+    movieId?: boolean
+  }
+
+  export type CommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    website?: boolean | Comment$websiteArgs<ExtArgs>
+    Song?: boolean | Comment$SongArgs<ExtArgs>
+    Artist?: boolean | Comment$ArtistArgs<ExtArgs>
+    Movie?: boolean | Comment$MovieArgs<ExtArgs>
+  }
+
+
+  export type $CommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Comment"
+    objects: {
+      website: Prisma.$WebsitePayload<ExtArgs> | null
+      Song: Prisma.$SongPayload<ExtArgs> | null
+      Artist: Prisma.$ArtistPayload<ExtArgs> | null
+      Movie: Prisma.$MoviePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      category: $Enums.Category
+      itemId: string
+      comment: string
+      timestamp: Date
+      websiteId: string | null
+      songId: string | null
+      artistId: string | null
+      movieId: string | null
+    }, ExtArgs["result"]["comment"]>
+    composites: {}
+  }
+
+
+  type CommentGetPayload<S extends boolean | null | undefined | CommentDefaultArgs> = $Result.GetResult<Prisma.$CommentPayload, S>
+
+  type CommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<CommentFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: CommentCountAggregateInputType | true
+    }
+
+  export interface CommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Comment'], meta: { name: 'Comment' } }
+    /**
+     * Find zero or one Comment that matches the filter.
+     * @param {CommentFindUniqueArgs} args - Arguments to find a Comment
+     * @example
+     * // Get one Comment
+     * const comment = await prisma.comment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends CommentFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, CommentFindUniqueArgs<ExtArgs>>
+    ): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Comment that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {CommentFindUniqueOrThrowArgs} args - Arguments to find a Comment
+     * @example
+     * // Get one Comment
+     * const comment = await prisma.comment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends CommentFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, CommentFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Comment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentFindFirstArgs} args - Arguments to find a Comment
+     * @example
+     * // Get one Comment
+     * const comment = await prisma.comment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends CommentFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, CommentFindFirstArgs<ExtArgs>>
+    ): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Comment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentFindFirstOrThrowArgs} args - Arguments to find a Comment
+     * @example
+     * // Get one Comment
+     * const comment = await prisma.comment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends CommentFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, CommentFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Comments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Comments
+     * const comments = await prisma.comment.findMany()
+     * 
+     * // Get first 10 Comments
+     * const comments = await prisma.comment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const commentWithIdOnly = await prisma.comment.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends CommentFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, CommentFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Comment.
+     * @param {CommentCreateArgs} args - Arguments to create a Comment.
+     * @example
+     * // Create one Comment
+     * const Comment = await prisma.comment.create({
+     *   data: {
+     *     // ... data to create a Comment
+     *   }
+     * })
+     * 
+    **/
+    create<T extends CommentCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, CommentCreateArgs<ExtArgs>>
+    ): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Comments.
+     *     @param {CommentCreateManyArgs} args - Arguments to create many Comments.
+     *     @example
+     *     // Create many Comments
+     *     const comment = await prisma.comment.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends CommentCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, CommentCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Comment.
+     * @param {CommentDeleteArgs} args - Arguments to delete one Comment.
+     * @example
+     * // Delete one Comment
+     * const Comment = await prisma.comment.delete({
+     *   where: {
+     *     // ... filter to delete one Comment
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends CommentDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, CommentDeleteArgs<ExtArgs>>
+    ): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Comment.
+     * @param {CommentUpdateArgs} args - Arguments to update one Comment.
+     * @example
+     * // Update one Comment
+     * const comment = await prisma.comment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends CommentUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, CommentUpdateArgs<ExtArgs>>
+    ): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Comments.
+     * @param {CommentDeleteManyArgs} args - Arguments to filter Comments to delete.
+     * @example
+     * // Delete a few Comments
+     * const { count } = await prisma.comment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends CommentDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, CommentDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Comments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Comments
+     * const comment = await prisma.comment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends CommentUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, CommentUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Comment.
+     * @param {CommentUpsertArgs} args - Arguments to update or create a Comment.
+     * @example
+     * // Update or create a Comment
+     * const comment = await prisma.comment.upsert({
+     *   create: {
+     *     // ... data to create a Comment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Comment we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends CommentUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, CommentUpsertArgs<ExtArgs>>
+    ): Prisma__CommentClient<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Comments that matches the filter.
+     * @param {CommentFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const comment = await prisma.comment.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+    **/
+    findRaw(
+      args?: CommentFindRawArgs
+    ): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Comment.
+     * @param {CommentAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const comment = await prisma.comment.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+    **/
+    aggregateRaw(
+      args?: CommentAggregateRawArgs
+    ): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Count the number of Comments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentCountArgs} args - Arguments to filter Comments to count.
+     * @example
+     * // Count the number of Comments
+     * const count = await prisma.comment.count({
+     *   where: {
+     *     // ... the filter for the Comments we want to count
+     *   }
+     * })
+    **/
+    count<T extends CommentCountArgs>(
+      args?: Subset<T, CommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Comment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CommentAggregateArgs>(args: Subset<T, CommentAggregateArgs>): Prisma.PrismaPromise<GetCommentAggregateType<T>>
+
+    /**
+     * Group by Comment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CommentGroupByArgs['orderBy'] }
+        : { orderBy?: CommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Comment model
+   */
+  readonly fields: CommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Comment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+    website<T extends Comment$websiteArgs<ExtArgs> = {}>(args?: Subset<T, Comment$websiteArgs<ExtArgs>>): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+
+    Song<T extends Comment$SongArgs<ExtArgs> = {}>(args?: Subset<T, Comment$SongArgs<ExtArgs>>): Prisma__SongClient<$Result.GetResult<Prisma.$SongPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+
+    Artist<T extends Comment$ArtistArgs<ExtArgs> = {}>(args?: Subset<T, Comment$ArtistArgs<ExtArgs>>): Prisma__ArtistClient<$Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+
+    Movie<T extends Comment$MovieArgs<ExtArgs> = {}>(args?: Subset<T, Comment$MovieArgs<ExtArgs>>): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the Comment model
+   */ 
+  interface CommentFieldRefs {
+    readonly id: FieldRef<"Comment", 'String'>
+    readonly userId: FieldRef<"Comment", 'String'>
+    readonly category: FieldRef<"Comment", 'Category'>
+    readonly itemId: FieldRef<"Comment", 'String'>
+    readonly comment: FieldRef<"Comment", 'String'>
+    readonly timestamp: FieldRef<"Comment", 'DateTime'>
+    readonly websiteId: FieldRef<"Comment", 'String'>
+    readonly songId: FieldRef<"Comment", 'String'>
+    readonly artistId: FieldRef<"Comment", 'String'>
+    readonly movieId: FieldRef<"Comment", 'String'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * Comment findUnique
+   */
+  export type CommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comment to fetch.
+     */
+    where: CommentWhereUniqueInput
+  }
+
+
+  /**
+   * Comment findUniqueOrThrow
+   */
+  export type CommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comment to fetch.
+     */
+    where: CommentWhereUniqueInput
+  }
+
+
+  /**
+   * Comment findFirst
+   */
+  export type CommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comment to fetch.
+     */
+    where?: CommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Comments to fetch.
+     */
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Comments.
+     */
+    cursor?: CommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Comments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Comments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Comments.
+     */
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+
+  /**
+   * Comment findFirstOrThrow
+   */
+  export type CommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comment to fetch.
+     */
+    where?: CommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Comments to fetch.
+     */
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Comments.
+     */
+    cursor?: CommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Comments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Comments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Comments.
+     */
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+
+  /**
+   * Comment findMany
+   */
+  export type CommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter, which Comments to fetch.
+     */
+    where?: CommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Comments to fetch.
+     */
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Comments.
+     */
+    cursor?: CommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Comments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Comments.
+     */
+    skip?: number
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+
+  /**
+   * Comment create
+   */
+  export type CommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Comment.
+     */
+    data: XOR<CommentCreateInput, CommentUncheckedCreateInput>
+  }
+
+
+  /**
+   * Comment createMany
+   */
+  export type CommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Comments.
+     */
+    data: CommentCreateManyInput | CommentCreateManyInput[]
+  }
+
+
+  /**
+   * Comment update
+   */
+  export type CommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Comment.
+     */
+    data: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
+    /**
+     * Choose, which Comment to update.
+     */
+    where: CommentWhereUniqueInput
+  }
+
+
+  /**
+   * Comment updateMany
+   */
+  export type CommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Comments.
+     */
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyInput>
+    /**
+     * Filter which Comments to update
+     */
+    where?: CommentWhereInput
+  }
+
+
+  /**
+   * Comment upsert
+   */
+  export type CommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Comment to update in case it exists.
+     */
+    where: CommentWhereUniqueInput
+    /**
+     * In case the Comment found by the `where` argument doesn't exist, create a new Comment with this data.
+     */
+    create: XOR<CommentCreateInput, CommentUncheckedCreateInput>
+    /**
+     * In case the Comment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CommentUpdateInput, CommentUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Comment delete
+   */
+  export type CommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    /**
+     * Filter which Comment to delete.
+     */
+    where: CommentWhereUniqueInput
+  }
+
+
+  /**
+   * Comment deleteMany
+   */
+  export type CommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Comments to delete
+     */
+    where?: CommentWhereInput
+  }
+
+
+  /**
+   * Comment findRaw
+   */
+  export type CommentFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Comment aggregateRaw
+   */
+  export type CommentAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Comment.website
+   */
+  export type Comment$websiteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Website
+     */
+    select?: WebsiteSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: WebsiteInclude<ExtArgs> | null
+    where?: WebsiteWhereInput
+  }
+
+
+  /**
+   * Comment.Song
+   */
+  export type Comment$SongArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Song
+     */
+    select?: SongSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: SongInclude<ExtArgs> | null
+    where?: SongWhereInput
+  }
+
+
+  /**
+   * Comment.Artist
+   */
+  export type Comment$ArtistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Artist
+     */
+    select?: ArtistSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: ArtistInclude<ExtArgs> | null
+    where?: ArtistWhereInput
+  }
+
+
+  /**
+   * Comment.Movie
+   */
+  export type Comment$MovieArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    where?: MovieWhereInput
+  }
+
+
+  /**
+   * Comment without action
+   */
+  export type CommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model Card
+   */
+
+  export type AggregateCard = {
+    _count: CardCountAggregateOutputType | null
+    _avg: CardAvgAggregateOutputType | null
+    _sum: CardSumAggregateOutputType | null
+    _min: CardMinAggregateOutputType | null
+    _max: CardMaxAggregateOutputType | null
+  }
+
+  export type CardAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type CardSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type CardMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    cardId: string | null
+    amount: number | null
+    currency: string | null
+    transactionType: $Enums.TransactionType | null
+    status: $Enums.Status | null
+    timestamp: Date | null
+  }
+
+  export type CardMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    cardId: string | null
+    amount: number | null
+    currency: string | null
+    transactionType: $Enums.TransactionType | null
+    status: $Enums.Status | null
+    timestamp: Date | null
+  }
+
+  export type CardCountAggregateOutputType = {
+    id: number
+    userId: number
+    cardId: number
+    amount: number
+    currency: number
+    transactionType: number
+    status: number
+    timestamp: number
+    _all: number
+  }
+
+
+  export type CardAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type CardSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type CardMinAggregateInputType = {
+    id?: true
+    userId?: true
+    cardId?: true
+    amount?: true
+    currency?: true
+    transactionType?: true
+    status?: true
+    timestamp?: true
+  }
+
+  export type CardMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    cardId?: true
+    amount?: true
+    currency?: true
+    transactionType?: true
+    status?: true
+    timestamp?: true
+  }
+
+  export type CardCountAggregateInputType = {
+    id?: true
+    userId?: true
+    cardId?: true
+    amount?: true
+    currency?: true
+    transactionType?: true
+    status?: true
+    timestamp?: true
+    _all?: true
+  }
+
+  export type CardAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Card to aggregate.
+     */
+    where?: CardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cards to fetch.
+     */
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Cards
+    **/
+    _count?: true | CardCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CardAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CardSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CardMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CardMaxAggregateInputType
+  }
+
+  export type GetCardAggregateType<T extends CardAggregateArgs> = {
+        [P in keyof T & keyof AggregateCard]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCard[P]>
+      : GetScalarType<T[P], AggregateCard[P]>
+  }
+
+
+
+
+  export type CardGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CardWhereInput
+    orderBy?: CardOrderByWithAggregationInput | CardOrderByWithAggregationInput[]
+    by: CardScalarFieldEnum[] | CardScalarFieldEnum
+    having?: CardScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CardCountAggregateInputType | true
+    _avg?: CardAvgAggregateInputType
+    _sum?: CardSumAggregateInputType
+    _min?: CardMinAggregateInputType
+    _max?: CardMaxAggregateInputType
+  }
+
+  export type CardGroupByOutputType = {
+    id: string
+    userId: string
+    cardId: string
+    amount: number
+    currency: string
+    transactionType: $Enums.TransactionType
+    status: $Enums.Status
+    timestamp: Date
+    _count: CardCountAggregateOutputType | null
+    _avg: CardAvgAggregateOutputType | null
+    _sum: CardSumAggregateOutputType | null
+    _min: CardMinAggregateOutputType | null
+    _max: CardMaxAggregateOutputType | null
+  }
+
+  type GetCardGroupByPayload<T extends CardGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CardGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CardGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CardGroupByOutputType[P]>
+            : GetScalarType<T[P], CardGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CardSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    cardId?: boolean
+    amount?: boolean
+    currency?: boolean
+    transactionType?: boolean
+    status?: boolean
+    timestamp?: boolean
+  }, ExtArgs["result"]["card"]>
+
+  export type CardSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    cardId?: boolean
+    amount?: boolean
+    currency?: boolean
+    transactionType?: boolean
+    status?: boolean
+    timestamp?: boolean
+  }
+
+
+  export type $CardPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Card"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      cardId: string
+      amount: number
+      currency: string
+      transactionType: $Enums.TransactionType
+      status: $Enums.Status
+      timestamp: Date
+    }, ExtArgs["result"]["card"]>
+    composites: {}
+  }
+
+
+  type CardGetPayload<S extends boolean | null | undefined | CardDefaultArgs> = $Result.GetResult<Prisma.$CardPayload, S>
+
+  type CardCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<CardFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: CardCountAggregateInputType | true
+    }
+
+  export interface CardDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Card'], meta: { name: 'Card' } }
+    /**
+     * Find zero or one Card that matches the filter.
+     * @param {CardFindUniqueArgs} args - Arguments to find a Card
+     * @example
+     * // Get one Card
+     * const card = await prisma.card.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends CardFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, CardFindUniqueArgs<ExtArgs>>
+    ): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Card that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {CardFindUniqueOrThrowArgs} args - Arguments to find a Card
+     * @example
+     * // Get one Card
+     * const card = await prisma.card.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends CardFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, CardFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Card that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardFindFirstArgs} args - Arguments to find a Card
+     * @example
+     * // Get one Card
+     * const card = await prisma.card.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends CardFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, CardFindFirstArgs<ExtArgs>>
+    ): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Card that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardFindFirstOrThrowArgs} args - Arguments to find a Card
+     * @example
+     * // Get one Card
+     * const card = await prisma.card.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends CardFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, CardFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Cards that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Cards
+     * const cards = await prisma.card.findMany()
+     * 
+     * // Get first 10 Cards
+     * const cards = await prisma.card.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const cardWithIdOnly = await prisma.card.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends CardFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, CardFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Card.
+     * @param {CardCreateArgs} args - Arguments to create a Card.
+     * @example
+     * // Create one Card
+     * const Card = await prisma.card.create({
+     *   data: {
+     *     // ... data to create a Card
+     *   }
+     * })
+     * 
+    **/
+    create<T extends CardCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, CardCreateArgs<ExtArgs>>
+    ): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Cards.
+     *     @param {CardCreateManyArgs} args - Arguments to create many Cards.
+     *     @example
+     *     // Create many Cards
+     *     const card = await prisma.card.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends CardCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, CardCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Card.
+     * @param {CardDeleteArgs} args - Arguments to delete one Card.
+     * @example
+     * // Delete one Card
+     * const Card = await prisma.card.delete({
+     *   where: {
+     *     // ... filter to delete one Card
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends CardDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, CardDeleteArgs<ExtArgs>>
+    ): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Card.
+     * @param {CardUpdateArgs} args - Arguments to update one Card.
+     * @example
+     * // Update one Card
+     * const card = await prisma.card.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends CardUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, CardUpdateArgs<ExtArgs>>
+    ): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Cards.
+     * @param {CardDeleteManyArgs} args - Arguments to filter Cards to delete.
+     * @example
+     * // Delete a few Cards
+     * const { count } = await prisma.card.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends CardDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, CardDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Cards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Cards
+     * const card = await prisma.card.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends CardUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, CardUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Card.
+     * @param {CardUpsertArgs} args - Arguments to update or create a Card.
+     * @example
+     * // Update or create a Card
+     * const card = await prisma.card.upsert({
+     *   create: {
+     *     // ... data to create a Card
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Card we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends CardUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, CardUpsertArgs<ExtArgs>>
+    ): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Cards that matches the filter.
+     * @param {CardFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const card = await prisma.card.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+    **/
+    findRaw(
+      args?: CardFindRawArgs
+    ): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Card.
+     * @param {CardAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const card = await prisma.card.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+    **/
+    aggregateRaw(
+      args?: CardAggregateRawArgs
+    ): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Count the number of Cards.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardCountArgs} args - Arguments to filter Cards to count.
+     * @example
+     * // Count the number of Cards
+     * const count = await prisma.card.count({
+     *   where: {
+     *     // ... the filter for the Cards we want to count
+     *   }
+     * })
+    **/
+    count<T extends CardCountArgs>(
+      args?: Subset<T, CardCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CardCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Card.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CardAggregateArgs>(args: Subset<T, CardAggregateArgs>): Prisma.PrismaPromise<GetCardAggregateType<T>>
+
+    /**
+     * Group by Card.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CardGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CardGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CardGroupByArgs['orderBy'] }
+        : { orderBy?: CardGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CardGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCardGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Card model
+   */
+  readonly fields: CardFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Card.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CardClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the Card model
+   */ 
+  interface CardFieldRefs {
+    readonly id: FieldRef<"Card", 'String'>
+    readonly userId: FieldRef<"Card", 'String'>
+    readonly cardId: FieldRef<"Card", 'String'>
+    readonly amount: FieldRef<"Card", 'Int'>
+    readonly currency: FieldRef<"Card", 'String'>
+    readonly transactionType: FieldRef<"Card", 'TransactionType'>
+    readonly status: FieldRef<"Card", 'Status'>
+    readonly timestamp: FieldRef<"Card", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * Card findUnique
+   */
+  export type CardFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Filter, which Card to fetch.
+     */
+    where: CardWhereUniqueInput
+  }
+
+
+  /**
+   * Card findUniqueOrThrow
+   */
+  export type CardFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Filter, which Card to fetch.
+     */
+    where: CardWhereUniqueInput
+  }
+
+
+  /**
+   * Card findFirst
+   */
+  export type CardFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Filter, which Card to fetch.
+     */
+    where?: CardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cards to fetch.
+     */
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Cards.
+     */
+    cursor?: CardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Cards.
+     */
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+
+  /**
+   * Card findFirstOrThrow
+   */
+  export type CardFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Filter, which Card to fetch.
+     */
+    where?: CardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cards to fetch.
+     */
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Cards.
+     */
+    cursor?: CardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cards.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Cards.
+     */
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+
+  /**
+   * Card findMany
+   */
+  export type CardFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Filter, which Cards to fetch.
+     */
+    where?: CardWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Cards to fetch.
+     */
+    orderBy?: CardOrderByWithRelationInput | CardOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Cards.
+     */
+    cursor?: CardWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Cards from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Cards.
+     */
+    skip?: number
+    distinct?: CardScalarFieldEnum | CardScalarFieldEnum[]
+  }
+
+
+  /**
+   * Card create
+   */
+  export type CardCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * The data needed to create a Card.
+     */
+    data: XOR<CardCreateInput, CardUncheckedCreateInput>
+  }
+
+
+  /**
+   * Card createMany
+   */
+  export type CardCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Cards.
+     */
+    data: CardCreateManyInput | CardCreateManyInput[]
+  }
+
+
+  /**
+   * Card update
+   */
+  export type CardUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * The data needed to update a Card.
+     */
+    data: XOR<CardUpdateInput, CardUncheckedUpdateInput>
+    /**
+     * Choose, which Card to update.
+     */
+    where: CardWhereUniqueInput
+  }
+
+
+  /**
+   * Card updateMany
+   */
+  export type CardUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Cards.
+     */
+    data: XOR<CardUpdateManyMutationInput, CardUncheckedUpdateManyInput>
+    /**
+     * Filter which Cards to update
+     */
+    where?: CardWhereInput
+  }
+
+
+  /**
+   * Card upsert
+   */
+  export type CardUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * The filter to search for the Card to update in case it exists.
+     */
+    where: CardWhereUniqueInput
+    /**
+     * In case the Card found by the `where` argument doesn't exist, create a new Card with this data.
+     */
+    create: XOR<CardCreateInput, CardUncheckedCreateInput>
+    /**
+     * In case the Card was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CardUpdateInput, CardUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Card delete
+   */
+  export type CardDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+    /**
+     * Filter which Card to delete.
+     */
+    where: CardWhereUniqueInput
+  }
+
+
+  /**
+   * Card deleteMany
+   */
+  export type CardDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Cards to delete
+     */
+    where?: CardWhereInput
+  }
+
+
+  /**
+   * Card findRaw
+   */
+  export type CardFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Card aggregateRaw
+   */
+  export type CardAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Card without action
+   */
+  export type CardDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Card
+     */
+    select?: CardSelect<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model Movie
+   */
+
+  export type AggregateMovie = {
+    _count: MovieCountAggregateOutputType | null
+    _min: MovieMinAggregateOutputType | null
+    _max: MovieMaxAggregateOutputType | null
+  }
+
+  export type MovieMinAggregateOutputType = {
+    id: string | null
+    img: string | null
+    title: string | null
+    genre: string | null
+    description: string | null
+    releaseDate: string | null
+  }
+
+  export type MovieMaxAggregateOutputType = {
+    id: string | null
+    img: string | null
+    title: string | null
+    genre: string | null
+    description: string | null
+    releaseDate: string | null
+  }
+
+  export type MovieCountAggregateOutputType = {
+    id: number
+    img: number
+    title: number
+    genre: number
+    description: number
+    releaseDate: number
+    _all: number
+  }
+
+
+  export type MovieMinAggregateInputType = {
+    id?: true
+    img?: true
+    title?: true
+    genre?: true
+    description?: true
+    releaseDate?: true
+  }
+
+  export type MovieMaxAggregateInputType = {
+    id?: true
+    img?: true
+    title?: true
+    genre?: true
+    description?: true
+    releaseDate?: true
+  }
+
+  export type MovieCountAggregateInputType = {
+    id?: true
+    img?: true
+    title?: true
+    genre?: true
+    description?: true
+    releaseDate?: true
+    _all?: true
+  }
+
+  export type MovieAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Movie to aggregate.
+     */
+    where?: MovieWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Movies to fetch.
+     */
+    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MovieWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Movies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Movies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Movies
+    **/
+    _count?: true | MovieCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MovieMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MovieMaxAggregateInputType
+  }
+
+  export type GetMovieAggregateType<T extends MovieAggregateArgs> = {
+        [P in keyof T & keyof AggregateMovie]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMovie[P]>
+      : GetScalarType<T[P], AggregateMovie[P]>
+  }
+
+
+
+
+  export type MovieGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MovieWhereInput
+    orderBy?: MovieOrderByWithAggregationInput | MovieOrderByWithAggregationInput[]
+    by: MovieScalarFieldEnum[] | MovieScalarFieldEnum
+    having?: MovieScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MovieCountAggregateInputType | true
+    _min?: MovieMinAggregateInputType
+    _max?: MovieMaxAggregateInputType
+  }
+
+  export type MovieGroupByOutputType = {
+    id: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    _count: MovieCountAggregateOutputType | null
+    _min: MovieMinAggregateOutputType | null
+    _max: MovieMaxAggregateOutputType | null
+  }
+
+  type GetMovieGroupByPayload<T extends MovieGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MovieGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MovieGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MovieGroupByOutputType[P]>
+            : GetScalarType<T[P], MovieGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MovieSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    img?: boolean
+    title?: boolean
+    genre?: boolean
+    description?: boolean
+    releaseDate?: boolean
+    likes?: boolean | Movie$likesArgs<ExtArgs>
+    comments?: boolean | Movie$commentsArgs<ExtArgs>
+    _count?: boolean | MovieCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["movie"]>
+
+  export type MovieSelectScalar = {
+    id?: boolean
+    img?: boolean
+    title?: boolean
+    genre?: boolean
+    description?: boolean
+    releaseDate?: boolean
+  }
+
+  export type MovieInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    likes?: boolean | Movie$likesArgs<ExtArgs>
+    comments?: boolean | Movie$commentsArgs<ExtArgs>
+    _count?: boolean | MovieCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+
+  export type $MoviePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Movie"
+    objects: {
+      likes: Prisma.$LikePayload<ExtArgs>[]
+      comments: Prisma.$CommentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      img: string
+      title: string
+      genre: string
+      description: string
+      releaseDate: string
+    }, ExtArgs["result"]["movie"]>
+    composites: {}
+  }
+
+
+  type MovieGetPayload<S extends boolean | null | undefined | MovieDefaultArgs> = $Result.GetResult<Prisma.$MoviePayload, S>
+
+  type MovieCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<MovieFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: MovieCountAggregateInputType | true
+    }
+
+  export interface MovieDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Movie'], meta: { name: 'Movie' } }
+    /**
+     * Find zero or one Movie that matches the filter.
+     * @param {MovieFindUniqueArgs} args - Arguments to find a Movie
+     * @example
+     * // Get one Movie
+     * const movie = await prisma.movie.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends MovieFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, MovieFindUniqueArgs<ExtArgs>>
+    ): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+
+    /**
+     * Find one Movie that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {MovieFindUniqueOrThrowArgs} args - Arguments to find a Movie
+     * @example
+     * // Get one Movie
+     * const movie = await prisma.movie.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends MovieFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, MovieFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find the first Movie that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MovieFindFirstArgs} args - Arguments to find a Movie
+     * @example
+     * // Get one Movie
+     * const movie = await prisma.movie.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends MovieFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, MovieFindFirstArgs<ExtArgs>>
+    ): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+
+    /**
+     * Find the first Movie that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MovieFindFirstOrThrowArgs} args - Arguments to find a Movie
+     * @example
+     * // Get one Movie
+     * const movie = await prisma.movie.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends MovieFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, MovieFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Movies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MovieFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Movies
+     * const movies = await prisma.movie.findMany()
+     * 
+     * // Get first 10 Movies
+     * const movies = await prisma.movie.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const movieWithIdOnly = await prisma.movie.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends MovieFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, MovieFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'findMany'>>
+
+    /**
+     * Create a Movie.
+     * @param {MovieCreateArgs} args - Arguments to create a Movie.
+     * @example
+     * // Create one Movie
+     * const Movie = await prisma.movie.create({
+     *   data: {
+     *     // ... data to create a Movie
+     *   }
+     * })
+     * 
+    **/
+    create<T extends MovieCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, MovieCreateArgs<ExtArgs>>
+    ): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+
+    /**
+     * Create many Movies.
+     *     @param {MovieCreateManyArgs} args - Arguments to create many Movies.
+     *     @example
+     *     // Create many Movies
+     *     const movie = await prisma.movie.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends MovieCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, MovieCreateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Movie.
+     * @param {MovieDeleteArgs} args - Arguments to delete one Movie.
+     * @example
+     * // Delete one Movie
+     * const Movie = await prisma.movie.delete({
+     *   where: {
+     *     // ... filter to delete one Movie
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends MovieDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, MovieDeleteArgs<ExtArgs>>
+    ): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+
+    /**
+     * Update one Movie.
+     * @param {MovieUpdateArgs} args - Arguments to update one Movie.
+     * @example
+     * // Update one Movie
+     * const movie = await prisma.movie.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends MovieUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, MovieUpdateArgs<ExtArgs>>
+    ): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+
+    /**
+     * Delete zero or more Movies.
+     * @param {MovieDeleteManyArgs} args - Arguments to filter Movies to delete.
+     * @example
+     * // Delete a few Movies
+     * const { count } = await prisma.movie.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends MovieDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, MovieDeleteManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Movies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MovieUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Movies
+     * const movie = await prisma.movie.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends MovieUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, MovieUpdateManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Movie.
+     * @param {MovieUpsertArgs} args - Arguments to update or create a Movie.
+     * @example
+     * // Update or create a Movie
+     * const movie = await prisma.movie.upsert({
+     *   create: {
+     *     // ... data to create a Movie
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Movie we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends MovieUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, MovieUpsertArgs<ExtArgs>>
+    ): Prisma__MovieClient<$Result.GetResult<Prisma.$MoviePayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+
+    /**
+     * Find zero or more Movies that matches the filter.
+     * @param {MovieFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const movie = await prisma.movie.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+    **/
+    findRaw(
+      args?: MovieFindRawArgs
+    ): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Movie.
+     * @param {MovieAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const movie = await prisma.movie.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+    **/
+    aggregateRaw(
+      args?: MovieAggregateRawArgs
+    ): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Count the number of Movies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MovieCountArgs} args - Arguments to filter Movies to count.
+     * @example
+     * // Count the number of Movies
+     * const count = await prisma.movie.count({
+     *   where: {
+     *     // ... the filter for the Movies we want to count
+     *   }
+     * })
+    **/
+    count<T extends MovieCountArgs>(
+      args?: Subset<T, MovieCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MovieCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Movie.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MovieAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MovieAggregateArgs>(args: Subset<T, MovieAggregateArgs>): Prisma.PrismaPromise<GetMovieAggregateType<T>>
+
+    /**
+     * Group by Movie.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MovieGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MovieGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MovieGroupByArgs['orderBy'] }
+        : { orderBy?: MovieGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MovieGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMovieGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Movie model
+   */
+  readonly fields: MovieFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Movie.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MovieClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+
+    likes<T extends Movie$likesArgs<ExtArgs> = {}>(args?: Subset<T, Movie$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findMany'> | Null>;
+
+    comments<T extends Movie$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Movie$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findMany'> | Null>;
+
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+
+
+  /**
+   * Fields of the Movie model
+   */ 
+  interface MovieFieldRefs {
+    readonly id: FieldRef<"Movie", 'String'>
+    readonly img: FieldRef<"Movie", 'String'>
+    readonly title: FieldRef<"Movie", 'String'>
+    readonly genre: FieldRef<"Movie", 'String'>
+    readonly description: FieldRef<"Movie", 'String'>
+    readonly releaseDate: FieldRef<"Movie", 'String'>
+  }
+    
+
+  // Custom InputTypes
+
+  /**
+   * Movie findUnique
+   */
+  export type MovieFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * Filter, which Movie to fetch.
+     */
+    where: MovieWhereUniqueInput
+  }
+
+
+  /**
+   * Movie findUniqueOrThrow
+   */
+  export type MovieFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * Filter, which Movie to fetch.
+     */
+    where: MovieWhereUniqueInput
+  }
+
+
+  /**
+   * Movie findFirst
+   */
+  export type MovieFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * Filter, which Movie to fetch.
+     */
+    where?: MovieWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Movies to fetch.
+     */
+    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Movies.
+     */
+    cursor?: MovieWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Movies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Movies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Movies.
+     */
+    distinct?: MovieScalarFieldEnum | MovieScalarFieldEnum[]
+  }
+
+
+  /**
+   * Movie findFirstOrThrow
+   */
+  export type MovieFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * Filter, which Movie to fetch.
+     */
+    where?: MovieWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Movies to fetch.
+     */
+    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Movies.
+     */
+    cursor?: MovieWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Movies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Movies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Movies.
+     */
+    distinct?: MovieScalarFieldEnum | MovieScalarFieldEnum[]
+  }
+
+
+  /**
+   * Movie findMany
+   */
+  export type MovieFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * Filter, which Movies to fetch.
+     */
+    where?: MovieWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Movies to fetch.
+     */
+    orderBy?: MovieOrderByWithRelationInput | MovieOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Movies.
+     */
+    cursor?: MovieWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Movies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Movies.
+     */
+    skip?: number
+    distinct?: MovieScalarFieldEnum | MovieScalarFieldEnum[]
+  }
+
+
+  /**
+   * Movie create
+   */
+  export type MovieCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Movie.
+     */
+    data: XOR<MovieCreateInput, MovieUncheckedCreateInput>
+  }
+
+
+  /**
+   * Movie createMany
+   */
+  export type MovieCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Movies.
+     */
+    data: MovieCreateManyInput | MovieCreateManyInput[]
+  }
+
+
+  /**
+   * Movie update
+   */
+  export type MovieUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Movie.
+     */
+    data: XOR<MovieUpdateInput, MovieUncheckedUpdateInput>
+    /**
+     * Choose, which Movie to update.
+     */
+    where: MovieWhereUniqueInput
+  }
+
+
+  /**
+   * Movie updateMany
+   */
+  export type MovieUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Movies.
+     */
+    data: XOR<MovieUpdateManyMutationInput, MovieUncheckedUpdateManyInput>
+    /**
+     * Filter which Movies to update
+     */
+    where?: MovieWhereInput
+  }
+
+
+  /**
+   * Movie upsert
+   */
+  export type MovieUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Movie to update in case it exists.
+     */
+    where: MovieWhereUniqueInput
+    /**
+     * In case the Movie found by the `where` argument doesn't exist, create a new Movie with this data.
+     */
+    create: XOR<MovieCreateInput, MovieUncheckedCreateInput>
+    /**
+     * In case the Movie was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MovieUpdateInput, MovieUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Movie delete
+   */
+  export type MovieDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+    /**
+     * Filter which Movie to delete.
+     */
+    where: MovieWhereUniqueInput
+  }
+
+
+  /**
+   * Movie deleteMany
+   */
+  export type MovieDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Movies to delete
+     */
+    where?: MovieWhereInput
+  }
+
+
+  /**
+   * Movie findRaw
+   */
+  export type MovieFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Movie aggregateRaw
+   */
+  export type MovieAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Movie.likes
+   */
+  export type Movie$likesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Like
+     */
+    select?: LikeSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: LikeInclude<ExtArgs> | null
+    where?: LikeWhereInput
+    orderBy?: LikeOrderByWithRelationInput | LikeOrderByWithRelationInput[]
+    cursor?: LikeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
+  }
+
+
+  /**
+   * Movie.comments
+   */
+  export type Movie$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Comment
+     */
+    select?: CommentSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: CommentInclude<ExtArgs> | null
+    where?: CommentWhereInput
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    cursor?: CommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+
+  /**
+   * Movie without action
+   */
+  export type MovieDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Movie
+     */
+    select?: MovieSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: MovieInclude<ExtArgs> | null
+  }
+
+
+
+  /**
+   * Model Website
+   */
+
+  export type AggregateWebsite = {
+    _count: WebsiteCountAggregateOutputType | null
+    _min: WebsiteMinAggregateOutputType | null
+    _max: WebsiteMaxAggregateOutputType | null
+  }
+
+  export type WebsiteMinAggregateOutputType = {
     id: string | null
     img: string | null
     title: string | null
@@ -1916,10 +5999,9 @@ export namespace Prisma {
     description: string | null
     release_date: string | null
     link: string | null
-    likes: number | null
   }
 
-  export type WebsiteProjectMaxAggregateOutputType = {
+  export type WebsiteMaxAggregateOutputType = {
     id: string | null
     img: string | null
     title: string | null
@@ -1928,10 +6010,9 @@ export namespace Prisma {
     description: string | null
     release_date: string | null
     link: string | null
-    likes: number | null
   }
 
-  export type WebsiteProjectCountAggregateOutputType = {
+  export type WebsiteCountAggregateOutputType = {
     id: number
     img: number
     title: number
@@ -1940,20 +6021,11 @@ export namespace Prisma {
     description: number
     release_date: number
     link: number
-    likes: number
     _all: number
   }
 
 
-  export type WebsiteProjectAvgAggregateInputType = {
-    likes?: true
-  }
-
-  export type WebsiteProjectSumAggregateInputType = {
-    likes?: true
-  }
-
-  export type WebsiteProjectMinAggregateInputType = {
+  export type WebsiteMinAggregateInputType = {
     id?: true
     img?: true
     title?: true
@@ -1962,10 +6034,9 @@ export namespace Prisma {
     description?: true
     release_date?: true
     link?: true
-    likes?: true
   }
 
-  export type WebsiteProjectMaxAggregateInputType = {
+  export type WebsiteMaxAggregateInputType = {
     id?: true
     img?: true
     title?: true
@@ -1974,10 +6045,9 @@ export namespace Prisma {
     description?: true
     release_date?: true
     link?: true
-    likes?: true
   }
 
-  export type WebsiteProjectCountAggregateInputType = {
+  export type WebsiteCountAggregateInputType = {
     id?: true
     img?: true
     title?: true
@@ -1986,97 +6056,82 @@ export namespace Prisma {
     description?: true
     release_date?: true
     link?: true
-    likes?: true
     _all?: true
   }
 
-  export type WebsiteProjectAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which WebsiteProject to aggregate.
+     * Filter which Website to aggregate.
      */
-    where?: WebsiteProjectWhereInput
+    where?: WebsiteWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of WebsiteProjects to fetch.
+     * Determine the order of Websites to fetch.
      */
-    orderBy?: WebsiteProjectOrderByWithRelationInput | WebsiteProjectOrderByWithRelationInput[]
+    orderBy?: WebsiteOrderByWithRelationInput | WebsiteOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      */
-    cursor?: WebsiteProjectWhereUniqueInput
+    cursor?: WebsiteWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` WebsiteProjects from the position of the cursor.
+     * Take `±n` Websites from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` WebsiteProjects.
+     * Skip the first `n` Websites.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned WebsiteProjects
+     * Count returned Websites
     **/
-    _count?: true | WebsiteProjectCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: WebsiteProjectAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: WebsiteProjectSumAggregateInputType
+    _count?: true | WebsiteCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: WebsiteProjectMinAggregateInputType
+    _min?: WebsiteMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: WebsiteProjectMaxAggregateInputType
+    _max?: WebsiteMaxAggregateInputType
   }
 
-  export type GetWebsiteProjectAggregateType<T extends WebsiteProjectAggregateArgs> = {
-        [P in keyof T & keyof AggregateWebsiteProject]: P extends '_count' | 'count'
+  export type GetWebsiteAggregateType<T extends WebsiteAggregateArgs> = {
+        [P in keyof T & keyof AggregateWebsite]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateWebsiteProject[P]>
-      : GetScalarType<T[P], AggregateWebsiteProject[P]>
+        : GetScalarType<T[P], AggregateWebsite[P]>
+      : GetScalarType<T[P], AggregateWebsite[P]>
   }
 
 
 
 
-  export type WebsiteProjectGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WebsiteProjectWhereInput
-    orderBy?: WebsiteProjectOrderByWithAggregationInput | WebsiteProjectOrderByWithAggregationInput[]
-    by: WebsiteProjectScalarFieldEnum[] | WebsiteProjectScalarFieldEnum
-    having?: WebsiteProjectScalarWhereWithAggregatesInput
+  export type WebsiteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WebsiteWhereInput
+    orderBy?: WebsiteOrderByWithAggregationInput | WebsiteOrderByWithAggregationInput[]
+    by: WebsiteScalarFieldEnum[] | WebsiteScalarFieldEnum
+    having?: WebsiteScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: WebsiteProjectCountAggregateInputType | true
-    _avg?: WebsiteProjectAvgAggregateInputType
-    _sum?: WebsiteProjectSumAggregateInputType
-    _min?: WebsiteProjectMinAggregateInputType
-    _max?: WebsiteProjectMaxAggregateInputType
+    _count?: WebsiteCountAggregateInputType | true
+    _min?: WebsiteMinAggregateInputType
+    _max?: WebsiteMaxAggregateInputType
   }
 
-  export type WebsiteProjectGroupByOutputType = {
+  export type WebsiteGroupByOutputType = {
     id: string
     img: string
     title: string
@@ -2085,29 +6140,26 @@ export namespace Prisma {
     description: string
     release_date: string
     link: string
-    likes: number
-    _count: WebsiteProjectCountAggregateOutputType | null
-    _avg: WebsiteProjectAvgAggregateOutputType | null
-    _sum: WebsiteProjectSumAggregateOutputType | null
-    _min: WebsiteProjectMinAggregateOutputType | null
-    _max: WebsiteProjectMaxAggregateOutputType | null
+    _count: WebsiteCountAggregateOutputType | null
+    _min: WebsiteMinAggregateOutputType | null
+    _max: WebsiteMaxAggregateOutputType | null
   }
 
-  type GetWebsiteProjectGroupByPayload<T extends WebsiteProjectGroupByArgs> = Prisma.PrismaPromise<
+  type GetWebsiteGroupByPayload<T extends WebsiteGroupByArgs> = Prisma.PrismaPromise<
     Array<
-      PickEnumerable<WebsiteProjectGroupByOutputType, T['by']> &
+      PickEnumerable<WebsiteGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof WebsiteProjectGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof WebsiteGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], WebsiteProjectGroupByOutputType[P]>
-            : GetScalarType<T[P], WebsiteProjectGroupByOutputType[P]>
+              : GetScalarType<T[P], WebsiteGroupByOutputType[P]>
+            : GetScalarType<T[P], WebsiteGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type WebsiteProjectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+  export type WebsiteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     img?: boolean
     title?: boolean
@@ -2116,13 +6168,12 @@ export namespace Prisma {
     description?: boolean
     release_date?: boolean
     link?: boolean
-    likes?: boolean
-    comments?: boolean | WebsiteProject$commentsArgs<ExtArgs>
-    likedByUsers?: boolean | WebsiteProject$likedByUsersArgs<ExtArgs>
-    _count?: boolean | WebsiteProjectCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["websiteProject"]>
+    likes?: boolean | Website$likesArgs<ExtArgs>
+    comments?: boolean | Website$commentsArgs<ExtArgs>
+    _count?: boolean | WebsiteCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["website"]>
 
-  export type WebsiteProjectSelectScalar = {
+  export type WebsiteSelectScalar = {
     id?: boolean
     img?: boolean
     title?: boolean
@@ -2131,21 +6182,20 @@ export namespace Prisma {
     description?: boolean
     release_date?: boolean
     link?: boolean
-    likes?: boolean
   }
 
-  export type WebsiteProjectInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    comments?: boolean | WebsiteProject$commentsArgs<ExtArgs>
-    likedByUsers?: boolean | WebsiteProject$likedByUsersArgs<ExtArgs>
-    _count?: boolean | WebsiteProjectCountOutputTypeDefaultArgs<ExtArgs>
+  export type WebsiteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    likes?: boolean | Website$likesArgs<ExtArgs>
+    comments?: boolean | Website$commentsArgs<ExtArgs>
+    _count?: boolean | WebsiteCountOutputTypeDefaultArgs<ExtArgs>
   }
 
 
-  export type $WebsiteProjectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "WebsiteProject"
+  export type $WebsitePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Website"
     objects: {
-      comments: Prisma.$WebsiteProjectCommentPayload<ExtArgs>[]
-      likedByUsers: Prisma.$UserLikedWebsitePayload<ExtArgs>[]
+      likes: Prisma.$LikePayload<ExtArgs>[]
+      comments: Prisma.$CommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2156,161 +6206,160 @@ export namespace Prisma {
       description: string
       release_date: string
       link: string
-      likes: number
-    }, ExtArgs["result"]["websiteProject"]>
+    }, ExtArgs["result"]["website"]>
     composites: {}
   }
 
 
-  type WebsiteProjectGetPayload<S extends boolean | null | undefined | WebsiteProjectDefaultArgs> = $Result.GetResult<Prisma.$WebsiteProjectPayload, S>
+  type WebsiteGetPayload<S extends boolean | null | undefined | WebsiteDefaultArgs> = $Result.GetResult<Prisma.$WebsitePayload, S>
 
-  type WebsiteProjectCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<WebsiteProjectFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: WebsiteProjectCountAggregateInputType | true
+  type WebsiteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
+    Omit<WebsiteFindManyArgs, 'select' | 'include' | 'distinct'> & {
+      select?: WebsiteCountAggregateInputType | true
     }
 
-  export interface WebsiteProjectDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WebsiteProject'], meta: { name: 'WebsiteProject' } }
+  export interface WebsiteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Website'], meta: { name: 'Website' } }
     /**
-     * Find zero or one WebsiteProject that matches the filter.
-     * @param {WebsiteProjectFindUniqueArgs} args - Arguments to find a WebsiteProject
+     * Find zero or one Website that matches the filter.
+     * @param {WebsiteFindUniqueArgs} args - Arguments to find a Website
      * @example
-     * // Get one WebsiteProject
-     * const websiteProject = await prisma.websiteProject.findUnique({
+     * // Get one Website
+     * const website = await prisma.website.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends WebsiteProjectFindUniqueArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectFindUniqueArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
+    findUnique<T extends WebsiteFindUniqueArgs<ExtArgs>>(
+      args: SelectSubset<T, WebsiteFindUniqueArgs<ExtArgs>>
+    ): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
 
     /**
-     * Find one WebsiteProject that matches the filter or throw an error  with `error.code='P2025'` 
+     * Find one Website that matches the filter or throw an error  with `error.code='P2025'` 
      *     if no matches were found.
-     * @param {WebsiteProjectFindUniqueOrThrowArgs} args - Arguments to find a WebsiteProject
+     * @param {WebsiteFindUniqueOrThrowArgs} args - Arguments to find a Website
      * @example
-     * // Get one WebsiteProject
-     * const websiteProject = await prisma.websiteProject.findUniqueOrThrow({
+     * // Get one Website
+     * const website = await prisma.website.findUniqueOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUniqueOrThrow<T extends WebsiteProjectFindUniqueOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectFindUniqueOrThrowArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
+    findUniqueOrThrow<T extends WebsiteFindUniqueOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, WebsiteFindUniqueOrThrowArgs<ExtArgs>>
+    ): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
 
     /**
-     * Find the first WebsiteProject that matches the filter.
+     * Find the first Website that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectFindFirstArgs} args - Arguments to find a WebsiteProject
+     * @param {WebsiteFindFirstArgs} args - Arguments to find a Website
      * @example
-     * // Get one WebsiteProject
-     * const websiteProject = await prisma.websiteProject.findFirst({
+     * // Get one Website
+     * const website = await prisma.website.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends WebsiteProjectFindFirstArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectFindFirstArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
+    findFirst<T extends WebsiteFindFirstArgs<ExtArgs>>(
+      args?: SelectSubset<T, WebsiteFindFirstArgs<ExtArgs>>
+    ): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
 
     /**
-     * Find the first WebsiteProject that matches the filter or
+     * Find the first Website that matches the filter or
      * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectFindFirstOrThrowArgs} args - Arguments to find a WebsiteProject
+     * @param {WebsiteFindFirstOrThrowArgs} args - Arguments to find a Website
      * @example
-     * // Get one WebsiteProject
-     * const websiteProject = await prisma.websiteProject.findFirstOrThrow({
+     * // Get one Website
+     * const website = await prisma.website.findFirstOrThrow({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirstOrThrow<T extends WebsiteProjectFindFirstOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectFindFirstOrThrowArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
+    findFirstOrThrow<T extends WebsiteFindFirstOrThrowArgs<ExtArgs>>(
+      args?: SelectSubset<T, WebsiteFindFirstOrThrowArgs<ExtArgs>>
+    ): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
 
     /**
-     * Find zero or more WebsiteProjects that matches the filter.
+     * Find zero or more Websites that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {WebsiteFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all WebsiteProjects
-     * const websiteProjects = await prisma.websiteProject.findMany()
+     * // Get all Websites
+     * const websites = await prisma.website.findMany()
      * 
-     * // Get first 10 WebsiteProjects
-     * const websiteProjects = await prisma.websiteProject.findMany({ take: 10 })
+     * // Get first 10 Websites
+     * const websites = await prisma.website.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const websiteProjectWithIdOnly = await prisma.websiteProject.findMany({ select: { id: true } })
+     * const websiteWithIdOnly = await prisma.website.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends WebsiteProjectFindManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectFindManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'findMany'>>
+    findMany<T extends WebsiteFindManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, WebsiteFindManyArgs<ExtArgs>>
+    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'findMany'>>
 
     /**
-     * Create a WebsiteProject.
-     * @param {WebsiteProjectCreateArgs} args - Arguments to create a WebsiteProject.
+     * Create a Website.
+     * @param {WebsiteCreateArgs} args - Arguments to create a Website.
      * @example
-     * // Create one WebsiteProject
-     * const WebsiteProject = await prisma.websiteProject.create({
+     * // Create one Website
+     * const Website = await prisma.website.create({
      *   data: {
-     *     // ... data to create a WebsiteProject
+     *     // ... data to create a Website
      *   }
      * })
      * 
     **/
-    create<T extends WebsiteProjectCreateArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectCreateArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
+    create<T extends WebsiteCreateArgs<ExtArgs>>(
+      args: SelectSubset<T, WebsiteCreateArgs<ExtArgs>>
+    ): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'create'>, never, ExtArgs>
 
     /**
-     * Create many WebsiteProjects.
-     *     @param {WebsiteProjectCreateManyArgs} args - Arguments to create many WebsiteProjects.
+     * Create many Websites.
+     *     @param {WebsiteCreateManyArgs} args - Arguments to create many Websites.
      *     @example
-     *     // Create many WebsiteProjects
-     *     const websiteProject = await prisma.websiteProject.createMany({
+     *     // Create many Websites
+     *     const website = await prisma.website.createMany({
      *       data: {
      *         // ... provide data here
      *       }
      *     })
      *     
     **/
-    createMany<T extends WebsiteProjectCreateManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectCreateManyArgs<ExtArgs>>
+    createMany<T extends WebsiteCreateManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, WebsiteCreateManyArgs<ExtArgs>>
     ): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Delete a WebsiteProject.
-     * @param {WebsiteProjectDeleteArgs} args - Arguments to delete one WebsiteProject.
+     * Delete a Website.
+     * @param {WebsiteDeleteArgs} args - Arguments to delete one Website.
      * @example
-     * // Delete one WebsiteProject
-     * const WebsiteProject = await prisma.websiteProject.delete({
+     * // Delete one Website
+     * const Website = await prisma.website.delete({
      *   where: {
-     *     // ... filter to delete one WebsiteProject
+     *     // ... filter to delete one Website
      *   }
      * })
      * 
     **/
-    delete<T extends WebsiteProjectDeleteArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectDeleteArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
+    delete<T extends WebsiteDeleteArgs<ExtArgs>>(
+      args: SelectSubset<T, WebsiteDeleteArgs<ExtArgs>>
+    ): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
 
     /**
-     * Update one WebsiteProject.
-     * @param {WebsiteProjectUpdateArgs} args - Arguments to update one WebsiteProject.
+     * Update one Website.
+     * @param {WebsiteUpdateArgs} args - Arguments to update one Website.
      * @example
-     * // Update one WebsiteProject
-     * const websiteProject = await prisma.websiteProject.update({
+     * // Update one Website
+     * const website = await prisma.website.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2320,34 +6369,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends WebsiteProjectUpdateArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectUpdateArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
+    update<T extends WebsiteUpdateArgs<ExtArgs>>(
+      args: SelectSubset<T, WebsiteUpdateArgs<ExtArgs>>
+    ): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'update'>, never, ExtArgs>
 
     /**
-     * Delete zero or more WebsiteProjects.
-     * @param {WebsiteProjectDeleteManyArgs} args - Arguments to filter WebsiteProjects to delete.
+     * Delete zero or more Websites.
+     * @param {WebsiteDeleteManyArgs} args - Arguments to filter Websites to delete.
      * @example
-     * // Delete a few WebsiteProjects
-     * const { count } = await prisma.websiteProject.deleteMany({
+     * // Delete a few Websites
+     * const { count } = await prisma.website.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends WebsiteProjectDeleteManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectDeleteManyArgs<ExtArgs>>
+    deleteMany<T extends WebsiteDeleteManyArgs<ExtArgs>>(
+      args?: SelectSubset<T, WebsiteDeleteManyArgs<ExtArgs>>
     ): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more WebsiteProjects.
+     * Update zero or more Websites.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {WebsiteUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many WebsiteProjects
-     * const websiteProject = await prisma.websiteProject.updateMany({
+     * // Update many Websites
+     * const website = await prisma.website.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -2357,48 +6406,48 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends WebsiteProjectUpdateManyArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectUpdateManyArgs<ExtArgs>>
+    updateMany<T extends WebsiteUpdateManyArgs<ExtArgs>>(
+      args: SelectSubset<T, WebsiteUpdateManyArgs<ExtArgs>>
     ): Prisma.PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one WebsiteProject.
-     * @param {WebsiteProjectUpsertArgs} args - Arguments to update or create a WebsiteProject.
+     * Create or update one Website.
+     * @param {WebsiteUpsertArgs} args - Arguments to update or create a Website.
      * @example
-     * // Update or create a WebsiteProject
-     * const websiteProject = await prisma.websiteProject.upsert({
+     * // Update or create a Website
+     * const website = await prisma.website.upsert({
      *   create: {
-     *     // ... data to create a WebsiteProject
+     *     // ... data to create a Website
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the WebsiteProject we want to update
+     *     // ... the filter for the Website we want to update
      *   }
      * })
     **/
-    upsert<T extends WebsiteProjectUpsertArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectUpsertArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
+    upsert<T extends WebsiteUpsertArgs<ExtArgs>>(
+      args: SelectSubset<T, WebsiteUpsertArgs<ExtArgs>>
+    ): Prisma__WebsiteClient<$Result.GetResult<Prisma.$WebsitePayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
 
     /**
-     * Find zero or more WebsiteProjects that matches the filter.
-     * @param {WebsiteProjectFindRawArgs} args - Select which filters you would like to apply.
+     * Find zero or more Websites that matches the filter.
+     * @param {WebsiteFindRawArgs} args - Select which filters you would like to apply.
      * @example
-     * const websiteProject = await prisma.websiteProject.findRaw({
+     * const website = await prisma.website.findRaw({
      *   filter: { age: { $gt: 25 } } 
      * })
     **/
     findRaw(
-      args?: WebsiteProjectFindRawArgs
+      args?: WebsiteFindRawArgs
     ): Prisma.PrismaPromise<JsonObject>
 
     /**
-     * Perform aggregation operations on a WebsiteProject.
-     * @param {WebsiteProjectAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * Perform aggregation operations on a Website.
+     * @param {WebsiteAggregateRawArgs} args - Select which aggregations you would like to apply.
      * @example
-     * const websiteProject = await prisma.websiteProject.aggregateRaw({
+     * const website = await prisma.website.aggregateRaw({
      *   pipeline: [
      *     { $match: { status: "registered" } },
      *     { $group: { _id: "$country", total: { $sum: 1 } } }
@@ -2406,37 +6455,37 @@ export namespace Prisma {
      * })
     **/
     aggregateRaw(
-      args?: WebsiteProjectAggregateRawArgs
+      args?: WebsiteAggregateRawArgs
     ): Prisma.PrismaPromise<JsonObject>
 
     /**
-     * Count the number of WebsiteProjects.
+     * Count the number of Websites.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectCountArgs} args - Arguments to filter WebsiteProjects to count.
+     * @param {WebsiteCountArgs} args - Arguments to filter Websites to count.
      * @example
-     * // Count the number of WebsiteProjects
-     * const count = await prisma.websiteProject.count({
+     * // Count the number of Websites
+     * const count = await prisma.website.count({
      *   where: {
-     *     // ... the filter for the WebsiteProjects we want to count
+     *     // ... the filter for the Websites we want to count
      *   }
      * })
     **/
-    count<T extends WebsiteProjectCountArgs>(
-      args?: Subset<T, WebsiteProjectCountArgs>,
+    count<T extends WebsiteCountArgs>(
+      args?: Subset<T, WebsiteCountArgs>,
     ): Prisma.PrismaPromise<
       T extends $Utils.Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], WebsiteProjectCountAggregateOutputType>
+          : GetScalarType<T['select'], WebsiteCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a WebsiteProject.
+     * Allows you to perform aggregations operations on a Website.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {WebsiteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -2456,13 +6505,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends WebsiteProjectAggregateArgs>(args: Subset<T, WebsiteProjectAggregateArgs>): Prisma.PrismaPromise<GetWebsiteProjectAggregateType<T>>
+    aggregate<T extends WebsiteAggregateArgs>(args: Subset<T, WebsiteAggregateArgs>): Prisma.PrismaPromise<GetWebsiteAggregateType<T>>
 
     /**
-     * Group by WebsiteProject.
+     * Group by Website.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectGroupByArgs} args - Group by arguments.
+     * @param {WebsiteGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -2477,14 +6526,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends WebsiteProjectGroupByArgs,
+      T extends WebsiteGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: WebsiteProjectGroupByArgs['orderBy'] }
-        : { orderBy?: WebsiteProjectGroupByArgs['orderBy'] },
+        ? { orderBy: WebsiteGroupByArgs['orderBy'] }
+        : { orderBy?: WebsiteGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends MaybeTupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -2533,25 +6582,25 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, WebsiteProjectGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWebsiteProjectGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, WebsiteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWebsiteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
   /**
-   * Fields of the WebsiteProject model
+   * Fields of the Website model
    */
-  readonly fields: WebsiteProjectFieldRefs;
+  readonly fields: WebsiteFieldRefs;
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for WebsiteProject.
+   * The delegate class that acts as a "Promise-like" for Website.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export interface Prisma__WebsiteProjectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
+  export interface Prisma__WebsiteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    comments<T extends WebsiteProject$commentsArgs<ExtArgs> = {}>(args?: Subset<T, WebsiteProject$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'findMany'> | Null>;
+    likes<T extends Website$likesArgs<ExtArgs> = {}>(args?: Subset<T, Website$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findMany'> | Null>;
 
-    likedByUsers<T extends WebsiteProject$likedByUsersArgs<ExtArgs> = {}>(args?: Subset<T, WebsiteProject$likedByUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'findMany'> | Null>;
+    comments<T extends Website$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Website$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findMany'> | Null>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2578,332 +6627,331 @@ export namespace Prisma {
 
 
   /**
-   * Fields of the WebsiteProject model
+   * Fields of the Website model
    */ 
-  interface WebsiteProjectFieldRefs {
-    readonly id: FieldRef<"WebsiteProject", 'String'>
-    readonly img: FieldRef<"WebsiteProject", 'String'>
-    readonly title: FieldRef<"WebsiteProject", 'String'>
-    readonly genre: FieldRef<"WebsiteProject", 'String'>
-    readonly technologies: FieldRef<"WebsiteProject", 'String'>
-    readonly description: FieldRef<"WebsiteProject", 'String'>
-    readonly release_date: FieldRef<"WebsiteProject", 'String'>
-    readonly link: FieldRef<"WebsiteProject", 'String'>
-    readonly likes: FieldRef<"WebsiteProject", 'Int'>
+  interface WebsiteFieldRefs {
+    readonly id: FieldRef<"Website", 'String'>
+    readonly img: FieldRef<"Website", 'String'>
+    readonly title: FieldRef<"Website", 'String'>
+    readonly genre: FieldRef<"Website", 'String'>
+    readonly technologies: FieldRef<"Website", 'String'>
+    readonly description: FieldRef<"Website", 'String'>
+    readonly release_date: FieldRef<"Website", 'String'>
+    readonly link: FieldRef<"Website", 'String'>
   }
     
 
   // Custom InputTypes
 
   /**
-   * WebsiteProject findUnique
+   * Website findUnique
    */
-  export type WebsiteProjectFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * Filter, which WebsiteProject to fetch.
+     * Filter, which Website to fetch.
      */
-    where: WebsiteProjectWhereUniqueInput
+    where: WebsiteWhereUniqueInput
   }
 
 
   /**
-   * WebsiteProject findUniqueOrThrow
+   * Website findUniqueOrThrow
    */
-  export type WebsiteProjectFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * Filter, which WebsiteProject to fetch.
+     * Filter, which Website to fetch.
      */
-    where: WebsiteProjectWhereUniqueInput
+    where: WebsiteWhereUniqueInput
   }
 
 
   /**
-   * WebsiteProject findFirst
+   * Website findFirst
    */
-  export type WebsiteProjectFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * Filter, which WebsiteProject to fetch.
+     * Filter, which Website to fetch.
      */
-    where?: WebsiteProjectWhereInput
+    where?: WebsiteWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of WebsiteProjects to fetch.
+     * Determine the order of Websites to fetch.
      */
-    orderBy?: WebsiteProjectOrderByWithRelationInput | WebsiteProjectOrderByWithRelationInput[]
+    orderBy?: WebsiteOrderByWithRelationInput | WebsiteOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for WebsiteProjects.
+     * Sets the position for searching for Websites.
      */
-    cursor?: WebsiteProjectWhereUniqueInput
+    cursor?: WebsiteWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` WebsiteProjects from the position of the cursor.
+     * Take `±n` Websites from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` WebsiteProjects.
+     * Skip the first `n` Websites.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of WebsiteProjects.
+     * Filter by unique combinations of Websites.
      */
-    distinct?: WebsiteProjectScalarFieldEnum | WebsiteProjectScalarFieldEnum[]
+    distinct?: WebsiteScalarFieldEnum | WebsiteScalarFieldEnum[]
   }
 
 
   /**
-   * WebsiteProject findFirstOrThrow
+   * Website findFirstOrThrow
    */
-  export type WebsiteProjectFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * Filter, which WebsiteProject to fetch.
+     * Filter, which Website to fetch.
      */
-    where?: WebsiteProjectWhereInput
+    where?: WebsiteWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of WebsiteProjects to fetch.
+     * Determine the order of Websites to fetch.
      */
-    orderBy?: WebsiteProjectOrderByWithRelationInput | WebsiteProjectOrderByWithRelationInput[]
+    orderBy?: WebsiteOrderByWithRelationInput | WebsiteOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for WebsiteProjects.
+     * Sets the position for searching for Websites.
      */
-    cursor?: WebsiteProjectWhereUniqueInput
+    cursor?: WebsiteWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` WebsiteProjects from the position of the cursor.
+     * Take `±n` Websites from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` WebsiteProjects.
+     * Skip the first `n` Websites.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of WebsiteProjects.
+     * Filter by unique combinations of Websites.
      */
-    distinct?: WebsiteProjectScalarFieldEnum | WebsiteProjectScalarFieldEnum[]
+    distinct?: WebsiteScalarFieldEnum | WebsiteScalarFieldEnum[]
   }
 
 
   /**
-   * WebsiteProject findMany
+   * Website findMany
    */
-  export type WebsiteProjectFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * Filter, which WebsiteProjects to fetch.
+     * Filter, which Websites to fetch.
      */
-    where?: WebsiteProjectWhereInput
+    where?: WebsiteWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of WebsiteProjects to fetch.
+     * Determine the order of Websites to fetch.
      */
-    orderBy?: WebsiteProjectOrderByWithRelationInput | WebsiteProjectOrderByWithRelationInput[]
+    orderBy?: WebsiteOrderByWithRelationInput | WebsiteOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing WebsiteProjects.
+     * Sets the position for listing Websites.
      */
-    cursor?: WebsiteProjectWhereUniqueInput
+    cursor?: WebsiteWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` WebsiteProjects from the position of the cursor.
+     * Take `±n` Websites from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` WebsiteProjects.
+     * Skip the first `n` Websites.
      */
     skip?: number
-    distinct?: WebsiteProjectScalarFieldEnum | WebsiteProjectScalarFieldEnum[]
+    distinct?: WebsiteScalarFieldEnum | WebsiteScalarFieldEnum[]
   }
 
 
   /**
-   * WebsiteProject create
+   * Website create
    */
-  export type WebsiteProjectCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * The data needed to create a WebsiteProject.
+     * The data needed to create a Website.
      */
-    data: XOR<WebsiteProjectCreateInput, WebsiteProjectUncheckedCreateInput>
+    data: XOR<WebsiteCreateInput, WebsiteUncheckedCreateInput>
   }
 
 
   /**
-   * WebsiteProject createMany
+   * Website createMany
    */
-  export type WebsiteProjectCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to create many WebsiteProjects.
+     * The data used to create many Websites.
      */
-    data: WebsiteProjectCreateManyInput | WebsiteProjectCreateManyInput[]
+    data: WebsiteCreateManyInput | WebsiteCreateManyInput[]
   }
 
 
   /**
-   * WebsiteProject update
+   * Website update
    */
-  export type WebsiteProjectUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * The data needed to update a WebsiteProject.
+     * The data needed to update a Website.
      */
-    data: XOR<WebsiteProjectUpdateInput, WebsiteProjectUncheckedUpdateInput>
+    data: XOR<WebsiteUpdateInput, WebsiteUncheckedUpdateInput>
     /**
-     * Choose, which WebsiteProject to update.
+     * Choose, which Website to update.
      */
-    where: WebsiteProjectWhereUniqueInput
+    where: WebsiteWhereUniqueInput
   }
 
 
   /**
-   * WebsiteProject updateMany
+   * Website updateMany
    */
-  export type WebsiteProjectUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * The data used to update WebsiteProjects.
+     * The data used to update Websites.
      */
-    data: XOR<WebsiteProjectUpdateManyMutationInput, WebsiteProjectUncheckedUpdateManyInput>
+    data: XOR<WebsiteUpdateManyMutationInput, WebsiteUncheckedUpdateManyInput>
     /**
-     * Filter which WebsiteProjects to update
+     * Filter which Websites to update
      */
-    where?: WebsiteProjectWhereInput
+    where?: WebsiteWhereInput
   }
 
 
   /**
-   * WebsiteProject upsert
+   * Website upsert
    */
-  export type WebsiteProjectUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * The filter to search for the WebsiteProject to update in case it exists.
+     * The filter to search for the Website to update in case it exists.
      */
-    where: WebsiteProjectWhereUniqueInput
+    where: WebsiteWhereUniqueInput
     /**
-     * In case the WebsiteProject found by the `where` argument doesn't exist, create a new WebsiteProject with this data.
+     * In case the Website found by the `where` argument doesn't exist, create a new Website with this data.
      */
-    create: XOR<WebsiteProjectCreateInput, WebsiteProjectUncheckedCreateInput>
+    create: XOR<WebsiteCreateInput, WebsiteUncheckedCreateInput>
     /**
-     * In case the WebsiteProject was found with the provided `where` argument, update it with this data.
+     * In case the Website was found with the provided `where` argument, update it with this data.
      */
-    update: XOR<WebsiteProjectUpdateInput, WebsiteProjectUncheckedUpdateInput>
+    update: XOR<WebsiteUpdateInput, WebsiteUncheckedUpdateInput>
   }
 
 
   /**
-   * WebsiteProject delete
+   * Website delete
    */
-  export type WebsiteProjectDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
     /**
-     * Filter which WebsiteProject to delete.
+     * Filter which Website to delete.
      */
-    where: WebsiteProjectWhereUniqueInput
+    where: WebsiteWhereUniqueInput
   }
 
 
   /**
-   * WebsiteProject deleteMany
+   * Website deleteMany
    */
-  export type WebsiteProjectDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Filter which WebsiteProjects to delete
+     * Filter which Websites to delete
      */
-    where?: WebsiteProjectWhereInput
+    where?: WebsiteWhereInput
   }
 
 
   /**
-   * WebsiteProject findRaw
+   * Website findRaw
    */
-  export type WebsiteProjectFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
      */
@@ -2916,9 +6964,9 @@ export namespace Prisma {
 
 
   /**
-   * WebsiteProject aggregateRaw
+   * Website aggregateRaw
    */
-  export type WebsiteProjectAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
      */
@@ -2931,1056 +6979,59 @@ export namespace Prisma {
 
 
   /**
-   * WebsiteProject.comments
+   * Website.likes
    */
-  export type WebsiteProject$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Website$likesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProjectComment
+     * Select specific fields to fetch from the Like
      */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
+    select?: LikeSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    where?: WebsiteProjectCommentWhereInput
-    orderBy?: WebsiteProjectCommentOrderByWithRelationInput | WebsiteProjectCommentOrderByWithRelationInput[]
-    cursor?: WebsiteProjectCommentWhereUniqueInput
+    include?: LikeInclude<ExtArgs> | null
+    where?: LikeWhereInput
+    orderBy?: LikeOrderByWithRelationInput | LikeOrderByWithRelationInput[]
+    cursor?: LikeWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: WebsiteProjectCommentScalarFieldEnum | WebsiteProjectCommentScalarFieldEnum[]
+    distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
   }
 
 
   /**
-   * WebsiteProject.likedByUsers
+   * Website.comments
    */
-  export type WebsiteProject$likedByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Website$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserLikedWebsite
+     * Select specific fields to fetch from the Comment
      */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
+    select?: CommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    where?: UserLikedWebsiteWhereInput
-    orderBy?: UserLikedWebsiteOrderByWithRelationInput | UserLikedWebsiteOrderByWithRelationInput[]
-    cursor?: UserLikedWebsiteWhereUniqueInput
+    include?: CommentInclude<ExtArgs> | null
+    where?: CommentWhereInput
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    cursor?: CommentWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserLikedWebsiteScalarFieldEnum | UserLikedWebsiteScalarFieldEnum[]
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
   }
 
 
   /**
-   * WebsiteProject without action
+   * Website without action
    */
-  export type WebsiteProjectDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type WebsiteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the WebsiteProject
+     * Select specific fields to fetch from the Website
      */
-    select?: WebsiteProjectSelect<ExtArgs> | null
+    select?: WebsiteSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: WebsiteProjectInclude<ExtArgs> | null
-  }
-
-
-
-  /**
-   * Model WebsiteProjectComment
-   */
-
-  export type AggregateWebsiteProjectComment = {
-    _count: WebsiteProjectCommentCountAggregateOutputType | null
-    _avg: WebsiteProjectCommentAvgAggregateOutputType | null
-    _sum: WebsiteProjectCommentSumAggregateOutputType | null
-    _min: WebsiteProjectCommentMinAggregateOutputType | null
-    _max: WebsiteProjectCommentMaxAggregateOutputType | null
-  }
-
-  export type WebsiteProjectCommentAvgAggregateOutputType = {
-    likes: number | null
-  }
-
-  export type WebsiteProjectCommentSumAggregateOutputType = {
-    likes: number | null
-  }
-
-  export type WebsiteProjectCommentMinAggregateOutputType = {
-    id: string | null
-    comment: string | null
-    websiteProjectId: string | null
-    likes: number | null
-  }
-
-  export type WebsiteProjectCommentMaxAggregateOutputType = {
-    id: string | null
-    comment: string | null
-    websiteProjectId: string | null
-    likes: number | null
-  }
-
-  export type WebsiteProjectCommentCountAggregateOutputType = {
-    id: number
-    comment: number
-    websiteProjectId: number
-    likes: number
-    _all: number
-  }
-
-
-  export type WebsiteProjectCommentAvgAggregateInputType = {
-    likes?: true
-  }
-
-  export type WebsiteProjectCommentSumAggregateInputType = {
-    likes?: true
-  }
-
-  export type WebsiteProjectCommentMinAggregateInputType = {
-    id?: true
-    comment?: true
-    websiteProjectId?: true
-    likes?: true
-  }
-
-  export type WebsiteProjectCommentMaxAggregateInputType = {
-    id?: true
-    comment?: true
-    websiteProjectId?: true
-    likes?: true
-  }
-
-  export type WebsiteProjectCommentCountAggregateInputType = {
-    id?: true
-    comment?: true
-    websiteProjectId?: true
-    likes?: true
-    _all?: true
-  }
-
-  export type WebsiteProjectCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which WebsiteProjectComment to aggregate.
-     */
-    where?: WebsiteProjectCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of WebsiteProjectComments to fetch.
-     */
-    orderBy?: WebsiteProjectCommentOrderByWithRelationInput | WebsiteProjectCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: WebsiteProjectCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` WebsiteProjectComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` WebsiteProjectComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned WebsiteProjectComments
-    **/
-    _count?: true | WebsiteProjectCommentCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: WebsiteProjectCommentAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: WebsiteProjectCommentSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: WebsiteProjectCommentMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: WebsiteProjectCommentMaxAggregateInputType
-  }
-
-  export type GetWebsiteProjectCommentAggregateType<T extends WebsiteProjectCommentAggregateArgs> = {
-        [P in keyof T & keyof AggregateWebsiteProjectComment]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateWebsiteProjectComment[P]>
-      : GetScalarType<T[P], AggregateWebsiteProjectComment[P]>
-  }
-
-
-
-
-  export type WebsiteProjectCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WebsiteProjectCommentWhereInput
-    orderBy?: WebsiteProjectCommentOrderByWithAggregationInput | WebsiteProjectCommentOrderByWithAggregationInput[]
-    by: WebsiteProjectCommentScalarFieldEnum[] | WebsiteProjectCommentScalarFieldEnum
-    having?: WebsiteProjectCommentScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: WebsiteProjectCommentCountAggregateInputType | true
-    _avg?: WebsiteProjectCommentAvgAggregateInputType
-    _sum?: WebsiteProjectCommentSumAggregateInputType
-    _min?: WebsiteProjectCommentMinAggregateInputType
-    _max?: WebsiteProjectCommentMaxAggregateInputType
-  }
-
-  export type WebsiteProjectCommentGroupByOutputType = {
-    id: string
-    comment: string
-    websiteProjectId: string
-    likes: number
-    _count: WebsiteProjectCommentCountAggregateOutputType | null
-    _avg: WebsiteProjectCommentAvgAggregateOutputType | null
-    _sum: WebsiteProjectCommentSumAggregateOutputType | null
-    _min: WebsiteProjectCommentMinAggregateOutputType | null
-    _max: WebsiteProjectCommentMaxAggregateOutputType | null
-  }
-
-  type GetWebsiteProjectCommentGroupByPayload<T extends WebsiteProjectCommentGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<WebsiteProjectCommentGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof WebsiteProjectCommentGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], WebsiteProjectCommentGroupByOutputType[P]>
-            : GetScalarType<T[P], WebsiteProjectCommentGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type WebsiteProjectCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    comment?: boolean
-    websiteProjectId?: boolean
-    likes?: boolean
-    websiteProject?: boolean | WebsiteProjectDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["websiteProjectComment"]>
-
-  export type WebsiteProjectCommentSelectScalar = {
-    id?: boolean
-    comment?: boolean
-    websiteProjectId?: boolean
-    likes?: boolean
-  }
-
-  export type WebsiteProjectCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    websiteProject?: boolean | WebsiteProjectDefaultArgs<ExtArgs>
-  }
-
-
-  export type $WebsiteProjectCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "WebsiteProjectComment"
-    objects: {
-      websiteProject: Prisma.$WebsiteProjectPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      comment: string
-      websiteProjectId: string
-      likes: number
-    }, ExtArgs["result"]["websiteProjectComment"]>
-    composites: {}
-  }
-
-
-  type WebsiteProjectCommentGetPayload<S extends boolean | null | undefined | WebsiteProjectCommentDefaultArgs> = $Result.GetResult<Prisma.$WebsiteProjectCommentPayload, S>
-
-  type WebsiteProjectCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<WebsiteProjectCommentFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: WebsiteProjectCommentCountAggregateInputType | true
-    }
-
-  export interface WebsiteProjectCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WebsiteProjectComment'], meta: { name: 'WebsiteProjectComment' } }
-    /**
-     * Find zero or one WebsiteProjectComment that matches the filter.
-     * @param {WebsiteProjectCommentFindUniqueArgs} args - Arguments to find a WebsiteProjectComment
-     * @example
-     * // Get one WebsiteProjectComment
-     * const websiteProjectComment = await prisma.websiteProjectComment.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends WebsiteProjectCommentFindUniqueArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectCommentFindUniqueArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectCommentClient<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
-
-    /**
-     * Find one WebsiteProjectComment that matches the filter or throw an error  with `error.code='P2025'` 
-     *     if no matches were found.
-     * @param {WebsiteProjectCommentFindUniqueOrThrowArgs} args - Arguments to find a WebsiteProjectComment
-     * @example
-     * // Get one WebsiteProjectComment
-     * const websiteProjectComment = await prisma.websiteProjectComment.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends WebsiteProjectCommentFindUniqueOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectCommentFindUniqueOrThrowArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectCommentClient<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find the first WebsiteProjectComment that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectCommentFindFirstArgs} args - Arguments to find a WebsiteProjectComment
-     * @example
-     * // Get one WebsiteProjectComment
-     * const websiteProjectComment = await prisma.websiteProjectComment.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends WebsiteProjectCommentFindFirstArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectCommentFindFirstArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectCommentClient<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
-
-    /**
-     * Find the first WebsiteProjectComment that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectCommentFindFirstOrThrowArgs} args - Arguments to find a WebsiteProjectComment
-     * @example
-     * // Get one WebsiteProjectComment
-     * const websiteProjectComment = await prisma.websiteProjectComment.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends WebsiteProjectCommentFindFirstOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectCommentFindFirstOrThrowArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectCommentClient<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find zero or more WebsiteProjectComments that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectCommentFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all WebsiteProjectComments
-     * const websiteProjectComments = await prisma.websiteProjectComment.findMany()
-     * 
-     * // Get first 10 WebsiteProjectComments
-     * const websiteProjectComments = await prisma.websiteProjectComment.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const websiteProjectCommentWithIdOnly = await prisma.websiteProjectComment.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends WebsiteProjectCommentFindManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectCommentFindManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'findMany'>>
-
-    /**
-     * Create a WebsiteProjectComment.
-     * @param {WebsiteProjectCommentCreateArgs} args - Arguments to create a WebsiteProjectComment.
-     * @example
-     * // Create one WebsiteProjectComment
-     * const WebsiteProjectComment = await prisma.websiteProjectComment.create({
-     *   data: {
-     *     // ... data to create a WebsiteProjectComment
-     *   }
-     * })
-     * 
-    **/
-    create<T extends WebsiteProjectCommentCreateArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectCommentCreateArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectCommentClient<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
-
-    /**
-     * Create many WebsiteProjectComments.
-     *     @param {WebsiteProjectCommentCreateManyArgs} args - Arguments to create many WebsiteProjectComments.
-     *     @example
-     *     // Create many WebsiteProjectComments
-     *     const websiteProjectComment = await prisma.websiteProjectComment.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends WebsiteProjectCommentCreateManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectCommentCreateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a WebsiteProjectComment.
-     * @param {WebsiteProjectCommentDeleteArgs} args - Arguments to delete one WebsiteProjectComment.
-     * @example
-     * // Delete one WebsiteProjectComment
-     * const WebsiteProjectComment = await prisma.websiteProjectComment.delete({
-     *   where: {
-     *     // ... filter to delete one WebsiteProjectComment
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends WebsiteProjectCommentDeleteArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectCommentDeleteArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectCommentClient<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
-
-    /**
-     * Update one WebsiteProjectComment.
-     * @param {WebsiteProjectCommentUpdateArgs} args - Arguments to update one WebsiteProjectComment.
-     * @example
-     * // Update one WebsiteProjectComment
-     * const websiteProjectComment = await prisma.websiteProjectComment.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends WebsiteProjectCommentUpdateArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectCommentUpdateArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectCommentClient<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
-
-    /**
-     * Delete zero or more WebsiteProjectComments.
-     * @param {WebsiteProjectCommentDeleteManyArgs} args - Arguments to filter WebsiteProjectComments to delete.
-     * @example
-     * // Delete a few WebsiteProjectComments
-     * const { count } = await prisma.websiteProjectComment.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends WebsiteProjectCommentDeleteManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, WebsiteProjectCommentDeleteManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more WebsiteProjectComments.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectCommentUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many WebsiteProjectComments
-     * const websiteProjectComment = await prisma.websiteProjectComment.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends WebsiteProjectCommentUpdateManyArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectCommentUpdateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one WebsiteProjectComment.
-     * @param {WebsiteProjectCommentUpsertArgs} args - Arguments to update or create a WebsiteProjectComment.
-     * @example
-     * // Update or create a WebsiteProjectComment
-     * const websiteProjectComment = await prisma.websiteProjectComment.upsert({
-     *   create: {
-     *     // ... data to create a WebsiteProjectComment
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the WebsiteProjectComment we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends WebsiteProjectCommentUpsertArgs<ExtArgs>>(
-      args: SelectSubset<T, WebsiteProjectCommentUpsertArgs<ExtArgs>>
-    ): Prisma__WebsiteProjectCommentClient<$Result.GetResult<Prisma.$WebsiteProjectCommentPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
-
-    /**
-     * Find zero or more WebsiteProjectComments that matches the filter.
-     * @param {WebsiteProjectCommentFindRawArgs} args - Select which filters you would like to apply.
-     * @example
-     * const websiteProjectComment = await prisma.websiteProjectComment.findRaw({
-     *   filter: { age: { $gt: 25 } } 
-     * })
-    **/
-    findRaw(
-      args?: WebsiteProjectCommentFindRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Perform aggregation operations on a WebsiteProjectComment.
-     * @param {WebsiteProjectCommentAggregateRawArgs} args - Select which aggregations you would like to apply.
-     * @example
-     * const websiteProjectComment = await prisma.websiteProjectComment.aggregateRaw({
-     *   pipeline: [
-     *     { $match: { status: "registered" } },
-     *     { $group: { _id: "$country", total: { $sum: 1 } } }
-     *   ]
-     * })
-    **/
-    aggregateRaw(
-      args?: WebsiteProjectCommentAggregateRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Count the number of WebsiteProjectComments.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectCommentCountArgs} args - Arguments to filter WebsiteProjectComments to count.
-     * @example
-     * // Count the number of WebsiteProjectComments
-     * const count = await prisma.websiteProjectComment.count({
-     *   where: {
-     *     // ... the filter for the WebsiteProjectComments we want to count
-     *   }
-     * })
-    **/
-    count<T extends WebsiteProjectCommentCountArgs>(
-      args?: Subset<T, WebsiteProjectCommentCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], WebsiteProjectCommentCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a WebsiteProjectComment.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends WebsiteProjectCommentAggregateArgs>(args: Subset<T, WebsiteProjectCommentAggregateArgs>): Prisma.PrismaPromise<GetWebsiteProjectCommentAggregateType<T>>
-
-    /**
-     * Group by WebsiteProjectComment.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {WebsiteProjectCommentGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends WebsiteProjectCommentGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: WebsiteProjectCommentGroupByArgs['orderBy'] }
-        : { orderBy?: WebsiteProjectCommentGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, WebsiteProjectCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWebsiteProjectCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the WebsiteProjectComment model
-   */
-  readonly fields: WebsiteProjectCommentFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for WebsiteProjectComment.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__WebsiteProjectCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: 'PrismaPromise';
-
-    websiteProject<T extends WebsiteProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WebsiteProjectDefaultArgs<ExtArgs>>): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
-  }
-
-
-
-  /**
-   * Fields of the WebsiteProjectComment model
-   */ 
-  interface WebsiteProjectCommentFieldRefs {
-    readonly id: FieldRef<"WebsiteProjectComment", 'String'>
-    readonly comment: FieldRef<"WebsiteProjectComment", 'String'>
-    readonly websiteProjectId: FieldRef<"WebsiteProjectComment", 'String'>
-    readonly likes: FieldRef<"WebsiteProjectComment", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-
-  /**
-   * WebsiteProjectComment findUnique
-   */
-  export type WebsiteProjectCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which WebsiteProjectComment to fetch.
-     */
-    where: WebsiteProjectCommentWhereUniqueInput
-  }
-
-
-  /**
-   * WebsiteProjectComment findUniqueOrThrow
-   */
-  export type WebsiteProjectCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which WebsiteProjectComment to fetch.
-     */
-    where: WebsiteProjectCommentWhereUniqueInput
-  }
-
-
-  /**
-   * WebsiteProjectComment findFirst
-   */
-  export type WebsiteProjectCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which WebsiteProjectComment to fetch.
-     */
-    where?: WebsiteProjectCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of WebsiteProjectComments to fetch.
-     */
-    orderBy?: WebsiteProjectCommentOrderByWithRelationInput | WebsiteProjectCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for WebsiteProjectComments.
-     */
-    cursor?: WebsiteProjectCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` WebsiteProjectComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` WebsiteProjectComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of WebsiteProjectComments.
-     */
-    distinct?: WebsiteProjectCommentScalarFieldEnum | WebsiteProjectCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * WebsiteProjectComment findFirstOrThrow
-   */
-  export type WebsiteProjectCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which WebsiteProjectComment to fetch.
-     */
-    where?: WebsiteProjectCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of WebsiteProjectComments to fetch.
-     */
-    orderBy?: WebsiteProjectCommentOrderByWithRelationInput | WebsiteProjectCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for WebsiteProjectComments.
-     */
-    cursor?: WebsiteProjectCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` WebsiteProjectComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` WebsiteProjectComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of WebsiteProjectComments.
-     */
-    distinct?: WebsiteProjectCommentScalarFieldEnum | WebsiteProjectCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * WebsiteProjectComment findMany
-   */
-  export type WebsiteProjectCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which WebsiteProjectComments to fetch.
-     */
-    where?: WebsiteProjectCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of WebsiteProjectComments to fetch.
-     */
-    orderBy?: WebsiteProjectCommentOrderByWithRelationInput | WebsiteProjectCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing WebsiteProjectComments.
-     */
-    cursor?: WebsiteProjectCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` WebsiteProjectComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` WebsiteProjectComments.
-     */
-    skip?: number
-    distinct?: WebsiteProjectCommentScalarFieldEnum | WebsiteProjectCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * WebsiteProjectComment create
-   */
-  export type WebsiteProjectCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * The data needed to create a WebsiteProjectComment.
-     */
-    data: XOR<WebsiteProjectCommentCreateInput, WebsiteProjectCommentUncheckedCreateInput>
-  }
-
-
-  /**
-   * WebsiteProjectComment createMany
-   */
-  export type WebsiteProjectCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many WebsiteProjectComments.
-     */
-    data: WebsiteProjectCommentCreateManyInput | WebsiteProjectCommentCreateManyInput[]
-  }
-
-
-  /**
-   * WebsiteProjectComment update
-   */
-  export type WebsiteProjectCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * The data needed to update a WebsiteProjectComment.
-     */
-    data: XOR<WebsiteProjectCommentUpdateInput, WebsiteProjectCommentUncheckedUpdateInput>
-    /**
-     * Choose, which WebsiteProjectComment to update.
-     */
-    where: WebsiteProjectCommentWhereUniqueInput
-  }
-
-
-  /**
-   * WebsiteProjectComment updateMany
-   */
-  export type WebsiteProjectCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update WebsiteProjectComments.
-     */
-    data: XOR<WebsiteProjectCommentUpdateManyMutationInput, WebsiteProjectCommentUncheckedUpdateManyInput>
-    /**
-     * Filter which WebsiteProjectComments to update
-     */
-    where?: WebsiteProjectCommentWhereInput
-  }
-
-
-  /**
-   * WebsiteProjectComment upsert
-   */
-  export type WebsiteProjectCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * The filter to search for the WebsiteProjectComment to update in case it exists.
-     */
-    where: WebsiteProjectCommentWhereUniqueInput
-    /**
-     * In case the WebsiteProjectComment found by the `where` argument doesn't exist, create a new WebsiteProjectComment with this data.
-     */
-    create: XOR<WebsiteProjectCommentCreateInput, WebsiteProjectCommentUncheckedCreateInput>
-    /**
-     * In case the WebsiteProjectComment was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<WebsiteProjectCommentUpdateInput, WebsiteProjectCommentUncheckedUpdateInput>
-  }
-
-
-  /**
-   * WebsiteProjectComment delete
-   */
-  export type WebsiteProjectCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
-    /**
-     * Filter which WebsiteProjectComment to delete.
-     */
-    where: WebsiteProjectCommentWhereUniqueInput
-  }
-
-
-  /**
-   * WebsiteProjectComment deleteMany
-   */
-  export type WebsiteProjectCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which WebsiteProjectComments to delete
-     */
-    where?: WebsiteProjectCommentWhereInput
-  }
-
-
-  /**
-   * WebsiteProjectComment findRaw
-   */
-  export type WebsiteProjectCommentFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
-     */
-    filter?: InputJsonValue
-    /**
-     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * WebsiteProjectComment aggregateRaw
-   */
-  export type WebsiteProjectCommentAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
-     */
-    pipeline?: InputJsonValue[]
-    /**
-     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * WebsiteProjectComment without action
-   */
-  export type WebsiteProjectCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the WebsiteProjectComment
-     */
-    select?: WebsiteProjectCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: WebsiteProjectCommentInclude<ExtArgs> | null
+    include?: WebsiteInclude<ExtArgs> | null
   }
 
 
@@ -4019,6 +7070,7 @@ export namespace Prisma {
     plays: number | null
     song: string | null
     likes: number | null
+    artistId: string | null
   }
 
   export type SongMaxAggregateOutputType = {
@@ -4033,6 +7085,7 @@ export namespace Prisma {
     plays: number | null
     song: string | null
     likes: number | null
+    artistId: string | null
   }
 
   export type SongCountAggregateOutputType = {
@@ -4047,6 +7100,7 @@ export namespace Prisma {
     plays: number
     song: number
     likes: number
+    artistId: number
     _all: number
   }
 
@@ -4073,6 +7127,7 @@ export namespace Prisma {
     plays?: true
     song?: true
     likes?: true
+    artistId?: true
   }
 
   export type SongMaxAggregateInputType = {
@@ -4087,6 +7142,7 @@ export namespace Prisma {
     plays?: true
     song?: true
     likes?: true
+    artistId?: true
   }
 
   export type SongCountAggregateInputType = {
@@ -4101,6 +7157,7 @@ export namespace Prisma {
     plays?: true
     song?: true
     likes?: true
+    artistId?: true
     _all?: true
   }
 
@@ -4202,6 +7259,7 @@ export namespace Prisma {
     plays: number
     song: string
     likes: number
+    artistId: string | null
     _count: SongCountAggregateOutputType | null
     _avg: SongAvgAggregateOutputType | null
     _sum: SongSumAggregateOutputType | null
@@ -4235,8 +7293,9 @@ export namespace Prisma {
     plays?: boolean
     song?: boolean
     likes?: boolean
+    artistId?: boolean
     comments?: boolean | Song$commentsArgs<ExtArgs>
-    likedByUsers?: boolean | Song$likedByUsersArgs<ExtArgs>
+    Artist?: boolean | Song$ArtistArgs<ExtArgs>
     _count?: boolean | SongCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["song"]>
 
@@ -4252,11 +7311,12 @@ export namespace Prisma {
     plays?: boolean
     song?: boolean
     likes?: boolean
+    artistId?: boolean
   }
 
   export type SongInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     comments?: boolean | Song$commentsArgs<ExtArgs>
-    likedByUsers?: boolean | Song$likedByUsersArgs<ExtArgs>
+    Artist?: boolean | Song$ArtistArgs<ExtArgs>
     _count?: boolean | SongCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -4264,8 +7324,8 @@ export namespace Prisma {
   export type $SongPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Song"
     objects: {
-      comments: Prisma.$SongCommentPayload<ExtArgs>[]
-      likedByUsers: Prisma.$UserLikedSongPayload<ExtArgs>[]
+      comments: Prisma.$CommentPayload<ExtArgs>[]
+      Artist: Prisma.$ArtistPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4279,6 +7339,7 @@ export namespace Prisma {
       plays: number
       song: string
       likes: number
+      artistId: string | null
     }, ExtArgs["result"]["song"]>
     composites: {}
   }
@@ -4671,9 +7732,9 @@ export namespace Prisma {
   export interface Prisma__SongClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    comments<T extends Song$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Song$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'findMany'> | Null>;
+    comments<T extends Song$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Song$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findMany'> | Null>;
 
-    likedByUsers<T extends Song$likedByUsersArgs<ExtArgs> = {}>(args?: Subset<T, Song$likedByUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'findMany'> | Null>;
+    Artist<T extends Song$ArtistArgs<ExtArgs> = {}>(args?: Subset<T, Song$ArtistArgs<ExtArgs>>): Prisma__ArtistClient<$Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -4714,6 +7775,7 @@ export namespace Prisma {
     readonly plays: FieldRef<"Song", 'Int'>
     readonly song: FieldRef<"Song", 'String'>
     readonly likes: FieldRef<"Song", 'Int'>
+    readonly artistId: FieldRef<"Song", 'String'>
   }
     
 
@@ -5059,40 +8121,35 @@ export namespace Prisma {
    */
   export type Song$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the SongComment
+     * Select specific fields to fetch from the Comment
      */
-    select?: SongCommentSelect<ExtArgs> | null
+    select?: CommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: SongCommentInclude<ExtArgs> | null
-    where?: SongCommentWhereInput
-    orderBy?: SongCommentOrderByWithRelationInput | SongCommentOrderByWithRelationInput[]
-    cursor?: SongCommentWhereUniqueInput
+    include?: CommentInclude<ExtArgs> | null
+    where?: CommentWhereInput
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    cursor?: CommentWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: SongCommentScalarFieldEnum | SongCommentScalarFieldEnum[]
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
   }
 
 
   /**
-   * Song.likedByUsers
+   * Song.Artist
    */
-  export type Song$likedByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Song$ArtistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserLikedSong
+     * Select specific fields to fetch from the Artist
      */
-    select?: UserLikedSongSelect<ExtArgs> | null
+    select?: ArtistSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    where?: UserLikedSongWhereInput
-    orderBy?: UserLikedSongOrderByWithRelationInput | UserLikedSongOrderByWithRelationInput[]
-    cursor?: UserLikedSongWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserLikedSongScalarFieldEnum | UserLikedSongScalarFieldEnum[]
+    include?: ArtistInclude<ExtArgs> | null
+    where?: ArtistWhereInput
   }
 
 
@@ -5108,1960 +8165,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well.
      */
     include?: SongInclude<ExtArgs> | null
-  }
-
-
-
-  /**
-   * Model SongComment
-   */
-
-  export type AggregateSongComment = {
-    _count: SongCommentCountAggregateOutputType | null
-    _avg: SongCommentAvgAggregateOutputType | null
-    _sum: SongCommentSumAggregateOutputType | null
-    _min: SongCommentMinAggregateOutputType | null
-    _max: SongCommentMaxAggregateOutputType | null
-  }
-
-  export type SongCommentAvgAggregateOutputType = {
-    likes: number | null
-  }
-
-  export type SongCommentSumAggregateOutputType = {
-    likes: number | null
-  }
-
-  export type SongCommentMinAggregateOutputType = {
-    id: string | null
-    comment: string | null
-    songId: string | null
-    likes: number | null
-  }
-
-  export type SongCommentMaxAggregateOutputType = {
-    id: string | null
-    comment: string | null
-    songId: string | null
-    likes: number | null
-  }
-
-  export type SongCommentCountAggregateOutputType = {
-    id: number
-    comment: number
-    songId: number
-    likes: number
-    _all: number
-  }
-
-
-  export type SongCommentAvgAggregateInputType = {
-    likes?: true
-  }
-
-  export type SongCommentSumAggregateInputType = {
-    likes?: true
-  }
-
-  export type SongCommentMinAggregateInputType = {
-    id?: true
-    comment?: true
-    songId?: true
-    likes?: true
-  }
-
-  export type SongCommentMaxAggregateInputType = {
-    id?: true
-    comment?: true
-    songId?: true
-    likes?: true
-  }
-
-  export type SongCommentCountAggregateInputType = {
-    id?: true
-    comment?: true
-    songId?: true
-    likes?: true
-    _all?: true
-  }
-
-  export type SongCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which SongComment to aggregate.
-     */
-    where?: SongCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of SongComments to fetch.
-     */
-    orderBy?: SongCommentOrderByWithRelationInput | SongCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: SongCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` SongComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` SongComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned SongComments
-    **/
-    _count?: true | SongCommentCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: SongCommentAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: SongCommentSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: SongCommentMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: SongCommentMaxAggregateInputType
-  }
-
-  export type GetSongCommentAggregateType<T extends SongCommentAggregateArgs> = {
-        [P in keyof T & keyof AggregateSongComment]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateSongComment[P]>
-      : GetScalarType<T[P], AggregateSongComment[P]>
-  }
-
-
-
-
-  export type SongCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SongCommentWhereInput
-    orderBy?: SongCommentOrderByWithAggregationInput | SongCommentOrderByWithAggregationInput[]
-    by: SongCommentScalarFieldEnum[] | SongCommentScalarFieldEnum
-    having?: SongCommentScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: SongCommentCountAggregateInputType | true
-    _avg?: SongCommentAvgAggregateInputType
-    _sum?: SongCommentSumAggregateInputType
-    _min?: SongCommentMinAggregateInputType
-    _max?: SongCommentMaxAggregateInputType
-  }
-
-  export type SongCommentGroupByOutputType = {
-    id: string
-    comment: string
-    songId: string
-    likes: number
-    _count: SongCommentCountAggregateOutputType | null
-    _avg: SongCommentAvgAggregateOutputType | null
-    _sum: SongCommentSumAggregateOutputType | null
-    _min: SongCommentMinAggregateOutputType | null
-    _max: SongCommentMaxAggregateOutputType | null
-  }
-
-  type GetSongCommentGroupByPayload<T extends SongCommentGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<SongCommentGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof SongCommentGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], SongCommentGroupByOutputType[P]>
-            : GetScalarType<T[P], SongCommentGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type SongCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    comment?: boolean
-    songId?: boolean
-    likes?: boolean
-    song?: boolean | SongDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["songComment"]>
-
-  export type SongCommentSelectScalar = {
-    id?: boolean
-    comment?: boolean
-    songId?: boolean
-    likes?: boolean
-  }
-
-  export type SongCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    song?: boolean | SongDefaultArgs<ExtArgs>
-  }
-
-
-  export type $SongCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "SongComment"
-    objects: {
-      song: Prisma.$SongPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      comment: string
-      songId: string
-      likes: number
-    }, ExtArgs["result"]["songComment"]>
-    composites: {}
-  }
-
-
-  type SongCommentGetPayload<S extends boolean | null | undefined | SongCommentDefaultArgs> = $Result.GetResult<Prisma.$SongCommentPayload, S>
-
-  type SongCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<SongCommentFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: SongCommentCountAggregateInputType | true
-    }
-
-  export interface SongCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SongComment'], meta: { name: 'SongComment' } }
-    /**
-     * Find zero or one SongComment that matches the filter.
-     * @param {SongCommentFindUniqueArgs} args - Arguments to find a SongComment
-     * @example
-     * // Get one SongComment
-     * const songComment = await prisma.songComment.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends SongCommentFindUniqueArgs<ExtArgs>>(
-      args: SelectSubset<T, SongCommentFindUniqueArgs<ExtArgs>>
-    ): Prisma__SongCommentClient<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
-
-    /**
-     * Find one SongComment that matches the filter or throw an error  with `error.code='P2025'` 
-     *     if no matches were found.
-     * @param {SongCommentFindUniqueOrThrowArgs} args - Arguments to find a SongComment
-     * @example
-     * // Get one SongComment
-     * const songComment = await prisma.songComment.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends SongCommentFindUniqueOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, SongCommentFindUniqueOrThrowArgs<ExtArgs>>
-    ): Prisma__SongCommentClient<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find the first SongComment that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SongCommentFindFirstArgs} args - Arguments to find a SongComment
-     * @example
-     * // Get one SongComment
-     * const songComment = await prisma.songComment.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends SongCommentFindFirstArgs<ExtArgs>>(
-      args?: SelectSubset<T, SongCommentFindFirstArgs<ExtArgs>>
-    ): Prisma__SongCommentClient<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
-
-    /**
-     * Find the first SongComment that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SongCommentFindFirstOrThrowArgs} args - Arguments to find a SongComment
-     * @example
-     * // Get one SongComment
-     * const songComment = await prisma.songComment.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends SongCommentFindFirstOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, SongCommentFindFirstOrThrowArgs<ExtArgs>>
-    ): Prisma__SongCommentClient<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find zero or more SongComments that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SongCommentFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all SongComments
-     * const songComments = await prisma.songComment.findMany()
-     * 
-     * // Get first 10 SongComments
-     * const songComments = await prisma.songComment.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const songCommentWithIdOnly = await prisma.songComment.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends SongCommentFindManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, SongCommentFindManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'findMany'>>
-
-    /**
-     * Create a SongComment.
-     * @param {SongCommentCreateArgs} args - Arguments to create a SongComment.
-     * @example
-     * // Create one SongComment
-     * const SongComment = await prisma.songComment.create({
-     *   data: {
-     *     // ... data to create a SongComment
-     *   }
-     * })
-     * 
-    **/
-    create<T extends SongCommentCreateArgs<ExtArgs>>(
-      args: SelectSubset<T, SongCommentCreateArgs<ExtArgs>>
-    ): Prisma__SongCommentClient<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
-
-    /**
-     * Create many SongComments.
-     *     @param {SongCommentCreateManyArgs} args - Arguments to create many SongComments.
-     *     @example
-     *     // Create many SongComments
-     *     const songComment = await prisma.songComment.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends SongCommentCreateManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, SongCommentCreateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a SongComment.
-     * @param {SongCommentDeleteArgs} args - Arguments to delete one SongComment.
-     * @example
-     * // Delete one SongComment
-     * const SongComment = await prisma.songComment.delete({
-     *   where: {
-     *     // ... filter to delete one SongComment
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends SongCommentDeleteArgs<ExtArgs>>(
-      args: SelectSubset<T, SongCommentDeleteArgs<ExtArgs>>
-    ): Prisma__SongCommentClient<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
-
-    /**
-     * Update one SongComment.
-     * @param {SongCommentUpdateArgs} args - Arguments to update one SongComment.
-     * @example
-     * // Update one SongComment
-     * const songComment = await prisma.songComment.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends SongCommentUpdateArgs<ExtArgs>>(
-      args: SelectSubset<T, SongCommentUpdateArgs<ExtArgs>>
-    ): Prisma__SongCommentClient<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
-
-    /**
-     * Delete zero or more SongComments.
-     * @param {SongCommentDeleteManyArgs} args - Arguments to filter SongComments to delete.
-     * @example
-     * // Delete a few SongComments
-     * const { count } = await prisma.songComment.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends SongCommentDeleteManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, SongCommentDeleteManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more SongComments.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SongCommentUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many SongComments
-     * const songComment = await prisma.songComment.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends SongCommentUpdateManyArgs<ExtArgs>>(
-      args: SelectSubset<T, SongCommentUpdateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one SongComment.
-     * @param {SongCommentUpsertArgs} args - Arguments to update or create a SongComment.
-     * @example
-     * // Update or create a SongComment
-     * const songComment = await prisma.songComment.upsert({
-     *   create: {
-     *     // ... data to create a SongComment
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the SongComment we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends SongCommentUpsertArgs<ExtArgs>>(
-      args: SelectSubset<T, SongCommentUpsertArgs<ExtArgs>>
-    ): Prisma__SongCommentClient<$Result.GetResult<Prisma.$SongCommentPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
-
-    /**
-     * Find zero or more SongComments that matches the filter.
-     * @param {SongCommentFindRawArgs} args - Select which filters you would like to apply.
-     * @example
-     * const songComment = await prisma.songComment.findRaw({
-     *   filter: { age: { $gt: 25 } } 
-     * })
-    **/
-    findRaw(
-      args?: SongCommentFindRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Perform aggregation operations on a SongComment.
-     * @param {SongCommentAggregateRawArgs} args - Select which aggregations you would like to apply.
-     * @example
-     * const songComment = await prisma.songComment.aggregateRaw({
-     *   pipeline: [
-     *     { $match: { status: "registered" } },
-     *     { $group: { _id: "$country", total: { $sum: 1 } } }
-     *   ]
-     * })
-    **/
-    aggregateRaw(
-      args?: SongCommentAggregateRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Count the number of SongComments.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SongCommentCountArgs} args - Arguments to filter SongComments to count.
-     * @example
-     * // Count the number of SongComments
-     * const count = await prisma.songComment.count({
-     *   where: {
-     *     // ... the filter for the SongComments we want to count
-     *   }
-     * })
-    **/
-    count<T extends SongCommentCountArgs>(
-      args?: Subset<T, SongCommentCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], SongCommentCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a SongComment.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SongCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends SongCommentAggregateArgs>(args: Subset<T, SongCommentAggregateArgs>): Prisma.PrismaPromise<GetSongCommentAggregateType<T>>
-
-    /**
-     * Group by SongComment.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {SongCommentGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends SongCommentGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: SongCommentGroupByArgs['orderBy'] }
-        : { orderBy?: SongCommentGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, SongCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSongCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the SongComment model
-   */
-  readonly fields: SongCommentFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for SongComment.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__SongCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: 'PrismaPromise';
-
-    song<T extends SongDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SongDefaultArgs<ExtArgs>>): Prisma__SongClient<$Result.GetResult<Prisma.$SongPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
-  }
-
-
-
-  /**
-   * Fields of the SongComment model
-   */ 
-  interface SongCommentFieldRefs {
-    readonly id: FieldRef<"SongComment", 'String'>
-    readonly comment: FieldRef<"SongComment", 'String'>
-    readonly songId: FieldRef<"SongComment", 'String'>
-    readonly likes: FieldRef<"SongComment", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-
-  /**
-   * SongComment findUnique
-   */
-  export type SongCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which SongComment to fetch.
-     */
-    where: SongCommentWhereUniqueInput
-  }
-
-
-  /**
-   * SongComment findUniqueOrThrow
-   */
-  export type SongCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which SongComment to fetch.
-     */
-    where: SongCommentWhereUniqueInput
-  }
-
-
-  /**
-   * SongComment findFirst
-   */
-  export type SongCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which SongComment to fetch.
-     */
-    where?: SongCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of SongComments to fetch.
-     */
-    orderBy?: SongCommentOrderByWithRelationInput | SongCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for SongComments.
-     */
-    cursor?: SongCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` SongComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` SongComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of SongComments.
-     */
-    distinct?: SongCommentScalarFieldEnum | SongCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * SongComment findFirstOrThrow
-   */
-  export type SongCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which SongComment to fetch.
-     */
-    where?: SongCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of SongComments to fetch.
-     */
-    orderBy?: SongCommentOrderByWithRelationInput | SongCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for SongComments.
-     */
-    cursor?: SongCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` SongComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` SongComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of SongComments.
-     */
-    distinct?: SongCommentScalarFieldEnum | SongCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * SongComment findMany
-   */
-  export type SongCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which SongComments to fetch.
-     */
-    where?: SongCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of SongComments to fetch.
-     */
-    orderBy?: SongCommentOrderByWithRelationInput | SongCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing SongComments.
-     */
-    cursor?: SongCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` SongComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` SongComments.
-     */
-    skip?: number
-    distinct?: SongCommentScalarFieldEnum | SongCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * SongComment create
-   */
-  export type SongCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * The data needed to create a SongComment.
-     */
-    data: XOR<SongCommentCreateInput, SongCommentUncheckedCreateInput>
-  }
-
-
-  /**
-   * SongComment createMany
-   */
-  export type SongCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many SongComments.
-     */
-    data: SongCommentCreateManyInput | SongCommentCreateManyInput[]
-  }
-
-
-  /**
-   * SongComment update
-   */
-  export type SongCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * The data needed to update a SongComment.
-     */
-    data: XOR<SongCommentUpdateInput, SongCommentUncheckedUpdateInput>
-    /**
-     * Choose, which SongComment to update.
-     */
-    where: SongCommentWhereUniqueInput
-  }
-
-
-  /**
-   * SongComment updateMany
-   */
-  export type SongCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update SongComments.
-     */
-    data: XOR<SongCommentUpdateManyMutationInput, SongCommentUncheckedUpdateManyInput>
-    /**
-     * Filter which SongComments to update
-     */
-    where?: SongCommentWhereInput
-  }
-
-
-  /**
-   * SongComment upsert
-   */
-  export type SongCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * The filter to search for the SongComment to update in case it exists.
-     */
-    where: SongCommentWhereUniqueInput
-    /**
-     * In case the SongComment found by the `where` argument doesn't exist, create a new SongComment with this data.
-     */
-    create: XOR<SongCommentCreateInput, SongCommentUncheckedCreateInput>
-    /**
-     * In case the SongComment was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<SongCommentUpdateInput, SongCommentUncheckedUpdateInput>
-  }
-
-
-  /**
-   * SongComment delete
-   */
-  export type SongCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-    /**
-     * Filter which SongComment to delete.
-     */
-    where: SongCommentWhereUniqueInput
-  }
-
-
-  /**
-   * SongComment deleteMany
-   */
-  export type SongCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which SongComments to delete
-     */
-    where?: SongCommentWhereInput
-  }
-
-
-  /**
-   * SongComment findRaw
-   */
-  export type SongCommentFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
-     */
-    filter?: InputJsonValue
-    /**
-     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * SongComment aggregateRaw
-   */
-  export type SongCommentAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
-     */
-    pipeline?: InputJsonValue[]
-    /**
-     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * SongComment without action
-   */
-  export type SongCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SongComment
-     */
-    select?: SongCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: SongCommentInclude<ExtArgs> | null
-  }
-
-
-
-  /**
-   * Model UserLikedSong
-   */
-
-  export type AggregateUserLikedSong = {
-    _count: UserLikedSongCountAggregateOutputType | null
-    _min: UserLikedSongMinAggregateOutputType | null
-    _max: UserLikedSongMaxAggregateOutputType | null
-  }
-
-  export type UserLikedSongMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    likedSongId: string | null
-  }
-
-  export type UserLikedSongMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    likedSongId: string | null
-  }
-
-  export type UserLikedSongCountAggregateOutputType = {
-    id: number
-    userId: number
-    likedSongId: number
-    _all: number
-  }
-
-
-  export type UserLikedSongMinAggregateInputType = {
-    id?: true
-    userId?: true
-    likedSongId?: true
-  }
-
-  export type UserLikedSongMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    likedSongId?: true
-  }
-
-  export type UserLikedSongCountAggregateInputType = {
-    id?: true
-    userId?: true
-    likedSongId?: true
-    _all?: true
-  }
-
-  export type UserLikedSongAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserLikedSong to aggregate.
-     */
-    where?: UserLikedSongWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedSongs to fetch.
-     */
-    orderBy?: UserLikedSongOrderByWithRelationInput | UserLikedSongOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: UserLikedSongWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedSongs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedSongs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned UserLikedSongs
-    **/
-    _count?: true | UserLikedSongCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: UserLikedSongMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: UserLikedSongMaxAggregateInputType
-  }
-
-  export type GetUserLikedSongAggregateType<T extends UserLikedSongAggregateArgs> = {
-        [P in keyof T & keyof AggregateUserLikedSong]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUserLikedSong[P]>
-      : GetScalarType<T[P], AggregateUserLikedSong[P]>
-  }
-
-
-
-
-  export type UserLikedSongGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedSongWhereInput
-    orderBy?: UserLikedSongOrderByWithAggregationInput | UserLikedSongOrderByWithAggregationInput[]
-    by: UserLikedSongScalarFieldEnum[] | UserLikedSongScalarFieldEnum
-    having?: UserLikedSongScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: UserLikedSongCountAggregateInputType | true
-    _min?: UserLikedSongMinAggregateInputType
-    _max?: UserLikedSongMaxAggregateInputType
-  }
-
-  export type UserLikedSongGroupByOutputType = {
-    id: string
-    userId: string
-    likedSongId: string
-    _count: UserLikedSongCountAggregateOutputType | null
-    _min: UserLikedSongMinAggregateOutputType | null
-    _max: UserLikedSongMaxAggregateOutputType | null
-  }
-
-  type GetUserLikedSongGroupByPayload<T extends UserLikedSongGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<UserLikedSongGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserLikedSongGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserLikedSongGroupByOutputType[P]>
-            : GetScalarType<T[P], UserLikedSongGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type UserLikedSongSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    likedSongId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    likedSong?: boolean | SongDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userLikedSong"]>
-
-  export type UserLikedSongSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    likedSongId?: boolean
-  }
-
-  export type UserLikedSongInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    likedSong?: boolean | SongDefaultArgs<ExtArgs>
-  }
-
-
-  export type $UserLikedSongPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "UserLikedSong"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      likedSong: Prisma.$SongPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      likedSongId: string
-    }, ExtArgs["result"]["userLikedSong"]>
-    composites: {}
-  }
-
-
-  type UserLikedSongGetPayload<S extends boolean | null | undefined | UserLikedSongDefaultArgs> = $Result.GetResult<Prisma.$UserLikedSongPayload, S>
-
-  type UserLikedSongCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<UserLikedSongFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: UserLikedSongCountAggregateInputType | true
-    }
-
-  export interface UserLikedSongDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserLikedSong'], meta: { name: 'UserLikedSong' } }
-    /**
-     * Find zero or one UserLikedSong that matches the filter.
-     * @param {UserLikedSongFindUniqueArgs} args - Arguments to find a UserLikedSong
-     * @example
-     * // Get one UserLikedSong
-     * const userLikedSong = await prisma.userLikedSong.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends UserLikedSongFindUniqueArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedSongFindUniqueArgs<ExtArgs>>
-    ): Prisma__UserLikedSongClient<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
-
-    /**
-     * Find one UserLikedSong that matches the filter or throw an error  with `error.code='P2025'` 
-     *     if no matches were found.
-     * @param {UserLikedSongFindUniqueOrThrowArgs} args - Arguments to find a UserLikedSong
-     * @example
-     * // Get one UserLikedSong
-     * const userLikedSong = await prisma.userLikedSong.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends UserLikedSongFindUniqueOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedSongFindUniqueOrThrowArgs<ExtArgs>>
-    ): Prisma__UserLikedSongClient<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find the first UserLikedSong that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedSongFindFirstArgs} args - Arguments to find a UserLikedSong
-     * @example
-     * // Get one UserLikedSong
-     * const userLikedSong = await prisma.userLikedSong.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends UserLikedSongFindFirstArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedSongFindFirstArgs<ExtArgs>>
-    ): Prisma__UserLikedSongClient<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
-
-    /**
-     * Find the first UserLikedSong that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedSongFindFirstOrThrowArgs} args - Arguments to find a UserLikedSong
-     * @example
-     * // Get one UserLikedSong
-     * const userLikedSong = await prisma.userLikedSong.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends UserLikedSongFindFirstOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedSongFindFirstOrThrowArgs<ExtArgs>>
-    ): Prisma__UserLikedSongClient<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find zero or more UserLikedSongs that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedSongFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all UserLikedSongs
-     * const userLikedSongs = await prisma.userLikedSong.findMany()
-     * 
-     * // Get first 10 UserLikedSongs
-     * const userLikedSongs = await prisma.userLikedSong.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const userLikedSongWithIdOnly = await prisma.userLikedSong.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends UserLikedSongFindManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedSongFindManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'findMany'>>
-
-    /**
-     * Create a UserLikedSong.
-     * @param {UserLikedSongCreateArgs} args - Arguments to create a UserLikedSong.
-     * @example
-     * // Create one UserLikedSong
-     * const UserLikedSong = await prisma.userLikedSong.create({
-     *   data: {
-     *     // ... data to create a UserLikedSong
-     *   }
-     * })
-     * 
-    **/
-    create<T extends UserLikedSongCreateArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedSongCreateArgs<ExtArgs>>
-    ): Prisma__UserLikedSongClient<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
-
-    /**
-     * Create many UserLikedSongs.
-     *     @param {UserLikedSongCreateManyArgs} args - Arguments to create many UserLikedSongs.
-     *     @example
-     *     // Create many UserLikedSongs
-     *     const userLikedSong = await prisma.userLikedSong.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends UserLikedSongCreateManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedSongCreateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a UserLikedSong.
-     * @param {UserLikedSongDeleteArgs} args - Arguments to delete one UserLikedSong.
-     * @example
-     * // Delete one UserLikedSong
-     * const UserLikedSong = await prisma.userLikedSong.delete({
-     *   where: {
-     *     // ... filter to delete one UserLikedSong
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends UserLikedSongDeleteArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedSongDeleteArgs<ExtArgs>>
-    ): Prisma__UserLikedSongClient<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
-
-    /**
-     * Update one UserLikedSong.
-     * @param {UserLikedSongUpdateArgs} args - Arguments to update one UserLikedSong.
-     * @example
-     * // Update one UserLikedSong
-     * const userLikedSong = await prisma.userLikedSong.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends UserLikedSongUpdateArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedSongUpdateArgs<ExtArgs>>
-    ): Prisma__UserLikedSongClient<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
-
-    /**
-     * Delete zero or more UserLikedSongs.
-     * @param {UserLikedSongDeleteManyArgs} args - Arguments to filter UserLikedSongs to delete.
-     * @example
-     * // Delete a few UserLikedSongs
-     * const { count } = await prisma.userLikedSong.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends UserLikedSongDeleteManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedSongDeleteManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more UserLikedSongs.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedSongUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many UserLikedSongs
-     * const userLikedSong = await prisma.userLikedSong.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends UserLikedSongUpdateManyArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedSongUpdateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one UserLikedSong.
-     * @param {UserLikedSongUpsertArgs} args - Arguments to update or create a UserLikedSong.
-     * @example
-     * // Update or create a UserLikedSong
-     * const userLikedSong = await prisma.userLikedSong.upsert({
-     *   create: {
-     *     // ... data to create a UserLikedSong
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the UserLikedSong we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends UserLikedSongUpsertArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedSongUpsertArgs<ExtArgs>>
-    ): Prisma__UserLikedSongClient<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
-
-    /**
-     * Find zero or more UserLikedSongs that matches the filter.
-     * @param {UserLikedSongFindRawArgs} args - Select which filters you would like to apply.
-     * @example
-     * const userLikedSong = await prisma.userLikedSong.findRaw({
-     *   filter: { age: { $gt: 25 } } 
-     * })
-    **/
-    findRaw(
-      args?: UserLikedSongFindRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Perform aggregation operations on a UserLikedSong.
-     * @param {UserLikedSongAggregateRawArgs} args - Select which aggregations you would like to apply.
-     * @example
-     * const userLikedSong = await prisma.userLikedSong.aggregateRaw({
-     *   pipeline: [
-     *     { $match: { status: "registered" } },
-     *     { $group: { _id: "$country", total: { $sum: 1 } } }
-     *   ]
-     * })
-    **/
-    aggregateRaw(
-      args?: UserLikedSongAggregateRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Count the number of UserLikedSongs.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedSongCountArgs} args - Arguments to filter UserLikedSongs to count.
-     * @example
-     * // Count the number of UserLikedSongs
-     * const count = await prisma.userLikedSong.count({
-     *   where: {
-     *     // ... the filter for the UserLikedSongs we want to count
-     *   }
-     * })
-    **/
-    count<T extends UserLikedSongCountArgs>(
-      args?: Subset<T, UserLikedSongCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], UserLikedSongCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a UserLikedSong.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedSongAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends UserLikedSongAggregateArgs>(args: Subset<T, UserLikedSongAggregateArgs>): Prisma.PrismaPromise<GetUserLikedSongAggregateType<T>>
-
-    /**
-     * Group by UserLikedSong.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedSongGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends UserLikedSongGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserLikedSongGroupByArgs['orderBy'] }
-        : { orderBy?: UserLikedSongGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, UserLikedSongGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserLikedSongGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the UserLikedSong model
-   */
-  readonly fields: UserLikedSongFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for UserLikedSong.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__UserLikedSongClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: 'PrismaPromise';
-
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    likedSong<T extends SongDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SongDefaultArgs<ExtArgs>>): Prisma__SongClient<$Result.GetResult<Prisma.$SongPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
-  }
-
-
-
-  /**
-   * Fields of the UserLikedSong model
-   */ 
-  interface UserLikedSongFieldRefs {
-    readonly id: FieldRef<"UserLikedSong", 'String'>
-    readonly userId: FieldRef<"UserLikedSong", 'String'>
-    readonly likedSongId: FieldRef<"UserLikedSong", 'String'>
-  }
-    
-
-  // Custom InputTypes
-
-  /**
-   * UserLikedSong findUnique
-   */
-  export type UserLikedSongFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedSong to fetch.
-     */
-    where: UserLikedSongWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedSong findUniqueOrThrow
-   */
-  export type UserLikedSongFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedSong to fetch.
-     */
-    where: UserLikedSongWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedSong findFirst
-   */
-  export type UserLikedSongFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedSong to fetch.
-     */
-    where?: UserLikedSongWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedSongs to fetch.
-     */
-    orderBy?: UserLikedSongOrderByWithRelationInput | UserLikedSongOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserLikedSongs.
-     */
-    cursor?: UserLikedSongWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedSongs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedSongs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserLikedSongs.
-     */
-    distinct?: UserLikedSongScalarFieldEnum | UserLikedSongScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedSong findFirstOrThrow
-   */
-  export type UserLikedSongFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedSong to fetch.
-     */
-    where?: UserLikedSongWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedSongs to fetch.
-     */
-    orderBy?: UserLikedSongOrderByWithRelationInput | UserLikedSongOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserLikedSongs.
-     */
-    cursor?: UserLikedSongWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedSongs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedSongs.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserLikedSongs.
-     */
-    distinct?: UserLikedSongScalarFieldEnum | UserLikedSongScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedSong findMany
-   */
-  export type UserLikedSongFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedSongs to fetch.
-     */
-    where?: UserLikedSongWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedSongs to fetch.
-     */
-    orderBy?: UserLikedSongOrderByWithRelationInput | UserLikedSongOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing UserLikedSongs.
-     */
-    cursor?: UserLikedSongWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedSongs from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedSongs.
-     */
-    skip?: number
-    distinct?: UserLikedSongScalarFieldEnum | UserLikedSongScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedSong create
-   */
-  export type UserLikedSongCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * The data needed to create a UserLikedSong.
-     */
-    data: XOR<UserLikedSongCreateInput, UserLikedSongUncheckedCreateInput>
-  }
-
-
-  /**
-   * UserLikedSong createMany
-   */
-  export type UserLikedSongCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many UserLikedSongs.
-     */
-    data: UserLikedSongCreateManyInput | UserLikedSongCreateManyInput[]
-  }
-
-
-  /**
-   * UserLikedSong update
-   */
-  export type UserLikedSongUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * The data needed to update a UserLikedSong.
-     */
-    data: XOR<UserLikedSongUpdateInput, UserLikedSongUncheckedUpdateInput>
-    /**
-     * Choose, which UserLikedSong to update.
-     */
-    where: UserLikedSongWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedSong updateMany
-   */
-  export type UserLikedSongUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update UserLikedSongs.
-     */
-    data: XOR<UserLikedSongUpdateManyMutationInput, UserLikedSongUncheckedUpdateManyInput>
-    /**
-     * Filter which UserLikedSongs to update
-     */
-    where?: UserLikedSongWhereInput
-  }
-
-
-  /**
-   * UserLikedSong upsert
-   */
-  export type UserLikedSongUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * The filter to search for the UserLikedSong to update in case it exists.
-     */
-    where: UserLikedSongWhereUniqueInput
-    /**
-     * In case the UserLikedSong found by the `where` argument doesn't exist, create a new UserLikedSong with this data.
-     */
-    create: XOR<UserLikedSongCreateInput, UserLikedSongUncheckedCreateInput>
-    /**
-     * In case the UserLikedSong was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<UserLikedSongUpdateInput, UserLikedSongUncheckedUpdateInput>
-  }
-
-
-  /**
-   * UserLikedSong delete
-   */
-  export type UserLikedSongDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    /**
-     * Filter which UserLikedSong to delete.
-     */
-    where: UserLikedSongWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedSong deleteMany
-   */
-  export type UserLikedSongDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserLikedSongs to delete
-     */
-    where?: UserLikedSongWhereInput
-  }
-
-
-  /**
-   * UserLikedSong findRaw
-   */
-  export type UserLikedSongFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
-     */
-    filter?: InputJsonValue
-    /**
-     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * UserLikedSong aggregateRaw
-   */
-  export type UserLikedSongAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
-     */
-    pipeline?: InputJsonValue[]
-    /**
-     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * UserLikedSong without action
-   */
-  export type UserLikedSongDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
   }
 
 
@@ -7190,7 +8293,7 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     email: string
-    name: string | null
+    name: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -7214,10 +8317,8 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     name?: boolean
-    address?: boolean | AddressDefaultArgs<ExtArgs>
-    likedWebsites?: boolean | User$likedWebsitesArgs<ExtArgs>
-    likedSongs?: boolean | User$likedSongsArgs<ExtArgs>
-    likedArtists?: boolean | User$likedArtistsArgs<ExtArgs>
+    addresses?: boolean | AddressDefaultArgs<ExtArgs>
+    likes?: boolean | User$likesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7228,9 +8329,7 @@ export namespace Prisma {
   }
 
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    likedWebsites?: boolean | User$likedWebsitesArgs<ExtArgs>
-    likedSongs?: boolean | User$likedSongsArgs<ExtArgs>
-    likedArtists?: boolean | User$likedArtistsArgs<ExtArgs>
+    likes?: boolean | User$likesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -7238,17 +8337,15 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      likedWebsites: Prisma.$UserLikedWebsitePayload<ExtArgs>[]
-      likedSongs: Prisma.$UserLikedSongPayload<ExtArgs>[]
-      likedArtists: Prisma.$UserLikedArtistPayload<ExtArgs>[]
+      likes: Prisma.$LikePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
-      name: string | null
+      name: string
     }, ExtArgs["result"]["user"]>
     composites: {
-      address: Prisma.$AddressPayload | null
+      addresses: Prisma.$AddressPayload[]
     }
   }
 
@@ -7640,11 +8737,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    likedWebsites<T extends User$likedWebsitesArgs<ExtArgs> = {}>(args?: Subset<T, User$likedWebsitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'findMany'> | Null>;
-
-    likedSongs<T extends User$likedSongsArgs<ExtArgs> = {}>(args?: Subset<T, User$likedSongsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedSongPayload<ExtArgs>, T, 'findMany'> | Null>;
-
-    likedArtists<T extends User$likedArtistsArgs<ExtArgs> = {}>(args?: Subset<T, User$likedArtistsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'findMany'> | Null>;
+    likes<T extends User$likesArgs<ExtArgs> = {}>(args?: Subset<T, User$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findMany'> | Null>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -8018,65 +9111,23 @@ export namespace Prisma {
 
 
   /**
-   * User.likedWebsites
+   * User.likes
    */
-  export type User$likedWebsitesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$likesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserLikedWebsite
+     * Select specific fields to fetch from the Like
      */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
+    select?: LikeSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    where?: UserLikedWebsiteWhereInput
-    orderBy?: UserLikedWebsiteOrderByWithRelationInput | UserLikedWebsiteOrderByWithRelationInput[]
-    cursor?: UserLikedWebsiteWhereUniqueInput
+    include?: LikeInclude<ExtArgs> | null
+    where?: LikeWhereInput
+    orderBy?: LikeOrderByWithRelationInput | LikeOrderByWithRelationInput[]
+    cursor?: LikeWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserLikedWebsiteScalarFieldEnum | UserLikedWebsiteScalarFieldEnum[]
-  }
-
-
-  /**
-   * User.likedSongs
-   */
-  export type User$likedSongsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedSong
-     */
-    select?: UserLikedSongSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedSongInclude<ExtArgs> | null
-    where?: UserLikedSongWhereInput
-    orderBy?: UserLikedSongOrderByWithRelationInput | UserLikedSongOrderByWithRelationInput[]
-    cursor?: UserLikedSongWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserLikedSongScalarFieldEnum | UserLikedSongScalarFieldEnum[]
-  }
-
-
-  /**
-   * User.likedArtists
-   */
-  export type User$likedArtistsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    where?: UserLikedArtistWhereInput
-    orderBy?: UserLikedArtistOrderByWithRelationInput | UserLikedArtistOrderByWithRelationInput[]
-    cursor?: UserLikedArtistWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserLikedArtistScalarFieldEnum | UserLikedArtistScalarFieldEnum[]
+    distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
   }
 
 
@@ -8097,980 +9148,13 @@ export namespace Prisma {
 
 
   /**
-   * Model UserLikedWebsite
-   */
-
-  export type AggregateUserLikedWebsite = {
-    _count: UserLikedWebsiteCountAggregateOutputType | null
-    _min: UserLikedWebsiteMinAggregateOutputType | null
-    _max: UserLikedWebsiteMaxAggregateOutputType | null
-  }
-
-  export type UserLikedWebsiteMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    likedWebsiteId: string | null
-  }
-
-  export type UserLikedWebsiteMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    likedWebsiteId: string | null
-  }
-
-  export type UserLikedWebsiteCountAggregateOutputType = {
-    id: number
-    userId: number
-    likedWebsiteId: number
-    _all: number
-  }
-
-
-  export type UserLikedWebsiteMinAggregateInputType = {
-    id?: true
-    userId?: true
-    likedWebsiteId?: true
-  }
-
-  export type UserLikedWebsiteMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    likedWebsiteId?: true
-  }
-
-  export type UserLikedWebsiteCountAggregateInputType = {
-    id?: true
-    userId?: true
-    likedWebsiteId?: true
-    _all?: true
-  }
-
-  export type UserLikedWebsiteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserLikedWebsite to aggregate.
-     */
-    where?: UserLikedWebsiteWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedWebsites to fetch.
-     */
-    orderBy?: UserLikedWebsiteOrderByWithRelationInput | UserLikedWebsiteOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: UserLikedWebsiteWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedWebsites from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedWebsites.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned UserLikedWebsites
-    **/
-    _count?: true | UserLikedWebsiteCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: UserLikedWebsiteMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: UserLikedWebsiteMaxAggregateInputType
-  }
-
-  export type GetUserLikedWebsiteAggregateType<T extends UserLikedWebsiteAggregateArgs> = {
-        [P in keyof T & keyof AggregateUserLikedWebsite]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUserLikedWebsite[P]>
-      : GetScalarType<T[P], AggregateUserLikedWebsite[P]>
-  }
-
-
-
-
-  export type UserLikedWebsiteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedWebsiteWhereInput
-    orderBy?: UserLikedWebsiteOrderByWithAggregationInput | UserLikedWebsiteOrderByWithAggregationInput[]
-    by: UserLikedWebsiteScalarFieldEnum[] | UserLikedWebsiteScalarFieldEnum
-    having?: UserLikedWebsiteScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: UserLikedWebsiteCountAggregateInputType | true
-    _min?: UserLikedWebsiteMinAggregateInputType
-    _max?: UserLikedWebsiteMaxAggregateInputType
-  }
-
-  export type UserLikedWebsiteGroupByOutputType = {
-    id: string
-    userId: string
-    likedWebsiteId: string
-    _count: UserLikedWebsiteCountAggregateOutputType | null
-    _min: UserLikedWebsiteMinAggregateOutputType | null
-    _max: UserLikedWebsiteMaxAggregateOutputType | null
-  }
-
-  type GetUserLikedWebsiteGroupByPayload<T extends UserLikedWebsiteGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<UserLikedWebsiteGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserLikedWebsiteGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserLikedWebsiteGroupByOutputType[P]>
-            : GetScalarType<T[P], UserLikedWebsiteGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type UserLikedWebsiteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    likedWebsiteId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    likedWebsite?: boolean | WebsiteProjectDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userLikedWebsite"]>
-
-  export type UserLikedWebsiteSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    likedWebsiteId?: boolean
-  }
-
-  export type UserLikedWebsiteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    likedWebsite?: boolean | WebsiteProjectDefaultArgs<ExtArgs>
-  }
-
-
-  export type $UserLikedWebsitePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "UserLikedWebsite"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      likedWebsite: Prisma.$WebsiteProjectPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      likedWebsiteId: string
-    }, ExtArgs["result"]["userLikedWebsite"]>
-    composites: {}
-  }
-
-
-  type UserLikedWebsiteGetPayload<S extends boolean | null | undefined | UserLikedWebsiteDefaultArgs> = $Result.GetResult<Prisma.$UserLikedWebsitePayload, S>
-
-  type UserLikedWebsiteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<UserLikedWebsiteFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: UserLikedWebsiteCountAggregateInputType | true
-    }
-
-  export interface UserLikedWebsiteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserLikedWebsite'], meta: { name: 'UserLikedWebsite' } }
-    /**
-     * Find zero or one UserLikedWebsite that matches the filter.
-     * @param {UserLikedWebsiteFindUniqueArgs} args - Arguments to find a UserLikedWebsite
-     * @example
-     * // Get one UserLikedWebsite
-     * const userLikedWebsite = await prisma.userLikedWebsite.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends UserLikedWebsiteFindUniqueArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedWebsiteFindUniqueArgs<ExtArgs>>
-    ): Prisma__UserLikedWebsiteClient<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
-
-    /**
-     * Find one UserLikedWebsite that matches the filter or throw an error  with `error.code='P2025'` 
-     *     if no matches were found.
-     * @param {UserLikedWebsiteFindUniqueOrThrowArgs} args - Arguments to find a UserLikedWebsite
-     * @example
-     * // Get one UserLikedWebsite
-     * const userLikedWebsite = await prisma.userLikedWebsite.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends UserLikedWebsiteFindUniqueOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedWebsiteFindUniqueOrThrowArgs<ExtArgs>>
-    ): Prisma__UserLikedWebsiteClient<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find the first UserLikedWebsite that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedWebsiteFindFirstArgs} args - Arguments to find a UserLikedWebsite
-     * @example
-     * // Get one UserLikedWebsite
-     * const userLikedWebsite = await prisma.userLikedWebsite.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends UserLikedWebsiteFindFirstArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedWebsiteFindFirstArgs<ExtArgs>>
-    ): Prisma__UserLikedWebsiteClient<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
-
-    /**
-     * Find the first UserLikedWebsite that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedWebsiteFindFirstOrThrowArgs} args - Arguments to find a UserLikedWebsite
-     * @example
-     * // Get one UserLikedWebsite
-     * const userLikedWebsite = await prisma.userLikedWebsite.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends UserLikedWebsiteFindFirstOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedWebsiteFindFirstOrThrowArgs<ExtArgs>>
-    ): Prisma__UserLikedWebsiteClient<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find zero or more UserLikedWebsites that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedWebsiteFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all UserLikedWebsites
-     * const userLikedWebsites = await prisma.userLikedWebsite.findMany()
-     * 
-     * // Get first 10 UserLikedWebsites
-     * const userLikedWebsites = await prisma.userLikedWebsite.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const userLikedWebsiteWithIdOnly = await prisma.userLikedWebsite.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends UserLikedWebsiteFindManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedWebsiteFindManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'findMany'>>
-
-    /**
-     * Create a UserLikedWebsite.
-     * @param {UserLikedWebsiteCreateArgs} args - Arguments to create a UserLikedWebsite.
-     * @example
-     * // Create one UserLikedWebsite
-     * const UserLikedWebsite = await prisma.userLikedWebsite.create({
-     *   data: {
-     *     // ... data to create a UserLikedWebsite
-     *   }
-     * })
-     * 
-    **/
-    create<T extends UserLikedWebsiteCreateArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedWebsiteCreateArgs<ExtArgs>>
-    ): Prisma__UserLikedWebsiteClient<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'create'>, never, ExtArgs>
-
-    /**
-     * Create many UserLikedWebsites.
-     *     @param {UserLikedWebsiteCreateManyArgs} args - Arguments to create many UserLikedWebsites.
-     *     @example
-     *     // Create many UserLikedWebsites
-     *     const userLikedWebsite = await prisma.userLikedWebsite.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends UserLikedWebsiteCreateManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedWebsiteCreateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a UserLikedWebsite.
-     * @param {UserLikedWebsiteDeleteArgs} args - Arguments to delete one UserLikedWebsite.
-     * @example
-     * // Delete one UserLikedWebsite
-     * const UserLikedWebsite = await prisma.userLikedWebsite.delete({
-     *   where: {
-     *     // ... filter to delete one UserLikedWebsite
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends UserLikedWebsiteDeleteArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedWebsiteDeleteArgs<ExtArgs>>
-    ): Prisma__UserLikedWebsiteClient<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
-
-    /**
-     * Update one UserLikedWebsite.
-     * @param {UserLikedWebsiteUpdateArgs} args - Arguments to update one UserLikedWebsite.
-     * @example
-     * // Update one UserLikedWebsite
-     * const userLikedWebsite = await prisma.userLikedWebsite.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends UserLikedWebsiteUpdateArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedWebsiteUpdateArgs<ExtArgs>>
-    ): Prisma__UserLikedWebsiteClient<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'update'>, never, ExtArgs>
-
-    /**
-     * Delete zero or more UserLikedWebsites.
-     * @param {UserLikedWebsiteDeleteManyArgs} args - Arguments to filter UserLikedWebsites to delete.
-     * @example
-     * // Delete a few UserLikedWebsites
-     * const { count } = await prisma.userLikedWebsite.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends UserLikedWebsiteDeleteManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedWebsiteDeleteManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more UserLikedWebsites.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedWebsiteUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many UserLikedWebsites
-     * const userLikedWebsite = await prisma.userLikedWebsite.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends UserLikedWebsiteUpdateManyArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedWebsiteUpdateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one UserLikedWebsite.
-     * @param {UserLikedWebsiteUpsertArgs} args - Arguments to update or create a UserLikedWebsite.
-     * @example
-     * // Update or create a UserLikedWebsite
-     * const userLikedWebsite = await prisma.userLikedWebsite.upsert({
-     *   create: {
-     *     // ... data to create a UserLikedWebsite
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the UserLikedWebsite we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends UserLikedWebsiteUpsertArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedWebsiteUpsertArgs<ExtArgs>>
-    ): Prisma__UserLikedWebsiteClient<$Result.GetResult<Prisma.$UserLikedWebsitePayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
-
-    /**
-     * Find zero or more UserLikedWebsites that matches the filter.
-     * @param {UserLikedWebsiteFindRawArgs} args - Select which filters you would like to apply.
-     * @example
-     * const userLikedWebsite = await prisma.userLikedWebsite.findRaw({
-     *   filter: { age: { $gt: 25 } } 
-     * })
-    **/
-    findRaw(
-      args?: UserLikedWebsiteFindRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Perform aggregation operations on a UserLikedWebsite.
-     * @param {UserLikedWebsiteAggregateRawArgs} args - Select which aggregations you would like to apply.
-     * @example
-     * const userLikedWebsite = await prisma.userLikedWebsite.aggregateRaw({
-     *   pipeline: [
-     *     { $match: { status: "registered" } },
-     *     { $group: { _id: "$country", total: { $sum: 1 } } }
-     *   ]
-     * })
-    **/
-    aggregateRaw(
-      args?: UserLikedWebsiteAggregateRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Count the number of UserLikedWebsites.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedWebsiteCountArgs} args - Arguments to filter UserLikedWebsites to count.
-     * @example
-     * // Count the number of UserLikedWebsites
-     * const count = await prisma.userLikedWebsite.count({
-     *   where: {
-     *     // ... the filter for the UserLikedWebsites we want to count
-     *   }
-     * })
-    **/
-    count<T extends UserLikedWebsiteCountArgs>(
-      args?: Subset<T, UserLikedWebsiteCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], UserLikedWebsiteCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a UserLikedWebsite.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedWebsiteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends UserLikedWebsiteAggregateArgs>(args: Subset<T, UserLikedWebsiteAggregateArgs>): Prisma.PrismaPromise<GetUserLikedWebsiteAggregateType<T>>
-
-    /**
-     * Group by UserLikedWebsite.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedWebsiteGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends UserLikedWebsiteGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserLikedWebsiteGroupByArgs['orderBy'] }
-        : { orderBy?: UserLikedWebsiteGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, UserLikedWebsiteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserLikedWebsiteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the UserLikedWebsite model
-   */
-  readonly fields: UserLikedWebsiteFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for UserLikedWebsite.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__UserLikedWebsiteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: 'PrismaPromise';
-
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    likedWebsite<T extends WebsiteProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WebsiteProjectDefaultArgs<ExtArgs>>): Prisma__WebsiteProjectClient<$Result.GetResult<Prisma.$WebsiteProjectPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
-  }
-
-
-
-  /**
-   * Fields of the UserLikedWebsite model
-   */ 
-  interface UserLikedWebsiteFieldRefs {
-    readonly id: FieldRef<"UserLikedWebsite", 'String'>
-    readonly userId: FieldRef<"UserLikedWebsite", 'String'>
-    readonly likedWebsiteId: FieldRef<"UserLikedWebsite", 'String'>
-  }
-    
-
-  // Custom InputTypes
-
-  /**
-   * UserLikedWebsite findUnique
-   */
-  export type UserLikedWebsiteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedWebsite to fetch.
-     */
-    where: UserLikedWebsiteWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedWebsite findUniqueOrThrow
-   */
-  export type UserLikedWebsiteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedWebsite to fetch.
-     */
-    where: UserLikedWebsiteWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedWebsite findFirst
-   */
-  export type UserLikedWebsiteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedWebsite to fetch.
-     */
-    where?: UserLikedWebsiteWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedWebsites to fetch.
-     */
-    orderBy?: UserLikedWebsiteOrderByWithRelationInput | UserLikedWebsiteOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserLikedWebsites.
-     */
-    cursor?: UserLikedWebsiteWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedWebsites from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedWebsites.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserLikedWebsites.
-     */
-    distinct?: UserLikedWebsiteScalarFieldEnum | UserLikedWebsiteScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedWebsite findFirstOrThrow
-   */
-  export type UserLikedWebsiteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedWebsite to fetch.
-     */
-    where?: UserLikedWebsiteWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedWebsites to fetch.
-     */
-    orderBy?: UserLikedWebsiteOrderByWithRelationInput | UserLikedWebsiteOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserLikedWebsites.
-     */
-    cursor?: UserLikedWebsiteWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedWebsites from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedWebsites.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserLikedWebsites.
-     */
-    distinct?: UserLikedWebsiteScalarFieldEnum | UserLikedWebsiteScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedWebsite findMany
-   */
-  export type UserLikedWebsiteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedWebsites to fetch.
-     */
-    where?: UserLikedWebsiteWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedWebsites to fetch.
-     */
-    orderBy?: UserLikedWebsiteOrderByWithRelationInput | UserLikedWebsiteOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing UserLikedWebsites.
-     */
-    cursor?: UserLikedWebsiteWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedWebsites from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedWebsites.
-     */
-    skip?: number
-    distinct?: UserLikedWebsiteScalarFieldEnum | UserLikedWebsiteScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedWebsite create
-   */
-  export type UserLikedWebsiteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * The data needed to create a UserLikedWebsite.
-     */
-    data: XOR<UserLikedWebsiteCreateInput, UserLikedWebsiteUncheckedCreateInput>
-  }
-
-
-  /**
-   * UserLikedWebsite createMany
-   */
-  export type UserLikedWebsiteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many UserLikedWebsites.
-     */
-    data: UserLikedWebsiteCreateManyInput | UserLikedWebsiteCreateManyInput[]
-  }
-
-
-  /**
-   * UserLikedWebsite update
-   */
-  export type UserLikedWebsiteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * The data needed to update a UserLikedWebsite.
-     */
-    data: XOR<UserLikedWebsiteUpdateInput, UserLikedWebsiteUncheckedUpdateInput>
-    /**
-     * Choose, which UserLikedWebsite to update.
-     */
-    where: UserLikedWebsiteWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedWebsite updateMany
-   */
-  export type UserLikedWebsiteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update UserLikedWebsites.
-     */
-    data: XOR<UserLikedWebsiteUpdateManyMutationInput, UserLikedWebsiteUncheckedUpdateManyInput>
-    /**
-     * Filter which UserLikedWebsites to update
-     */
-    where?: UserLikedWebsiteWhereInput
-  }
-
-
-  /**
-   * UserLikedWebsite upsert
-   */
-  export type UserLikedWebsiteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * The filter to search for the UserLikedWebsite to update in case it exists.
-     */
-    where: UserLikedWebsiteWhereUniqueInput
-    /**
-     * In case the UserLikedWebsite found by the `where` argument doesn't exist, create a new UserLikedWebsite with this data.
-     */
-    create: XOR<UserLikedWebsiteCreateInput, UserLikedWebsiteUncheckedCreateInput>
-    /**
-     * In case the UserLikedWebsite was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<UserLikedWebsiteUpdateInput, UserLikedWebsiteUncheckedUpdateInput>
-  }
-
-
-  /**
-   * UserLikedWebsite delete
-   */
-  export type UserLikedWebsiteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-    /**
-     * Filter which UserLikedWebsite to delete.
-     */
-    where: UserLikedWebsiteWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedWebsite deleteMany
-   */
-  export type UserLikedWebsiteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserLikedWebsites to delete
-     */
-    where?: UserLikedWebsiteWhereInput
-  }
-
-
-  /**
-   * UserLikedWebsite findRaw
-   */
-  export type UserLikedWebsiteFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
-     */
-    filter?: InputJsonValue
-    /**
-     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * UserLikedWebsite aggregateRaw
-   */
-  export type UserLikedWebsiteAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
-     */
-    pipeline?: InputJsonValue[]
-    /**
-     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * UserLikedWebsite without action
-   */
-  export type UserLikedWebsiteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedWebsite
-     */
-    select?: UserLikedWebsiteSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedWebsiteInclude<ExtArgs> | null
-  }
-
-
-
-  /**
    * Model Artist
    */
 
   export type AggregateArtist = {
     _count: ArtistCountAggregateOutputType | null
-    _avg: ArtistAvgAggregateOutputType | null
-    _sum: ArtistSumAggregateOutputType | null
     _min: ArtistMinAggregateOutputType | null
     _max: ArtistMaxAggregateOutputType | null
-  }
-
-  export type ArtistAvgAggregateOutputType = {
-    likes: number | null
-  }
-
-  export type ArtistSumAggregateOutputType = {
-    likes: number | null
   }
 
   export type ArtistMinAggregateOutputType = {
@@ -9080,7 +9164,6 @@ export namespace Prisma {
     genre: string | null
     description: string | null
     releaseDate: string | null
-    likes: number | null
   }
 
   export type ArtistMaxAggregateOutputType = {
@@ -9090,7 +9173,6 @@ export namespace Prisma {
     genre: string | null
     description: string | null
     releaseDate: string | null
-    likes: number | null
   }
 
   export type ArtistCountAggregateOutputType = {
@@ -9100,18 +9182,9 @@ export namespace Prisma {
     genre: number
     description: number
     releaseDate: number
-    likes: number
     _all: number
   }
 
-
-  export type ArtistAvgAggregateInputType = {
-    likes?: true
-  }
-
-  export type ArtistSumAggregateInputType = {
-    likes?: true
-  }
 
   export type ArtistMinAggregateInputType = {
     id?: true
@@ -9120,7 +9193,6 @@ export namespace Prisma {
     genre?: true
     description?: true
     releaseDate?: true
-    likes?: true
   }
 
   export type ArtistMaxAggregateInputType = {
@@ -9130,7 +9202,6 @@ export namespace Prisma {
     genre?: true
     description?: true
     releaseDate?: true
-    likes?: true
   }
 
   export type ArtistCountAggregateInputType = {
@@ -9140,7 +9211,6 @@ export namespace Prisma {
     genre?: true
     description?: true
     releaseDate?: true
-    likes?: true
     _all?: true
   }
 
@@ -9182,18 +9252,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: ArtistAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ArtistSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: ArtistMinAggregateInputType
@@ -9224,8 +9282,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ArtistCountAggregateInputType | true
-    _avg?: ArtistAvgAggregateInputType
-    _sum?: ArtistSumAggregateInputType
     _min?: ArtistMinAggregateInputType
     _max?: ArtistMaxAggregateInputType
   }
@@ -9237,10 +9293,7 @@ export namespace Prisma {
     genre: string
     description: string
     releaseDate: string
-    likes: number
     _count: ArtistCountAggregateOutputType | null
-    _avg: ArtistAvgAggregateOutputType | null
-    _sum: ArtistSumAggregateOutputType | null
     _min: ArtistMinAggregateOutputType | null
     _max: ArtistMaxAggregateOutputType | null
   }
@@ -9266,9 +9319,9 @@ export namespace Prisma {
     genre?: boolean
     description?: boolean
     releaseDate?: boolean
-    likes?: boolean
+    likes?: boolean | Artist$likesArgs<ExtArgs>
     comments?: boolean | Artist$commentsArgs<ExtArgs>
-    likedByUsers?: boolean | Artist$likedByUsersArgs<ExtArgs>
+    songs?: boolean | Artist$songsArgs<ExtArgs>
     _count?: boolean | ArtistCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["artist"]>
 
@@ -9279,12 +9332,12 @@ export namespace Prisma {
     genre?: boolean
     description?: boolean
     releaseDate?: boolean
-    likes?: boolean
   }
 
   export type ArtistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    likes?: boolean | Artist$likesArgs<ExtArgs>
     comments?: boolean | Artist$commentsArgs<ExtArgs>
-    likedByUsers?: boolean | Artist$likedByUsersArgs<ExtArgs>
+    songs?: boolean | Artist$songsArgs<ExtArgs>
     _count?: boolean | ArtistCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -9292,8 +9345,9 @@ export namespace Prisma {
   export type $ArtistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Artist"
     objects: {
-      comments: Prisma.$ArtistCommentPayload<ExtArgs>[]
-      likedByUsers: Prisma.$UserLikedArtistPayload<ExtArgs>[]
+      likes: Prisma.$LikePayload<ExtArgs>[]
+      comments: Prisma.$CommentPayload<ExtArgs>[]
+      songs: Prisma.$SongPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9302,7 +9356,6 @@ export namespace Prisma {
       genre: string
       description: string
       releaseDate: string
-      likes: number
     }, ExtArgs["result"]["artist"]>
     composites: {}
   }
@@ -9695,9 +9748,11 @@ export namespace Prisma {
   export interface Prisma__ArtistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    comments<T extends Artist$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Artist$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'findMany'> | Null>;
+    likes<T extends Artist$likesArgs<ExtArgs> = {}>(args?: Subset<T, Artist$likesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LikePayload<ExtArgs>, T, 'findMany'> | Null>;
 
-    likedByUsers<T extends Artist$likedByUsersArgs<ExtArgs> = {}>(args?: Subset<T, Artist$likedByUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'findMany'> | Null>;
+    comments<T extends Artist$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Artist$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, 'findMany'> | Null>;
+
+    songs<T extends Artist$songsArgs<ExtArgs> = {}>(args?: Subset<T, Artist$songsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SongPayload<ExtArgs>, T, 'findMany'> | Null>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -9733,7 +9788,6 @@ export namespace Prisma {
     readonly genre: FieldRef<"Artist", 'String'>
     readonly description: FieldRef<"Artist", 'String'>
     readonly releaseDate: FieldRef<"Artist", 'String'>
-    readonly likes: FieldRef<"Artist", 'Int'>
   }
     
 
@@ -10075,44 +10129,65 @@ export namespace Prisma {
 
 
   /**
-   * Artist.comments
+   * Artist.likes
    */
-  export type Artist$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Artist$likesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ArtistComment
+     * Select specific fields to fetch from the Like
      */
-    select?: ArtistCommentSelect<ExtArgs> | null
+    select?: LikeSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    where?: ArtistCommentWhereInput
-    orderBy?: ArtistCommentOrderByWithRelationInput | ArtistCommentOrderByWithRelationInput[]
-    cursor?: ArtistCommentWhereUniqueInput
+    include?: LikeInclude<ExtArgs> | null
+    where?: LikeWhereInput
+    orderBy?: LikeOrderByWithRelationInput | LikeOrderByWithRelationInput[]
+    cursor?: LikeWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ArtistCommentScalarFieldEnum | ArtistCommentScalarFieldEnum[]
+    distinct?: LikeScalarFieldEnum | LikeScalarFieldEnum[]
   }
 
 
   /**
-   * Artist.likedByUsers
+   * Artist.comments
    */
-  export type Artist$likedByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Artist$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserLikedArtist
+     * Select specific fields to fetch from the Comment
      */
-    select?: UserLikedArtistSelect<ExtArgs> | null
+    select?: CommentSelect<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well.
      */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    where?: UserLikedArtistWhereInput
-    orderBy?: UserLikedArtistOrderByWithRelationInput | UserLikedArtistOrderByWithRelationInput[]
-    cursor?: UserLikedArtistWhereUniqueInput
+    include?: CommentInclude<ExtArgs> | null
+    where?: CommentWhereInput
+    orderBy?: CommentOrderByWithRelationInput | CommentOrderByWithRelationInput[]
+    cursor?: CommentWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserLikedArtistScalarFieldEnum | UserLikedArtistScalarFieldEnum[]
+    distinct?: CommentScalarFieldEnum | CommentScalarFieldEnum[]
+  }
+
+
+  /**
+   * Artist.songs
+   */
+  export type Artist$songsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Song
+     */
+    select?: SongSelect<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     */
+    include?: SongInclude<ExtArgs> | null
+    where?: SongWhereInput
+    orderBy?: SongOrderByWithRelationInput | SongOrderByWithRelationInput[]
+    cursor?: SongWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SongScalarFieldEnum | SongScalarFieldEnum[]
   }
 
 
@@ -10133,1964 +10208,66 @@ export namespace Prisma {
 
 
   /**
-   * Model ArtistComment
-   */
-
-  export type AggregateArtistComment = {
-    _count: ArtistCommentCountAggregateOutputType | null
-    _avg: ArtistCommentAvgAggregateOutputType | null
-    _sum: ArtistCommentSumAggregateOutputType | null
-    _min: ArtistCommentMinAggregateOutputType | null
-    _max: ArtistCommentMaxAggregateOutputType | null
-  }
-
-  export type ArtistCommentAvgAggregateOutputType = {
-    likes: number | null
-  }
-
-  export type ArtistCommentSumAggregateOutputType = {
-    likes: number | null
-  }
-
-  export type ArtistCommentMinAggregateOutputType = {
-    id: string | null
-    comment: string | null
-    artistId: string | null
-    likes: number | null
-  }
-
-  export type ArtistCommentMaxAggregateOutputType = {
-    id: string | null
-    comment: string | null
-    artistId: string | null
-    likes: number | null
-  }
-
-  export type ArtistCommentCountAggregateOutputType = {
-    id: number
-    comment: number
-    artistId: number
-    likes: number
-    _all: number
-  }
-
-
-  export type ArtistCommentAvgAggregateInputType = {
-    likes?: true
-  }
-
-  export type ArtistCommentSumAggregateInputType = {
-    likes?: true
-  }
-
-  export type ArtistCommentMinAggregateInputType = {
-    id?: true
-    comment?: true
-    artistId?: true
-    likes?: true
-  }
-
-  export type ArtistCommentMaxAggregateInputType = {
-    id?: true
-    comment?: true
-    artistId?: true
-    likes?: true
-  }
-
-  export type ArtistCommentCountAggregateInputType = {
-    id?: true
-    comment?: true
-    artistId?: true
-    likes?: true
-    _all?: true
-  }
-
-  export type ArtistCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArtistComment to aggregate.
-     */
-    where?: ArtistCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArtistComments to fetch.
-     */
-    orderBy?: ArtistCommentOrderByWithRelationInput | ArtistCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ArtistCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArtistComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArtistComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ArtistComments
-    **/
-    _count?: true | ArtistCommentCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: ArtistCommentAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ArtistCommentSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ArtistCommentMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ArtistCommentMaxAggregateInputType
-  }
-
-  export type GetArtistCommentAggregateType<T extends ArtistCommentAggregateArgs> = {
-        [P in keyof T & keyof AggregateArtistComment]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateArtistComment[P]>
-      : GetScalarType<T[P], AggregateArtistComment[P]>
-  }
-
-
-
-
-  export type ArtistCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ArtistCommentWhereInput
-    orderBy?: ArtistCommentOrderByWithAggregationInput | ArtistCommentOrderByWithAggregationInput[]
-    by: ArtistCommentScalarFieldEnum[] | ArtistCommentScalarFieldEnum
-    having?: ArtistCommentScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ArtistCommentCountAggregateInputType | true
-    _avg?: ArtistCommentAvgAggregateInputType
-    _sum?: ArtistCommentSumAggregateInputType
-    _min?: ArtistCommentMinAggregateInputType
-    _max?: ArtistCommentMaxAggregateInputType
-  }
-
-  export type ArtistCommentGroupByOutputType = {
-    id: string
-    comment: string
-    artistId: string
-    likes: number
-    _count: ArtistCommentCountAggregateOutputType | null
-    _avg: ArtistCommentAvgAggregateOutputType | null
-    _sum: ArtistCommentSumAggregateOutputType | null
-    _min: ArtistCommentMinAggregateOutputType | null
-    _max: ArtistCommentMaxAggregateOutputType | null
-  }
-
-  type GetArtistCommentGroupByPayload<T extends ArtistCommentGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ArtistCommentGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ArtistCommentGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ArtistCommentGroupByOutputType[P]>
-            : GetScalarType<T[P], ArtistCommentGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ArtistCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    comment?: boolean
-    artistId?: boolean
-    likes?: boolean
-    artist?: boolean | ArtistDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["artistComment"]>
-
-  export type ArtistCommentSelectScalar = {
-    id?: boolean
-    comment?: boolean
-    artistId?: boolean
-    likes?: boolean
-  }
-
-  export type ArtistCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    artist?: boolean | ArtistDefaultArgs<ExtArgs>
-  }
-
-
-  export type $ArtistCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ArtistComment"
-    objects: {
-      artist: Prisma.$ArtistPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      comment: string
-      artistId: string
-      likes: number
-    }, ExtArgs["result"]["artistComment"]>
-    composites: {}
-  }
-
-
-  type ArtistCommentGetPayload<S extends boolean | null | undefined | ArtistCommentDefaultArgs> = $Result.GetResult<Prisma.$ArtistCommentPayload, S>
-
-  type ArtistCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<ArtistCommentFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: ArtistCommentCountAggregateInputType | true
-    }
-
-  export interface ArtistCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArtistComment'], meta: { name: 'ArtistComment' } }
-    /**
-     * Find zero or one ArtistComment that matches the filter.
-     * @param {ArtistCommentFindUniqueArgs} args - Arguments to find a ArtistComment
-     * @example
-     * // Get one ArtistComment
-     * const artistComment = await prisma.artistComment.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends ArtistCommentFindUniqueArgs<ExtArgs>>(
-      args: SelectSubset<T, ArtistCommentFindUniqueArgs<ExtArgs>>
-    ): Prisma__ArtistCommentClient<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
-
-    /**
-     * Find one ArtistComment that matches the filter or throw an error  with `error.code='P2025'` 
-     *     if no matches were found.
-     * @param {ArtistCommentFindUniqueOrThrowArgs} args - Arguments to find a ArtistComment
-     * @example
-     * // Get one ArtistComment
-     * const artistComment = await prisma.artistComment.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends ArtistCommentFindUniqueOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, ArtistCommentFindUniqueOrThrowArgs<ExtArgs>>
-    ): Prisma__ArtistCommentClient<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find the first ArtistComment that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArtistCommentFindFirstArgs} args - Arguments to find a ArtistComment
-     * @example
-     * // Get one ArtistComment
-     * const artistComment = await prisma.artistComment.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends ArtistCommentFindFirstArgs<ExtArgs>>(
-      args?: SelectSubset<T, ArtistCommentFindFirstArgs<ExtArgs>>
-    ): Prisma__ArtistCommentClient<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
-
-    /**
-     * Find the first ArtistComment that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArtistCommentFindFirstOrThrowArgs} args - Arguments to find a ArtistComment
-     * @example
-     * // Get one ArtistComment
-     * const artistComment = await prisma.artistComment.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends ArtistCommentFindFirstOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, ArtistCommentFindFirstOrThrowArgs<ExtArgs>>
-    ): Prisma__ArtistCommentClient<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find zero or more ArtistComments that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArtistCommentFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ArtistComments
-     * const artistComments = await prisma.artistComment.findMany()
-     * 
-     * // Get first 10 ArtistComments
-     * const artistComments = await prisma.artistComment.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const artistCommentWithIdOnly = await prisma.artistComment.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends ArtistCommentFindManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, ArtistCommentFindManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'findMany'>>
-
-    /**
-     * Create a ArtistComment.
-     * @param {ArtistCommentCreateArgs} args - Arguments to create a ArtistComment.
-     * @example
-     * // Create one ArtistComment
-     * const ArtistComment = await prisma.artistComment.create({
-     *   data: {
-     *     // ... data to create a ArtistComment
-     *   }
-     * })
-     * 
-    **/
-    create<T extends ArtistCommentCreateArgs<ExtArgs>>(
-      args: SelectSubset<T, ArtistCommentCreateArgs<ExtArgs>>
-    ): Prisma__ArtistCommentClient<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
-
-    /**
-     * Create many ArtistComments.
-     *     @param {ArtistCommentCreateManyArgs} args - Arguments to create many ArtistComments.
-     *     @example
-     *     // Create many ArtistComments
-     *     const artistComment = await prisma.artistComment.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends ArtistCommentCreateManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, ArtistCommentCreateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a ArtistComment.
-     * @param {ArtistCommentDeleteArgs} args - Arguments to delete one ArtistComment.
-     * @example
-     * // Delete one ArtistComment
-     * const ArtistComment = await prisma.artistComment.delete({
-     *   where: {
-     *     // ... filter to delete one ArtistComment
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends ArtistCommentDeleteArgs<ExtArgs>>(
-      args: SelectSubset<T, ArtistCommentDeleteArgs<ExtArgs>>
-    ): Prisma__ArtistCommentClient<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
-
-    /**
-     * Update one ArtistComment.
-     * @param {ArtistCommentUpdateArgs} args - Arguments to update one ArtistComment.
-     * @example
-     * // Update one ArtistComment
-     * const artistComment = await prisma.artistComment.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends ArtistCommentUpdateArgs<ExtArgs>>(
-      args: SelectSubset<T, ArtistCommentUpdateArgs<ExtArgs>>
-    ): Prisma__ArtistCommentClient<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
-
-    /**
-     * Delete zero or more ArtistComments.
-     * @param {ArtistCommentDeleteManyArgs} args - Arguments to filter ArtistComments to delete.
-     * @example
-     * // Delete a few ArtistComments
-     * const { count } = await prisma.artistComment.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends ArtistCommentDeleteManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, ArtistCommentDeleteManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ArtistComments.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArtistCommentUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ArtistComments
-     * const artistComment = await prisma.artistComment.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends ArtistCommentUpdateManyArgs<ExtArgs>>(
-      args: SelectSubset<T, ArtistCommentUpdateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one ArtistComment.
-     * @param {ArtistCommentUpsertArgs} args - Arguments to update or create a ArtistComment.
-     * @example
-     * // Update or create a ArtistComment
-     * const artistComment = await prisma.artistComment.upsert({
-     *   create: {
-     *     // ... data to create a ArtistComment
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ArtistComment we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends ArtistCommentUpsertArgs<ExtArgs>>(
-      args: SelectSubset<T, ArtistCommentUpsertArgs<ExtArgs>>
-    ): Prisma__ArtistCommentClient<$Result.GetResult<Prisma.$ArtistCommentPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
-
-    /**
-     * Find zero or more ArtistComments that matches the filter.
-     * @param {ArtistCommentFindRawArgs} args - Select which filters you would like to apply.
-     * @example
-     * const artistComment = await prisma.artistComment.findRaw({
-     *   filter: { age: { $gt: 25 } } 
-     * })
-    **/
-    findRaw(
-      args?: ArtistCommentFindRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Perform aggregation operations on a ArtistComment.
-     * @param {ArtistCommentAggregateRawArgs} args - Select which aggregations you would like to apply.
-     * @example
-     * const artistComment = await prisma.artistComment.aggregateRaw({
-     *   pipeline: [
-     *     { $match: { status: "registered" } },
-     *     { $group: { _id: "$country", total: { $sum: 1 } } }
-     *   ]
-     * })
-    **/
-    aggregateRaw(
-      args?: ArtistCommentAggregateRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Count the number of ArtistComments.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArtistCommentCountArgs} args - Arguments to filter ArtistComments to count.
-     * @example
-     * // Count the number of ArtistComments
-     * const count = await prisma.artistComment.count({
-     *   where: {
-     *     // ... the filter for the ArtistComments we want to count
-     *   }
-     * })
-    **/
-    count<T extends ArtistCommentCountArgs>(
-      args?: Subset<T, ArtistCommentCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ArtistCommentCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ArtistComment.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArtistCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ArtistCommentAggregateArgs>(args: Subset<T, ArtistCommentAggregateArgs>): Prisma.PrismaPromise<GetArtistCommentAggregateType<T>>
-
-    /**
-     * Group by ArtistComment.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArtistCommentGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ArtistCommentGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ArtistCommentGroupByArgs['orderBy'] }
-        : { orderBy?: ArtistCommentGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ArtistCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArtistCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ArtistComment model
-   */
-  readonly fields: ArtistCommentFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ArtistComment.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ArtistCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: 'PrismaPromise';
-
-    artist<T extends ArtistDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ArtistDefaultArgs<ExtArgs>>): Prisma__ArtistClient<$Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
-  }
-
-
-
-  /**
-   * Fields of the ArtistComment model
-   */ 
-  interface ArtistCommentFieldRefs {
-    readonly id: FieldRef<"ArtistComment", 'String'>
-    readonly comment: FieldRef<"ArtistComment", 'String'>
-    readonly artistId: FieldRef<"ArtistComment", 'String'>
-    readonly likes: FieldRef<"ArtistComment", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-
-  /**
-   * ArtistComment findUnique
-   */
-  export type ArtistCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which ArtistComment to fetch.
-     */
-    where: ArtistCommentWhereUniqueInput
-  }
-
-
-  /**
-   * ArtistComment findUniqueOrThrow
-   */
-  export type ArtistCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which ArtistComment to fetch.
-     */
-    where: ArtistCommentWhereUniqueInput
-  }
-
-
-  /**
-   * ArtistComment findFirst
-   */
-  export type ArtistCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which ArtistComment to fetch.
-     */
-    where?: ArtistCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArtistComments to fetch.
-     */
-    orderBy?: ArtistCommentOrderByWithRelationInput | ArtistCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArtistComments.
-     */
-    cursor?: ArtistCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArtistComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArtistComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArtistComments.
-     */
-    distinct?: ArtistCommentScalarFieldEnum | ArtistCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * ArtistComment findFirstOrThrow
-   */
-  export type ArtistCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which ArtistComment to fetch.
-     */
-    where?: ArtistCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArtistComments to fetch.
-     */
-    orderBy?: ArtistCommentOrderByWithRelationInput | ArtistCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArtistComments.
-     */
-    cursor?: ArtistCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArtistComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArtistComments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArtistComments.
-     */
-    distinct?: ArtistCommentScalarFieldEnum | ArtistCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * ArtistComment findMany
-   */
-  export type ArtistCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * Filter, which ArtistComments to fetch.
-     */
-    where?: ArtistCommentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArtistComments to fetch.
-     */
-    orderBy?: ArtistCommentOrderByWithRelationInput | ArtistCommentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ArtistComments.
-     */
-    cursor?: ArtistCommentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArtistComments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArtistComments.
-     */
-    skip?: number
-    distinct?: ArtistCommentScalarFieldEnum | ArtistCommentScalarFieldEnum[]
-  }
-
-
-  /**
-   * ArtistComment create
-   */
-  export type ArtistCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ArtistComment.
-     */
-    data: XOR<ArtistCommentCreateInput, ArtistCommentUncheckedCreateInput>
-  }
-
-
-  /**
-   * ArtistComment createMany
-   */
-  export type ArtistCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ArtistComments.
-     */
-    data: ArtistCommentCreateManyInput | ArtistCommentCreateManyInput[]
-  }
-
-
-  /**
-   * ArtistComment update
-   */
-  export type ArtistCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ArtistComment.
-     */
-    data: XOR<ArtistCommentUpdateInput, ArtistCommentUncheckedUpdateInput>
-    /**
-     * Choose, which ArtistComment to update.
-     */
-    where: ArtistCommentWhereUniqueInput
-  }
-
-
-  /**
-   * ArtistComment updateMany
-   */
-  export type ArtistCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ArtistComments.
-     */
-    data: XOR<ArtistCommentUpdateManyMutationInput, ArtistCommentUncheckedUpdateManyInput>
-    /**
-     * Filter which ArtistComments to update
-     */
-    where?: ArtistCommentWhereInput
-  }
-
-
-  /**
-   * ArtistComment upsert
-   */
-  export type ArtistCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ArtistComment to update in case it exists.
-     */
-    where: ArtistCommentWhereUniqueInput
-    /**
-     * In case the ArtistComment found by the `where` argument doesn't exist, create a new ArtistComment with this data.
-     */
-    create: XOR<ArtistCommentCreateInput, ArtistCommentUncheckedCreateInput>
-    /**
-     * In case the ArtistComment was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ArtistCommentUpdateInput, ArtistCommentUncheckedUpdateInput>
-  }
-
-
-  /**
-   * ArtistComment delete
-   */
-  export type ArtistCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-    /**
-     * Filter which ArtistComment to delete.
-     */
-    where: ArtistCommentWhereUniqueInput
-  }
-
-
-  /**
-   * ArtistComment deleteMany
-   */
-  export type ArtistCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArtistComments to delete
-     */
-    where?: ArtistCommentWhereInput
-  }
-
-
-  /**
-   * ArtistComment findRaw
-   */
-  export type ArtistCommentFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
-     */
-    filter?: InputJsonValue
-    /**
-     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * ArtistComment aggregateRaw
-   */
-  export type ArtistCommentAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
-     */
-    pipeline?: InputJsonValue[]
-    /**
-     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * ArtistComment without action
-   */
-  export type ArtistCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArtistComment
-     */
-    select?: ArtistCommentSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ArtistCommentInclude<ExtArgs> | null
-  }
-
-
-
-  /**
-   * Model UserLikedArtist
-   */
-
-  export type AggregateUserLikedArtist = {
-    _count: UserLikedArtistCountAggregateOutputType | null
-    _min: UserLikedArtistMinAggregateOutputType | null
-    _max: UserLikedArtistMaxAggregateOutputType | null
-  }
-
-  export type UserLikedArtistMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    likedArtistId: string | null
-  }
-
-  export type UserLikedArtistMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    likedArtistId: string | null
-  }
-
-  export type UserLikedArtistCountAggregateOutputType = {
-    id: number
-    userId: number
-    likedArtistId: number
-    _all: number
-  }
-
-
-  export type UserLikedArtistMinAggregateInputType = {
-    id?: true
-    userId?: true
-    likedArtistId?: true
-  }
-
-  export type UserLikedArtistMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    likedArtistId?: true
-  }
-
-  export type UserLikedArtistCountAggregateInputType = {
-    id?: true
-    userId?: true
-    likedArtistId?: true
-    _all?: true
-  }
-
-  export type UserLikedArtistAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserLikedArtist to aggregate.
-     */
-    where?: UserLikedArtistWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedArtists to fetch.
-     */
-    orderBy?: UserLikedArtistOrderByWithRelationInput | UserLikedArtistOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: UserLikedArtistWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedArtists from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedArtists.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned UserLikedArtists
-    **/
-    _count?: true | UserLikedArtistCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: UserLikedArtistMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: UserLikedArtistMaxAggregateInputType
-  }
-
-  export type GetUserLikedArtistAggregateType<T extends UserLikedArtistAggregateArgs> = {
-        [P in keyof T & keyof AggregateUserLikedArtist]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUserLikedArtist[P]>
-      : GetScalarType<T[P], AggregateUserLikedArtist[P]>
-  }
-
-
-
-
-  export type UserLikedArtistGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserLikedArtistWhereInput
-    orderBy?: UserLikedArtistOrderByWithAggregationInput | UserLikedArtistOrderByWithAggregationInput[]
-    by: UserLikedArtistScalarFieldEnum[] | UserLikedArtistScalarFieldEnum
-    having?: UserLikedArtistScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: UserLikedArtistCountAggregateInputType | true
-    _min?: UserLikedArtistMinAggregateInputType
-    _max?: UserLikedArtistMaxAggregateInputType
-  }
-
-  export type UserLikedArtistGroupByOutputType = {
-    id: string
-    userId: string
-    likedArtistId: string
-    _count: UserLikedArtistCountAggregateOutputType | null
-    _min: UserLikedArtistMinAggregateOutputType | null
-    _max: UserLikedArtistMaxAggregateOutputType | null
-  }
-
-  type GetUserLikedArtistGroupByPayload<T extends UserLikedArtistGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<UserLikedArtistGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof UserLikedArtistGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], UserLikedArtistGroupByOutputType[P]>
-            : GetScalarType<T[P], UserLikedArtistGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type UserLikedArtistSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    likedArtistId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    likedArtist?: boolean | ArtistDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["userLikedArtist"]>
-
-  export type UserLikedArtistSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    likedArtistId?: boolean
-  }
-
-  export type UserLikedArtistInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    likedArtist?: boolean | ArtistDefaultArgs<ExtArgs>
-  }
-
-
-  export type $UserLikedArtistPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "UserLikedArtist"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      likedArtist: Prisma.$ArtistPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      likedArtistId: string
-    }, ExtArgs["result"]["userLikedArtist"]>
-    composites: {}
-  }
-
-
-  type UserLikedArtistGetPayload<S extends boolean | null | undefined | UserLikedArtistDefaultArgs> = $Result.GetResult<Prisma.$UserLikedArtistPayload, S>
-
-  type UserLikedArtistCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<UserLikedArtistFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: UserLikedArtistCountAggregateInputType | true
-    }
-
-  export interface UserLikedArtistDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserLikedArtist'], meta: { name: 'UserLikedArtist' } }
-    /**
-     * Find zero or one UserLikedArtist that matches the filter.
-     * @param {UserLikedArtistFindUniqueArgs} args - Arguments to find a UserLikedArtist
-     * @example
-     * // Get one UserLikedArtist
-     * const userLikedArtist = await prisma.userLikedArtist.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends UserLikedArtistFindUniqueArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedArtistFindUniqueArgs<ExtArgs>>
-    ): Prisma__UserLikedArtistClient<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
-
-    /**
-     * Find one UserLikedArtist that matches the filter or throw an error  with `error.code='P2025'` 
-     *     if no matches were found.
-     * @param {UserLikedArtistFindUniqueOrThrowArgs} args - Arguments to find a UserLikedArtist
-     * @example
-     * // Get one UserLikedArtist
-     * const userLikedArtist = await prisma.userLikedArtist.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends UserLikedArtistFindUniqueOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedArtistFindUniqueOrThrowArgs<ExtArgs>>
-    ): Prisma__UserLikedArtistClient<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find the first UserLikedArtist that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedArtistFindFirstArgs} args - Arguments to find a UserLikedArtist
-     * @example
-     * // Get one UserLikedArtist
-     * const userLikedArtist = await prisma.userLikedArtist.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends UserLikedArtistFindFirstArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedArtistFindFirstArgs<ExtArgs>>
-    ): Prisma__UserLikedArtistClient<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
-
-    /**
-     * Find the first UserLikedArtist that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedArtistFindFirstOrThrowArgs} args - Arguments to find a UserLikedArtist
-     * @example
-     * // Get one UserLikedArtist
-     * const userLikedArtist = await prisma.userLikedArtist.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends UserLikedArtistFindFirstOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedArtistFindFirstOrThrowArgs<ExtArgs>>
-    ): Prisma__UserLikedArtistClient<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find zero or more UserLikedArtists that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedArtistFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all UserLikedArtists
-     * const userLikedArtists = await prisma.userLikedArtist.findMany()
-     * 
-     * // Get first 10 UserLikedArtists
-     * const userLikedArtists = await prisma.userLikedArtist.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const userLikedArtistWithIdOnly = await prisma.userLikedArtist.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends UserLikedArtistFindManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedArtistFindManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'findMany'>>
-
-    /**
-     * Create a UserLikedArtist.
-     * @param {UserLikedArtistCreateArgs} args - Arguments to create a UserLikedArtist.
-     * @example
-     * // Create one UserLikedArtist
-     * const UserLikedArtist = await prisma.userLikedArtist.create({
-     *   data: {
-     *     // ... data to create a UserLikedArtist
-     *   }
-     * })
-     * 
-    **/
-    create<T extends UserLikedArtistCreateArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedArtistCreateArgs<ExtArgs>>
-    ): Prisma__UserLikedArtistClient<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
-
-    /**
-     * Create many UserLikedArtists.
-     *     @param {UserLikedArtistCreateManyArgs} args - Arguments to create many UserLikedArtists.
-     *     @example
-     *     // Create many UserLikedArtists
-     *     const userLikedArtist = await prisma.userLikedArtist.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends UserLikedArtistCreateManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedArtistCreateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a UserLikedArtist.
-     * @param {UserLikedArtistDeleteArgs} args - Arguments to delete one UserLikedArtist.
-     * @example
-     * // Delete one UserLikedArtist
-     * const UserLikedArtist = await prisma.userLikedArtist.delete({
-     *   where: {
-     *     // ... filter to delete one UserLikedArtist
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends UserLikedArtistDeleteArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedArtistDeleteArgs<ExtArgs>>
-    ): Prisma__UserLikedArtistClient<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
-
-    /**
-     * Update one UserLikedArtist.
-     * @param {UserLikedArtistUpdateArgs} args - Arguments to update one UserLikedArtist.
-     * @example
-     * // Update one UserLikedArtist
-     * const userLikedArtist = await prisma.userLikedArtist.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends UserLikedArtistUpdateArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedArtistUpdateArgs<ExtArgs>>
-    ): Prisma__UserLikedArtistClient<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
-
-    /**
-     * Delete zero or more UserLikedArtists.
-     * @param {UserLikedArtistDeleteManyArgs} args - Arguments to filter UserLikedArtists to delete.
-     * @example
-     * // Delete a few UserLikedArtists
-     * const { count } = await prisma.userLikedArtist.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends UserLikedArtistDeleteManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, UserLikedArtistDeleteManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more UserLikedArtists.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedArtistUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many UserLikedArtists
-     * const userLikedArtist = await prisma.userLikedArtist.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends UserLikedArtistUpdateManyArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedArtistUpdateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one UserLikedArtist.
-     * @param {UserLikedArtistUpsertArgs} args - Arguments to update or create a UserLikedArtist.
-     * @example
-     * // Update or create a UserLikedArtist
-     * const userLikedArtist = await prisma.userLikedArtist.upsert({
-     *   create: {
-     *     // ... data to create a UserLikedArtist
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the UserLikedArtist we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends UserLikedArtistUpsertArgs<ExtArgs>>(
-      args: SelectSubset<T, UserLikedArtistUpsertArgs<ExtArgs>>
-    ): Prisma__UserLikedArtistClient<$Result.GetResult<Prisma.$UserLikedArtistPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
-
-    /**
-     * Find zero or more UserLikedArtists that matches the filter.
-     * @param {UserLikedArtistFindRawArgs} args - Select which filters you would like to apply.
-     * @example
-     * const userLikedArtist = await prisma.userLikedArtist.findRaw({
-     *   filter: { age: { $gt: 25 } } 
-     * })
-    **/
-    findRaw(
-      args?: UserLikedArtistFindRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Perform aggregation operations on a UserLikedArtist.
-     * @param {UserLikedArtistAggregateRawArgs} args - Select which aggregations you would like to apply.
-     * @example
-     * const userLikedArtist = await prisma.userLikedArtist.aggregateRaw({
-     *   pipeline: [
-     *     { $match: { status: "registered" } },
-     *     { $group: { _id: "$country", total: { $sum: 1 } } }
-     *   ]
-     * })
-    **/
-    aggregateRaw(
-      args?: UserLikedArtistAggregateRawArgs
-    ): Prisma.PrismaPromise<JsonObject>
-
-    /**
-     * Count the number of UserLikedArtists.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedArtistCountArgs} args - Arguments to filter UserLikedArtists to count.
-     * @example
-     * // Count the number of UserLikedArtists
-     * const count = await prisma.userLikedArtist.count({
-     *   where: {
-     *     // ... the filter for the UserLikedArtists we want to count
-     *   }
-     * })
-    **/
-    count<T extends UserLikedArtistCountArgs>(
-      args?: Subset<T, UserLikedArtistCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], UserLikedArtistCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a UserLikedArtist.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedArtistAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends UserLikedArtistAggregateArgs>(args: Subset<T, UserLikedArtistAggregateArgs>): Prisma.PrismaPromise<GetUserLikedArtistAggregateType<T>>
-
-    /**
-     * Group by UserLikedArtist.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {UserLikedArtistGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends UserLikedArtistGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: UserLikedArtistGroupByArgs['orderBy'] }
-        : { orderBy?: UserLikedArtistGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, UserLikedArtistGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserLikedArtistGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the UserLikedArtist model
-   */
-  readonly fields: UserLikedArtistFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for UserLikedArtist.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__UserLikedArtistClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: 'PrismaPromise';
-
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    likedArtist<T extends ArtistDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ArtistDefaultArgs<ExtArgs>>): Prisma__ArtistClient<$Result.GetResult<Prisma.$ArtistPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
-  }
-
-
-
-  /**
-   * Fields of the UserLikedArtist model
-   */ 
-  interface UserLikedArtistFieldRefs {
-    readonly id: FieldRef<"UserLikedArtist", 'String'>
-    readonly userId: FieldRef<"UserLikedArtist", 'String'>
-    readonly likedArtistId: FieldRef<"UserLikedArtist", 'String'>
-  }
-    
-
-  // Custom InputTypes
-
-  /**
-   * UserLikedArtist findUnique
-   */
-  export type UserLikedArtistFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedArtist to fetch.
-     */
-    where: UserLikedArtistWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedArtist findUniqueOrThrow
-   */
-  export type UserLikedArtistFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedArtist to fetch.
-     */
-    where: UserLikedArtistWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedArtist findFirst
-   */
-  export type UserLikedArtistFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedArtist to fetch.
-     */
-    where?: UserLikedArtistWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedArtists to fetch.
-     */
-    orderBy?: UserLikedArtistOrderByWithRelationInput | UserLikedArtistOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserLikedArtists.
-     */
-    cursor?: UserLikedArtistWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedArtists from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedArtists.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserLikedArtists.
-     */
-    distinct?: UserLikedArtistScalarFieldEnum | UserLikedArtistScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedArtist findFirstOrThrow
-   */
-  export type UserLikedArtistFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedArtist to fetch.
-     */
-    where?: UserLikedArtistWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedArtists to fetch.
-     */
-    orderBy?: UserLikedArtistOrderByWithRelationInput | UserLikedArtistOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for UserLikedArtists.
-     */
-    cursor?: UserLikedArtistWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedArtists from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedArtists.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of UserLikedArtists.
-     */
-    distinct?: UserLikedArtistScalarFieldEnum | UserLikedArtistScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedArtist findMany
-   */
-  export type UserLikedArtistFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * Filter, which UserLikedArtists to fetch.
-     */
-    where?: UserLikedArtistWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of UserLikedArtists to fetch.
-     */
-    orderBy?: UserLikedArtistOrderByWithRelationInput | UserLikedArtistOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing UserLikedArtists.
-     */
-    cursor?: UserLikedArtistWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` UserLikedArtists from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` UserLikedArtists.
-     */
-    skip?: number
-    distinct?: UserLikedArtistScalarFieldEnum | UserLikedArtistScalarFieldEnum[]
-  }
-
-
-  /**
-   * UserLikedArtist create
-   */
-  export type UserLikedArtistCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * The data needed to create a UserLikedArtist.
-     */
-    data: XOR<UserLikedArtistCreateInput, UserLikedArtistUncheckedCreateInput>
-  }
-
-
-  /**
-   * UserLikedArtist createMany
-   */
-  export type UserLikedArtistCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many UserLikedArtists.
-     */
-    data: UserLikedArtistCreateManyInput | UserLikedArtistCreateManyInput[]
-  }
-
-
-  /**
-   * UserLikedArtist update
-   */
-  export type UserLikedArtistUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * The data needed to update a UserLikedArtist.
-     */
-    data: XOR<UserLikedArtistUpdateInput, UserLikedArtistUncheckedUpdateInput>
-    /**
-     * Choose, which UserLikedArtist to update.
-     */
-    where: UserLikedArtistWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedArtist updateMany
-   */
-  export type UserLikedArtistUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update UserLikedArtists.
-     */
-    data: XOR<UserLikedArtistUpdateManyMutationInput, UserLikedArtistUncheckedUpdateManyInput>
-    /**
-     * Filter which UserLikedArtists to update
-     */
-    where?: UserLikedArtistWhereInput
-  }
-
-
-  /**
-   * UserLikedArtist upsert
-   */
-  export type UserLikedArtistUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * The filter to search for the UserLikedArtist to update in case it exists.
-     */
-    where: UserLikedArtistWhereUniqueInput
-    /**
-     * In case the UserLikedArtist found by the `where` argument doesn't exist, create a new UserLikedArtist with this data.
-     */
-    create: XOR<UserLikedArtistCreateInput, UserLikedArtistUncheckedCreateInput>
-    /**
-     * In case the UserLikedArtist was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<UserLikedArtistUpdateInput, UserLikedArtistUncheckedUpdateInput>
-  }
-
-
-  /**
-   * UserLikedArtist delete
-   */
-  export type UserLikedArtistDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-    /**
-     * Filter which UserLikedArtist to delete.
-     */
-    where: UserLikedArtistWhereUniqueInput
-  }
-
-
-  /**
-   * UserLikedArtist deleteMany
-   */
-  export type UserLikedArtistDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which UserLikedArtists to delete
-     */
-    where?: UserLikedArtistWhereInput
-  }
-
-
-  /**
-   * UserLikedArtist findRaw
-   */
-  export type UserLikedArtistFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
-     */
-    filter?: InputJsonValue
-    /**
-     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * UserLikedArtist aggregateRaw
-   */
-  export type UserLikedArtistAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
-     */
-    pipeline?: InputJsonValue[]
-    /**
-     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
-     */
-    options?: InputJsonValue
-  }
-
-
-  /**
-   * UserLikedArtist without action
-   */
-  export type UserLikedArtistDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserLikedArtist
-     */
-    select?: UserLikedArtistSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserLikedArtistInclude<ExtArgs> | null
-  }
-
-
-
-  /**
    * Enums
    */
 
-  export const WebsiteProjectScalarFieldEnum: {
+  export const LikeScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    category: 'category',
+    itemId: 'itemId',
+    timestamp: 'timestamp',
+    websiteId: 'websiteId',
+    artistId: 'artistId',
+    movieId: 'movieId'
+  };
+
+  export type LikeScalarFieldEnum = (typeof LikeScalarFieldEnum)[keyof typeof LikeScalarFieldEnum]
+
+
+  export const CommentScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    category: 'category',
+    itemId: 'itemId',
+    comment: 'comment',
+    timestamp: 'timestamp',
+    websiteId: 'websiteId',
+    songId: 'songId',
+    artistId: 'artistId',
+    movieId: 'movieId'
+  };
+
+  export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum]
+
+
+  export const CardScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    cardId: 'cardId',
+    amount: 'amount',
+    currency: 'currency',
+    transactionType: 'transactionType',
+    status: 'status',
+    timestamp: 'timestamp'
+  };
+
+  export type CardScalarFieldEnum = (typeof CardScalarFieldEnum)[keyof typeof CardScalarFieldEnum]
+
+
+  export const MovieScalarFieldEnum: {
+    id: 'id',
+    img: 'img',
+    title: 'title',
+    genre: 'genre',
+    description: 'description',
+    releaseDate: 'releaseDate'
+  };
+
+  export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
+
+
+  export const WebsiteScalarFieldEnum: {
     id: 'id',
     img: 'img',
     title: 'title',
@@ -12098,21 +10275,10 @@ export namespace Prisma {
     technologies: 'technologies',
     description: 'description',
     release_date: 'release_date',
-    link: 'link',
-    likes: 'likes'
+    link: 'link'
   };
 
-  export type WebsiteProjectScalarFieldEnum = (typeof WebsiteProjectScalarFieldEnum)[keyof typeof WebsiteProjectScalarFieldEnum]
-
-
-  export const WebsiteProjectCommentScalarFieldEnum: {
-    id: 'id',
-    comment: 'comment',
-    websiteProjectId: 'websiteProjectId',
-    likes: 'likes'
-  };
-
-  export type WebsiteProjectCommentScalarFieldEnum = (typeof WebsiteProjectCommentScalarFieldEnum)[keyof typeof WebsiteProjectCommentScalarFieldEnum]
+  export type WebsiteScalarFieldEnum = (typeof WebsiteScalarFieldEnum)[keyof typeof WebsiteScalarFieldEnum]
 
 
   export const SongScalarFieldEnum: {
@@ -12126,29 +10292,11 @@ export namespace Prisma {
     duration: 'duration',
     plays: 'plays',
     song: 'song',
-    likes: 'likes'
+    likes: 'likes',
+    artistId: 'artistId'
   };
 
   export type SongScalarFieldEnum = (typeof SongScalarFieldEnum)[keyof typeof SongScalarFieldEnum]
-
-
-  export const SongCommentScalarFieldEnum: {
-    id: 'id',
-    comment: 'comment',
-    songId: 'songId',
-    likes: 'likes'
-  };
-
-  export type SongCommentScalarFieldEnum = (typeof SongCommentScalarFieldEnum)[keyof typeof SongCommentScalarFieldEnum]
-
-
-  export const UserLikedSongScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    likedSongId: 'likedSongId'
-  };
-
-  export type UserLikedSongScalarFieldEnum = (typeof UserLikedSongScalarFieldEnum)[keyof typeof UserLikedSongScalarFieldEnum]
 
 
   export const UserScalarFieldEnum: {
@@ -12160,45 +10308,16 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-  export const UserLikedWebsiteScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    likedWebsiteId: 'likedWebsiteId'
-  };
-
-  export type UserLikedWebsiteScalarFieldEnum = (typeof UserLikedWebsiteScalarFieldEnum)[keyof typeof UserLikedWebsiteScalarFieldEnum]
-
-
   export const ArtistScalarFieldEnum: {
     id: 'id',
     img: 'img',
     title: 'title',
     genre: 'genre',
     description: 'description',
-    releaseDate: 'releaseDate',
-    likes: 'likes'
+    releaseDate: 'releaseDate'
   };
 
   export type ArtistScalarFieldEnum = (typeof ArtistScalarFieldEnum)[keyof typeof ArtistScalarFieldEnum]
-
-
-  export const ArtistCommentScalarFieldEnum: {
-    id: 'id',
-    comment: 'comment',
-    artistId: 'artistId',
-    likes: 'likes'
-  };
-
-  export type ArtistCommentScalarFieldEnum = (typeof ArtistCommentScalarFieldEnum)[keyof typeof ArtistCommentScalarFieldEnum]
-
-
-  export const UserLikedArtistScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    likedArtistId: 'likedArtistId'
-  };
-
-  export type UserLikedArtistScalarFieldEnum = (typeof UserLikedArtistScalarFieldEnum)[keyof typeof UserLikedArtistScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -12237,6 +10356,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Category'
+   */
+  export type EnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Category'>
+    
+
+
+  /**
+   * Reference to a field of type 'Category[]'
+   */
+  export type ListEnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Category[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'DateTime[]'
+   */
+  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -12247,6 +10394,34 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TransactionType'
+   */
+  export type EnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType'>
+    
+
+
+  /**
+   * Reference to a field of type 'TransactionType[]'
+   */
+  export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Status'
+   */
+  export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status'>
+    
+
+
+  /**
+   * Reference to a field of type 'Status[]'
+   */
+  export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
     
 
 
@@ -12267,24 +10442,323 @@ export namespace Prisma {
    */
 
 
-  export type WebsiteProjectWhereInput = {
-    AND?: WebsiteProjectWhereInput | WebsiteProjectWhereInput[]
-    OR?: WebsiteProjectWhereInput[]
-    NOT?: WebsiteProjectWhereInput | WebsiteProjectWhereInput[]
-    id?: StringFilter<"WebsiteProject"> | string
-    img?: StringFilter<"WebsiteProject"> | string
-    title?: StringFilter<"WebsiteProject"> | string
-    genre?: StringFilter<"WebsiteProject"> | string
-    technologies?: StringFilter<"WebsiteProject"> | string
-    description?: StringFilter<"WebsiteProject"> | string
-    release_date?: StringFilter<"WebsiteProject"> | string
-    link?: StringFilter<"WebsiteProject"> | string
-    likes?: IntFilter<"WebsiteProject"> | number
-    comments?: WebsiteProjectCommentListRelationFilter
-    likedByUsers?: UserLikedWebsiteListRelationFilter
+  export type LikeWhereInput = {
+    AND?: LikeWhereInput | LikeWhereInput[]
+    OR?: LikeWhereInput[]
+    NOT?: LikeWhereInput | LikeWhereInput[]
+    id?: StringFilter<"Like"> | string
+    userId?: StringFilter<"Like"> | string
+    category?: EnumCategoryFilter<"Like"> | $Enums.Category
+    itemId?: StringFilter<"Like"> | string
+    timestamp?: DateTimeFilter<"Like"> | Date | string
+    websiteId?: StringNullableFilter<"Like"> | string | null
+    artistId?: StringNullableFilter<"Like"> | string | null
+    movieId?: StringNullableFilter<"Like"> | string | null
+    Website?: XOR<WebsiteNullableRelationFilter, WebsiteWhereInput> | null
+    User?: XOR<UserRelationFilter, UserWhereInput>
+    Artist?: XOR<ArtistNullableRelationFilter, ArtistWhereInput> | null
+    Movie?: XOR<MovieNullableRelationFilter, MovieWhereInput> | null
   }
 
-  export type WebsiteProjectOrderByWithRelationInput = {
+  export type LikeOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
+    Website?: WebsiteOrderByWithRelationInput
+    User?: UserOrderByWithRelationInput
+    Artist?: ArtistOrderByWithRelationInput
+    Movie?: MovieOrderByWithRelationInput
+  }
+
+  export type LikeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LikeWhereInput | LikeWhereInput[]
+    OR?: LikeWhereInput[]
+    NOT?: LikeWhereInput | LikeWhereInput[]
+    userId?: StringFilter<"Like"> | string
+    category?: EnumCategoryFilter<"Like"> | $Enums.Category
+    itemId?: StringFilter<"Like"> | string
+    timestamp?: DateTimeFilter<"Like"> | Date | string
+    websiteId?: StringNullableFilter<"Like"> | string | null
+    artistId?: StringNullableFilter<"Like"> | string | null
+    movieId?: StringNullableFilter<"Like"> | string | null
+    Website?: XOR<WebsiteNullableRelationFilter, WebsiteWhereInput> | null
+    User?: XOR<UserRelationFilter, UserWhereInput>
+    Artist?: XOR<ArtistNullableRelationFilter, ArtistWhereInput> | null
+    Movie?: XOR<MovieNullableRelationFilter, MovieWhereInput> | null
+  }, "id">
+
+  export type LikeOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
+    _count?: LikeCountOrderByAggregateInput
+    _max?: LikeMaxOrderByAggregateInput
+    _min?: LikeMinOrderByAggregateInput
+  }
+
+  export type LikeScalarWhereWithAggregatesInput = {
+    AND?: LikeScalarWhereWithAggregatesInput | LikeScalarWhereWithAggregatesInput[]
+    OR?: LikeScalarWhereWithAggregatesInput[]
+    NOT?: LikeScalarWhereWithAggregatesInput | LikeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Like"> | string
+    userId?: StringWithAggregatesFilter<"Like"> | string
+    category?: EnumCategoryWithAggregatesFilter<"Like"> | $Enums.Category
+    itemId?: StringWithAggregatesFilter<"Like"> | string
+    timestamp?: DateTimeWithAggregatesFilter<"Like"> | Date | string
+    websiteId?: StringNullableWithAggregatesFilter<"Like"> | string | null
+    artistId?: StringNullableWithAggregatesFilter<"Like"> | string | null
+    movieId?: StringNullableWithAggregatesFilter<"Like"> | string | null
+  }
+
+  export type CommentWhereInput = {
+    AND?: CommentWhereInput | CommentWhereInput[]
+    OR?: CommentWhereInput[]
+    NOT?: CommentWhereInput | CommentWhereInput[]
+    id?: StringFilter<"Comment"> | string
+    userId?: StringFilter<"Comment"> | string
+    category?: EnumCategoryFilter<"Comment"> | $Enums.Category
+    itemId?: StringFilter<"Comment"> | string
+    comment?: StringFilter<"Comment"> | string
+    timestamp?: DateTimeFilter<"Comment"> | Date | string
+    websiteId?: StringNullableFilter<"Comment"> | string | null
+    songId?: StringNullableFilter<"Comment"> | string | null
+    artistId?: StringNullableFilter<"Comment"> | string | null
+    movieId?: StringNullableFilter<"Comment"> | string | null
+    website?: XOR<WebsiteNullableRelationFilter, WebsiteWhereInput> | null
+    Song?: XOR<SongNullableRelationFilter, SongWhereInput> | null
+    Artist?: XOR<ArtistNullableRelationFilter, ArtistWhereInput> | null
+    Movie?: XOR<MovieNullableRelationFilter, MovieWhereInput> | null
+  }
+
+  export type CommentOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    comment?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    songId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
+    website?: WebsiteOrderByWithRelationInput
+    Song?: SongOrderByWithRelationInput
+    Artist?: ArtistOrderByWithRelationInput
+    Movie?: MovieOrderByWithRelationInput
+  }
+
+  export type CommentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CommentWhereInput | CommentWhereInput[]
+    OR?: CommentWhereInput[]
+    NOT?: CommentWhereInput | CommentWhereInput[]
+    userId?: StringFilter<"Comment"> | string
+    category?: EnumCategoryFilter<"Comment"> | $Enums.Category
+    itemId?: StringFilter<"Comment"> | string
+    comment?: StringFilter<"Comment"> | string
+    timestamp?: DateTimeFilter<"Comment"> | Date | string
+    websiteId?: StringNullableFilter<"Comment"> | string | null
+    songId?: StringNullableFilter<"Comment"> | string | null
+    artistId?: StringNullableFilter<"Comment"> | string | null
+    movieId?: StringNullableFilter<"Comment"> | string | null
+    website?: XOR<WebsiteNullableRelationFilter, WebsiteWhereInput> | null
+    Song?: XOR<SongNullableRelationFilter, SongWhereInput> | null
+    Artist?: XOR<ArtistNullableRelationFilter, ArtistWhereInput> | null
+    Movie?: XOR<MovieNullableRelationFilter, MovieWhereInput> | null
+  }, "id">
+
+  export type CommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    comment?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    songId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
+    _count?: CommentCountOrderByAggregateInput
+    _max?: CommentMaxOrderByAggregateInput
+    _min?: CommentMinOrderByAggregateInput
+  }
+
+  export type CommentScalarWhereWithAggregatesInput = {
+    AND?: CommentScalarWhereWithAggregatesInput | CommentScalarWhereWithAggregatesInput[]
+    OR?: CommentScalarWhereWithAggregatesInput[]
+    NOT?: CommentScalarWhereWithAggregatesInput | CommentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Comment"> | string
+    userId?: StringWithAggregatesFilter<"Comment"> | string
+    category?: EnumCategoryWithAggregatesFilter<"Comment"> | $Enums.Category
+    itemId?: StringWithAggregatesFilter<"Comment"> | string
+    comment?: StringWithAggregatesFilter<"Comment"> | string
+    timestamp?: DateTimeWithAggregatesFilter<"Comment"> | Date | string
+    websiteId?: StringNullableWithAggregatesFilter<"Comment"> | string | null
+    songId?: StringNullableWithAggregatesFilter<"Comment"> | string | null
+    artistId?: StringNullableWithAggregatesFilter<"Comment"> | string | null
+    movieId?: StringNullableWithAggregatesFilter<"Comment"> | string | null
+  }
+
+  export type CardWhereInput = {
+    AND?: CardWhereInput | CardWhereInput[]
+    OR?: CardWhereInput[]
+    NOT?: CardWhereInput | CardWhereInput[]
+    id?: StringFilter<"Card"> | string
+    userId?: StringFilter<"Card"> | string
+    cardId?: StringFilter<"Card"> | string
+    amount?: IntFilter<"Card"> | number
+    currency?: StringFilter<"Card"> | string
+    transactionType?: EnumTransactionTypeFilter<"Card"> | $Enums.TransactionType
+    status?: EnumStatusFilter<"Card"> | $Enums.Status
+    timestamp?: DateTimeFilter<"Card"> | Date | string
+  }
+
+  export type CardOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    transactionType?: SortOrder
+    status?: SortOrder
+    timestamp?: SortOrder
+  }
+
+  export type CardWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CardWhereInput | CardWhereInput[]
+    OR?: CardWhereInput[]
+    NOT?: CardWhereInput | CardWhereInput[]
+    userId?: StringFilter<"Card"> | string
+    cardId?: StringFilter<"Card"> | string
+    amount?: IntFilter<"Card"> | number
+    currency?: StringFilter<"Card"> | string
+    transactionType?: EnumTransactionTypeFilter<"Card"> | $Enums.TransactionType
+    status?: EnumStatusFilter<"Card"> | $Enums.Status
+    timestamp?: DateTimeFilter<"Card"> | Date | string
+  }, "id">
+
+  export type CardOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    transactionType?: SortOrder
+    status?: SortOrder
+    timestamp?: SortOrder
+    _count?: CardCountOrderByAggregateInput
+    _avg?: CardAvgOrderByAggregateInput
+    _max?: CardMaxOrderByAggregateInput
+    _min?: CardMinOrderByAggregateInput
+    _sum?: CardSumOrderByAggregateInput
+  }
+
+  export type CardScalarWhereWithAggregatesInput = {
+    AND?: CardScalarWhereWithAggregatesInput | CardScalarWhereWithAggregatesInput[]
+    OR?: CardScalarWhereWithAggregatesInput[]
+    NOT?: CardScalarWhereWithAggregatesInput | CardScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Card"> | string
+    userId?: StringWithAggregatesFilter<"Card"> | string
+    cardId?: StringWithAggregatesFilter<"Card"> | string
+    amount?: IntWithAggregatesFilter<"Card"> | number
+    currency?: StringWithAggregatesFilter<"Card"> | string
+    transactionType?: EnumTransactionTypeWithAggregatesFilter<"Card"> | $Enums.TransactionType
+    status?: EnumStatusWithAggregatesFilter<"Card"> | $Enums.Status
+    timestamp?: DateTimeWithAggregatesFilter<"Card"> | Date | string
+  }
+
+  export type MovieWhereInput = {
+    AND?: MovieWhereInput | MovieWhereInput[]
+    OR?: MovieWhereInput[]
+    NOT?: MovieWhereInput | MovieWhereInput[]
+    id?: StringFilter<"Movie"> | string
+    img?: StringFilter<"Movie"> | string
+    title?: StringFilter<"Movie"> | string
+    genre?: StringFilter<"Movie"> | string
+    description?: StringFilter<"Movie"> | string
+    releaseDate?: StringFilter<"Movie"> | string
+    likes?: LikeListRelationFilter
+    comments?: CommentListRelationFilter
+  }
+
+  export type MovieOrderByWithRelationInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    genre?: SortOrder
+    description?: SortOrder
+    releaseDate?: SortOrder
+    likes?: LikeOrderByRelationAggregateInput
+    comments?: CommentOrderByRelationAggregateInput
+  }
+
+  export type MovieWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MovieWhereInput | MovieWhereInput[]
+    OR?: MovieWhereInput[]
+    NOT?: MovieWhereInput | MovieWhereInput[]
+    img?: StringFilter<"Movie"> | string
+    title?: StringFilter<"Movie"> | string
+    genre?: StringFilter<"Movie"> | string
+    description?: StringFilter<"Movie"> | string
+    releaseDate?: StringFilter<"Movie"> | string
+    likes?: LikeListRelationFilter
+    comments?: CommentListRelationFilter
+  }, "id">
+
+  export type MovieOrderByWithAggregationInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    genre?: SortOrder
+    description?: SortOrder
+    releaseDate?: SortOrder
+    _count?: MovieCountOrderByAggregateInput
+    _max?: MovieMaxOrderByAggregateInput
+    _min?: MovieMinOrderByAggregateInput
+  }
+
+  export type MovieScalarWhereWithAggregatesInput = {
+    AND?: MovieScalarWhereWithAggregatesInput | MovieScalarWhereWithAggregatesInput[]
+    OR?: MovieScalarWhereWithAggregatesInput[]
+    NOT?: MovieScalarWhereWithAggregatesInput | MovieScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Movie"> | string
+    img?: StringWithAggregatesFilter<"Movie"> | string
+    title?: StringWithAggregatesFilter<"Movie"> | string
+    genre?: StringWithAggregatesFilter<"Movie"> | string
+    description?: StringWithAggregatesFilter<"Movie"> | string
+    releaseDate?: StringWithAggregatesFilter<"Movie"> | string
+  }
+
+  export type WebsiteWhereInput = {
+    AND?: WebsiteWhereInput | WebsiteWhereInput[]
+    OR?: WebsiteWhereInput[]
+    NOT?: WebsiteWhereInput | WebsiteWhereInput[]
+    id?: StringFilter<"Website"> | string
+    img?: StringFilter<"Website"> | string
+    title?: StringFilter<"Website"> | string
+    genre?: StringFilter<"Website"> | string
+    technologies?: StringFilter<"Website"> | string
+    description?: StringFilter<"Website"> | string
+    release_date?: StringFilter<"Website"> | string
+    link?: StringFilter<"Website"> | string
+    likes?: LikeListRelationFilter
+    comments?: CommentListRelationFilter
+  }
+
+  export type WebsiteOrderByWithRelationInput = {
     id?: SortOrder
     img?: SortOrder
     title?: SortOrder
@@ -12293,29 +10767,27 @@ export namespace Prisma {
     description?: SortOrder
     release_date?: SortOrder
     link?: SortOrder
-    likes?: SortOrder
-    comments?: WebsiteProjectCommentOrderByRelationAggregateInput
-    likedByUsers?: UserLikedWebsiteOrderByRelationAggregateInput
+    likes?: LikeOrderByRelationAggregateInput
+    comments?: CommentOrderByRelationAggregateInput
   }
 
-  export type WebsiteProjectWhereUniqueInput = Prisma.AtLeast<{
+  export type WebsiteWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    AND?: WebsiteProjectWhereInput | WebsiteProjectWhereInput[]
-    OR?: WebsiteProjectWhereInput[]
-    NOT?: WebsiteProjectWhereInput | WebsiteProjectWhereInput[]
-    img?: StringFilter<"WebsiteProject"> | string
-    title?: StringFilter<"WebsiteProject"> | string
-    genre?: StringFilter<"WebsiteProject"> | string
-    technologies?: StringFilter<"WebsiteProject"> | string
-    description?: StringFilter<"WebsiteProject"> | string
-    release_date?: StringFilter<"WebsiteProject"> | string
-    link?: StringFilter<"WebsiteProject"> | string
-    likes?: IntFilter<"WebsiteProject"> | number
-    comments?: WebsiteProjectCommentListRelationFilter
-    likedByUsers?: UserLikedWebsiteListRelationFilter
+    AND?: WebsiteWhereInput | WebsiteWhereInput[]
+    OR?: WebsiteWhereInput[]
+    NOT?: WebsiteWhereInput | WebsiteWhereInput[]
+    img?: StringFilter<"Website"> | string
+    title?: StringFilter<"Website"> | string
+    genre?: StringFilter<"Website"> | string
+    technologies?: StringFilter<"Website"> | string
+    description?: StringFilter<"Website"> | string
+    release_date?: StringFilter<"Website"> | string
+    link?: StringFilter<"Website"> | string
+    likes?: LikeListRelationFilter
+    comments?: CommentListRelationFilter
   }, "id">
 
-  export type WebsiteProjectOrderByWithAggregationInput = {
+  export type WebsiteOrderByWithAggregationInput = {
     id?: SortOrder
     img?: SortOrder
     title?: SortOrder
@@ -12324,79 +10796,23 @@ export namespace Prisma {
     description?: SortOrder
     release_date?: SortOrder
     link?: SortOrder
-    likes?: SortOrder
-    _count?: WebsiteProjectCountOrderByAggregateInput
-    _avg?: WebsiteProjectAvgOrderByAggregateInput
-    _max?: WebsiteProjectMaxOrderByAggregateInput
-    _min?: WebsiteProjectMinOrderByAggregateInput
-    _sum?: WebsiteProjectSumOrderByAggregateInput
+    _count?: WebsiteCountOrderByAggregateInput
+    _max?: WebsiteMaxOrderByAggregateInput
+    _min?: WebsiteMinOrderByAggregateInput
   }
 
-  export type WebsiteProjectScalarWhereWithAggregatesInput = {
-    AND?: WebsiteProjectScalarWhereWithAggregatesInput | WebsiteProjectScalarWhereWithAggregatesInput[]
-    OR?: WebsiteProjectScalarWhereWithAggregatesInput[]
-    NOT?: WebsiteProjectScalarWhereWithAggregatesInput | WebsiteProjectScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"WebsiteProject"> | string
-    img?: StringWithAggregatesFilter<"WebsiteProject"> | string
-    title?: StringWithAggregatesFilter<"WebsiteProject"> | string
-    genre?: StringWithAggregatesFilter<"WebsiteProject"> | string
-    technologies?: StringWithAggregatesFilter<"WebsiteProject"> | string
-    description?: StringWithAggregatesFilter<"WebsiteProject"> | string
-    release_date?: StringWithAggregatesFilter<"WebsiteProject"> | string
-    link?: StringWithAggregatesFilter<"WebsiteProject"> | string
-    likes?: IntWithAggregatesFilter<"WebsiteProject"> | number
-  }
-
-  export type WebsiteProjectCommentWhereInput = {
-    AND?: WebsiteProjectCommentWhereInput | WebsiteProjectCommentWhereInput[]
-    OR?: WebsiteProjectCommentWhereInput[]
-    NOT?: WebsiteProjectCommentWhereInput | WebsiteProjectCommentWhereInput[]
-    id?: StringFilter<"WebsiteProjectComment"> | string
-    comment?: StringFilter<"WebsiteProjectComment"> | string
-    websiteProjectId?: StringFilter<"WebsiteProjectComment"> | string
-    likes?: IntFilter<"WebsiteProjectComment"> | number
-    websiteProject?: XOR<WebsiteProjectRelationFilter, WebsiteProjectWhereInput>
-  }
-
-  export type WebsiteProjectCommentOrderByWithRelationInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    websiteProjectId?: SortOrder
-    likes?: SortOrder
-    websiteProject?: WebsiteProjectOrderByWithRelationInput
-  }
-
-  export type WebsiteProjectCommentWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: WebsiteProjectCommentWhereInput | WebsiteProjectCommentWhereInput[]
-    OR?: WebsiteProjectCommentWhereInput[]
-    NOT?: WebsiteProjectCommentWhereInput | WebsiteProjectCommentWhereInput[]
-    comment?: StringFilter<"WebsiteProjectComment"> | string
-    websiteProjectId?: StringFilter<"WebsiteProjectComment"> | string
-    likes?: IntFilter<"WebsiteProjectComment"> | number
-    websiteProject?: XOR<WebsiteProjectRelationFilter, WebsiteProjectWhereInput>
-  }, "id">
-
-  export type WebsiteProjectCommentOrderByWithAggregationInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    websiteProjectId?: SortOrder
-    likes?: SortOrder
-    _count?: WebsiteProjectCommentCountOrderByAggregateInput
-    _avg?: WebsiteProjectCommentAvgOrderByAggregateInput
-    _max?: WebsiteProjectCommentMaxOrderByAggregateInput
-    _min?: WebsiteProjectCommentMinOrderByAggregateInput
-    _sum?: WebsiteProjectCommentSumOrderByAggregateInput
-  }
-
-  export type WebsiteProjectCommentScalarWhereWithAggregatesInput = {
-    AND?: WebsiteProjectCommentScalarWhereWithAggregatesInput | WebsiteProjectCommentScalarWhereWithAggregatesInput[]
-    OR?: WebsiteProjectCommentScalarWhereWithAggregatesInput[]
-    NOT?: WebsiteProjectCommentScalarWhereWithAggregatesInput | WebsiteProjectCommentScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"WebsiteProjectComment"> | string
-    comment?: StringWithAggregatesFilter<"WebsiteProjectComment"> | string
-    websiteProjectId?: StringWithAggregatesFilter<"WebsiteProjectComment"> | string
-    likes?: IntWithAggregatesFilter<"WebsiteProjectComment"> | number
+  export type WebsiteScalarWhereWithAggregatesInput = {
+    AND?: WebsiteScalarWhereWithAggregatesInput | WebsiteScalarWhereWithAggregatesInput[]
+    OR?: WebsiteScalarWhereWithAggregatesInput[]
+    NOT?: WebsiteScalarWhereWithAggregatesInput | WebsiteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Website"> | string
+    img?: StringWithAggregatesFilter<"Website"> | string
+    title?: StringWithAggregatesFilter<"Website"> | string
+    genre?: StringWithAggregatesFilter<"Website"> | string
+    technologies?: StringWithAggregatesFilter<"Website"> | string
+    description?: StringWithAggregatesFilter<"Website"> | string
+    release_date?: StringWithAggregatesFilter<"Website"> | string
+    link?: StringWithAggregatesFilter<"Website"> | string
   }
 
   export type SongWhereInput = {
@@ -12414,8 +10830,9 @@ export namespace Prisma {
     plays?: IntFilter<"Song"> | number
     song?: StringFilter<"Song"> | string
     likes?: IntFilter<"Song"> | number
-    comments?: SongCommentListRelationFilter
-    likedByUsers?: UserLikedSongListRelationFilter
+    artistId?: StringNullableFilter<"Song"> | string | null
+    comments?: CommentListRelationFilter
+    Artist?: XOR<ArtistNullableRelationFilter, ArtistWhereInput> | null
   }
 
   export type SongOrderByWithRelationInput = {
@@ -12430,8 +10847,9 @@ export namespace Prisma {
     plays?: SortOrder
     song?: SortOrder
     likes?: SortOrder
-    comments?: SongCommentOrderByRelationAggregateInput
-    likedByUsers?: UserLikedSongOrderByRelationAggregateInput
+    artistId?: SortOrder
+    comments?: CommentOrderByRelationAggregateInput
+    Artist?: ArtistOrderByWithRelationInput
   }
 
   export type SongWhereUniqueInput = Prisma.AtLeast<{
@@ -12449,8 +10867,9 @@ export namespace Prisma {
     plays?: IntFilter<"Song"> | number
     song?: StringFilter<"Song"> | string
     likes?: IntFilter<"Song"> | number
-    comments?: SongCommentListRelationFilter
-    likedByUsers?: UserLikedSongListRelationFilter
+    artistId?: StringNullableFilter<"Song"> | string | null
+    comments?: CommentListRelationFilter
+    Artist?: XOR<ArtistNullableRelationFilter, ArtistWhereInput> | null
   }, "id">
 
   export type SongOrderByWithAggregationInput = {
@@ -12465,6 +10884,7 @@ export namespace Prisma {
     plays?: SortOrder
     song?: SortOrder
     likes?: SortOrder
+    artistId?: SortOrder
     _count?: SongCountOrderByAggregateInput
     _avg?: SongAvgOrderByAggregateInput
     _max?: SongMaxOrderByAggregateInput
@@ -12487,106 +10907,7 @@ export namespace Prisma {
     plays?: IntWithAggregatesFilter<"Song"> | number
     song?: StringWithAggregatesFilter<"Song"> | string
     likes?: IntWithAggregatesFilter<"Song"> | number
-  }
-
-  export type SongCommentWhereInput = {
-    AND?: SongCommentWhereInput | SongCommentWhereInput[]
-    OR?: SongCommentWhereInput[]
-    NOT?: SongCommentWhereInput | SongCommentWhereInput[]
-    id?: StringFilter<"SongComment"> | string
-    comment?: StringFilter<"SongComment"> | string
-    songId?: StringFilter<"SongComment"> | string
-    likes?: IntFilter<"SongComment"> | number
-    song?: XOR<SongRelationFilter, SongWhereInput>
-  }
-
-  export type SongCommentOrderByWithRelationInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    songId?: SortOrder
-    likes?: SortOrder
-    song?: SongOrderByWithRelationInput
-  }
-
-  export type SongCommentWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: SongCommentWhereInput | SongCommentWhereInput[]
-    OR?: SongCommentWhereInput[]
-    NOT?: SongCommentWhereInput | SongCommentWhereInput[]
-    comment?: StringFilter<"SongComment"> | string
-    songId?: StringFilter<"SongComment"> | string
-    likes?: IntFilter<"SongComment"> | number
-    song?: XOR<SongRelationFilter, SongWhereInput>
-  }, "id">
-
-  export type SongCommentOrderByWithAggregationInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    songId?: SortOrder
-    likes?: SortOrder
-    _count?: SongCommentCountOrderByAggregateInput
-    _avg?: SongCommentAvgOrderByAggregateInput
-    _max?: SongCommentMaxOrderByAggregateInput
-    _min?: SongCommentMinOrderByAggregateInput
-    _sum?: SongCommentSumOrderByAggregateInput
-  }
-
-  export type SongCommentScalarWhereWithAggregatesInput = {
-    AND?: SongCommentScalarWhereWithAggregatesInput | SongCommentScalarWhereWithAggregatesInput[]
-    OR?: SongCommentScalarWhereWithAggregatesInput[]
-    NOT?: SongCommentScalarWhereWithAggregatesInput | SongCommentScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"SongComment"> | string
-    comment?: StringWithAggregatesFilter<"SongComment"> | string
-    songId?: StringWithAggregatesFilter<"SongComment"> | string
-    likes?: IntWithAggregatesFilter<"SongComment"> | number
-  }
-
-  export type UserLikedSongWhereInput = {
-    AND?: UserLikedSongWhereInput | UserLikedSongWhereInput[]
-    OR?: UserLikedSongWhereInput[]
-    NOT?: UserLikedSongWhereInput | UserLikedSongWhereInput[]
-    id?: StringFilter<"UserLikedSong"> | string
-    userId?: StringFilter<"UserLikedSong"> | string
-    likedSongId?: StringFilter<"UserLikedSong"> | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    likedSong?: XOR<SongRelationFilter, SongWhereInput>
-  }
-
-  export type UserLikedSongOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedSongId?: SortOrder
-    user?: UserOrderByWithRelationInput
-    likedSong?: SongOrderByWithRelationInput
-  }
-
-  export type UserLikedSongWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: UserLikedSongWhereInput | UserLikedSongWhereInput[]
-    OR?: UserLikedSongWhereInput[]
-    NOT?: UserLikedSongWhereInput | UserLikedSongWhereInput[]
-    userId?: StringFilter<"UserLikedSong"> | string
-    likedSongId?: StringFilter<"UserLikedSong"> | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    likedSong?: XOR<SongRelationFilter, SongWhereInput>
-  }, "id">
-
-  export type UserLikedSongOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedSongId?: SortOrder
-    _count?: UserLikedSongCountOrderByAggregateInput
-    _max?: UserLikedSongMaxOrderByAggregateInput
-    _min?: UserLikedSongMinOrderByAggregateInput
-  }
-
-  export type UserLikedSongScalarWhereWithAggregatesInput = {
-    AND?: UserLikedSongScalarWhereWithAggregatesInput | UserLikedSongScalarWhereWithAggregatesInput[]
-    OR?: UserLikedSongScalarWhereWithAggregatesInput[]
-    NOT?: UserLikedSongScalarWhereWithAggregatesInput | UserLikedSongScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"UserLikedSong"> | string
-    userId?: StringWithAggregatesFilter<"UserLikedSong"> | string
-    likedSongId?: StringWithAggregatesFilter<"UserLikedSong"> | string
+    artistId?: StringNullableWithAggregatesFilter<"Song"> | string | null
   }
 
   export type UserWhereInput = {
@@ -12595,21 +10916,17 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    name?: StringNullableFilter<"User"> | string | null
-    address?: XOR<AddressNullableCompositeFilter, AddressObjectEqualityInput> | null
-    likedWebsites?: UserLikedWebsiteListRelationFilter
-    likedSongs?: UserLikedSongListRelationFilter
-    likedArtists?: UserLikedArtistListRelationFilter
+    name?: StringFilter<"User"> | string
+    addresses?: AddressCompositeListFilter | AddressObjectEqualityInput[]
+    likes?: LikeListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
     name?: SortOrder
-    address?: AddressOrderByInput
-    likedWebsites?: UserLikedWebsiteOrderByRelationAggregateInput
-    likedSongs?: UserLikedSongOrderByRelationAggregateInput
-    likedArtists?: UserLikedArtistOrderByRelationAggregateInput
+    addresses?: AddressOrderByCompositeAggregateInput
+    likes?: LikeOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -12618,11 +10935,9 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    name?: StringNullableFilter<"User"> | string | null
-    address?: XOR<AddressNullableCompositeFilter, AddressObjectEqualityInput> | null
-    likedWebsites?: UserLikedWebsiteListRelationFilter
-    likedSongs?: UserLikedSongListRelationFilter
-    likedArtists?: UserLikedArtistListRelationFilter
+    name?: StringFilter<"User"> | string
+    addresses?: AddressCompositeListFilter | AddressObjectEqualityInput[]
+    likes?: LikeListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -12640,55 +10955,7 @@ export namespace Prisma {
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
-    name?: StringNullableWithAggregatesFilter<"User"> | string | null
-  }
-
-  export type UserLikedWebsiteWhereInput = {
-    AND?: UserLikedWebsiteWhereInput | UserLikedWebsiteWhereInput[]
-    OR?: UserLikedWebsiteWhereInput[]
-    NOT?: UserLikedWebsiteWhereInput | UserLikedWebsiteWhereInput[]
-    id?: StringFilter<"UserLikedWebsite"> | string
-    userId?: StringFilter<"UserLikedWebsite"> | string
-    likedWebsiteId?: StringFilter<"UserLikedWebsite"> | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    likedWebsite?: XOR<WebsiteProjectRelationFilter, WebsiteProjectWhereInput>
-  }
-
-  export type UserLikedWebsiteOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedWebsiteId?: SortOrder
-    user?: UserOrderByWithRelationInput
-    likedWebsite?: WebsiteProjectOrderByWithRelationInput
-  }
-
-  export type UserLikedWebsiteWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: UserLikedWebsiteWhereInput | UserLikedWebsiteWhereInput[]
-    OR?: UserLikedWebsiteWhereInput[]
-    NOT?: UserLikedWebsiteWhereInput | UserLikedWebsiteWhereInput[]
-    userId?: StringFilter<"UserLikedWebsite"> | string
-    likedWebsiteId?: StringFilter<"UserLikedWebsite"> | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    likedWebsite?: XOR<WebsiteProjectRelationFilter, WebsiteProjectWhereInput>
-  }, "id">
-
-  export type UserLikedWebsiteOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedWebsiteId?: SortOrder
-    _count?: UserLikedWebsiteCountOrderByAggregateInput
-    _max?: UserLikedWebsiteMaxOrderByAggregateInput
-    _min?: UserLikedWebsiteMinOrderByAggregateInput
-  }
-
-  export type UserLikedWebsiteScalarWhereWithAggregatesInput = {
-    AND?: UserLikedWebsiteScalarWhereWithAggregatesInput | UserLikedWebsiteScalarWhereWithAggregatesInput[]
-    OR?: UserLikedWebsiteScalarWhereWithAggregatesInput[]
-    NOT?: UserLikedWebsiteScalarWhereWithAggregatesInput | UserLikedWebsiteScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"UserLikedWebsite"> | string
-    userId?: StringWithAggregatesFilter<"UserLikedWebsite"> | string
-    likedWebsiteId?: StringWithAggregatesFilter<"UserLikedWebsite"> | string
+    name?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type ArtistWhereInput = {
@@ -12701,9 +10968,9 @@ export namespace Prisma {
     genre?: StringFilter<"Artist"> | string
     description?: StringFilter<"Artist"> | string
     releaseDate?: StringFilter<"Artist"> | string
-    likes?: IntFilter<"Artist"> | number
-    comments?: ArtistCommentListRelationFilter
-    likedByUsers?: UserLikedArtistListRelationFilter
+    likes?: LikeListRelationFilter
+    comments?: CommentListRelationFilter
+    songs?: SongListRelationFilter
   }
 
   export type ArtistOrderByWithRelationInput = {
@@ -12713,9 +10980,9 @@ export namespace Prisma {
     genre?: SortOrder
     description?: SortOrder
     releaseDate?: SortOrder
-    likes?: SortOrder
-    comments?: ArtistCommentOrderByRelationAggregateInput
-    likedByUsers?: UserLikedArtistOrderByRelationAggregateInput
+    likes?: LikeOrderByRelationAggregateInput
+    comments?: CommentOrderByRelationAggregateInput
+    songs?: SongOrderByRelationAggregateInput
   }
 
   export type ArtistWhereUniqueInput = Prisma.AtLeast<{
@@ -12728,9 +10995,9 @@ export namespace Prisma {
     genre?: StringFilter<"Artist"> | string
     description?: StringFilter<"Artist"> | string
     releaseDate?: StringFilter<"Artist"> | string
-    likes?: IntFilter<"Artist"> | number
-    comments?: ArtistCommentListRelationFilter
-    likedByUsers?: UserLikedArtistListRelationFilter
+    likes?: LikeListRelationFilter
+    comments?: CommentListRelationFilter
+    songs?: SongListRelationFilter
   }, "id">
 
   export type ArtistOrderByWithAggregationInput = {
@@ -12740,12 +11007,9 @@ export namespace Prisma {
     genre?: SortOrder
     description?: SortOrder
     releaseDate?: SortOrder
-    likes?: SortOrder
     _count?: ArtistCountOrderByAggregateInput
-    _avg?: ArtistAvgOrderByAggregateInput
     _max?: ArtistMaxOrderByAggregateInput
     _min?: ArtistMinOrderByAggregateInput
-    _sum?: ArtistSumOrderByAggregateInput
   }
 
   export type ArtistScalarWhereWithAggregatesInput = {
@@ -12758,110 +11022,301 @@ export namespace Prisma {
     genre?: StringWithAggregatesFilter<"Artist"> | string
     description?: StringWithAggregatesFilter<"Artist"> | string
     releaseDate?: StringWithAggregatesFilter<"Artist"> | string
-    likes?: IntWithAggregatesFilter<"Artist"> | number
   }
 
-  export type ArtistCommentWhereInput = {
-    AND?: ArtistCommentWhereInput | ArtistCommentWhereInput[]
-    OR?: ArtistCommentWhereInput[]
-    NOT?: ArtistCommentWhereInput | ArtistCommentWhereInput[]
-    id?: StringFilter<"ArtistComment"> | string
-    comment?: StringFilter<"ArtistComment"> | string
-    artistId?: StringFilter<"ArtistComment"> | string
-    likes?: IntFilter<"ArtistComment"> | number
-    artist?: XOR<ArtistRelationFilter, ArtistWhereInput>
-  }
-
-  export type ArtistCommentOrderByWithRelationInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    artistId?: SortOrder
-    likes?: SortOrder
-    artist?: ArtistOrderByWithRelationInput
-  }
-
-  export type ArtistCommentWhereUniqueInput = Prisma.AtLeast<{
+  export type LikeCreateInput = {
     id?: string
-    AND?: ArtistCommentWhereInput | ArtistCommentWhereInput[]
-    OR?: ArtistCommentWhereInput[]
-    NOT?: ArtistCommentWhereInput | ArtistCommentWhereInput[]
-    comment?: StringFilter<"ArtistComment"> | string
-    artistId?: StringFilter<"ArtistComment"> | string
-    likes?: IntFilter<"ArtistComment"> | number
-    artist?: XOR<ArtistRelationFilter, ArtistWhereInput>
-  }, "id">
-
-  export type ArtistCommentOrderByWithAggregationInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    artistId?: SortOrder
-    likes?: SortOrder
-    _count?: ArtistCommentCountOrderByAggregateInput
-    _avg?: ArtistCommentAvgOrderByAggregateInput
-    _max?: ArtistCommentMaxOrderByAggregateInput
-    _min?: ArtistCommentMinOrderByAggregateInput
-    _sum?: ArtistCommentSumOrderByAggregateInput
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    Website?: WebsiteCreateNestedOneWithoutLikesInput
+    User: UserCreateNestedOneWithoutLikesInput
+    Artist?: ArtistCreateNestedOneWithoutLikesInput
+    Movie?: MovieCreateNestedOneWithoutLikesInput
   }
 
-  export type ArtistCommentScalarWhereWithAggregatesInput = {
-    AND?: ArtistCommentScalarWhereWithAggregatesInput | ArtistCommentScalarWhereWithAggregatesInput[]
-    OR?: ArtistCommentScalarWhereWithAggregatesInput[]
-    NOT?: ArtistCommentScalarWhereWithAggregatesInput | ArtistCommentScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"ArtistComment"> | string
-    comment?: StringWithAggregatesFilter<"ArtistComment"> | string
-    artistId?: StringWithAggregatesFilter<"ArtistComment"> | string
-    likes?: IntWithAggregatesFilter<"ArtistComment"> | number
-  }
-
-  export type UserLikedArtistWhereInput = {
-    AND?: UserLikedArtistWhereInput | UserLikedArtistWhereInput[]
-    OR?: UserLikedArtistWhereInput[]
-    NOT?: UserLikedArtistWhereInput | UserLikedArtistWhereInput[]
-    id?: StringFilter<"UserLikedArtist"> | string
-    userId?: StringFilter<"UserLikedArtist"> | string
-    likedArtistId?: StringFilter<"UserLikedArtist"> | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    likedArtist?: XOR<ArtistRelationFilter, ArtistWhereInput>
-  }
-
-  export type UserLikedArtistOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedArtistId?: SortOrder
-    user?: UserOrderByWithRelationInput
-    likedArtist?: ArtistOrderByWithRelationInput
-  }
-
-  export type UserLikedArtistWhereUniqueInput = Prisma.AtLeast<{
+  export type LikeUncheckedCreateInput = {
     id?: string
-    AND?: UserLikedArtistWhereInput | UserLikedArtistWhereInput[]
-    OR?: UserLikedArtistWhereInput[]
-    NOT?: UserLikedArtistWhereInput | UserLikedArtistWhereInput[]
-    userId?: StringFilter<"UserLikedArtist"> | string
-    likedArtistId?: StringFilter<"UserLikedArtist"> | string
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    likedArtist?: XOR<ArtistRelationFilter, ArtistWhereInput>
-  }, "id">
-
-  export type UserLikedArtistOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedArtistId?: SortOrder
-    _count?: UserLikedArtistCountOrderByAggregateInput
-    _max?: UserLikedArtistMaxOrderByAggregateInput
-    _min?: UserLikedArtistMinOrderByAggregateInput
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    artistId?: string | null
+    movieId?: string | null
   }
 
-  export type UserLikedArtistScalarWhereWithAggregatesInput = {
-    AND?: UserLikedArtistScalarWhereWithAggregatesInput | UserLikedArtistScalarWhereWithAggregatesInput[]
-    OR?: UserLikedArtistScalarWhereWithAggregatesInput[]
-    NOT?: UserLikedArtistScalarWhereWithAggregatesInput | UserLikedArtistScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"UserLikedArtist"> | string
-    userId?: StringWithAggregatesFilter<"UserLikedArtist"> | string
-    likedArtistId?: StringWithAggregatesFilter<"UserLikedArtist"> | string
+  export type LikeUpdateInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    Website?: WebsiteUpdateOneWithoutLikesNestedInput
+    User?: UserUpdateOneRequiredWithoutLikesNestedInput
+    Artist?: ArtistUpdateOneWithoutLikesNestedInput
+    Movie?: MovieUpdateOneWithoutLikesNestedInput
   }
 
-  export type WebsiteProjectCreateInput = {
+  export type LikeUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LikeCreateManyInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type LikeUpdateManyMutationInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LikeUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CommentCreateInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    website?: WebsiteCreateNestedOneWithoutCommentsInput
+    Song?: SongCreateNestedOneWithoutCommentsInput
+    Artist?: ArtistCreateNestedOneWithoutCommentsInput
+    Movie?: MovieCreateNestedOneWithoutCommentsInput
+  }
+
+  export type CommentUncheckedCreateInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    songId?: string | null
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type CommentUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    website?: WebsiteUpdateOneWithoutCommentsNestedInput
+    Song?: SongUpdateOneWithoutCommentsNestedInput
+    Artist?: ArtistUpdateOneWithoutCommentsNestedInput
+    Movie?: MovieUpdateOneWithoutCommentsNestedInput
+  }
+
+  export type CommentUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    songId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CommentCreateManyInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    songId?: string | null
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type CommentUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CommentUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    songId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CardCreateInput = {
+    id?: string
+    userId: string
+    cardId: string
+    amount: number
+    currency: string
+    transactionType: $Enums.TransactionType
+    status: $Enums.Status
+    timestamp?: Date | string
+  }
+
+  export type CardUncheckedCreateInput = {
+    id?: string
+    userId: string
+    cardId: string
+    amount: number
+    currency: string
+    transactionType: $Enums.TransactionType
+    status: $Enums.Status
+    timestamp?: Date | string
+  }
+
+  export type CardUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    transactionType?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    transactionType?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardCreateManyInput = {
+    id?: string
+    userId: string
+    cardId: string
+    amount: number
+    currency: string
+    transactionType: $Enums.TransactionType
+    status: $Enums.Status
+    timestamp?: Date | string
+  }
+
+  export type CardUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    transactionType?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CardUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    cardId?: StringFieldUpdateOperationsInput | string
+    amount?: IntFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    transactionType?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MovieCreateInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    likes?: LikeCreateNestedManyWithoutMovieInput
+    comments?: CommentCreateNestedManyWithoutMovieInput
+  }
+
+  export type MovieUncheckedCreateInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    likes?: LikeUncheckedCreateNestedManyWithoutMovieInput
+    comments?: CommentUncheckedCreateNestedManyWithoutMovieInput
+  }
+
+  export type MovieUpdateInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    likes?: LikeUpdateManyWithoutMovieNestedInput
+    comments?: CommentUpdateManyWithoutMovieNestedInput
+  }
+
+  export type MovieUncheckedUpdateInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    likes?: LikeUncheckedUpdateManyWithoutMovieNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutMovieNestedInput
+  }
+
+  export type MovieCreateManyInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+  }
+
+  export type MovieUpdateManyMutationInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type MovieUncheckedUpdateManyInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type WebsiteCreateInput = {
     id?: string
     img: string
     title: string
@@ -12870,12 +11325,11 @@ export namespace Prisma {
     description: string
     release_date: string
     link: string
-    likes?: number
-    comments?: WebsiteProjectCommentCreateNestedManyWithoutWebsiteProjectInput
-    likedByUsers?: UserLikedWebsiteCreateNestedManyWithoutLikedWebsiteInput
+    likes?: LikeCreateNestedManyWithoutWebsiteInput
+    comments?: CommentCreateNestedManyWithoutWebsiteInput
   }
 
-  export type WebsiteProjectUncheckedCreateInput = {
+  export type WebsiteUncheckedCreateInput = {
     id?: string
     img: string
     title: string
@@ -12884,12 +11338,11 @@ export namespace Prisma {
     description: string
     release_date: string
     link: string
-    likes?: number
-    comments?: WebsiteProjectCommentUncheckedCreateNestedManyWithoutWebsiteProjectInput
-    likedByUsers?: UserLikedWebsiteUncheckedCreateNestedManyWithoutLikedWebsiteInput
+    likes?: LikeUncheckedCreateNestedManyWithoutWebsiteInput
+    comments?: CommentUncheckedCreateNestedManyWithoutWebsiteInput
   }
 
-  export type WebsiteProjectUpdateInput = {
+  export type WebsiteUpdateInput = {
     img?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
@@ -12897,12 +11350,11 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: WebsiteProjectCommentUpdateManyWithoutWebsiteProjectNestedInput
-    likedByUsers?: UserLikedWebsiteUpdateManyWithoutLikedWebsiteNestedInput
+    likes?: LikeUpdateManyWithoutWebsiteNestedInput
+    comments?: CommentUpdateManyWithoutWebsiteNestedInput
   }
 
-  export type WebsiteProjectUncheckedUpdateInput = {
+  export type WebsiteUncheckedUpdateInput = {
     img?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
@@ -12910,12 +11362,11 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: WebsiteProjectCommentUncheckedUpdateManyWithoutWebsiteProjectNestedInput
-    likedByUsers?: UserLikedWebsiteUncheckedUpdateManyWithoutLikedWebsiteNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutWebsiteNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutWebsiteNestedInput
   }
 
-  export type WebsiteProjectCreateManyInput = {
+  export type WebsiteCreateManyInput = {
     id?: string
     img: string
     title: string
@@ -12924,10 +11375,9 @@ export namespace Prisma {
     description: string
     release_date: string
     link: string
-    likes?: number
   }
 
-  export type WebsiteProjectUpdateManyMutationInput = {
+  export type WebsiteUpdateManyMutationInput = {
     img?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
@@ -12935,10 +11385,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
   }
 
-  export type WebsiteProjectUncheckedUpdateManyInput = {
+  export type WebsiteUncheckedUpdateManyInput = {
     img?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
@@ -12946,51 +11395,6 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type WebsiteProjectCommentCreateInput = {
-    id?: string
-    comment: string
-    likes?: number
-    websiteProject: WebsiteProjectCreateNestedOneWithoutCommentsInput
-  }
-
-  export type WebsiteProjectCommentUncheckedCreateInput = {
-    id?: string
-    comment: string
-    websiteProjectId: string
-    likes?: number
-  }
-
-  export type WebsiteProjectCommentUpdateInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    websiteProject?: WebsiteProjectUpdateOneRequiredWithoutCommentsNestedInput
-  }
-
-  export type WebsiteProjectCommentUncheckedUpdateInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    websiteProjectId?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type WebsiteProjectCommentCreateManyInput = {
-    id?: string
-    comment: string
-    websiteProjectId: string
-    likes?: number
-  }
-
-  export type WebsiteProjectCommentUpdateManyMutationInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type WebsiteProjectCommentUncheckedUpdateManyInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    websiteProjectId?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
   }
 
   export type SongCreateInput = {
@@ -13005,8 +11409,8 @@ export namespace Prisma {
     plays?: number
     song: string
     likes?: number
-    comments?: SongCommentCreateNestedManyWithoutSongInput
-    likedByUsers?: UserLikedSongCreateNestedManyWithoutLikedSongInput
+    comments?: CommentCreateNestedManyWithoutSongInput
+    Artist?: ArtistCreateNestedOneWithoutSongsInput
   }
 
   export type SongUncheckedCreateInput = {
@@ -13021,8 +11425,8 @@ export namespace Prisma {
     plays?: number
     song: string
     likes?: number
-    comments?: SongCommentUncheckedCreateNestedManyWithoutSongInput
-    likedByUsers?: UserLikedSongUncheckedCreateNestedManyWithoutLikedSongInput
+    artistId?: string | null
+    comments?: CommentUncheckedCreateNestedManyWithoutSongInput
   }
 
   export type SongUpdateInput = {
@@ -13036,8 +11440,8 @@ export namespace Prisma {
     plays?: IntFieldUpdateOperationsInput | number
     song?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
-    comments?: SongCommentUpdateManyWithoutSongNestedInput
-    likedByUsers?: UserLikedSongUpdateManyWithoutLikedSongNestedInput
+    comments?: CommentUpdateManyWithoutSongNestedInput
+    Artist?: ArtistUpdateOneWithoutSongsNestedInput
   }
 
   export type SongUncheckedUpdateInput = {
@@ -13051,8 +11455,8 @@ export namespace Prisma {
     plays?: IntFieldUpdateOperationsInput | number
     song?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
-    comments?: SongCommentUncheckedUpdateManyWithoutSongNestedInput
-    likedByUsers?: UserLikedSongUncheckedUpdateManyWithoutLikedSongNestedInput
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: CommentUncheckedUpdateManyWithoutSongNestedInput
   }
 
   export type SongCreateManyInput = {
@@ -13067,6 +11471,7 @@ export namespace Prisma {
     plays?: number
     song: string
     likes?: number
+    artistId?: string | null
   }
 
   export type SongUpdateManyMutationInput = {
@@ -13093,181 +11498,56 @@ export namespace Prisma {
     plays?: IntFieldUpdateOperationsInput | number
     song?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type SongCommentCreateInput = {
-    id?: string
-    comment: string
-    likes?: number
-    song: SongCreateNestedOneWithoutCommentsInput
-  }
-
-  export type SongCommentUncheckedCreateInput = {
-    id?: string
-    comment: string
-    songId: string
-    likes?: number
-  }
-
-  export type SongCommentUpdateInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    song?: SongUpdateOneRequiredWithoutCommentsNestedInput
-  }
-
-  export type SongCommentUncheckedUpdateInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    songId?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type SongCommentCreateManyInput = {
-    id?: string
-    comment: string
-    songId: string
-    likes?: number
-  }
-
-  export type SongCommentUpdateManyMutationInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type SongCommentUncheckedUpdateManyInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    songId?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type UserLikedSongCreateInput = {
-    id?: string
-    user: UserCreateNestedOneWithoutLikedSongsInput
-    likedSong: SongCreateNestedOneWithoutLikedByUsersInput
-  }
-
-  export type UserLikedSongUncheckedCreateInput = {
-    id?: string
-    userId: string
-    likedSongId: string
-  }
-
-  export type UserLikedSongUpdateInput = {
-    user?: UserUpdateOneRequiredWithoutLikedSongsNestedInput
-    likedSong?: SongUpdateOneRequiredWithoutLikedByUsersNestedInput
-  }
-
-  export type UserLikedSongUncheckedUpdateInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    likedSongId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserLikedSongCreateManyInput = {
-    id?: string
-    userId: string
-    likedSongId: string
-  }
-
-  export type UserLikedSongUpdateManyMutationInput = {
-
-  }
-
-  export type UserLikedSongUncheckedUpdateManyInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    likedSongId?: StringFieldUpdateOperationsInput | string
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserCreateInput = {
     id?: string
     email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteCreateNestedManyWithoutUserInput
-    likedSongs?: UserLikedSongCreateNestedManyWithoutUserInput
-    likedArtists?: UserLikedArtistCreateNestedManyWithoutUserInput
+    name: string
+    addresses?: XOR<AddressListCreateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
+    likes?: LikeCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUncheckedCreateNestedManyWithoutUserInput
-    likedSongs?: UserLikedSongUncheckedCreateNestedManyWithoutUserInput
-    likedArtists?: UserLikedArtistUncheckedCreateNestedManyWithoutUserInput
+    name: string
+    addresses?: XOR<AddressListCreateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
+    likes?: LikeUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUpdateManyWithoutUserNestedInput
-    likedSongs?: UserLikedSongUpdateManyWithoutUserNestedInput
-    likedArtists?: UserLikedArtistUpdateManyWithoutUserNestedInput
+    name?: StringFieldUpdateOperationsInput | string
+    addresses?: XOR<AddressListUpdateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
+    likes?: LikeUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUncheckedUpdateManyWithoutUserNestedInput
-    likedSongs?: UserLikedSongUncheckedUpdateManyWithoutUserNestedInput
-    likedArtists?: UserLikedArtistUncheckedUpdateManyWithoutUserNestedInput
+    name?: StringFieldUpdateOperationsInput | string
+    addresses?: XOR<AddressListUpdateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
+    likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
     email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
+    name: string
+    addresses?: XOR<AddressListCreateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
   }
 
   export type UserUpdateManyMutationInput = {
     email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
+    name?: StringFieldUpdateOperationsInput | string
+    addresses?: XOR<AddressListUpdateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
   }
 
   export type UserUncheckedUpdateManyInput = {
     email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-  }
-
-  export type UserLikedWebsiteCreateInput = {
-    id?: string
-    user: UserCreateNestedOneWithoutLikedWebsitesInput
-    likedWebsite: WebsiteProjectCreateNestedOneWithoutLikedByUsersInput
-  }
-
-  export type UserLikedWebsiteUncheckedCreateInput = {
-    id?: string
-    userId: string
-    likedWebsiteId: string
-  }
-
-  export type UserLikedWebsiteUpdateInput = {
-    user?: UserUpdateOneRequiredWithoutLikedWebsitesNestedInput
-    likedWebsite?: WebsiteProjectUpdateOneRequiredWithoutLikedByUsersNestedInput
-  }
-
-  export type UserLikedWebsiteUncheckedUpdateInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    likedWebsiteId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserLikedWebsiteCreateManyInput = {
-    id?: string
-    userId: string
-    likedWebsiteId: string
-  }
-
-  export type UserLikedWebsiteUpdateManyMutationInput = {
-
-  }
-
-  export type UserLikedWebsiteUncheckedUpdateManyInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    likedWebsiteId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    addresses?: XOR<AddressListUpdateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
   }
 
   export type ArtistCreateInput = {
@@ -13277,9 +11557,9 @@ export namespace Prisma {
     genre: string
     description: string
     releaseDate: string
-    likes?: number
-    comments?: ArtistCommentCreateNestedManyWithoutArtistInput
-    likedByUsers?: UserLikedArtistCreateNestedManyWithoutLikedArtistInput
+    likes?: LikeCreateNestedManyWithoutArtistInput
+    comments?: CommentCreateNestedManyWithoutArtistInput
+    songs?: SongCreateNestedManyWithoutArtistInput
   }
 
   export type ArtistUncheckedCreateInput = {
@@ -13289,9 +11569,9 @@ export namespace Prisma {
     genre: string
     description: string
     releaseDate: string
-    likes?: number
-    comments?: ArtistCommentUncheckedCreateNestedManyWithoutArtistInput
-    likedByUsers?: UserLikedArtistUncheckedCreateNestedManyWithoutLikedArtistInput
+    likes?: LikeUncheckedCreateNestedManyWithoutArtistInput
+    comments?: CommentUncheckedCreateNestedManyWithoutArtistInput
+    songs?: SongUncheckedCreateNestedManyWithoutArtistInput
   }
 
   export type ArtistUpdateInput = {
@@ -13300,9 +11580,9 @@ export namespace Prisma {
     genre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     releaseDate?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: ArtistCommentUpdateManyWithoutArtistNestedInput
-    likedByUsers?: UserLikedArtistUpdateManyWithoutLikedArtistNestedInput
+    likes?: LikeUpdateManyWithoutArtistNestedInput
+    comments?: CommentUpdateManyWithoutArtistNestedInput
+    songs?: SongUpdateManyWithoutArtistNestedInput
   }
 
   export type ArtistUncheckedUpdateInput = {
@@ -13311,9 +11591,9 @@ export namespace Prisma {
     genre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     releaseDate?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: ArtistCommentUncheckedUpdateManyWithoutArtistNestedInput
-    likedByUsers?: UserLikedArtistUncheckedUpdateManyWithoutLikedArtistNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutArtistNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutArtistNestedInput
+    songs?: SongUncheckedUpdateManyWithoutArtistNestedInput
   }
 
   export type ArtistCreateManyInput = {
@@ -13323,7 +11603,6 @@ export namespace Prisma {
     genre: string
     description: string
     releaseDate: string
-    likes?: number
   }
 
   export type ArtistUpdateManyMutationInput = {
@@ -13332,7 +11611,6 @@ export namespace Prisma {
     genre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     releaseDate?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
   }
 
   export type ArtistUncheckedUpdateManyInput = {
@@ -13341,88 +11619,6 @@ export namespace Prisma {
     genre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     releaseDate?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ArtistCommentCreateInput = {
-    id?: string
-    comment: string
-    likes?: number
-    artist: ArtistCreateNestedOneWithoutCommentsInput
-  }
-
-  export type ArtistCommentUncheckedCreateInput = {
-    id?: string
-    comment: string
-    artistId: string
-    likes?: number
-  }
-
-  export type ArtistCommentUpdateInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    artist?: ArtistUpdateOneRequiredWithoutCommentsNestedInput
-  }
-
-  export type ArtistCommentUncheckedUpdateInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    artistId?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ArtistCommentCreateManyInput = {
-    id?: string
-    comment: string
-    artistId: string
-    likes?: number
-  }
-
-  export type ArtistCommentUpdateManyMutationInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ArtistCommentUncheckedUpdateManyInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    artistId?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type UserLikedArtistCreateInput = {
-    id?: string
-    user: UserCreateNestedOneWithoutLikedArtistsInput
-    likedArtist: ArtistCreateNestedOneWithoutLikedByUsersInput
-  }
-
-  export type UserLikedArtistUncheckedCreateInput = {
-    id?: string
-    userId: string
-    likedArtistId: string
-  }
-
-  export type UserLikedArtistUpdateInput = {
-    user?: UserUpdateOneRequiredWithoutLikedArtistsNestedInput
-    likedArtist?: ArtistUpdateOneRequiredWithoutLikedByUsersNestedInput
-  }
-
-  export type UserLikedArtistUncheckedUpdateInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    likedArtistId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserLikedArtistCreateManyInput = {
-    id?: string
-    userId: string
-    likedArtistId: string
-  }
-
-  export type UserLikedArtistUpdateManyMutationInput = {
-
-  }
-
-  export type UserLikedArtistUncheckedUpdateManyInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-    likedArtistId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -13440,79 +11636,91 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type EnumCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.Category | EnumCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.Category[] | ListEnumCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Category[] | ListEnumCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumCategoryFilter<$PrismaModel> | $Enums.Category
   }
 
-  export type WebsiteProjectCommentListRelationFilter = {
-    every?: WebsiteProjectCommentWhereInput
-    some?: WebsiteProjectCommentWhereInput
-    none?: WebsiteProjectCommentWhereInput
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type UserLikedWebsiteListRelationFilter = {
-    every?: UserLikedWebsiteWhereInput
-    some?: UserLikedWebsiteWhereInput
-    none?: UserLikedWebsiteWhereInput
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
   }
 
-  export type WebsiteProjectCommentOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type WebsiteNullableRelationFilter = {
+    is?: WebsiteWhereInput | null
+    isNot?: WebsiteWhereInput | null
   }
 
-  export type UserLikedWebsiteOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type UserRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
-  export type WebsiteProjectCountOrderByAggregateInput = {
+  export type ArtistNullableRelationFilter = {
+    is?: ArtistWhereInput | null
+    isNot?: ArtistWhereInput | null
+  }
+
+  export type MovieNullableRelationFilter = {
+    is?: MovieWhereInput | null
+    isNot?: MovieWhereInput | null
+  }
+
+  export type LikeCountOrderByAggregateInput = {
     id?: SortOrder
-    img?: SortOrder
-    title?: SortOrder
-    genre?: SortOrder
-    technologies?: SortOrder
-    description?: SortOrder
-    release_date?: SortOrder
-    link?: SortOrder
-    likes?: SortOrder
+    userId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
   }
 
-  export type WebsiteProjectAvgOrderByAggregateInput = {
-    likes?: SortOrder
-  }
-
-  export type WebsiteProjectMaxOrderByAggregateInput = {
+  export type LikeMaxOrderByAggregateInput = {
     id?: SortOrder
-    img?: SortOrder
-    title?: SortOrder
-    genre?: SortOrder
-    technologies?: SortOrder
-    description?: SortOrder
-    release_date?: SortOrder
-    link?: SortOrder
-    likes?: SortOrder
+    userId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
   }
 
-  export type WebsiteProjectMinOrderByAggregateInput = {
+  export type LikeMinOrderByAggregateInput = {
     id?: SortOrder
-    img?: SortOrder
-    title?: SortOrder
-    genre?: SortOrder
-    technologies?: SortOrder
-    description?: SortOrder
-    release_date?: SortOrder
-    link?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type WebsiteProjectSumOrderByAggregateInput = {
-    likes?: SortOrder
+    userId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -13533,248 +11741,28 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+  export type EnumCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Category | EnumCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.Category[] | ListEnumCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Category[] | ListEnumCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumCategoryWithAggregatesFilter<$PrismaModel> | $Enums.Category
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCategoryFilter<$PrismaModel>
+    _max?: NestedEnumCategoryFilter<$PrismaModel>
   }
 
-  export type WebsiteProjectRelationFilter = {
-    is?: WebsiteProjectWhereInput
-    isNot?: WebsiteProjectWhereInput
-  }
-
-  export type WebsiteProjectCommentCountOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    websiteProjectId?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type WebsiteProjectCommentAvgOrderByAggregateInput = {
-    likes?: SortOrder
-  }
-
-  export type WebsiteProjectCommentMaxOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    websiteProjectId?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type WebsiteProjectCommentMinOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    websiteProjectId?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type WebsiteProjectCommentSumOrderByAggregateInput = {
-    likes?: SortOrder
-  }
-
-  export type SongCommentListRelationFilter = {
-    every?: SongCommentWhereInput
-    some?: SongCommentWhereInput
-    none?: SongCommentWhereInput
-  }
-
-  export type UserLikedSongListRelationFilter = {
-    every?: UserLikedSongWhereInput
-    some?: UserLikedSongWhereInput
-    none?: UserLikedSongWhereInput
-  }
-
-  export type SongCommentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type UserLikedSongOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SongCountOrderByAggregateInput = {
-    id?: SortOrder
-    img?: SortOrder
-    title?: SortOrder
-    albumName?: SortOrder
-    artist?: SortOrder
-    genre?: SortOrder
-    releaseDate?: SortOrder
-    duration?: SortOrder
-    plays?: SortOrder
-    song?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type SongAvgOrderByAggregateInput = {
-    plays?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type SongMaxOrderByAggregateInput = {
-    id?: SortOrder
-    img?: SortOrder
-    title?: SortOrder
-    albumName?: SortOrder
-    artist?: SortOrder
-    genre?: SortOrder
-    releaseDate?: SortOrder
-    duration?: SortOrder
-    plays?: SortOrder
-    song?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type SongMinOrderByAggregateInput = {
-    id?: SortOrder
-    img?: SortOrder
-    title?: SortOrder
-    albumName?: SortOrder
-    artist?: SortOrder
-    genre?: SortOrder
-    releaseDate?: SortOrder
-    duration?: SortOrder
-    plays?: SortOrder
-    song?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type SongSumOrderByAggregateInput = {
-    plays?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type SongRelationFilter = {
-    is?: SongWhereInput
-    isNot?: SongWhereInput
-  }
-
-  export type SongCommentCountOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    songId?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type SongCommentAvgOrderByAggregateInput = {
-    likes?: SortOrder
-  }
-
-  export type SongCommentMaxOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    songId?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type SongCommentMinOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    songId?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type SongCommentSumOrderByAggregateInput = {
-    likes?: SortOrder
-  }
-
-  export type UserRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
-  export type UserLikedSongCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedSongId?: SortOrder
-  }
-
-  export type UserLikedSongMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedSongId?: SortOrder
-  }
-
-  export type UserLikedSongMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedSongId?: SortOrder
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-    isSet?: boolean
-  }
-
-  export type AddressNullableCompositeFilter = {
-    equals?: AddressObjectEqualityInput | null
-    is?: AddressWhereInput | null
-    isNot?: AddressWhereInput | null
-    isSet?: boolean
-  }
-
-  export type AddressObjectEqualityInput = {
-    street: string
-    city: string
-    state: string
-    zip: string
-  }
-
-  export type UserLikedArtistListRelationFilter = {
-    every?: UserLikedArtistWhereInput
-    some?: UserLikedArtistWhereInput
-    none?: UserLikedArtistWhereInput
-  }
-
-  export type AddressOrderByInput = {
-    street?: SortOrder
-    city?: SortOrder
-    state?: SortOrder
-    zip?: SortOrder
-  }
-
-  export type UserLikedArtistOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type UserCountOrderByAggregateInput = {
-    id?: SortOrder
-    email?: SortOrder
-    name?: SortOrder
-  }
-
-  export type UserMaxOrderByAggregateInput = {
-    id?: SortOrder
-    email?: SortOrder
-    name?: SortOrder
-  }
-
-  export type UserMinOrderByAggregateInput = {
-    id?: SortOrder
-    email?: SortOrder
-    name?: SortOrder
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -13796,31 +11784,332 @@ export namespace Prisma {
     isSet?: boolean
   }
 
-  export type UserLikedWebsiteCountOrderByAggregateInput = {
+  export type SongNullableRelationFilter = {
+    is?: SongWhereInput | null
+    isNot?: SongWhereInput | null
+  }
+
+  export type CommentCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    likedWebsiteId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    comment?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    songId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
   }
 
-  export type UserLikedWebsiteMaxOrderByAggregateInput = {
+  export type CommentMaxOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    likedWebsiteId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    comment?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    songId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
   }
 
-  export type UserLikedWebsiteMinOrderByAggregateInput = {
+  export type CommentMinOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
-    likedWebsiteId?: SortOrder
+    category?: SortOrder
+    itemId?: SortOrder
+    comment?: SortOrder
+    timestamp?: SortOrder
+    websiteId?: SortOrder
+    songId?: SortOrder
+    artistId?: SortOrder
+    movieId?: SortOrder
   }
 
-  export type ArtistCommentListRelationFilter = {
-    every?: ArtistCommentWhereInput
-    some?: ArtistCommentWhereInput
-    none?: ArtistCommentWhereInput
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type ArtistCommentOrderByRelationAggregateInput = {
+  export type EnumTransactionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionType | EnumTransactionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionTypeFilter<$PrismaModel> | $Enums.TransactionType
+  }
+
+  export type EnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
+  export type CardCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    transactionType?: SortOrder
+    status?: SortOrder
+    timestamp?: SortOrder
+  }
+
+  export type CardAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type CardMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    transactionType?: SortOrder
+    status?: SortOrder
+    timestamp?: SortOrder
+  }
+
+  export type CardMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    cardId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    transactionType?: SortOrder
+    status?: SortOrder
+    timestamp?: SortOrder
+  }
+
+  export type CardSumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionType | EnumTransactionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionTypeWithAggregatesFilter<$PrismaModel> | $Enums.TransactionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTransactionTypeFilter<$PrismaModel>
+    _max?: NestedEnumTransactionTypeFilter<$PrismaModel>
+  }
+
+  export type EnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
+  }
+
+  export type LikeListRelationFilter = {
+    every?: LikeWhereInput
+    some?: LikeWhereInput
+    none?: LikeWhereInput
+  }
+
+  export type CommentListRelationFilter = {
+    every?: CommentWhereInput
+    some?: CommentWhereInput
+    none?: CommentWhereInput
+  }
+
+  export type LikeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MovieCountOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    genre?: SortOrder
+    description?: SortOrder
+    releaseDate?: SortOrder
+  }
+
+  export type MovieMaxOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    genre?: SortOrder
+    description?: SortOrder
+    releaseDate?: SortOrder
+  }
+
+  export type MovieMinOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    genre?: SortOrder
+    description?: SortOrder
+    releaseDate?: SortOrder
+  }
+
+  export type WebsiteCountOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    genre?: SortOrder
+    technologies?: SortOrder
+    description?: SortOrder
+    release_date?: SortOrder
+    link?: SortOrder
+  }
+
+  export type WebsiteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    genre?: SortOrder
+    technologies?: SortOrder
+    description?: SortOrder
+    release_date?: SortOrder
+    link?: SortOrder
+  }
+
+  export type WebsiteMinOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    genre?: SortOrder
+    technologies?: SortOrder
+    description?: SortOrder
+    release_date?: SortOrder
+    link?: SortOrder
+  }
+
+  export type SongCountOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    albumName?: SortOrder
+    artist?: SortOrder
+    genre?: SortOrder
+    releaseDate?: SortOrder
+    duration?: SortOrder
+    plays?: SortOrder
+    song?: SortOrder
+    likes?: SortOrder
+    artistId?: SortOrder
+  }
+
+  export type SongAvgOrderByAggregateInput = {
+    plays?: SortOrder
+    likes?: SortOrder
+  }
+
+  export type SongMaxOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    albumName?: SortOrder
+    artist?: SortOrder
+    genre?: SortOrder
+    releaseDate?: SortOrder
+    duration?: SortOrder
+    plays?: SortOrder
+    song?: SortOrder
+    likes?: SortOrder
+    artistId?: SortOrder
+  }
+
+  export type SongMinOrderByAggregateInput = {
+    id?: SortOrder
+    img?: SortOrder
+    title?: SortOrder
+    albumName?: SortOrder
+    artist?: SortOrder
+    genre?: SortOrder
+    releaseDate?: SortOrder
+    duration?: SortOrder
+    plays?: SortOrder
+    song?: SortOrder
+    likes?: SortOrder
+    artistId?: SortOrder
+  }
+
+  export type SongSumOrderByAggregateInput = {
+    plays?: SortOrder
+    likes?: SortOrder
+  }
+
+  export type AddressCompositeListFilter = {
+    equals?: AddressObjectEqualityInput[]
+    every?: AddressWhereInput
+    some?: AddressWhereInput
+    none?: AddressWhereInput
+    isEmpty?: boolean
+    isSet?: boolean
+  }
+
+  export type AddressObjectEqualityInput = {
+    street: string
+    city: string
+    state: string
+    zip: string
+  }
+
+  export type AddressOrderByCompositeAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserCountOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+  }
+
+  export type UserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+  }
+
+  export type UserMinOrderByAggregateInput = {
+    id?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+  }
+
+  export type SongListRelationFilter = {
+    every?: SongWhereInput
+    some?: SongWhereInput
+    none?: SongWhereInput
+  }
+
+  export type SongOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -13831,11 +12120,6 @@ export namespace Prisma {
     genre?: SortOrder
     description?: SortOrder
     releaseDate?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type ArtistAvgOrderByAggregateInput = {
-    likes?: SortOrder
   }
 
   export type ArtistMaxOrderByAggregateInput = {
@@ -13845,7 +12129,6 @@ export namespace Prisma {
     genre?: SortOrder
     description?: SortOrder
     releaseDate?: SortOrder
-    likes?: SortOrder
   }
 
   export type ArtistMinOrderByAggregateInput = {
@@ -13855,95 +12138,149 @@ export namespace Prisma {
     genre?: SortOrder
     description?: SortOrder
     releaseDate?: SortOrder
-    likes?: SortOrder
   }
 
-  export type ArtistSumOrderByAggregateInput = {
-    likes?: SortOrder
+  export type WebsiteCreateNestedOneWithoutLikesInput = {
+    create?: XOR<WebsiteCreateWithoutLikesInput, WebsiteUncheckedCreateWithoutLikesInput>
+    connectOrCreate?: WebsiteCreateOrConnectWithoutLikesInput
+    connect?: WebsiteWhereUniqueInput
   }
 
-  export type ArtistRelationFilter = {
-    is?: ArtistWhereInput
-    isNot?: ArtistWhereInput
+  export type UserCreateNestedOneWithoutLikesInput = {
+    create?: XOR<UserCreateWithoutLikesInput, UserUncheckedCreateWithoutLikesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLikesInput
+    connect?: UserWhereUniqueInput
   }
 
-  export type ArtistCommentCountOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    artistId?: SortOrder
-    likes?: SortOrder
+  export type ArtistCreateNestedOneWithoutLikesInput = {
+    create?: XOR<ArtistCreateWithoutLikesInput, ArtistUncheckedCreateWithoutLikesInput>
+    connectOrCreate?: ArtistCreateOrConnectWithoutLikesInput
+    connect?: ArtistWhereUniqueInput
   }
 
-  export type ArtistCommentAvgOrderByAggregateInput = {
-    likes?: SortOrder
+  export type MovieCreateNestedOneWithoutLikesInput = {
+    create?: XOR<MovieCreateWithoutLikesInput, MovieUncheckedCreateWithoutLikesInput>
+    connectOrCreate?: MovieCreateOrConnectWithoutLikesInput
+    connect?: MovieWhereUniqueInput
   }
 
-  export type ArtistCommentMaxOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    artistId?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type ArtistCommentMinOrderByAggregateInput = {
-    id?: SortOrder
-    comment?: SortOrder
-    artistId?: SortOrder
-    likes?: SortOrder
-  }
-
-  export type ArtistCommentSumOrderByAggregateInput = {
-    likes?: SortOrder
-  }
-
-  export type UserLikedArtistCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedArtistId?: SortOrder
-  }
-
-  export type UserLikedArtistMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedArtistId?: SortOrder
-  }
-
-  export type UserLikedArtistMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    likedArtistId?: SortOrder
-  }
-
-  export type WebsiteProjectCommentCreateNestedManyWithoutWebsiteProjectInput = {
-    create?: XOR<WebsiteProjectCommentCreateWithoutWebsiteProjectInput, WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput> | WebsiteProjectCommentCreateWithoutWebsiteProjectInput[] | WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput[]
-    connectOrCreate?: WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput | WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput[]
-    createMany?: WebsiteProjectCommentCreateManyWebsiteProjectInputEnvelope
-    connect?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-  }
-
-  export type UserLikedWebsiteCreateNestedManyWithoutLikedWebsiteInput = {
-    create?: XOR<UserLikedWebsiteCreateWithoutLikedWebsiteInput, UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput> | UserLikedWebsiteCreateWithoutLikedWebsiteInput[] | UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput[]
-    connectOrCreate?: UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput | UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput[]
-    createMany?: UserLikedWebsiteCreateManyLikedWebsiteInputEnvelope
-    connect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-  }
-
-  export type WebsiteProjectCommentUncheckedCreateNestedManyWithoutWebsiteProjectInput = {
-    create?: XOR<WebsiteProjectCommentCreateWithoutWebsiteProjectInput, WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput> | WebsiteProjectCommentCreateWithoutWebsiteProjectInput[] | WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput[]
-    connectOrCreate?: WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput | WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput[]
-    createMany?: WebsiteProjectCommentCreateManyWebsiteProjectInputEnvelope
-    connect?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-  }
-
-  export type UserLikedWebsiteUncheckedCreateNestedManyWithoutLikedWebsiteInput = {
-    create?: XOR<UserLikedWebsiteCreateWithoutLikedWebsiteInput, UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput> | UserLikedWebsiteCreateWithoutLikedWebsiteInput[] | UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput[]
-    connectOrCreate?: UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput | UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput[]
-    createMany?: UserLikedWebsiteCreateManyLikedWebsiteInputEnvelope
-    connect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
+  export type EnumCategoryFieldUpdateOperationsInput = {
+    set?: $Enums.Category
   }
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type WebsiteUpdateOneWithoutLikesNestedInput = {
+    create?: XOR<WebsiteCreateWithoutLikesInput, WebsiteUncheckedCreateWithoutLikesInput>
+    connectOrCreate?: WebsiteCreateOrConnectWithoutLikesInput
+    upsert?: WebsiteUpsertWithoutLikesInput
+    disconnect?: boolean
+    delete?: WebsiteWhereInput | boolean
+    connect?: WebsiteWhereUniqueInput
+    update?: XOR<XOR<WebsiteUpdateToOneWithWhereWithoutLikesInput, WebsiteUpdateWithoutLikesInput>, WebsiteUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutLikesNestedInput = {
+    create?: XOR<UserCreateWithoutLikesInput, UserUncheckedCreateWithoutLikesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLikesInput
+    upsert?: UserUpsertWithoutLikesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLikesInput, UserUpdateWithoutLikesInput>, UserUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type ArtistUpdateOneWithoutLikesNestedInput = {
+    create?: XOR<ArtistCreateWithoutLikesInput, ArtistUncheckedCreateWithoutLikesInput>
+    connectOrCreate?: ArtistCreateOrConnectWithoutLikesInput
+    upsert?: ArtistUpsertWithoutLikesInput
+    disconnect?: boolean
+    delete?: ArtistWhereInput | boolean
+    connect?: ArtistWhereUniqueInput
+    update?: XOR<XOR<ArtistUpdateToOneWithWhereWithoutLikesInput, ArtistUpdateWithoutLikesInput>, ArtistUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type MovieUpdateOneWithoutLikesNestedInput = {
+    create?: XOR<MovieCreateWithoutLikesInput, MovieUncheckedCreateWithoutLikesInput>
+    connectOrCreate?: MovieCreateOrConnectWithoutLikesInput
+    upsert?: MovieUpsertWithoutLikesInput
+    disconnect?: boolean
+    delete?: MovieWhereInput | boolean
+    connect?: MovieWhereUniqueInput
+    update?: XOR<XOR<MovieUpdateToOneWithWhereWithoutLikesInput, MovieUpdateWithoutLikesInput>, MovieUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+    unset?: boolean
+  }
+
+  export type WebsiteCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<WebsiteCreateWithoutCommentsInput, WebsiteUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: WebsiteCreateOrConnectWithoutCommentsInput
+    connect?: WebsiteWhereUniqueInput
+  }
+
+  export type SongCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<SongCreateWithoutCommentsInput, SongUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: SongCreateOrConnectWithoutCommentsInput
+    connect?: SongWhereUniqueInput
+  }
+
+  export type ArtistCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<ArtistCreateWithoutCommentsInput, ArtistUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: ArtistCreateOrConnectWithoutCommentsInput
+    connect?: ArtistWhereUniqueInput
+  }
+
+  export type MovieCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<MovieCreateWithoutCommentsInput, MovieUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: MovieCreateOrConnectWithoutCommentsInput
+    connect?: MovieWhereUniqueInput
+  }
+
+  export type WebsiteUpdateOneWithoutCommentsNestedInput = {
+    create?: XOR<WebsiteCreateWithoutCommentsInput, WebsiteUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: WebsiteCreateOrConnectWithoutCommentsInput
+    upsert?: WebsiteUpsertWithoutCommentsInput
+    disconnect?: boolean
+    delete?: WebsiteWhereInput | boolean
+    connect?: WebsiteWhereUniqueInput
+    update?: XOR<XOR<WebsiteUpdateToOneWithWhereWithoutCommentsInput, WebsiteUpdateWithoutCommentsInput>, WebsiteUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type SongUpdateOneWithoutCommentsNestedInput = {
+    create?: XOR<SongCreateWithoutCommentsInput, SongUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: SongCreateOrConnectWithoutCommentsInput
+    upsert?: SongUpsertWithoutCommentsInput
+    disconnect?: boolean
+    delete?: SongWhereInput | boolean
+    connect?: SongWhereUniqueInput
+    update?: XOR<XOR<SongUpdateToOneWithWhereWithoutCommentsInput, SongUpdateWithoutCommentsInput>, SongUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type ArtistUpdateOneWithoutCommentsNestedInput = {
+    create?: XOR<ArtistCreateWithoutCommentsInput, ArtistUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: ArtistCreateOrConnectWithoutCommentsInput
+    upsert?: ArtistUpsertWithoutCommentsInput
+    disconnect?: boolean
+    delete?: ArtistWhereInput | boolean
+    connect?: ArtistWhereUniqueInput
+    update?: XOR<XOR<ArtistUpdateToOneWithWhereWithoutCommentsInput, ArtistUpdateWithoutCommentsInput>, ArtistUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type MovieUpdateOneWithoutCommentsNestedInput = {
+    create?: XOR<MovieCreateWithoutCommentsInput, MovieUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: MovieCreateOrConnectWithoutCommentsInput
+    upsert?: MovieUpsertWithoutCommentsInput
+    disconnect?: boolean
+    delete?: MovieWhereInput | boolean
+    connect?: MovieWhereUniqueInput
+    update?: XOR<XOR<MovieUpdateToOneWithWhereWithoutCommentsInput, MovieUpdateWithoutCommentsInput>, MovieUncheckedUpdateWithoutCommentsInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -13954,204 +12291,242 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type WebsiteProjectCommentUpdateManyWithoutWebsiteProjectNestedInput = {
-    create?: XOR<WebsiteProjectCommentCreateWithoutWebsiteProjectInput, WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput> | WebsiteProjectCommentCreateWithoutWebsiteProjectInput[] | WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput[]
-    connectOrCreate?: WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput | WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput[]
-    upsert?: WebsiteProjectCommentUpsertWithWhereUniqueWithoutWebsiteProjectInput | WebsiteProjectCommentUpsertWithWhereUniqueWithoutWebsiteProjectInput[]
-    createMany?: WebsiteProjectCommentCreateManyWebsiteProjectInputEnvelope
-    set?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-    disconnect?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-    delete?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-    connect?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-    update?: WebsiteProjectCommentUpdateWithWhereUniqueWithoutWebsiteProjectInput | WebsiteProjectCommentUpdateWithWhereUniqueWithoutWebsiteProjectInput[]
-    updateMany?: WebsiteProjectCommentUpdateManyWithWhereWithoutWebsiteProjectInput | WebsiteProjectCommentUpdateManyWithWhereWithoutWebsiteProjectInput[]
-    deleteMany?: WebsiteProjectCommentScalarWhereInput | WebsiteProjectCommentScalarWhereInput[]
+  export type EnumTransactionTypeFieldUpdateOperationsInput = {
+    set?: $Enums.TransactionType
   }
 
-  export type UserLikedWebsiteUpdateManyWithoutLikedWebsiteNestedInput = {
-    create?: XOR<UserLikedWebsiteCreateWithoutLikedWebsiteInput, UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput> | UserLikedWebsiteCreateWithoutLikedWebsiteInput[] | UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput[]
-    connectOrCreate?: UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput | UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput[]
-    upsert?: UserLikedWebsiteUpsertWithWhereUniqueWithoutLikedWebsiteInput | UserLikedWebsiteUpsertWithWhereUniqueWithoutLikedWebsiteInput[]
-    createMany?: UserLikedWebsiteCreateManyLikedWebsiteInputEnvelope
-    set?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    disconnect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    delete?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    connect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    update?: UserLikedWebsiteUpdateWithWhereUniqueWithoutLikedWebsiteInput | UserLikedWebsiteUpdateWithWhereUniqueWithoutLikedWebsiteInput[]
-    updateMany?: UserLikedWebsiteUpdateManyWithWhereWithoutLikedWebsiteInput | UserLikedWebsiteUpdateManyWithWhereWithoutLikedWebsiteInput[]
-    deleteMany?: UserLikedWebsiteScalarWhereInput | UserLikedWebsiteScalarWhereInput[]
+  export type EnumStatusFieldUpdateOperationsInput = {
+    set?: $Enums.Status
   }
 
-  export type WebsiteProjectCommentUncheckedUpdateManyWithoutWebsiteProjectNestedInput = {
-    create?: XOR<WebsiteProjectCommentCreateWithoutWebsiteProjectInput, WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput> | WebsiteProjectCommentCreateWithoutWebsiteProjectInput[] | WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput[]
-    connectOrCreate?: WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput | WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput[]
-    upsert?: WebsiteProjectCommentUpsertWithWhereUniqueWithoutWebsiteProjectInput | WebsiteProjectCommentUpsertWithWhereUniqueWithoutWebsiteProjectInput[]
-    createMany?: WebsiteProjectCommentCreateManyWebsiteProjectInputEnvelope
-    set?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-    disconnect?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-    delete?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-    connect?: WebsiteProjectCommentWhereUniqueInput | WebsiteProjectCommentWhereUniqueInput[]
-    update?: WebsiteProjectCommentUpdateWithWhereUniqueWithoutWebsiteProjectInput | WebsiteProjectCommentUpdateWithWhereUniqueWithoutWebsiteProjectInput[]
-    updateMany?: WebsiteProjectCommentUpdateManyWithWhereWithoutWebsiteProjectInput | WebsiteProjectCommentUpdateManyWithWhereWithoutWebsiteProjectInput[]
-    deleteMany?: WebsiteProjectCommentScalarWhereInput | WebsiteProjectCommentScalarWhereInput[]
+  export type LikeCreateNestedManyWithoutMovieInput = {
+    create?: XOR<LikeCreateWithoutMovieInput, LikeUncheckedCreateWithoutMovieInput> | LikeCreateWithoutMovieInput[] | LikeUncheckedCreateWithoutMovieInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutMovieInput | LikeCreateOrConnectWithoutMovieInput[]
+    createMany?: LikeCreateManyMovieInputEnvelope
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
-  export type UserLikedWebsiteUncheckedUpdateManyWithoutLikedWebsiteNestedInput = {
-    create?: XOR<UserLikedWebsiteCreateWithoutLikedWebsiteInput, UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput> | UserLikedWebsiteCreateWithoutLikedWebsiteInput[] | UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput[]
-    connectOrCreate?: UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput | UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput[]
-    upsert?: UserLikedWebsiteUpsertWithWhereUniqueWithoutLikedWebsiteInput | UserLikedWebsiteUpsertWithWhereUniqueWithoutLikedWebsiteInput[]
-    createMany?: UserLikedWebsiteCreateManyLikedWebsiteInputEnvelope
-    set?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    disconnect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    delete?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    connect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    update?: UserLikedWebsiteUpdateWithWhereUniqueWithoutLikedWebsiteInput | UserLikedWebsiteUpdateWithWhereUniqueWithoutLikedWebsiteInput[]
-    updateMany?: UserLikedWebsiteUpdateManyWithWhereWithoutLikedWebsiteInput | UserLikedWebsiteUpdateManyWithWhereWithoutLikedWebsiteInput[]
-    deleteMany?: UserLikedWebsiteScalarWhereInput | UserLikedWebsiteScalarWhereInput[]
+  export type CommentCreateNestedManyWithoutMovieInput = {
+    create?: XOR<CommentCreateWithoutMovieInput, CommentUncheckedCreateWithoutMovieInput> | CommentCreateWithoutMovieInput[] | CommentUncheckedCreateWithoutMovieInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutMovieInput | CommentCreateOrConnectWithoutMovieInput[]
+    createMany?: CommentCreateManyMovieInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
-  export type WebsiteProjectCreateNestedOneWithoutCommentsInput = {
-    create?: XOR<WebsiteProjectCreateWithoutCommentsInput, WebsiteProjectUncheckedCreateWithoutCommentsInput>
-    connectOrCreate?: WebsiteProjectCreateOrConnectWithoutCommentsInput
-    connect?: WebsiteProjectWhereUniqueInput
+  export type LikeUncheckedCreateNestedManyWithoutMovieInput = {
+    create?: XOR<LikeCreateWithoutMovieInput, LikeUncheckedCreateWithoutMovieInput> | LikeCreateWithoutMovieInput[] | LikeUncheckedCreateWithoutMovieInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutMovieInput | LikeCreateOrConnectWithoutMovieInput[]
+    createMany?: LikeCreateManyMovieInputEnvelope
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
-  export type WebsiteProjectUpdateOneRequiredWithoutCommentsNestedInput = {
-    create?: XOR<WebsiteProjectCreateWithoutCommentsInput, WebsiteProjectUncheckedCreateWithoutCommentsInput>
-    connectOrCreate?: WebsiteProjectCreateOrConnectWithoutCommentsInput
-    upsert?: WebsiteProjectUpsertWithoutCommentsInput
-    connect?: WebsiteProjectWhereUniqueInput
-    update?: XOR<XOR<WebsiteProjectUpdateToOneWithWhereWithoutCommentsInput, WebsiteProjectUpdateWithoutCommentsInput>, WebsiteProjectUncheckedUpdateWithoutCommentsInput>
+  export type CommentUncheckedCreateNestedManyWithoutMovieInput = {
+    create?: XOR<CommentCreateWithoutMovieInput, CommentUncheckedCreateWithoutMovieInput> | CommentCreateWithoutMovieInput[] | CommentUncheckedCreateWithoutMovieInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutMovieInput | CommentCreateOrConnectWithoutMovieInput[]
+    createMany?: CommentCreateManyMovieInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
-  export type SongCommentCreateNestedManyWithoutSongInput = {
-    create?: XOR<SongCommentCreateWithoutSongInput, SongCommentUncheckedCreateWithoutSongInput> | SongCommentCreateWithoutSongInput[] | SongCommentUncheckedCreateWithoutSongInput[]
-    connectOrCreate?: SongCommentCreateOrConnectWithoutSongInput | SongCommentCreateOrConnectWithoutSongInput[]
-    createMany?: SongCommentCreateManySongInputEnvelope
-    connect?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
+  export type LikeUpdateManyWithoutMovieNestedInput = {
+    create?: XOR<LikeCreateWithoutMovieInput, LikeUncheckedCreateWithoutMovieInput> | LikeCreateWithoutMovieInput[] | LikeUncheckedCreateWithoutMovieInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutMovieInput | LikeCreateOrConnectWithoutMovieInput[]
+    upsert?: LikeUpsertWithWhereUniqueWithoutMovieInput | LikeUpsertWithWhereUniqueWithoutMovieInput[]
+    createMany?: LikeCreateManyMovieInputEnvelope
+    set?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    disconnect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    delete?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    update?: LikeUpdateWithWhereUniqueWithoutMovieInput | LikeUpdateWithWhereUniqueWithoutMovieInput[]
+    updateMany?: LikeUpdateManyWithWhereWithoutMovieInput | LikeUpdateManyWithWhereWithoutMovieInput[]
+    deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
-  export type UserLikedSongCreateNestedManyWithoutLikedSongInput = {
-    create?: XOR<UserLikedSongCreateWithoutLikedSongInput, UserLikedSongUncheckedCreateWithoutLikedSongInput> | UserLikedSongCreateWithoutLikedSongInput[] | UserLikedSongUncheckedCreateWithoutLikedSongInput[]
-    connectOrCreate?: UserLikedSongCreateOrConnectWithoutLikedSongInput | UserLikedSongCreateOrConnectWithoutLikedSongInput[]
-    createMany?: UserLikedSongCreateManyLikedSongInputEnvelope
-    connect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
+  export type CommentUpdateManyWithoutMovieNestedInput = {
+    create?: XOR<CommentCreateWithoutMovieInput, CommentUncheckedCreateWithoutMovieInput> | CommentCreateWithoutMovieInput[] | CommentUncheckedCreateWithoutMovieInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutMovieInput | CommentCreateOrConnectWithoutMovieInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutMovieInput | CommentUpsertWithWhereUniqueWithoutMovieInput[]
+    createMany?: CommentCreateManyMovieInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutMovieInput | CommentUpdateWithWhereUniqueWithoutMovieInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutMovieInput | CommentUpdateManyWithWhereWithoutMovieInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
-  export type SongCommentUncheckedCreateNestedManyWithoutSongInput = {
-    create?: XOR<SongCommentCreateWithoutSongInput, SongCommentUncheckedCreateWithoutSongInput> | SongCommentCreateWithoutSongInput[] | SongCommentUncheckedCreateWithoutSongInput[]
-    connectOrCreate?: SongCommentCreateOrConnectWithoutSongInput | SongCommentCreateOrConnectWithoutSongInput[]
-    createMany?: SongCommentCreateManySongInputEnvelope
-    connect?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
+  export type LikeUncheckedUpdateManyWithoutMovieNestedInput = {
+    create?: XOR<LikeCreateWithoutMovieInput, LikeUncheckedCreateWithoutMovieInput> | LikeCreateWithoutMovieInput[] | LikeUncheckedCreateWithoutMovieInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutMovieInput | LikeCreateOrConnectWithoutMovieInput[]
+    upsert?: LikeUpsertWithWhereUniqueWithoutMovieInput | LikeUpsertWithWhereUniqueWithoutMovieInput[]
+    createMany?: LikeCreateManyMovieInputEnvelope
+    set?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    disconnect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    delete?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    update?: LikeUpdateWithWhereUniqueWithoutMovieInput | LikeUpdateWithWhereUniqueWithoutMovieInput[]
+    updateMany?: LikeUpdateManyWithWhereWithoutMovieInput | LikeUpdateManyWithWhereWithoutMovieInput[]
+    deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
-  export type UserLikedSongUncheckedCreateNestedManyWithoutLikedSongInput = {
-    create?: XOR<UserLikedSongCreateWithoutLikedSongInput, UserLikedSongUncheckedCreateWithoutLikedSongInput> | UserLikedSongCreateWithoutLikedSongInput[] | UserLikedSongUncheckedCreateWithoutLikedSongInput[]
-    connectOrCreate?: UserLikedSongCreateOrConnectWithoutLikedSongInput | UserLikedSongCreateOrConnectWithoutLikedSongInput[]
-    createMany?: UserLikedSongCreateManyLikedSongInputEnvelope
-    connect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
+  export type CommentUncheckedUpdateManyWithoutMovieNestedInput = {
+    create?: XOR<CommentCreateWithoutMovieInput, CommentUncheckedCreateWithoutMovieInput> | CommentCreateWithoutMovieInput[] | CommentUncheckedCreateWithoutMovieInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutMovieInput | CommentCreateOrConnectWithoutMovieInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutMovieInput | CommentUpsertWithWhereUniqueWithoutMovieInput[]
+    createMany?: CommentCreateManyMovieInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutMovieInput | CommentUpdateWithWhereUniqueWithoutMovieInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutMovieInput | CommentUpdateManyWithWhereWithoutMovieInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
-  export type SongCommentUpdateManyWithoutSongNestedInput = {
-    create?: XOR<SongCommentCreateWithoutSongInput, SongCommentUncheckedCreateWithoutSongInput> | SongCommentCreateWithoutSongInput[] | SongCommentUncheckedCreateWithoutSongInput[]
-    connectOrCreate?: SongCommentCreateOrConnectWithoutSongInput | SongCommentCreateOrConnectWithoutSongInput[]
-    upsert?: SongCommentUpsertWithWhereUniqueWithoutSongInput | SongCommentUpsertWithWhereUniqueWithoutSongInput[]
-    createMany?: SongCommentCreateManySongInputEnvelope
-    set?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
-    disconnect?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
-    delete?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
-    connect?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
-    update?: SongCommentUpdateWithWhereUniqueWithoutSongInput | SongCommentUpdateWithWhereUniqueWithoutSongInput[]
-    updateMany?: SongCommentUpdateManyWithWhereWithoutSongInput | SongCommentUpdateManyWithWhereWithoutSongInput[]
-    deleteMany?: SongCommentScalarWhereInput | SongCommentScalarWhereInput[]
+  export type LikeCreateNestedManyWithoutWebsiteInput = {
+    create?: XOR<LikeCreateWithoutWebsiteInput, LikeUncheckedCreateWithoutWebsiteInput> | LikeCreateWithoutWebsiteInput[] | LikeUncheckedCreateWithoutWebsiteInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutWebsiteInput | LikeCreateOrConnectWithoutWebsiteInput[]
+    createMany?: LikeCreateManyWebsiteInputEnvelope
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
-  export type UserLikedSongUpdateManyWithoutLikedSongNestedInput = {
-    create?: XOR<UserLikedSongCreateWithoutLikedSongInput, UserLikedSongUncheckedCreateWithoutLikedSongInput> | UserLikedSongCreateWithoutLikedSongInput[] | UserLikedSongUncheckedCreateWithoutLikedSongInput[]
-    connectOrCreate?: UserLikedSongCreateOrConnectWithoutLikedSongInput | UserLikedSongCreateOrConnectWithoutLikedSongInput[]
-    upsert?: UserLikedSongUpsertWithWhereUniqueWithoutLikedSongInput | UserLikedSongUpsertWithWhereUniqueWithoutLikedSongInput[]
-    createMany?: UserLikedSongCreateManyLikedSongInputEnvelope
-    set?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    disconnect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    delete?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    connect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    update?: UserLikedSongUpdateWithWhereUniqueWithoutLikedSongInput | UserLikedSongUpdateWithWhereUniqueWithoutLikedSongInput[]
-    updateMany?: UserLikedSongUpdateManyWithWhereWithoutLikedSongInput | UserLikedSongUpdateManyWithWhereWithoutLikedSongInput[]
-    deleteMany?: UserLikedSongScalarWhereInput | UserLikedSongScalarWhereInput[]
+  export type CommentCreateNestedManyWithoutWebsiteInput = {
+    create?: XOR<CommentCreateWithoutWebsiteInput, CommentUncheckedCreateWithoutWebsiteInput> | CommentCreateWithoutWebsiteInput[] | CommentUncheckedCreateWithoutWebsiteInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutWebsiteInput | CommentCreateOrConnectWithoutWebsiteInput[]
+    createMany?: CommentCreateManyWebsiteInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
-  export type SongCommentUncheckedUpdateManyWithoutSongNestedInput = {
-    create?: XOR<SongCommentCreateWithoutSongInput, SongCommentUncheckedCreateWithoutSongInput> | SongCommentCreateWithoutSongInput[] | SongCommentUncheckedCreateWithoutSongInput[]
-    connectOrCreate?: SongCommentCreateOrConnectWithoutSongInput | SongCommentCreateOrConnectWithoutSongInput[]
-    upsert?: SongCommentUpsertWithWhereUniqueWithoutSongInput | SongCommentUpsertWithWhereUniqueWithoutSongInput[]
-    createMany?: SongCommentCreateManySongInputEnvelope
-    set?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
-    disconnect?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
-    delete?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
-    connect?: SongCommentWhereUniqueInput | SongCommentWhereUniqueInput[]
-    update?: SongCommentUpdateWithWhereUniqueWithoutSongInput | SongCommentUpdateWithWhereUniqueWithoutSongInput[]
-    updateMany?: SongCommentUpdateManyWithWhereWithoutSongInput | SongCommentUpdateManyWithWhereWithoutSongInput[]
-    deleteMany?: SongCommentScalarWhereInput | SongCommentScalarWhereInput[]
+  export type LikeUncheckedCreateNestedManyWithoutWebsiteInput = {
+    create?: XOR<LikeCreateWithoutWebsiteInput, LikeUncheckedCreateWithoutWebsiteInput> | LikeCreateWithoutWebsiteInput[] | LikeUncheckedCreateWithoutWebsiteInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutWebsiteInput | LikeCreateOrConnectWithoutWebsiteInput[]
+    createMany?: LikeCreateManyWebsiteInputEnvelope
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
-  export type UserLikedSongUncheckedUpdateManyWithoutLikedSongNestedInput = {
-    create?: XOR<UserLikedSongCreateWithoutLikedSongInput, UserLikedSongUncheckedCreateWithoutLikedSongInput> | UserLikedSongCreateWithoutLikedSongInput[] | UserLikedSongUncheckedCreateWithoutLikedSongInput[]
-    connectOrCreate?: UserLikedSongCreateOrConnectWithoutLikedSongInput | UserLikedSongCreateOrConnectWithoutLikedSongInput[]
-    upsert?: UserLikedSongUpsertWithWhereUniqueWithoutLikedSongInput | UserLikedSongUpsertWithWhereUniqueWithoutLikedSongInput[]
-    createMany?: UserLikedSongCreateManyLikedSongInputEnvelope
-    set?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    disconnect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    delete?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    connect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    update?: UserLikedSongUpdateWithWhereUniqueWithoutLikedSongInput | UserLikedSongUpdateWithWhereUniqueWithoutLikedSongInput[]
-    updateMany?: UserLikedSongUpdateManyWithWhereWithoutLikedSongInput | UserLikedSongUpdateManyWithWhereWithoutLikedSongInput[]
-    deleteMany?: UserLikedSongScalarWhereInput | UserLikedSongScalarWhereInput[]
+  export type CommentUncheckedCreateNestedManyWithoutWebsiteInput = {
+    create?: XOR<CommentCreateWithoutWebsiteInput, CommentUncheckedCreateWithoutWebsiteInput> | CommentCreateWithoutWebsiteInput[] | CommentUncheckedCreateWithoutWebsiteInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutWebsiteInput | CommentCreateOrConnectWithoutWebsiteInput[]
+    createMany?: CommentCreateManyWebsiteInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
-  export type SongCreateNestedOneWithoutCommentsInput = {
-    create?: XOR<SongCreateWithoutCommentsInput, SongUncheckedCreateWithoutCommentsInput>
-    connectOrCreate?: SongCreateOrConnectWithoutCommentsInput
-    connect?: SongWhereUniqueInput
+  export type LikeUpdateManyWithoutWebsiteNestedInput = {
+    create?: XOR<LikeCreateWithoutWebsiteInput, LikeUncheckedCreateWithoutWebsiteInput> | LikeCreateWithoutWebsiteInput[] | LikeUncheckedCreateWithoutWebsiteInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutWebsiteInput | LikeCreateOrConnectWithoutWebsiteInput[]
+    upsert?: LikeUpsertWithWhereUniqueWithoutWebsiteInput | LikeUpsertWithWhereUniqueWithoutWebsiteInput[]
+    createMany?: LikeCreateManyWebsiteInputEnvelope
+    set?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    disconnect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    delete?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    update?: LikeUpdateWithWhereUniqueWithoutWebsiteInput | LikeUpdateWithWhereUniqueWithoutWebsiteInput[]
+    updateMany?: LikeUpdateManyWithWhereWithoutWebsiteInput | LikeUpdateManyWithWhereWithoutWebsiteInput[]
+    deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
-  export type SongUpdateOneRequiredWithoutCommentsNestedInput = {
-    create?: XOR<SongCreateWithoutCommentsInput, SongUncheckedCreateWithoutCommentsInput>
-    connectOrCreate?: SongCreateOrConnectWithoutCommentsInput
-    upsert?: SongUpsertWithoutCommentsInput
-    connect?: SongWhereUniqueInput
-    update?: XOR<XOR<SongUpdateToOneWithWhereWithoutCommentsInput, SongUpdateWithoutCommentsInput>, SongUncheckedUpdateWithoutCommentsInput>
+  export type CommentUpdateManyWithoutWebsiteNestedInput = {
+    create?: XOR<CommentCreateWithoutWebsiteInput, CommentUncheckedCreateWithoutWebsiteInput> | CommentCreateWithoutWebsiteInput[] | CommentUncheckedCreateWithoutWebsiteInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutWebsiteInput | CommentCreateOrConnectWithoutWebsiteInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutWebsiteInput | CommentUpsertWithWhereUniqueWithoutWebsiteInput[]
+    createMany?: CommentCreateManyWebsiteInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutWebsiteInput | CommentUpdateWithWhereUniqueWithoutWebsiteInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutWebsiteInput | CommentUpdateManyWithWhereWithoutWebsiteInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutLikedSongsInput = {
-    create?: XOR<UserCreateWithoutLikedSongsInput, UserUncheckedCreateWithoutLikedSongsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLikedSongsInput
-    connect?: UserWhereUniqueInput
+  export type LikeUncheckedUpdateManyWithoutWebsiteNestedInput = {
+    create?: XOR<LikeCreateWithoutWebsiteInput, LikeUncheckedCreateWithoutWebsiteInput> | LikeCreateWithoutWebsiteInput[] | LikeUncheckedCreateWithoutWebsiteInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutWebsiteInput | LikeCreateOrConnectWithoutWebsiteInput[]
+    upsert?: LikeUpsertWithWhereUniqueWithoutWebsiteInput | LikeUpsertWithWhereUniqueWithoutWebsiteInput[]
+    createMany?: LikeCreateManyWebsiteInputEnvelope
+    set?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    disconnect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    delete?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    update?: LikeUpdateWithWhereUniqueWithoutWebsiteInput | LikeUpdateWithWhereUniqueWithoutWebsiteInput[]
+    updateMany?: LikeUpdateManyWithWhereWithoutWebsiteInput | LikeUpdateManyWithWhereWithoutWebsiteInput[]
+    deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
-  export type SongCreateNestedOneWithoutLikedByUsersInput = {
-    create?: XOR<SongCreateWithoutLikedByUsersInput, SongUncheckedCreateWithoutLikedByUsersInput>
-    connectOrCreate?: SongCreateOrConnectWithoutLikedByUsersInput
-    connect?: SongWhereUniqueInput
+  export type CommentUncheckedUpdateManyWithoutWebsiteNestedInput = {
+    create?: XOR<CommentCreateWithoutWebsiteInput, CommentUncheckedCreateWithoutWebsiteInput> | CommentCreateWithoutWebsiteInput[] | CommentUncheckedCreateWithoutWebsiteInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutWebsiteInput | CommentCreateOrConnectWithoutWebsiteInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutWebsiteInput | CommentUpsertWithWhereUniqueWithoutWebsiteInput[]
+    createMany?: CommentCreateManyWebsiteInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutWebsiteInput | CommentUpdateWithWhereUniqueWithoutWebsiteInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutWebsiteInput | CommentUpdateManyWithWhereWithoutWebsiteInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutLikedSongsNestedInput = {
-    create?: XOR<UserCreateWithoutLikedSongsInput, UserUncheckedCreateWithoutLikedSongsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLikedSongsInput
-    upsert?: UserUpsertWithoutLikedSongsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLikedSongsInput, UserUpdateWithoutLikedSongsInput>, UserUncheckedUpdateWithoutLikedSongsInput>
+  export type CommentCreateNestedManyWithoutSongInput = {
+    create?: XOR<CommentCreateWithoutSongInput, CommentUncheckedCreateWithoutSongInput> | CommentCreateWithoutSongInput[] | CommentUncheckedCreateWithoutSongInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutSongInput | CommentCreateOrConnectWithoutSongInput[]
+    createMany?: CommentCreateManySongInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
-  export type SongUpdateOneRequiredWithoutLikedByUsersNestedInput = {
-    create?: XOR<SongCreateWithoutLikedByUsersInput, SongUncheckedCreateWithoutLikedByUsersInput>
-    connectOrCreate?: SongCreateOrConnectWithoutLikedByUsersInput
-    upsert?: SongUpsertWithoutLikedByUsersInput
-    connect?: SongWhereUniqueInput
-    update?: XOR<XOR<SongUpdateToOneWithWhereWithoutLikedByUsersInput, SongUpdateWithoutLikedByUsersInput>, SongUncheckedUpdateWithoutLikedByUsersInput>
+  export type ArtistCreateNestedOneWithoutSongsInput = {
+    create?: XOR<ArtistCreateWithoutSongsInput, ArtistUncheckedCreateWithoutSongsInput>
+    connectOrCreate?: ArtistCreateOrConnectWithoutSongsInput
+    connect?: ArtistWhereUniqueInput
   }
 
-  export type AddressNullableCreateEnvelopeInput = {
-    set?: AddressCreateInput | null
+  export type CommentUncheckedCreateNestedManyWithoutSongInput = {
+    create?: XOR<CommentCreateWithoutSongInput, CommentUncheckedCreateWithoutSongInput> | CommentCreateWithoutSongInput[] | CommentUncheckedCreateWithoutSongInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutSongInput | CommentCreateOrConnectWithoutSongInput[]
+    createMany?: CommentCreateManySongInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+  }
+
+  export type CommentUpdateManyWithoutSongNestedInput = {
+    create?: XOR<CommentCreateWithoutSongInput, CommentUncheckedCreateWithoutSongInput> | CommentCreateWithoutSongInput[] | CommentUncheckedCreateWithoutSongInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutSongInput | CommentCreateOrConnectWithoutSongInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutSongInput | CommentUpsertWithWhereUniqueWithoutSongInput[]
+    createMany?: CommentCreateManySongInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutSongInput | CommentUpdateWithWhereUniqueWithoutSongInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutSongInput | CommentUpdateManyWithWhereWithoutSongInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
+  export type ArtistUpdateOneWithoutSongsNestedInput = {
+    create?: XOR<ArtistCreateWithoutSongsInput, ArtistUncheckedCreateWithoutSongsInput>
+    connectOrCreate?: ArtistCreateOrConnectWithoutSongsInput
+    upsert?: ArtistUpsertWithoutSongsInput
+    disconnect?: boolean
+    delete?: ArtistWhereInput | boolean
+    connect?: ArtistWhereUniqueInput
+    update?: XOR<XOR<ArtistUpdateToOneWithWhereWithoutSongsInput, ArtistUpdateWithoutSongsInput>, ArtistUncheckedUpdateWithoutSongsInput>
+  }
+
+  export type CommentUncheckedUpdateManyWithoutSongNestedInput = {
+    create?: XOR<CommentCreateWithoutSongInput, CommentUncheckedCreateWithoutSongInput> | CommentCreateWithoutSongInput[] | CommentUncheckedCreateWithoutSongInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutSongInput | CommentCreateOrConnectWithoutSongInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutSongInput | CommentUpsertWithWhereUniqueWithoutSongInput[]
+    createMany?: CommentCreateManySongInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutSongInput | CommentUpdateWithWhereUniqueWithoutSongInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutSongInput | CommentUpdateManyWithWhereWithoutSongInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
+  }
+
+  export type AddressListCreateEnvelopeInput = {
+    set?: AddressCreateInput | AddressCreateInput[]
   }
 
   export type AddressCreateInput = {
@@ -14161,295 +12536,179 @@ export namespace Prisma {
     zip: string
   }
 
-  export type UserLikedWebsiteCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserLikedWebsiteCreateWithoutUserInput, UserLikedWebsiteUncheckedCreateWithoutUserInput> | UserLikedWebsiteCreateWithoutUserInput[] | UserLikedWebsiteUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedWebsiteCreateOrConnectWithoutUserInput | UserLikedWebsiteCreateOrConnectWithoutUserInput[]
-    createMany?: UserLikedWebsiteCreateManyUserInputEnvelope
-    connect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
+  export type LikeCreateNestedManyWithoutUserInput = {
+    create?: XOR<LikeCreateWithoutUserInput, LikeUncheckedCreateWithoutUserInput> | LikeCreateWithoutUserInput[] | LikeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutUserInput | LikeCreateOrConnectWithoutUserInput[]
+    createMany?: LikeCreateManyUserInputEnvelope
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
-  export type UserLikedSongCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserLikedSongCreateWithoutUserInput, UserLikedSongUncheckedCreateWithoutUserInput> | UserLikedSongCreateWithoutUserInput[] | UserLikedSongUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedSongCreateOrConnectWithoutUserInput | UserLikedSongCreateOrConnectWithoutUserInput[]
-    createMany?: UserLikedSongCreateManyUserInputEnvelope
-    connect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
+  export type LikeUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<LikeCreateWithoutUserInput, LikeUncheckedCreateWithoutUserInput> | LikeCreateWithoutUserInput[] | LikeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutUserInput | LikeCreateOrConnectWithoutUserInput[]
+    createMany?: LikeCreateManyUserInputEnvelope
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
-  export type UserLikedArtistCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserLikedArtistCreateWithoutUserInput, UserLikedArtistUncheckedCreateWithoutUserInput> | UserLikedArtistCreateWithoutUserInput[] | UserLikedArtistUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedArtistCreateOrConnectWithoutUserInput | UserLikedArtistCreateOrConnectWithoutUserInput[]
-    createMany?: UserLikedArtistCreateManyUserInputEnvelope
-    connect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
+  export type AddressListUpdateEnvelopeInput = {
+    set?: AddressCreateInput | AddressCreateInput[]
+    push?: AddressCreateInput | AddressCreateInput[]
+    updateMany?: AddressUpdateManyInput
+    deleteMany?: AddressDeleteManyInput
   }
 
-  export type UserLikedWebsiteUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserLikedWebsiteCreateWithoutUserInput, UserLikedWebsiteUncheckedCreateWithoutUserInput> | UserLikedWebsiteCreateWithoutUserInput[] | UserLikedWebsiteUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedWebsiteCreateOrConnectWithoutUserInput | UserLikedWebsiteCreateOrConnectWithoutUserInput[]
-    createMany?: UserLikedWebsiteCreateManyUserInputEnvelope
-    connect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
+  export type LikeUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LikeCreateWithoutUserInput, LikeUncheckedCreateWithoutUserInput> | LikeCreateWithoutUserInput[] | LikeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutUserInput | LikeCreateOrConnectWithoutUserInput[]
+    upsert?: LikeUpsertWithWhereUniqueWithoutUserInput | LikeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LikeCreateManyUserInputEnvelope
+    set?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    disconnect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    delete?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    update?: LikeUpdateWithWhereUniqueWithoutUserInput | LikeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LikeUpdateManyWithWhereWithoutUserInput | LikeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
-  export type UserLikedSongUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserLikedSongCreateWithoutUserInput, UserLikedSongUncheckedCreateWithoutUserInput> | UserLikedSongCreateWithoutUserInput[] | UserLikedSongUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedSongCreateOrConnectWithoutUserInput | UserLikedSongCreateOrConnectWithoutUserInput[]
-    createMany?: UserLikedSongCreateManyUserInputEnvelope
-    connect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
+  export type LikeUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<LikeCreateWithoutUserInput, LikeUncheckedCreateWithoutUserInput> | LikeCreateWithoutUserInput[] | LikeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutUserInput | LikeCreateOrConnectWithoutUserInput[]
+    upsert?: LikeUpsertWithWhereUniqueWithoutUserInput | LikeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: LikeCreateManyUserInputEnvelope
+    set?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    disconnect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    delete?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    update?: LikeUpdateWithWhereUniqueWithoutUserInput | LikeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: LikeUpdateManyWithWhereWithoutUserInput | LikeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
-  export type UserLikedArtistUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserLikedArtistCreateWithoutUserInput, UserLikedArtistUncheckedCreateWithoutUserInput> | UserLikedArtistCreateWithoutUserInput[] | UserLikedArtistUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedArtistCreateOrConnectWithoutUserInput | UserLikedArtistCreateOrConnectWithoutUserInput[]
-    createMany?: UserLikedArtistCreateManyUserInputEnvelope
-    connect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
+  export type LikeCreateNestedManyWithoutArtistInput = {
+    create?: XOR<LikeCreateWithoutArtistInput, LikeUncheckedCreateWithoutArtistInput> | LikeCreateWithoutArtistInput[] | LikeUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutArtistInput | LikeCreateOrConnectWithoutArtistInput[]
+    createMany?: LikeCreateManyArtistInputEnvelope
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-    unset?: boolean
+  export type CommentCreateNestedManyWithoutArtistInput = {
+    create?: XOR<CommentCreateWithoutArtistInput, CommentUncheckedCreateWithoutArtistInput> | CommentCreateWithoutArtistInput[] | CommentUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutArtistInput | CommentCreateOrConnectWithoutArtistInput[]
+    createMany?: CommentCreateManyArtistInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
-  export type AddressNullableUpdateEnvelopeInput = {
-    set?: AddressCreateInput | null
-    upsert?: AddressUpsertInput
-    unset?: boolean
+  export type SongCreateNestedManyWithoutArtistInput = {
+    create?: XOR<SongCreateWithoutArtistInput, SongUncheckedCreateWithoutArtistInput> | SongCreateWithoutArtistInput[] | SongUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: SongCreateOrConnectWithoutArtistInput | SongCreateOrConnectWithoutArtistInput[]
+    createMany?: SongCreateManyArtistInputEnvelope
+    connect?: SongWhereUniqueInput | SongWhereUniqueInput[]
   }
 
-  export type UserLikedWebsiteUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserLikedWebsiteCreateWithoutUserInput, UserLikedWebsiteUncheckedCreateWithoutUserInput> | UserLikedWebsiteCreateWithoutUserInput[] | UserLikedWebsiteUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedWebsiteCreateOrConnectWithoutUserInput | UserLikedWebsiteCreateOrConnectWithoutUserInput[]
-    upsert?: UserLikedWebsiteUpsertWithWhereUniqueWithoutUserInput | UserLikedWebsiteUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserLikedWebsiteCreateManyUserInputEnvelope
-    set?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    disconnect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    delete?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    connect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    update?: UserLikedWebsiteUpdateWithWhereUniqueWithoutUserInput | UserLikedWebsiteUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserLikedWebsiteUpdateManyWithWhereWithoutUserInput | UserLikedWebsiteUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserLikedWebsiteScalarWhereInput | UserLikedWebsiteScalarWhereInput[]
+  export type LikeUncheckedCreateNestedManyWithoutArtistInput = {
+    create?: XOR<LikeCreateWithoutArtistInput, LikeUncheckedCreateWithoutArtistInput> | LikeCreateWithoutArtistInput[] | LikeUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutArtistInput | LikeCreateOrConnectWithoutArtistInput[]
+    createMany?: LikeCreateManyArtistInputEnvelope
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
   }
 
-  export type UserLikedSongUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserLikedSongCreateWithoutUserInput, UserLikedSongUncheckedCreateWithoutUserInput> | UserLikedSongCreateWithoutUserInput[] | UserLikedSongUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedSongCreateOrConnectWithoutUserInput | UserLikedSongCreateOrConnectWithoutUserInput[]
-    upsert?: UserLikedSongUpsertWithWhereUniqueWithoutUserInput | UserLikedSongUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserLikedSongCreateManyUserInputEnvelope
-    set?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    disconnect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    delete?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    connect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    update?: UserLikedSongUpdateWithWhereUniqueWithoutUserInput | UserLikedSongUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserLikedSongUpdateManyWithWhereWithoutUserInput | UserLikedSongUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserLikedSongScalarWhereInput | UserLikedSongScalarWhereInput[]
+  export type CommentUncheckedCreateNestedManyWithoutArtistInput = {
+    create?: XOR<CommentCreateWithoutArtistInput, CommentUncheckedCreateWithoutArtistInput> | CommentCreateWithoutArtistInput[] | CommentUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutArtistInput | CommentCreateOrConnectWithoutArtistInput[]
+    createMany?: CommentCreateManyArtistInputEnvelope
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
   }
 
-  export type UserLikedArtistUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserLikedArtistCreateWithoutUserInput, UserLikedArtistUncheckedCreateWithoutUserInput> | UserLikedArtistCreateWithoutUserInput[] | UserLikedArtistUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedArtistCreateOrConnectWithoutUserInput | UserLikedArtistCreateOrConnectWithoutUserInput[]
-    upsert?: UserLikedArtistUpsertWithWhereUniqueWithoutUserInput | UserLikedArtistUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserLikedArtistCreateManyUserInputEnvelope
-    set?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    disconnect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    delete?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    connect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    update?: UserLikedArtistUpdateWithWhereUniqueWithoutUserInput | UserLikedArtistUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserLikedArtistUpdateManyWithWhereWithoutUserInput | UserLikedArtistUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserLikedArtistScalarWhereInput | UserLikedArtistScalarWhereInput[]
+  export type SongUncheckedCreateNestedManyWithoutArtistInput = {
+    create?: XOR<SongCreateWithoutArtistInput, SongUncheckedCreateWithoutArtistInput> | SongCreateWithoutArtistInput[] | SongUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: SongCreateOrConnectWithoutArtistInput | SongCreateOrConnectWithoutArtistInput[]
+    createMany?: SongCreateManyArtistInputEnvelope
+    connect?: SongWhereUniqueInput | SongWhereUniqueInput[]
   }
 
-  export type UserLikedWebsiteUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserLikedWebsiteCreateWithoutUserInput, UserLikedWebsiteUncheckedCreateWithoutUserInput> | UserLikedWebsiteCreateWithoutUserInput[] | UserLikedWebsiteUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedWebsiteCreateOrConnectWithoutUserInput | UserLikedWebsiteCreateOrConnectWithoutUserInput[]
-    upsert?: UserLikedWebsiteUpsertWithWhereUniqueWithoutUserInput | UserLikedWebsiteUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserLikedWebsiteCreateManyUserInputEnvelope
-    set?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    disconnect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    delete?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    connect?: UserLikedWebsiteWhereUniqueInput | UserLikedWebsiteWhereUniqueInput[]
-    update?: UserLikedWebsiteUpdateWithWhereUniqueWithoutUserInput | UserLikedWebsiteUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserLikedWebsiteUpdateManyWithWhereWithoutUserInput | UserLikedWebsiteUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserLikedWebsiteScalarWhereInput | UserLikedWebsiteScalarWhereInput[]
+  export type LikeUpdateManyWithoutArtistNestedInput = {
+    create?: XOR<LikeCreateWithoutArtistInput, LikeUncheckedCreateWithoutArtistInput> | LikeCreateWithoutArtistInput[] | LikeUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutArtistInput | LikeCreateOrConnectWithoutArtistInput[]
+    upsert?: LikeUpsertWithWhereUniqueWithoutArtistInput | LikeUpsertWithWhereUniqueWithoutArtistInput[]
+    createMany?: LikeCreateManyArtistInputEnvelope
+    set?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    disconnect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    delete?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    update?: LikeUpdateWithWhereUniqueWithoutArtistInput | LikeUpdateWithWhereUniqueWithoutArtistInput[]
+    updateMany?: LikeUpdateManyWithWhereWithoutArtistInput | LikeUpdateManyWithWhereWithoutArtistInput[]
+    deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
-  export type UserLikedSongUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserLikedSongCreateWithoutUserInput, UserLikedSongUncheckedCreateWithoutUserInput> | UserLikedSongCreateWithoutUserInput[] | UserLikedSongUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedSongCreateOrConnectWithoutUserInput | UserLikedSongCreateOrConnectWithoutUserInput[]
-    upsert?: UserLikedSongUpsertWithWhereUniqueWithoutUserInput | UserLikedSongUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserLikedSongCreateManyUserInputEnvelope
-    set?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    disconnect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    delete?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    connect?: UserLikedSongWhereUniqueInput | UserLikedSongWhereUniqueInput[]
-    update?: UserLikedSongUpdateWithWhereUniqueWithoutUserInput | UserLikedSongUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserLikedSongUpdateManyWithWhereWithoutUserInput | UserLikedSongUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserLikedSongScalarWhereInput | UserLikedSongScalarWhereInput[]
+  export type CommentUpdateManyWithoutArtistNestedInput = {
+    create?: XOR<CommentCreateWithoutArtistInput, CommentUncheckedCreateWithoutArtistInput> | CommentCreateWithoutArtistInput[] | CommentUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutArtistInput | CommentCreateOrConnectWithoutArtistInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutArtistInput | CommentUpsertWithWhereUniqueWithoutArtistInput[]
+    createMany?: CommentCreateManyArtistInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutArtistInput | CommentUpdateWithWhereUniqueWithoutArtistInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutArtistInput | CommentUpdateManyWithWhereWithoutArtistInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
-  export type UserLikedArtistUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserLikedArtistCreateWithoutUserInput, UserLikedArtistUncheckedCreateWithoutUserInput> | UserLikedArtistCreateWithoutUserInput[] | UserLikedArtistUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserLikedArtistCreateOrConnectWithoutUserInput | UserLikedArtistCreateOrConnectWithoutUserInput[]
-    upsert?: UserLikedArtistUpsertWithWhereUniqueWithoutUserInput | UserLikedArtistUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserLikedArtistCreateManyUserInputEnvelope
-    set?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    disconnect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    delete?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    connect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    update?: UserLikedArtistUpdateWithWhereUniqueWithoutUserInput | UserLikedArtistUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserLikedArtistUpdateManyWithWhereWithoutUserInput | UserLikedArtistUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserLikedArtistScalarWhereInput | UserLikedArtistScalarWhereInput[]
+  export type SongUpdateManyWithoutArtistNestedInput = {
+    create?: XOR<SongCreateWithoutArtistInput, SongUncheckedCreateWithoutArtistInput> | SongCreateWithoutArtistInput[] | SongUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: SongCreateOrConnectWithoutArtistInput | SongCreateOrConnectWithoutArtistInput[]
+    upsert?: SongUpsertWithWhereUniqueWithoutArtistInput | SongUpsertWithWhereUniqueWithoutArtistInput[]
+    createMany?: SongCreateManyArtistInputEnvelope
+    set?: SongWhereUniqueInput | SongWhereUniqueInput[]
+    disconnect?: SongWhereUniqueInput | SongWhereUniqueInput[]
+    delete?: SongWhereUniqueInput | SongWhereUniqueInput[]
+    connect?: SongWhereUniqueInput | SongWhereUniqueInput[]
+    update?: SongUpdateWithWhereUniqueWithoutArtistInput | SongUpdateWithWhereUniqueWithoutArtistInput[]
+    updateMany?: SongUpdateManyWithWhereWithoutArtistInput | SongUpdateManyWithWhereWithoutArtistInput[]
+    deleteMany?: SongScalarWhereInput | SongScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutLikedWebsitesInput = {
-    create?: XOR<UserCreateWithoutLikedWebsitesInput, UserUncheckedCreateWithoutLikedWebsitesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLikedWebsitesInput
-    connect?: UserWhereUniqueInput
+  export type LikeUncheckedUpdateManyWithoutArtistNestedInput = {
+    create?: XOR<LikeCreateWithoutArtistInput, LikeUncheckedCreateWithoutArtistInput> | LikeCreateWithoutArtistInput[] | LikeUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: LikeCreateOrConnectWithoutArtistInput | LikeCreateOrConnectWithoutArtistInput[]
+    upsert?: LikeUpsertWithWhereUniqueWithoutArtistInput | LikeUpsertWithWhereUniqueWithoutArtistInput[]
+    createMany?: LikeCreateManyArtistInputEnvelope
+    set?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    disconnect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    delete?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    connect?: LikeWhereUniqueInput | LikeWhereUniqueInput[]
+    update?: LikeUpdateWithWhereUniqueWithoutArtistInput | LikeUpdateWithWhereUniqueWithoutArtistInput[]
+    updateMany?: LikeUpdateManyWithWhereWithoutArtistInput | LikeUpdateManyWithWhereWithoutArtistInput[]
+    deleteMany?: LikeScalarWhereInput | LikeScalarWhereInput[]
   }
 
-  export type WebsiteProjectCreateNestedOneWithoutLikedByUsersInput = {
-    create?: XOR<WebsiteProjectCreateWithoutLikedByUsersInput, WebsiteProjectUncheckedCreateWithoutLikedByUsersInput>
-    connectOrCreate?: WebsiteProjectCreateOrConnectWithoutLikedByUsersInput
-    connect?: WebsiteProjectWhereUniqueInput
+  export type CommentUncheckedUpdateManyWithoutArtistNestedInput = {
+    create?: XOR<CommentCreateWithoutArtistInput, CommentUncheckedCreateWithoutArtistInput> | CommentCreateWithoutArtistInput[] | CommentUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: CommentCreateOrConnectWithoutArtistInput | CommentCreateOrConnectWithoutArtistInput[]
+    upsert?: CommentUpsertWithWhereUniqueWithoutArtistInput | CommentUpsertWithWhereUniqueWithoutArtistInput[]
+    createMany?: CommentCreateManyArtistInputEnvelope
+    set?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    disconnect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    delete?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    connect?: CommentWhereUniqueInput | CommentWhereUniqueInput[]
+    update?: CommentUpdateWithWhereUniqueWithoutArtistInput | CommentUpdateWithWhereUniqueWithoutArtistInput[]
+    updateMany?: CommentUpdateManyWithWhereWithoutArtistInput | CommentUpdateManyWithWhereWithoutArtistInput[]
+    deleteMany?: CommentScalarWhereInput | CommentScalarWhereInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutLikedWebsitesNestedInput = {
-    create?: XOR<UserCreateWithoutLikedWebsitesInput, UserUncheckedCreateWithoutLikedWebsitesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLikedWebsitesInput
-    upsert?: UserUpsertWithoutLikedWebsitesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLikedWebsitesInput, UserUpdateWithoutLikedWebsitesInput>, UserUncheckedUpdateWithoutLikedWebsitesInput>
-  }
-
-  export type WebsiteProjectUpdateOneRequiredWithoutLikedByUsersNestedInput = {
-    create?: XOR<WebsiteProjectCreateWithoutLikedByUsersInput, WebsiteProjectUncheckedCreateWithoutLikedByUsersInput>
-    connectOrCreate?: WebsiteProjectCreateOrConnectWithoutLikedByUsersInput
-    upsert?: WebsiteProjectUpsertWithoutLikedByUsersInput
-    connect?: WebsiteProjectWhereUniqueInput
-    update?: XOR<XOR<WebsiteProjectUpdateToOneWithWhereWithoutLikedByUsersInput, WebsiteProjectUpdateWithoutLikedByUsersInput>, WebsiteProjectUncheckedUpdateWithoutLikedByUsersInput>
-  }
-
-  export type ArtistCommentCreateNestedManyWithoutArtistInput = {
-    create?: XOR<ArtistCommentCreateWithoutArtistInput, ArtistCommentUncheckedCreateWithoutArtistInput> | ArtistCommentCreateWithoutArtistInput[] | ArtistCommentUncheckedCreateWithoutArtistInput[]
-    connectOrCreate?: ArtistCommentCreateOrConnectWithoutArtistInput | ArtistCommentCreateOrConnectWithoutArtistInput[]
-    createMany?: ArtistCommentCreateManyArtistInputEnvelope
-    connect?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-  }
-
-  export type UserLikedArtistCreateNestedManyWithoutLikedArtistInput = {
-    create?: XOR<UserLikedArtistCreateWithoutLikedArtistInput, UserLikedArtistUncheckedCreateWithoutLikedArtistInput> | UserLikedArtistCreateWithoutLikedArtistInput[] | UserLikedArtistUncheckedCreateWithoutLikedArtistInput[]
-    connectOrCreate?: UserLikedArtistCreateOrConnectWithoutLikedArtistInput | UserLikedArtistCreateOrConnectWithoutLikedArtistInput[]
-    createMany?: UserLikedArtistCreateManyLikedArtistInputEnvelope
-    connect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-  }
-
-  export type ArtistCommentUncheckedCreateNestedManyWithoutArtistInput = {
-    create?: XOR<ArtistCommentCreateWithoutArtistInput, ArtistCommentUncheckedCreateWithoutArtistInput> | ArtistCommentCreateWithoutArtistInput[] | ArtistCommentUncheckedCreateWithoutArtistInput[]
-    connectOrCreate?: ArtistCommentCreateOrConnectWithoutArtistInput | ArtistCommentCreateOrConnectWithoutArtistInput[]
-    createMany?: ArtistCommentCreateManyArtistInputEnvelope
-    connect?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-  }
-
-  export type UserLikedArtistUncheckedCreateNestedManyWithoutLikedArtistInput = {
-    create?: XOR<UserLikedArtistCreateWithoutLikedArtistInput, UserLikedArtistUncheckedCreateWithoutLikedArtistInput> | UserLikedArtistCreateWithoutLikedArtistInput[] | UserLikedArtistUncheckedCreateWithoutLikedArtistInput[]
-    connectOrCreate?: UserLikedArtistCreateOrConnectWithoutLikedArtistInput | UserLikedArtistCreateOrConnectWithoutLikedArtistInput[]
-    createMany?: UserLikedArtistCreateManyLikedArtistInputEnvelope
-    connect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-  }
-
-  export type ArtistCommentUpdateManyWithoutArtistNestedInput = {
-    create?: XOR<ArtistCommentCreateWithoutArtistInput, ArtistCommentUncheckedCreateWithoutArtistInput> | ArtistCommentCreateWithoutArtistInput[] | ArtistCommentUncheckedCreateWithoutArtistInput[]
-    connectOrCreate?: ArtistCommentCreateOrConnectWithoutArtistInput | ArtistCommentCreateOrConnectWithoutArtistInput[]
-    upsert?: ArtistCommentUpsertWithWhereUniqueWithoutArtistInput | ArtistCommentUpsertWithWhereUniqueWithoutArtistInput[]
-    createMany?: ArtistCommentCreateManyArtistInputEnvelope
-    set?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-    disconnect?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-    delete?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-    connect?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-    update?: ArtistCommentUpdateWithWhereUniqueWithoutArtistInput | ArtistCommentUpdateWithWhereUniqueWithoutArtistInput[]
-    updateMany?: ArtistCommentUpdateManyWithWhereWithoutArtistInput | ArtistCommentUpdateManyWithWhereWithoutArtistInput[]
-    deleteMany?: ArtistCommentScalarWhereInput | ArtistCommentScalarWhereInput[]
-  }
-
-  export type UserLikedArtistUpdateManyWithoutLikedArtistNestedInput = {
-    create?: XOR<UserLikedArtistCreateWithoutLikedArtistInput, UserLikedArtistUncheckedCreateWithoutLikedArtistInput> | UserLikedArtistCreateWithoutLikedArtistInput[] | UserLikedArtistUncheckedCreateWithoutLikedArtistInput[]
-    connectOrCreate?: UserLikedArtistCreateOrConnectWithoutLikedArtistInput | UserLikedArtistCreateOrConnectWithoutLikedArtistInput[]
-    upsert?: UserLikedArtistUpsertWithWhereUniqueWithoutLikedArtistInput | UserLikedArtistUpsertWithWhereUniqueWithoutLikedArtistInput[]
-    createMany?: UserLikedArtistCreateManyLikedArtistInputEnvelope
-    set?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    disconnect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    delete?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    connect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    update?: UserLikedArtistUpdateWithWhereUniqueWithoutLikedArtistInput | UserLikedArtistUpdateWithWhereUniqueWithoutLikedArtistInput[]
-    updateMany?: UserLikedArtistUpdateManyWithWhereWithoutLikedArtistInput | UserLikedArtistUpdateManyWithWhereWithoutLikedArtistInput[]
-    deleteMany?: UserLikedArtistScalarWhereInput | UserLikedArtistScalarWhereInput[]
-  }
-
-  export type ArtistCommentUncheckedUpdateManyWithoutArtistNestedInput = {
-    create?: XOR<ArtistCommentCreateWithoutArtistInput, ArtistCommentUncheckedCreateWithoutArtistInput> | ArtistCommentCreateWithoutArtistInput[] | ArtistCommentUncheckedCreateWithoutArtistInput[]
-    connectOrCreate?: ArtistCommentCreateOrConnectWithoutArtistInput | ArtistCommentCreateOrConnectWithoutArtistInput[]
-    upsert?: ArtistCommentUpsertWithWhereUniqueWithoutArtistInput | ArtistCommentUpsertWithWhereUniqueWithoutArtistInput[]
-    createMany?: ArtistCommentCreateManyArtistInputEnvelope
-    set?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-    disconnect?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-    delete?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-    connect?: ArtistCommentWhereUniqueInput | ArtistCommentWhereUniqueInput[]
-    update?: ArtistCommentUpdateWithWhereUniqueWithoutArtistInput | ArtistCommentUpdateWithWhereUniqueWithoutArtistInput[]
-    updateMany?: ArtistCommentUpdateManyWithWhereWithoutArtistInput | ArtistCommentUpdateManyWithWhereWithoutArtistInput[]
-    deleteMany?: ArtistCommentScalarWhereInput | ArtistCommentScalarWhereInput[]
-  }
-
-  export type UserLikedArtistUncheckedUpdateManyWithoutLikedArtistNestedInput = {
-    create?: XOR<UserLikedArtistCreateWithoutLikedArtistInput, UserLikedArtistUncheckedCreateWithoutLikedArtistInput> | UserLikedArtistCreateWithoutLikedArtistInput[] | UserLikedArtistUncheckedCreateWithoutLikedArtistInput[]
-    connectOrCreate?: UserLikedArtistCreateOrConnectWithoutLikedArtistInput | UserLikedArtistCreateOrConnectWithoutLikedArtistInput[]
-    upsert?: UserLikedArtistUpsertWithWhereUniqueWithoutLikedArtistInput | UserLikedArtistUpsertWithWhereUniqueWithoutLikedArtistInput[]
-    createMany?: UserLikedArtistCreateManyLikedArtistInputEnvelope
-    set?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    disconnect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    delete?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    connect?: UserLikedArtistWhereUniqueInput | UserLikedArtistWhereUniqueInput[]
-    update?: UserLikedArtistUpdateWithWhereUniqueWithoutLikedArtistInput | UserLikedArtistUpdateWithWhereUniqueWithoutLikedArtistInput[]
-    updateMany?: UserLikedArtistUpdateManyWithWhereWithoutLikedArtistInput | UserLikedArtistUpdateManyWithWhereWithoutLikedArtistInput[]
-    deleteMany?: UserLikedArtistScalarWhereInput | UserLikedArtistScalarWhereInput[]
-  }
-
-  export type ArtistCreateNestedOneWithoutCommentsInput = {
-    create?: XOR<ArtistCreateWithoutCommentsInput, ArtistUncheckedCreateWithoutCommentsInput>
-    connectOrCreate?: ArtistCreateOrConnectWithoutCommentsInput
-    connect?: ArtistWhereUniqueInput
-  }
-
-  export type ArtistUpdateOneRequiredWithoutCommentsNestedInput = {
-    create?: XOR<ArtistCreateWithoutCommentsInput, ArtistUncheckedCreateWithoutCommentsInput>
-    connectOrCreate?: ArtistCreateOrConnectWithoutCommentsInput
-    upsert?: ArtistUpsertWithoutCommentsInput
-    connect?: ArtistWhereUniqueInput
-    update?: XOR<XOR<ArtistUpdateToOneWithWhereWithoutCommentsInput, ArtistUpdateWithoutCommentsInput>, ArtistUncheckedUpdateWithoutCommentsInput>
-  }
-
-  export type UserCreateNestedOneWithoutLikedArtistsInput = {
-    create?: XOR<UserCreateWithoutLikedArtistsInput, UserUncheckedCreateWithoutLikedArtistsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLikedArtistsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type ArtistCreateNestedOneWithoutLikedByUsersInput = {
-    create?: XOR<ArtistCreateWithoutLikedByUsersInput, ArtistUncheckedCreateWithoutLikedByUsersInput>
-    connectOrCreate?: ArtistCreateOrConnectWithoutLikedByUsersInput
-    connect?: ArtistWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutLikedArtistsNestedInput = {
-    create?: XOR<UserCreateWithoutLikedArtistsInput, UserUncheckedCreateWithoutLikedArtistsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutLikedArtistsInput
-    upsert?: UserUpsertWithoutLikedArtistsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLikedArtistsInput, UserUpdateWithoutLikedArtistsInput>, UserUncheckedUpdateWithoutLikedArtistsInput>
-  }
-
-  export type ArtistUpdateOneRequiredWithoutLikedByUsersNestedInput = {
-    create?: XOR<ArtistCreateWithoutLikedByUsersInput, ArtistUncheckedCreateWithoutLikedByUsersInput>
-    connectOrCreate?: ArtistCreateOrConnectWithoutLikedByUsersInput
-    upsert?: ArtistUpsertWithoutLikedByUsersInput
-    connect?: ArtistWhereUniqueInput
-    update?: XOR<XOR<ArtistUpdateToOneWithWhereWithoutLikedByUsersInput, ArtistUpdateWithoutLikedByUsersInput>, ArtistUncheckedUpdateWithoutLikedByUsersInput>
+  export type SongUncheckedUpdateManyWithoutArtistNestedInput = {
+    create?: XOR<SongCreateWithoutArtistInput, SongUncheckedCreateWithoutArtistInput> | SongCreateWithoutArtistInput[] | SongUncheckedCreateWithoutArtistInput[]
+    connectOrCreate?: SongCreateOrConnectWithoutArtistInput | SongCreateOrConnectWithoutArtistInput[]
+    upsert?: SongUpsertWithWhereUniqueWithoutArtistInput | SongUpsertWithWhereUniqueWithoutArtistInput[]
+    createMany?: SongCreateManyArtistInputEnvelope
+    set?: SongWhereUniqueInput | SongWhereUniqueInput[]
+    disconnect?: SongWhereUniqueInput | SongWhereUniqueInput[]
+    delete?: SongWhereUniqueInput | SongWhereUniqueInput[]
+    connect?: SongWhereUniqueInput | SongWhereUniqueInput[]
+    update?: SongUpdateWithWhereUniqueWithoutArtistInput | SongUpdateWithWhereUniqueWithoutArtistInput[]
+    updateMany?: SongUpdateManyWithWhereWithoutArtistInput | SongUpdateManyWithWhereWithoutArtistInput[]
+    deleteMany?: SongScalarWhereInput | SongScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -14466,15 +12725,37 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
+  export type NestedEnumCategoryFilter<$PrismaModel = never> = {
+    equals?: $Enums.Category | EnumCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.Category[] | ListEnumCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Category[] | ListEnumCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumCategoryFilter<$PrismaModel> | $Enums.Category
+  }
+
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -14494,7 +12775,7 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+  export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -14502,48 +12783,31 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumCategoryWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Category | EnumCategoryFieldRefInput<$PrismaModel>
+    in?: $Enums.Category[] | ListEnumCategoryFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Category[] | ListEnumCategoryFieldRefInput<$PrismaModel>
+    not?: NestedEnumCategoryWithAggregatesFilter<$PrismaModel> | $Enums.Category
     _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCategoryFilter<$PrismaModel>
+    _max?: NestedEnumCategoryFilter<$PrismaModel>
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-    isSet?: boolean
-  }
-
-  export type AddressWhereInput = {
-    AND?: AddressWhereInput | AddressWhereInput[]
-    OR?: AddressWhereInput[]
-    NOT?: AddressWhereInput | AddressWhereInput[]
-    street?: StringFilter<"Address"> | string
-    city?: StringFilter<"Address"> | string
-    state?: StringFilter<"Address"> | string
-    zip?: StringFilter<"Address"> | string
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -14576,98 +12840,78 @@ export namespace Prisma {
     isSet?: boolean
   }
 
-  export type WebsiteProjectCommentCreateWithoutWebsiteProjectInput = {
-    id?: string
-    comment: string
-    likes?: number
+  export type NestedEnumTransactionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionType | EnumTransactionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionTypeFilter<$PrismaModel> | $Enums.TransactionType
   }
 
-  export type WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput = {
-    id?: string
-    comment: string
-    likes?: number
+  export type NestedEnumStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
-  export type WebsiteProjectCommentCreateOrConnectWithoutWebsiteProjectInput = {
-    where: WebsiteProjectCommentWhereUniqueInput
-    create: XOR<WebsiteProjectCommentCreateWithoutWebsiteProjectInput, WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput>
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type WebsiteProjectCommentCreateManyWebsiteProjectInputEnvelope = {
-    data: WebsiteProjectCommentCreateManyWebsiteProjectInput | WebsiteProjectCommentCreateManyWebsiteProjectInput[]
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type UserLikedWebsiteCreateWithoutLikedWebsiteInput = {
-    id?: string
-    user: UserCreateNestedOneWithoutLikedWebsitesInput
+  export type NestedEnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TransactionType | EnumTransactionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TransactionType[] | ListEnumTransactionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTransactionTypeWithAggregatesFilter<$PrismaModel> | $Enums.TransactionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTransactionTypeFilter<$PrismaModel>
+    _max?: NestedEnumTransactionTypeFilter<$PrismaModel>
   }
 
-  export type UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput = {
-    id?: string
-    userId: string
+  export type NestedEnumStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Status | EnumStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumStatusWithAggregatesFilter<$PrismaModel> | $Enums.Status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumStatusFilter<$PrismaModel>
+    _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
-  export type UserLikedWebsiteCreateOrConnectWithoutLikedWebsiteInput = {
-    where: UserLikedWebsiteWhereUniqueInput
-    create: XOR<UserLikedWebsiteCreateWithoutLikedWebsiteInput, UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput>
+  export type AddressWhereInput = {
+    AND?: AddressWhereInput | AddressWhereInput[]
+    OR?: AddressWhereInput[]
+    NOT?: AddressWhereInput | AddressWhereInput[]
+    street?: StringFilter<"Address"> | string
+    city?: StringFilter<"Address"> | string
+    state?: StringFilter<"Address"> | string
+    zip?: StringFilter<"Address"> | string
   }
 
-  export type UserLikedWebsiteCreateManyLikedWebsiteInputEnvelope = {
-    data: UserLikedWebsiteCreateManyLikedWebsiteInput | UserLikedWebsiteCreateManyLikedWebsiteInput[]
-  }
-
-  export type WebsiteProjectCommentUpsertWithWhereUniqueWithoutWebsiteProjectInput = {
-    where: WebsiteProjectCommentWhereUniqueInput
-    update: XOR<WebsiteProjectCommentUpdateWithoutWebsiteProjectInput, WebsiteProjectCommentUncheckedUpdateWithoutWebsiteProjectInput>
-    create: XOR<WebsiteProjectCommentCreateWithoutWebsiteProjectInput, WebsiteProjectCommentUncheckedCreateWithoutWebsiteProjectInput>
-  }
-
-  export type WebsiteProjectCommentUpdateWithWhereUniqueWithoutWebsiteProjectInput = {
-    where: WebsiteProjectCommentWhereUniqueInput
-    data: XOR<WebsiteProjectCommentUpdateWithoutWebsiteProjectInput, WebsiteProjectCommentUncheckedUpdateWithoutWebsiteProjectInput>
-  }
-
-  export type WebsiteProjectCommentUpdateManyWithWhereWithoutWebsiteProjectInput = {
-    where: WebsiteProjectCommentScalarWhereInput
-    data: XOR<WebsiteProjectCommentUpdateManyMutationInput, WebsiteProjectCommentUncheckedUpdateManyWithoutWebsiteProjectInput>
-  }
-
-  export type WebsiteProjectCommentScalarWhereInput = {
-    AND?: WebsiteProjectCommentScalarWhereInput | WebsiteProjectCommentScalarWhereInput[]
-    OR?: WebsiteProjectCommentScalarWhereInput[]
-    NOT?: WebsiteProjectCommentScalarWhereInput | WebsiteProjectCommentScalarWhereInput[]
-    id?: StringFilter<"WebsiteProjectComment"> | string
-    comment?: StringFilter<"WebsiteProjectComment"> | string
-    websiteProjectId?: StringFilter<"WebsiteProjectComment"> | string
-    likes?: IntFilter<"WebsiteProjectComment"> | number
-  }
-
-  export type UserLikedWebsiteUpsertWithWhereUniqueWithoutLikedWebsiteInput = {
-    where: UserLikedWebsiteWhereUniqueInput
-    update: XOR<UserLikedWebsiteUpdateWithoutLikedWebsiteInput, UserLikedWebsiteUncheckedUpdateWithoutLikedWebsiteInput>
-    create: XOR<UserLikedWebsiteCreateWithoutLikedWebsiteInput, UserLikedWebsiteUncheckedCreateWithoutLikedWebsiteInput>
-  }
-
-  export type UserLikedWebsiteUpdateWithWhereUniqueWithoutLikedWebsiteInput = {
-    where: UserLikedWebsiteWhereUniqueInput
-    data: XOR<UserLikedWebsiteUpdateWithoutLikedWebsiteInput, UserLikedWebsiteUncheckedUpdateWithoutLikedWebsiteInput>
-  }
-
-  export type UserLikedWebsiteUpdateManyWithWhereWithoutLikedWebsiteInput = {
-    where: UserLikedWebsiteScalarWhereInput
-    data: XOR<UserLikedWebsiteUpdateManyMutationInput, UserLikedWebsiteUncheckedUpdateManyWithoutLikedWebsiteInput>
-  }
-
-  export type UserLikedWebsiteScalarWhereInput = {
-    AND?: UserLikedWebsiteScalarWhereInput | UserLikedWebsiteScalarWhereInput[]
-    OR?: UserLikedWebsiteScalarWhereInput[]
-    NOT?: UserLikedWebsiteScalarWhereInput | UserLikedWebsiteScalarWhereInput[]
-    id?: StringFilter<"UserLikedWebsite"> | string
-    userId?: StringFilter<"UserLikedWebsite"> | string
-    likedWebsiteId?: StringFilter<"UserLikedWebsite"> | string
-  }
-
-  export type WebsiteProjectCreateWithoutCommentsInput = {
+  export type WebsiteCreateWithoutLikesInput = {
     id?: string
     img: string
     title: string
@@ -14676,11 +12920,10 @@ export namespace Prisma {
     description: string
     release_date: string
     link: string
-    likes?: number
-    likedByUsers?: UserLikedWebsiteCreateNestedManyWithoutLikedWebsiteInput
+    comments?: CommentCreateNestedManyWithoutWebsiteInput
   }
 
-  export type WebsiteProjectUncheckedCreateWithoutCommentsInput = {
+  export type WebsiteUncheckedCreateWithoutLikesInput = {
     id?: string
     img: string
     title: string
@@ -14689,27 +12932,97 @@ export namespace Prisma {
     description: string
     release_date: string
     link: string
-    likes?: number
-    likedByUsers?: UserLikedWebsiteUncheckedCreateNestedManyWithoutLikedWebsiteInput
+    comments?: CommentUncheckedCreateNestedManyWithoutWebsiteInput
   }
 
-  export type WebsiteProjectCreateOrConnectWithoutCommentsInput = {
-    where: WebsiteProjectWhereUniqueInput
-    create: XOR<WebsiteProjectCreateWithoutCommentsInput, WebsiteProjectUncheckedCreateWithoutCommentsInput>
+  export type WebsiteCreateOrConnectWithoutLikesInput = {
+    where: WebsiteWhereUniqueInput
+    create: XOR<WebsiteCreateWithoutLikesInput, WebsiteUncheckedCreateWithoutLikesInput>
   }
 
-  export type WebsiteProjectUpsertWithoutCommentsInput = {
-    update: XOR<WebsiteProjectUpdateWithoutCommentsInput, WebsiteProjectUncheckedUpdateWithoutCommentsInput>
-    create: XOR<WebsiteProjectCreateWithoutCommentsInput, WebsiteProjectUncheckedCreateWithoutCommentsInput>
-    where?: WebsiteProjectWhereInput
+  export type UserCreateWithoutLikesInput = {
+    id?: string
+    email: string
+    name: string
+    addresses?: XOR<AddressListCreateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
   }
 
-  export type WebsiteProjectUpdateToOneWithWhereWithoutCommentsInput = {
-    where?: WebsiteProjectWhereInput
-    data: XOR<WebsiteProjectUpdateWithoutCommentsInput, WebsiteProjectUncheckedUpdateWithoutCommentsInput>
+  export type UserUncheckedCreateWithoutLikesInput = {
+    id?: string
+    email: string
+    name: string
+    addresses?: XOR<AddressListCreateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
   }
 
-  export type WebsiteProjectUpdateWithoutCommentsInput = {
+  export type UserCreateOrConnectWithoutLikesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLikesInput, UserUncheckedCreateWithoutLikesInput>
+  }
+
+  export type ArtistCreateWithoutLikesInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    comments?: CommentCreateNestedManyWithoutArtistInput
+    songs?: SongCreateNestedManyWithoutArtistInput
+  }
+
+  export type ArtistUncheckedCreateWithoutLikesInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    comments?: CommentUncheckedCreateNestedManyWithoutArtistInput
+    songs?: SongUncheckedCreateNestedManyWithoutArtistInput
+  }
+
+  export type ArtistCreateOrConnectWithoutLikesInput = {
+    where: ArtistWhereUniqueInput
+    create: XOR<ArtistCreateWithoutLikesInput, ArtistUncheckedCreateWithoutLikesInput>
+  }
+
+  export type MovieCreateWithoutLikesInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    comments?: CommentCreateNestedManyWithoutMovieInput
+  }
+
+  export type MovieUncheckedCreateWithoutLikesInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    comments?: CommentUncheckedCreateNestedManyWithoutMovieInput
+  }
+
+  export type MovieCreateOrConnectWithoutLikesInput = {
+    where: MovieWhereUniqueInput
+    create: XOR<MovieCreateWithoutLikesInput, MovieUncheckedCreateWithoutLikesInput>
+  }
+
+  export type WebsiteUpsertWithoutLikesInput = {
+    update: XOR<WebsiteUpdateWithoutLikesInput, WebsiteUncheckedUpdateWithoutLikesInput>
+    create: XOR<WebsiteCreateWithoutLikesInput, WebsiteUncheckedCreateWithoutLikesInput>
+    where?: WebsiteWhereInput
+  }
+
+  export type WebsiteUpdateToOneWithWhereWithoutLikesInput = {
+    where?: WebsiteWhereInput
+    data: XOR<WebsiteUpdateWithoutLikesInput, WebsiteUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type WebsiteUpdateWithoutLikesInput = {
     img?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
@@ -14717,11 +13030,10 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    likedByUsers?: UserLikedWebsiteUpdateManyWithoutLikedWebsiteNestedInput
+    comments?: CommentUpdateManyWithoutWebsiteNestedInput
   }
 
-  export type WebsiteProjectUncheckedUpdateWithoutCommentsInput = {
+  export type WebsiteUncheckedUpdateWithoutLikesInput = {
     img?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
@@ -14729,99 +13041,119 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     release_date?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    likedByUsers?: UserLikedWebsiteUncheckedUpdateManyWithoutLikedWebsiteNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutWebsiteNestedInput
   }
 
-  export type SongCommentCreateWithoutSongInput = {
+  export type UserUpsertWithoutLikesInput = {
+    update: XOR<UserUpdateWithoutLikesInput, UserUncheckedUpdateWithoutLikesInput>
+    create: XOR<UserCreateWithoutLikesInput, UserUncheckedCreateWithoutLikesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLikesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLikesInput, UserUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type UserUpdateWithoutLikesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    addresses?: XOR<AddressListUpdateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
+  }
+
+  export type UserUncheckedUpdateWithoutLikesInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    addresses?: XOR<AddressListUpdateEnvelopeInput, AddressCreateInput> | AddressCreateInput[]
+  }
+
+  export type ArtistUpsertWithoutLikesInput = {
+    update: XOR<ArtistUpdateWithoutLikesInput, ArtistUncheckedUpdateWithoutLikesInput>
+    create: XOR<ArtistCreateWithoutLikesInput, ArtistUncheckedCreateWithoutLikesInput>
+    where?: ArtistWhereInput
+  }
+
+  export type ArtistUpdateToOneWithWhereWithoutLikesInput = {
+    where?: ArtistWhereInput
+    data: XOR<ArtistUpdateWithoutLikesInput, ArtistUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type ArtistUpdateWithoutLikesInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    comments?: CommentUpdateManyWithoutArtistNestedInput
+    songs?: SongUpdateManyWithoutArtistNestedInput
+  }
+
+  export type ArtistUncheckedUpdateWithoutLikesInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    comments?: CommentUncheckedUpdateManyWithoutArtistNestedInput
+    songs?: SongUncheckedUpdateManyWithoutArtistNestedInput
+  }
+
+  export type MovieUpsertWithoutLikesInput = {
+    update: XOR<MovieUpdateWithoutLikesInput, MovieUncheckedUpdateWithoutLikesInput>
+    create: XOR<MovieCreateWithoutLikesInput, MovieUncheckedCreateWithoutLikesInput>
+    where?: MovieWhereInput
+  }
+
+  export type MovieUpdateToOneWithWhereWithoutLikesInput = {
+    where?: MovieWhereInput
+    data: XOR<MovieUpdateWithoutLikesInput, MovieUncheckedUpdateWithoutLikesInput>
+  }
+
+  export type MovieUpdateWithoutLikesInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    comments?: CommentUpdateManyWithoutMovieNestedInput
+  }
+
+  export type MovieUncheckedUpdateWithoutLikesInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    comments?: CommentUncheckedUpdateManyWithoutMovieNestedInput
+  }
+
+  export type WebsiteCreateWithoutCommentsInput = {
     id?: string
-    comment: string
-    likes?: number
+    img: string
+    title: string
+    genre: string
+    technologies: string
+    description: string
+    release_date: string
+    link: string
+    likes?: LikeCreateNestedManyWithoutWebsiteInput
   }
 
-  export type SongCommentUncheckedCreateWithoutSongInput = {
+  export type WebsiteUncheckedCreateWithoutCommentsInput = {
     id?: string
-    comment: string
-    likes?: number
+    img: string
+    title: string
+    genre: string
+    technologies: string
+    description: string
+    release_date: string
+    link: string
+    likes?: LikeUncheckedCreateNestedManyWithoutWebsiteInput
   }
 
-  export type SongCommentCreateOrConnectWithoutSongInput = {
-    where: SongCommentWhereUniqueInput
-    create: XOR<SongCommentCreateWithoutSongInput, SongCommentUncheckedCreateWithoutSongInput>
-  }
-
-  export type SongCommentCreateManySongInputEnvelope = {
-    data: SongCommentCreateManySongInput | SongCommentCreateManySongInput[]
-  }
-
-  export type UserLikedSongCreateWithoutLikedSongInput = {
-    id?: string
-    user: UserCreateNestedOneWithoutLikedSongsInput
-  }
-
-  export type UserLikedSongUncheckedCreateWithoutLikedSongInput = {
-    id?: string
-    userId: string
-  }
-
-  export type UserLikedSongCreateOrConnectWithoutLikedSongInput = {
-    where: UserLikedSongWhereUniqueInput
-    create: XOR<UserLikedSongCreateWithoutLikedSongInput, UserLikedSongUncheckedCreateWithoutLikedSongInput>
-  }
-
-  export type UserLikedSongCreateManyLikedSongInputEnvelope = {
-    data: UserLikedSongCreateManyLikedSongInput | UserLikedSongCreateManyLikedSongInput[]
-  }
-
-  export type SongCommentUpsertWithWhereUniqueWithoutSongInput = {
-    where: SongCommentWhereUniqueInput
-    update: XOR<SongCommentUpdateWithoutSongInput, SongCommentUncheckedUpdateWithoutSongInput>
-    create: XOR<SongCommentCreateWithoutSongInput, SongCommentUncheckedCreateWithoutSongInput>
-  }
-
-  export type SongCommentUpdateWithWhereUniqueWithoutSongInput = {
-    where: SongCommentWhereUniqueInput
-    data: XOR<SongCommentUpdateWithoutSongInput, SongCommentUncheckedUpdateWithoutSongInput>
-  }
-
-  export type SongCommentUpdateManyWithWhereWithoutSongInput = {
-    where: SongCommentScalarWhereInput
-    data: XOR<SongCommentUpdateManyMutationInput, SongCommentUncheckedUpdateManyWithoutSongInput>
-  }
-
-  export type SongCommentScalarWhereInput = {
-    AND?: SongCommentScalarWhereInput | SongCommentScalarWhereInput[]
-    OR?: SongCommentScalarWhereInput[]
-    NOT?: SongCommentScalarWhereInput | SongCommentScalarWhereInput[]
-    id?: StringFilter<"SongComment"> | string
-    comment?: StringFilter<"SongComment"> | string
-    songId?: StringFilter<"SongComment"> | string
-    likes?: IntFilter<"SongComment"> | number
-  }
-
-  export type UserLikedSongUpsertWithWhereUniqueWithoutLikedSongInput = {
-    where: UserLikedSongWhereUniqueInput
-    update: XOR<UserLikedSongUpdateWithoutLikedSongInput, UserLikedSongUncheckedUpdateWithoutLikedSongInput>
-    create: XOR<UserLikedSongCreateWithoutLikedSongInput, UserLikedSongUncheckedCreateWithoutLikedSongInput>
-  }
-
-  export type UserLikedSongUpdateWithWhereUniqueWithoutLikedSongInput = {
-    where: UserLikedSongWhereUniqueInput
-    data: XOR<UserLikedSongUpdateWithoutLikedSongInput, UserLikedSongUncheckedUpdateWithoutLikedSongInput>
-  }
-
-  export type UserLikedSongUpdateManyWithWhereWithoutLikedSongInput = {
-    where: UserLikedSongScalarWhereInput
-    data: XOR<UserLikedSongUpdateManyMutationInput, UserLikedSongUncheckedUpdateManyWithoutLikedSongInput>
-  }
-
-  export type UserLikedSongScalarWhereInput = {
-    AND?: UserLikedSongScalarWhereInput | UserLikedSongScalarWhereInput[]
-    OR?: UserLikedSongScalarWhereInput[]
-    NOT?: UserLikedSongScalarWhereInput | UserLikedSongScalarWhereInput[]
-    id?: StringFilter<"UserLikedSong"> | string
-    userId?: StringFilter<"UserLikedSong"> | string
-    likedSongId?: StringFilter<"UserLikedSong"> | string
+  export type WebsiteCreateOrConnectWithoutCommentsInput = {
+    where: WebsiteWhereUniqueInput
+    create: XOR<WebsiteCreateWithoutCommentsInput, WebsiteUncheckedCreateWithoutCommentsInput>
   }
 
   export type SongCreateWithoutCommentsInput = {
@@ -14836,7 +13168,7 @@ export namespace Prisma {
     plays?: number
     song: string
     likes?: number
-    likedByUsers?: UserLikedSongCreateNestedManyWithoutLikedSongInput
+    Artist?: ArtistCreateNestedOneWithoutSongsInput
   }
 
   export type SongUncheckedCreateWithoutCommentsInput = {
@@ -14851,12 +13183,97 @@ export namespace Prisma {
     plays?: number
     song: string
     likes?: number
-    likedByUsers?: UserLikedSongUncheckedCreateNestedManyWithoutLikedSongInput
+    artistId?: string | null
   }
 
   export type SongCreateOrConnectWithoutCommentsInput = {
     where: SongWhereUniqueInput
     create: XOR<SongCreateWithoutCommentsInput, SongUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type ArtistCreateWithoutCommentsInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    likes?: LikeCreateNestedManyWithoutArtistInput
+    songs?: SongCreateNestedManyWithoutArtistInput
+  }
+
+  export type ArtistUncheckedCreateWithoutCommentsInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    likes?: LikeUncheckedCreateNestedManyWithoutArtistInput
+    songs?: SongUncheckedCreateNestedManyWithoutArtistInput
+  }
+
+  export type ArtistCreateOrConnectWithoutCommentsInput = {
+    where: ArtistWhereUniqueInput
+    create: XOR<ArtistCreateWithoutCommentsInput, ArtistUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type MovieCreateWithoutCommentsInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    likes?: LikeCreateNestedManyWithoutMovieInput
+  }
+
+  export type MovieUncheckedCreateWithoutCommentsInput = {
+    id?: string
+    img: string
+    title: string
+    genre: string
+    description: string
+    releaseDate: string
+    likes?: LikeUncheckedCreateNestedManyWithoutMovieInput
+  }
+
+  export type MovieCreateOrConnectWithoutCommentsInput = {
+    where: MovieWhereUniqueInput
+    create: XOR<MovieCreateWithoutCommentsInput, MovieUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type WebsiteUpsertWithoutCommentsInput = {
+    update: XOR<WebsiteUpdateWithoutCommentsInput, WebsiteUncheckedUpdateWithoutCommentsInput>
+    create: XOR<WebsiteCreateWithoutCommentsInput, WebsiteUncheckedCreateWithoutCommentsInput>
+    where?: WebsiteWhereInput
+  }
+
+  export type WebsiteUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: WebsiteWhereInput
+    data: XOR<WebsiteUpdateWithoutCommentsInput, WebsiteUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type WebsiteUpdateWithoutCommentsInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    technologies?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    release_date?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    likes?: LikeUpdateManyWithoutWebsiteNestedInput
+  }
+
+  export type WebsiteUncheckedUpdateWithoutCommentsInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    technologies?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    release_date?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    likes?: LikeUncheckedUpdateManyWithoutWebsiteNestedInput
   }
 
   export type SongUpsertWithoutCommentsInput = {
@@ -14881,7 +13298,7 @@ export namespace Prisma {
     plays?: IntFieldUpdateOperationsInput | number
     song?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
-    likedByUsers?: UserLikedSongUpdateManyWithoutLikedSongNestedInput
+    Artist?: ArtistUpdateOneWithoutSongsNestedInput
   }
 
   export type SongUncheckedUpdateWithoutCommentsInput = {
@@ -14895,475 +13312,7 @@ export namespace Prisma {
     plays?: IntFieldUpdateOperationsInput | number
     song?: StringFieldUpdateOperationsInput | string
     likes?: IntFieldUpdateOperationsInput | number
-    likedByUsers?: UserLikedSongUncheckedUpdateManyWithoutLikedSongNestedInput
-  }
-
-  export type UserCreateWithoutLikedSongsInput = {
-    id?: string
-    email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteCreateNestedManyWithoutUserInput
-    likedArtists?: UserLikedArtistCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutLikedSongsInput = {
-    id?: string
-    email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUncheckedCreateNestedManyWithoutUserInput
-    likedArtists?: UserLikedArtistUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutLikedSongsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutLikedSongsInput, UserUncheckedCreateWithoutLikedSongsInput>
-  }
-
-  export type SongCreateWithoutLikedByUsersInput = {
-    id?: string
-    img: string
-    title: string
-    albumName: string
-    artist: string
-    genre: string
-    releaseDate: string
-    duration: string
-    plays?: number
-    song: string
-    likes?: number
-    comments?: SongCommentCreateNestedManyWithoutSongInput
-  }
-
-  export type SongUncheckedCreateWithoutLikedByUsersInput = {
-    id?: string
-    img: string
-    title: string
-    albumName: string
-    artist: string
-    genre: string
-    releaseDate: string
-    duration: string
-    plays?: number
-    song: string
-    likes?: number
-    comments?: SongCommentUncheckedCreateNestedManyWithoutSongInput
-  }
-
-  export type SongCreateOrConnectWithoutLikedByUsersInput = {
-    where: SongWhereUniqueInput
-    create: XOR<SongCreateWithoutLikedByUsersInput, SongUncheckedCreateWithoutLikedByUsersInput>
-  }
-
-  export type UserUpsertWithoutLikedSongsInput = {
-    update: XOR<UserUpdateWithoutLikedSongsInput, UserUncheckedUpdateWithoutLikedSongsInput>
-    create: XOR<UserCreateWithoutLikedSongsInput, UserUncheckedCreateWithoutLikedSongsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutLikedSongsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutLikedSongsInput, UserUncheckedUpdateWithoutLikedSongsInput>
-  }
-
-  export type UserUpdateWithoutLikedSongsInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUpdateManyWithoutUserNestedInput
-    likedArtists?: UserLikedArtistUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutLikedSongsInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUncheckedUpdateManyWithoutUserNestedInput
-    likedArtists?: UserLikedArtistUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type SongUpsertWithoutLikedByUsersInput = {
-    update: XOR<SongUpdateWithoutLikedByUsersInput, SongUncheckedUpdateWithoutLikedByUsersInput>
-    create: XOR<SongCreateWithoutLikedByUsersInput, SongUncheckedCreateWithoutLikedByUsersInput>
-    where?: SongWhereInput
-  }
-
-  export type SongUpdateToOneWithWhereWithoutLikedByUsersInput = {
-    where?: SongWhereInput
-    data: XOR<SongUpdateWithoutLikedByUsersInput, SongUncheckedUpdateWithoutLikedByUsersInput>
-  }
-
-  export type SongUpdateWithoutLikedByUsersInput = {
-    img?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    albumName?: StringFieldUpdateOperationsInput | string
-    artist?: StringFieldUpdateOperationsInput | string
-    genre?: StringFieldUpdateOperationsInput | string
-    releaseDate?: StringFieldUpdateOperationsInput | string
-    duration?: StringFieldUpdateOperationsInput | string
-    plays?: IntFieldUpdateOperationsInput | number
-    song?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: SongCommentUpdateManyWithoutSongNestedInput
-  }
-
-  export type SongUncheckedUpdateWithoutLikedByUsersInput = {
-    img?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    albumName?: StringFieldUpdateOperationsInput | string
-    artist?: StringFieldUpdateOperationsInput | string
-    genre?: StringFieldUpdateOperationsInput | string
-    releaseDate?: StringFieldUpdateOperationsInput | string
-    duration?: StringFieldUpdateOperationsInput | string
-    plays?: IntFieldUpdateOperationsInput | number
-    song?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: SongCommentUncheckedUpdateManyWithoutSongNestedInput
-  }
-
-  export type UserLikedWebsiteCreateWithoutUserInput = {
-    id?: string
-    likedWebsite: WebsiteProjectCreateNestedOneWithoutLikedByUsersInput
-  }
-
-  export type UserLikedWebsiteUncheckedCreateWithoutUserInput = {
-    id?: string
-    likedWebsiteId: string
-  }
-
-  export type UserLikedWebsiteCreateOrConnectWithoutUserInput = {
-    where: UserLikedWebsiteWhereUniqueInput
-    create: XOR<UserLikedWebsiteCreateWithoutUserInput, UserLikedWebsiteUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserLikedWebsiteCreateManyUserInputEnvelope = {
-    data: UserLikedWebsiteCreateManyUserInput | UserLikedWebsiteCreateManyUserInput[]
-  }
-
-  export type UserLikedSongCreateWithoutUserInput = {
-    id?: string
-    likedSong: SongCreateNestedOneWithoutLikedByUsersInput
-  }
-
-  export type UserLikedSongUncheckedCreateWithoutUserInput = {
-    id?: string
-    likedSongId: string
-  }
-
-  export type UserLikedSongCreateOrConnectWithoutUserInput = {
-    where: UserLikedSongWhereUniqueInput
-    create: XOR<UserLikedSongCreateWithoutUserInput, UserLikedSongUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserLikedSongCreateManyUserInputEnvelope = {
-    data: UserLikedSongCreateManyUserInput | UserLikedSongCreateManyUserInput[]
-  }
-
-  export type UserLikedArtistCreateWithoutUserInput = {
-    id?: string
-    likedArtist: ArtistCreateNestedOneWithoutLikedByUsersInput
-  }
-
-  export type UserLikedArtistUncheckedCreateWithoutUserInput = {
-    id?: string
-    likedArtistId: string
-  }
-
-  export type UserLikedArtistCreateOrConnectWithoutUserInput = {
-    where: UserLikedArtistWhereUniqueInput
-    create: XOR<UserLikedArtistCreateWithoutUserInput, UserLikedArtistUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserLikedArtistCreateManyUserInputEnvelope = {
-    data: UserLikedArtistCreateManyUserInput | UserLikedArtistCreateManyUserInput[]
-  }
-
-  export type AddressUpsertInput = {
-    set: AddressCreateInput | null
-    update: AddressUpdateInput
-  }
-
-  export type UserLikedWebsiteUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserLikedWebsiteWhereUniqueInput
-    update: XOR<UserLikedWebsiteUpdateWithoutUserInput, UserLikedWebsiteUncheckedUpdateWithoutUserInput>
-    create: XOR<UserLikedWebsiteCreateWithoutUserInput, UserLikedWebsiteUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserLikedWebsiteUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserLikedWebsiteWhereUniqueInput
-    data: XOR<UserLikedWebsiteUpdateWithoutUserInput, UserLikedWebsiteUncheckedUpdateWithoutUserInput>
-  }
-
-  export type UserLikedWebsiteUpdateManyWithWhereWithoutUserInput = {
-    where: UserLikedWebsiteScalarWhereInput
-    data: XOR<UserLikedWebsiteUpdateManyMutationInput, UserLikedWebsiteUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type UserLikedSongUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserLikedSongWhereUniqueInput
-    update: XOR<UserLikedSongUpdateWithoutUserInput, UserLikedSongUncheckedUpdateWithoutUserInput>
-    create: XOR<UserLikedSongCreateWithoutUserInput, UserLikedSongUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserLikedSongUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserLikedSongWhereUniqueInput
-    data: XOR<UserLikedSongUpdateWithoutUserInput, UserLikedSongUncheckedUpdateWithoutUserInput>
-  }
-
-  export type UserLikedSongUpdateManyWithWhereWithoutUserInput = {
-    where: UserLikedSongScalarWhereInput
-    data: XOR<UserLikedSongUpdateManyMutationInput, UserLikedSongUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type UserLikedArtistUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserLikedArtistWhereUniqueInput
-    update: XOR<UserLikedArtistUpdateWithoutUserInput, UserLikedArtistUncheckedUpdateWithoutUserInput>
-    create: XOR<UserLikedArtistCreateWithoutUserInput, UserLikedArtistUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserLikedArtistUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserLikedArtistWhereUniqueInput
-    data: XOR<UserLikedArtistUpdateWithoutUserInput, UserLikedArtistUncheckedUpdateWithoutUserInput>
-  }
-
-  export type UserLikedArtistUpdateManyWithWhereWithoutUserInput = {
-    where: UserLikedArtistScalarWhereInput
-    data: XOR<UserLikedArtistUpdateManyMutationInput, UserLikedArtistUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type UserLikedArtistScalarWhereInput = {
-    AND?: UserLikedArtistScalarWhereInput | UserLikedArtistScalarWhereInput[]
-    OR?: UserLikedArtistScalarWhereInput[]
-    NOT?: UserLikedArtistScalarWhereInput | UserLikedArtistScalarWhereInput[]
-    id?: StringFilter<"UserLikedArtist"> | string
-    userId?: StringFilter<"UserLikedArtist"> | string
-    likedArtistId?: StringFilter<"UserLikedArtist"> | string
-  }
-
-  export type UserCreateWithoutLikedWebsitesInput = {
-    id?: string
-    email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
-    likedSongs?: UserLikedSongCreateNestedManyWithoutUserInput
-    likedArtists?: UserLikedArtistCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutLikedWebsitesInput = {
-    id?: string
-    email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
-    likedSongs?: UserLikedSongUncheckedCreateNestedManyWithoutUserInput
-    likedArtists?: UserLikedArtistUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutLikedWebsitesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutLikedWebsitesInput, UserUncheckedCreateWithoutLikedWebsitesInput>
-  }
-
-  export type WebsiteProjectCreateWithoutLikedByUsersInput = {
-    id?: string
-    img: string
-    title: string
-    genre: string
-    technologies: string
-    description: string
-    release_date: string
-    link: string
-    likes?: number
-    comments?: WebsiteProjectCommentCreateNestedManyWithoutWebsiteProjectInput
-  }
-
-  export type WebsiteProjectUncheckedCreateWithoutLikedByUsersInput = {
-    id?: string
-    img: string
-    title: string
-    genre: string
-    technologies: string
-    description: string
-    release_date: string
-    link: string
-    likes?: number
-    comments?: WebsiteProjectCommentUncheckedCreateNestedManyWithoutWebsiteProjectInput
-  }
-
-  export type WebsiteProjectCreateOrConnectWithoutLikedByUsersInput = {
-    where: WebsiteProjectWhereUniqueInput
-    create: XOR<WebsiteProjectCreateWithoutLikedByUsersInput, WebsiteProjectUncheckedCreateWithoutLikedByUsersInput>
-  }
-
-  export type UserUpsertWithoutLikedWebsitesInput = {
-    update: XOR<UserUpdateWithoutLikedWebsitesInput, UserUncheckedUpdateWithoutLikedWebsitesInput>
-    create: XOR<UserCreateWithoutLikedWebsitesInput, UserUncheckedCreateWithoutLikedWebsitesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutLikedWebsitesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutLikedWebsitesInput, UserUncheckedUpdateWithoutLikedWebsitesInput>
-  }
-
-  export type UserUpdateWithoutLikedWebsitesInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-    likedSongs?: UserLikedSongUpdateManyWithoutUserNestedInput
-    likedArtists?: UserLikedArtistUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutLikedWebsitesInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-    likedSongs?: UserLikedSongUncheckedUpdateManyWithoutUserNestedInput
-    likedArtists?: UserLikedArtistUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type WebsiteProjectUpsertWithoutLikedByUsersInput = {
-    update: XOR<WebsiteProjectUpdateWithoutLikedByUsersInput, WebsiteProjectUncheckedUpdateWithoutLikedByUsersInput>
-    create: XOR<WebsiteProjectCreateWithoutLikedByUsersInput, WebsiteProjectUncheckedCreateWithoutLikedByUsersInput>
-    where?: WebsiteProjectWhereInput
-  }
-
-  export type WebsiteProjectUpdateToOneWithWhereWithoutLikedByUsersInput = {
-    where?: WebsiteProjectWhereInput
-    data: XOR<WebsiteProjectUpdateWithoutLikedByUsersInput, WebsiteProjectUncheckedUpdateWithoutLikedByUsersInput>
-  }
-
-  export type WebsiteProjectUpdateWithoutLikedByUsersInput = {
-    img?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    genre?: StringFieldUpdateOperationsInput | string
-    technologies?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    release_date?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: WebsiteProjectCommentUpdateManyWithoutWebsiteProjectNestedInput
-  }
-
-  export type WebsiteProjectUncheckedUpdateWithoutLikedByUsersInput = {
-    img?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    genre?: StringFieldUpdateOperationsInput | string
-    technologies?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    release_date?: StringFieldUpdateOperationsInput | string
-    link?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: WebsiteProjectCommentUncheckedUpdateManyWithoutWebsiteProjectNestedInput
-  }
-
-  export type ArtistCommentCreateWithoutArtistInput = {
-    id?: string
-    comment: string
-    likes?: number
-  }
-
-  export type ArtistCommentUncheckedCreateWithoutArtistInput = {
-    id?: string
-    comment: string
-    likes?: number
-  }
-
-  export type ArtistCommentCreateOrConnectWithoutArtistInput = {
-    where: ArtistCommentWhereUniqueInput
-    create: XOR<ArtistCommentCreateWithoutArtistInput, ArtistCommentUncheckedCreateWithoutArtistInput>
-  }
-
-  export type ArtistCommentCreateManyArtistInputEnvelope = {
-    data: ArtistCommentCreateManyArtistInput | ArtistCommentCreateManyArtistInput[]
-  }
-
-  export type UserLikedArtistCreateWithoutLikedArtistInput = {
-    id?: string
-    user: UserCreateNestedOneWithoutLikedArtistsInput
-  }
-
-  export type UserLikedArtistUncheckedCreateWithoutLikedArtistInput = {
-    id?: string
-    userId: string
-  }
-
-  export type UserLikedArtistCreateOrConnectWithoutLikedArtistInput = {
-    where: UserLikedArtistWhereUniqueInput
-    create: XOR<UserLikedArtistCreateWithoutLikedArtistInput, UserLikedArtistUncheckedCreateWithoutLikedArtistInput>
-  }
-
-  export type UserLikedArtistCreateManyLikedArtistInputEnvelope = {
-    data: UserLikedArtistCreateManyLikedArtistInput | UserLikedArtistCreateManyLikedArtistInput[]
-  }
-
-  export type ArtistCommentUpsertWithWhereUniqueWithoutArtistInput = {
-    where: ArtistCommentWhereUniqueInput
-    update: XOR<ArtistCommentUpdateWithoutArtistInput, ArtistCommentUncheckedUpdateWithoutArtistInput>
-    create: XOR<ArtistCommentCreateWithoutArtistInput, ArtistCommentUncheckedCreateWithoutArtistInput>
-  }
-
-  export type ArtistCommentUpdateWithWhereUniqueWithoutArtistInput = {
-    where: ArtistCommentWhereUniqueInput
-    data: XOR<ArtistCommentUpdateWithoutArtistInput, ArtistCommentUncheckedUpdateWithoutArtistInput>
-  }
-
-  export type ArtistCommentUpdateManyWithWhereWithoutArtistInput = {
-    where: ArtistCommentScalarWhereInput
-    data: XOR<ArtistCommentUpdateManyMutationInput, ArtistCommentUncheckedUpdateManyWithoutArtistInput>
-  }
-
-  export type ArtistCommentScalarWhereInput = {
-    AND?: ArtistCommentScalarWhereInput | ArtistCommentScalarWhereInput[]
-    OR?: ArtistCommentScalarWhereInput[]
-    NOT?: ArtistCommentScalarWhereInput | ArtistCommentScalarWhereInput[]
-    id?: StringFilter<"ArtistComment"> | string
-    comment?: StringFilter<"ArtistComment"> | string
-    artistId?: StringFilter<"ArtistComment"> | string
-    likes?: IntFilter<"ArtistComment"> | number
-  }
-
-  export type UserLikedArtistUpsertWithWhereUniqueWithoutLikedArtistInput = {
-    where: UserLikedArtistWhereUniqueInput
-    update: XOR<UserLikedArtistUpdateWithoutLikedArtistInput, UserLikedArtistUncheckedUpdateWithoutLikedArtistInput>
-    create: XOR<UserLikedArtistCreateWithoutLikedArtistInput, UserLikedArtistUncheckedCreateWithoutLikedArtistInput>
-  }
-
-  export type UserLikedArtistUpdateWithWhereUniqueWithoutLikedArtistInput = {
-    where: UserLikedArtistWhereUniqueInput
-    data: XOR<UserLikedArtistUpdateWithoutLikedArtistInput, UserLikedArtistUncheckedUpdateWithoutLikedArtistInput>
-  }
-
-  export type UserLikedArtistUpdateManyWithWhereWithoutLikedArtistInput = {
-    where: UserLikedArtistScalarWhereInput
-    data: XOR<UserLikedArtistUpdateManyMutationInput, UserLikedArtistUncheckedUpdateManyWithoutLikedArtistInput>
-  }
-
-  export type ArtistCreateWithoutCommentsInput = {
-    id?: string
-    img: string
-    title: string
-    genre: string
-    description: string
-    releaseDate: string
-    likes?: number
-    likedByUsers?: UserLikedArtistCreateNestedManyWithoutLikedArtistInput
-  }
-
-  export type ArtistUncheckedCreateWithoutCommentsInput = {
-    id?: string
-    img: string
-    title: string
-    genre: string
-    description: string
-    releaseDate: string
-    likes?: number
-    likedByUsers?: UserLikedArtistUncheckedCreateNestedManyWithoutLikedArtistInput
-  }
-
-  export type ArtistCreateOrConnectWithoutCommentsInput = {
-    where: ArtistWhereUniqueInput
-    create: XOR<ArtistCreateWithoutCommentsInput, ArtistUncheckedCreateWithoutCommentsInput>
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ArtistUpsertWithoutCommentsInput = {
@@ -15383,8 +13332,8 @@ export namespace Prisma {
     genre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     releaseDate?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    likedByUsers?: UserLikedArtistUpdateManyWithoutLikedArtistNestedInput
+    likes?: LikeUpdateManyWithoutArtistNestedInput
+    songs?: SongUpdateManyWithoutArtistNestedInput
   }
 
   export type ArtistUncheckedUpdateWithoutCommentsInput = {
@@ -15393,207 +13342,802 @@ export namespace Prisma {
     genre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     releaseDate?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    likedByUsers?: UserLikedArtistUncheckedUpdateManyWithoutLikedArtistNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutArtistNestedInput
+    songs?: SongUncheckedUpdateManyWithoutArtistNestedInput
   }
 
-  export type UserCreateWithoutLikedArtistsInput = {
+  export type MovieUpsertWithoutCommentsInput = {
+    update: XOR<MovieUpdateWithoutCommentsInput, MovieUncheckedUpdateWithoutCommentsInput>
+    create: XOR<MovieCreateWithoutCommentsInput, MovieUncheckedCreateWithoutCommentsInput>
+    where?: MovieWhereInput
+  }
+
+  export type MovieUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: MovieWhereInput
+    data: XOR<MovieUpdateWithoutCommentsInput, MovieUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type MovieUpdateWithoutCommentsInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    likes?: LikeUpdateManyWithoutMovieNestedInput
+  }
+
+  export type MovieUncheckedUpdateWithoutCommentsInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    likes?: LikeUncheckedUpdateManyWithoutMovieNestedInput
+  }
+
+  export type LikeCreateWithoutMovieInput = {
     id?: string
-    email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteCreateNestedManyWithoutUserInput
-    likedSongs?: UserLikedSongCreateNestedManyWithoutUserInput
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    Website?: WebsiteCreateNestedOneWithoutLikesInput
+    User: UserCreateNestedOneWithoutLikesInput
+    Artist?: ArtistCreateNestedOneWithoutLikesInput
   }
 
-  export type UserUncheckedCreateWithoutLikedArtistsInput = {
+  export type LikeUncheckedCreateWithoutMovieInput = {
     id?: string
-    email: string
-    name?: string | null
-    address?: XOR<AddressNullableCreateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUncheckedCreateNestedManyWithoutUserInput
-    likedSongs?: UserLikedSongUncheckedCreateNestedManyWithoutUserInput
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    artistId?: string | null
   }
 
-  export type UserCreateOrConnectWithoutLikedArtistsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutLikedArtistsInput, UserUncheckedCreateWithoutLikedArtistsInput>
+  export type LikeCreateOrConnectWithoutMovieInput = {
+    where: LikeWhereUniqueInput
+    create: XOR<LikeCreateWithoutMovieInput, LikeUncheckedCreateWithoutMovieInput>
   }
 
-  export type ArtistCreateWithoutLikedByUsersInput = {
+  export type LikeCreateManyMovieInputEnvelope = {
+    data: LikeCreateManyMovieInput | LikeCreateManyMovieInput[]
+  }
+
+  export type CommentCreateWithoutMovieInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    website?: WebsiteCreateNestedOneWithoutCommentsInput
+    Song?: SongCreateNestedOneWithoutCommentsInput
+    Artist?: ArtistCreateNestedOneWithoutCommentsInput
+  }
+
+  export type CommentUncheckedCreateWithoutMovieInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    songId?: string | null
+    artistId?: string | null
+  }
+
+  export type CommentCreateOrConnectWithoutMovieInput = {
+    where: CommentWhereUniqueInput
+    create: XOR<CommentCreateWithoutMovieInput, CommentUncheckedCreateWithoutMovieInput>
+  }
+
+  export type CommentCreateManyMovieInputEnvelope = {
+    data: CommentCreateManyMovieInput | CommentCreateManyMovieInput[]
+  }
+
+  export type LikeUpsertWithWhereUniqueWithoutMovieInput = {
+    where: LikeWhereUniqueInput
+    update: XOR<LikeUpdateWithoutMovieInput, LikeUncheckedUpdateWithoutMovieInput>
+    create: XOR<LikeCreateWithoutMovieInput, LikeUncheckedCreateWithoutMovieInput>
+  }
+
+  export type LikeUpdateWithWhereUniqueWithoutMovieInput = {
+    where: LikeWhereUniqueInput
+    data: XOR<LikeUpdateWithoutMovieInput, LikeUncheckedUpdateWithoutMovieInput>
+  }
+
+  export type LikeUpdateManyWithWhereWithoutMovieInput = {
+    where: LikeScalarWhereInput
+    data: XOR<LikeUpdateManyMutationInput, LikeUncheckedUpdateManyWithoutMovieInput>
+  }
+
+  export type LikeScalarWhereInput = {
+    AND?: LikeScalarWhereInput | LikeScalarWhereInput[]
+    OR?: LikeScalarWhereInput[]
+    NOT?: LikeScalarWhereInput | LikeScalarWhereInput[]
+    id?: StringFilter<"Like"> | string
+    userId?: StringFilter<"Like"> | string
+    category?: EnumCategoryFilter<"Like"> | $Enums.Category
+    itemId?: StringFilter<"Like"> | string
+    timestamp?: DateTimeFilter<"Like"> | Date | string
+    websiteId?: StringNullableFilter<"Like"> | string | null
+    artistId?: StringNullableFilter<"Like"> | string | null
+    movieId?: StringNullableFilter<"Like"> | string | null
+  }
+
+  export type CommentUpsertWithWhereUniqueWithoutMovieInput = {
+    where: CommentWhereUniqueInput
+    update: XOR<CommentUpdateWithoutMovieInput, CommentUncheckedUpdateWithoutMovieInput>
+    create: XOR<CommentCreateWithoutMovieInput, CommentUncheckedCreateWithoutMovieInput>
+  }
+
+  export type CommentUpdateWithWhereUniqueWithoutMovieInput = {
+    where: CommentWhereUniqueInput
+    data: XOR<CommentUpdateWithoutMovieInput, CommentUncheckedUpdateWithoutMovieInput>
+  }
+
+  export type CommentUpdateManyWithWhereWithoutMovieInput = {
+    where: CommentScalarWhereInput
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutMovieInput>
+  }
+
+  export type CommentScalarWhereInput = {
+    AND?: CommentScalarWhereInput | CommentScalarWhereInput[]
+    OR?: CommentScalarWhereInput[]
+    NOT?: CommentScalarWhereInput | CommentScalarWhereInput[]
+    id?: StringFilter<"Comment"> | string
+    userId?: StringFilter<"Comment"> | string
+    category?: EnumCategoryFilter<"Comment"> | $Enums.Category
+    itemId?: StringFilter<"Comment"> | string
+    comment?: StringFilter<"Comment"> | string
+    timestamp?: DateTimeFilter<"Comment"> | Date | string
+    websiteId?: StringNullableFilter<"Comment"> | string | null
+    songId?: StringNullableFilter<"Comment"> | string | null
+    artistId?: StringNullableFilter<"Comment"> | string | null
+    movieId?: StringNullableFilter<"Comment"> | string | null
+  }
+
+  export type LikeCreateWithoutWebsiteInput = {
+    id?: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    User: UserCreateNestedOneWithoutLikesInput
+    Artist?: ArtistCreateNestedOneWithoutLikesInput
+    Movie?: MovieCreateNestedOneWithoutLikesInput
+  }
+
+  export type LikeUncheckedCreateWithoutWebsiteInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type LikeCreateOrConnectWithoutWebsiteInput = {
+    where: LikeWhereUniqueInput
+    create: XOR<LikeCreateWithoutWebsiteInput, LikeUncheckedCreateWithoutWebsiteInput>
+  }
+
+  export type LikeCreateManyWebsiteInputEnvelope = {
+    data: LikeCreateManyWebsiteInput | LikeCreateManyWebsiteInput[]
+  }
+
+  export type CommentCreateWithoutWebsiteInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    Song?: SongCreateNestedOneWithoutCommentsInput
+    Artist?: ArtistCreateNestedOneWithoutCommentsInput
+    Movie?: MovieCreateNestedOneWithoutCommentsInput
+  }
+
+  export type CommentUncheckedCreateWithoutWebsiteInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    songId?: string | null
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type CommentCreateOrConnectWithoutWebsiteInput = {
+    where: CommentWhereUniqueInput
+    create: XOR<CommentCreateWithoutWebsiteInput, CommentUncheckedCreateWithoutWebsiteInput>
+  }
+
+  export type CommentCreateManyWebsiteInputEnvelope = {
+    data: CommentCreateManyWebsiteInput | CommentCreateManyWebsiteInput[]
+  }
+
+  export type LikeUpsertWithWhereUniqueWithoutWebsiteInput = {
+    where: LikeWhereUniqueInput
+    update: XOR<LikeUpdateWithoutWebsiteInput, LikeUncheckedUpdateWithoutWebsiteInput>
+    create: XOR<LikeCreateWithoutWebsiteInput, LikeUncheckedCreateWithoutWebsiteInput>
+  }
+
+  export type LikeUpdateWithWhereUniqueWithoutWebsiteInput = {
+    where: LikeWhereUniqueInput
+    data: XOR<LikeUpdateWithoutWebsiteInput, LikeUncheckedUpdateWithoutWebsiteInput>
+  }
+
+  export type LikeUpdateManyWithWhereWithoutWebsiteInput = {
+    where: LikeScalarWhereInput
+    data: XOR<LikeUpdateManyMutationInput, LikeUncheckedUpdateManyWithoutWebsiteInput>
+  }
+
+  export type CommentUpsertWithWhereUniqueWithoutWebsiteInput = {
+    where: CommentWhereUniqueInput
+    update: XOR<CommentUpdateWithoutWebsiteInput, CommentUncheckedUpdateWithoutWebsiteInput>
+    create: XOR<CommentCreateWithoutWebsiteInput, CommentUncheckedCreateWithoutWebsiteInput>
+  }
+
+  export type CommentUpdateWithWhereUniqueWithoutWebsiteInput = {
+    where: CommentWhereUniqueInput
+    data: XOR<CommentUpdateWithoutWebsiteInput, CommentUncheckedUpdateWithoutWebsiteInput>
+  }
+
+  export type CommentUpdateManyWithWhereWithoutWebsiteInput = {
+    where: CommentScalarWhereInput
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutWebsiteInput>
+  }
+
+  export type CommentCreateWithoutSongInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    website?: WebsiteCreateNestedOneWithoutCommentsInput
+    Artist?: ArtistCreateNestedOneWithoutCommentsInput
+    Movie?: MovieCreateNestedOneWithoutCommentsInput
+  }
+
+  export type CommentUncheckedCreateWithoutSongInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type CommentCreateOrConnectWithoutSongInput = {
+    where: CommentWhereUniqueInput
+    create: XOR<CommentCreateWithoutSongInput, CommentUncheckedCreateWithoutSongInput>
+  }
+
+  export type CommentCreateManySongInputEnvelope = {
+    data: CommentCreateManySongInput | CommentCreateManySongInput[]
+  }
+
+  export type ArtistCreateWithoutSongsInput = {
     id?: string
     img: string
     title: string
     genre: string
     description: string
     releaseDate: string
-    likes?: number
-    comments?: ArtistCommentCreateNestedManyWithoutArtistInput
+    likes?: LikeCreateNestedManyWithoutArtistInput
+    comments?: CommentCreateNestedManyWithoutArtistInput
   }
 
-  export type ArtistUncheckedCreateWithoutLikedByUsersInput = {
+  export type ArtistUncheckedCreateWithoutSongsInput = {
     id?: string
     img: string
     title: string
     genre: string
     description: string
     releaseDate: string
-    likes?: number
-    comments?: ArtistCommentUncheckedCreateNestedManyWithoutArtistInput
+    likes?: LikeUncheckedCreateNestedManyWithoutArtistInput
+    comments?: CommentUncheckedCreateNestedManyWithoutArtistInput
   }
 
-  export type ArtistCreateOrConnectWithoutLikedByUsersInput = {
+  export type ArtistCreateOrConnectWithoutSongsInput = {
     where: ArtistWhereUniqueInput
-    create: XOR<ArtistCreateWithoutLikedByUsersInput, ArtistUncheckedCreateWithoutLikedByUsersInput>
+    create: XOR<ArtistCreateWithoutSongsInput, ArtistUncheckedCreateWithoutSongsInput>
   }
 
-  export type UserUpsertWithoutLikedArtistsInput = {
-    update: XOR<UserUpdateWithoutLikedArtistsInput, UserUncheckedUpdateWithoutLikedArtistsInput>
-    create: XOR<UserCreateWithoutLikedArtistsInput, UserUncheckedCreateWithoutLikedArtistsInput>
-    where?: UserWhereInput
+  export type CommentUpsertWithWhereUniqueWithoutSongInput = {
+    where: CommentWhereUniqueInput
+    update: XOR<CommentUpdateWithoutSongInput, CommentUncheckedUpdateWithoutSongInput>
+    create: XOR<CommentCreateWithoutSongInput, CommentUncheckedCreateWithoutSongInput>
   }
 
-  export type UserUpdateToOneWithWhereWithoutLikedArtistsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutLikedArtistsInput, UserUncheckedUpdateWithoutLikedArtistsInput>
+  export type CommentUpdateWithWhereUniqueWithoutSongInput = {
+    where: CommentWhereUniqueInput
+    data: XOR<CommentUpdateWithoutSongInput, CommentUncheckedUpdateWithoutSongInput>
   }
 
-  export type UserUpdateWithoutLikedArtistsInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUpdateManyWithoutUserNestedInput
-    likedSongs?: UserLikedSongUpdateManyWithoutUserNestedInput
+  export type CommentUpdateManyWithWhereWithoutSongInput = {
+    where: CommentScalarWhereInput
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutSongInput>
   }
 
-  export type UserUncheckedUpdateWithoutLikedArtistsInput = {
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: XOR<AddressNullableUpdateEnvelopeInput, AddressCreateInput> | null
-    likedWebsites?: UserLikedWebsiteUncheckedUpdateManyWithoutUserNestedInput
-    likedSongs?: UserLikedSongUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type ArtistUpsertWithoutLikedByUsersInput = {
-    update: XOR<ArtistUpdateWithoutLikedByUsersInput, ArtistUncheckedUpdateWithoutLikedByUsersInput>
-    create: XOR<ArtistCreateWithoutLikedByUsersInput, ArtistUncheckedCreateWithoutLikedByUsersInput>
+  export type ArtistUpsertWithoutSongsInput = {
+    update: XOR<ArtistUpdateWithoutSongsInput, ArtistUncheckedUpdateWithoutSongsInput>
+    create: XOR<ArtistCreateWithoutSongsInput, ArtistUncheckedCreateWithoutSongsInput>
     where?: ArtistWhereInput
   }
 
-  export type ArtistUpdateToOneWithWhereWithoutLikedByUsersInput = {
+  export type ArtistUpdateToOneWithWhereWithoutSongsInput = {
     where?: ArtistWhereInput
-    data: XOR<ArtistUpdateWithoutLikedByUsersInput, ArtistUncheckedUpdateWithoutLikedByUsersInput>
+    data: XOR<ArtistUpdateWithoutSongsInput, ArtistUncheckedUpdateWithoutSongsInput>
   }
 
-  export type ArtistUpdateWithoutLikedByUsersInput = {
+  export type ArtistUpdateWithoutSongsInput = {
     img?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     releaseDate?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: ArtistCommentUpdateManyWithoutArtistNestedInput
+    likes?: LikeUpdateManyWithoutArtistNestedInput
+    comments?: CommentUpdateManyWithoutArtistNestedInput
   }
 
-  export type ArtistUncheckedUpdateWithoutLikedByUsersInput = {
+  export type ArtistUncheckedUpdateWithoutSongsInput = {
     img?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     genre?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     releaseDate?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-    comments?: ArtistCommentUncheckedUpdateManyWithoutArtistNestedInput
+    likes?: LikeUncheckedUpdateManyWithoutArtistNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutArtistNestedInput
   }
 
-  export type WebsiteProjectCommentCreateManyWebsiteProjectInput = {
+  export type LikeCreateWithoutUserInput = {
     id?: string
-    comment: string
-    likes?: number
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    Website?: WebsiteCreateNestedOneWithoutLikesInput
+    Artist?: ArtistCreateNestedOneWithoutLikesInput
+    Movie?: MovieCreateNestedOneWithoutLikesInput
   }
 
-  export type UserLikedWebsiteCreateManyLikedWebsiteInput = {
+  export type LikeUncheckedCreateWithoutUserInput = {
+    id?: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type LikeCreateOrConnectWithoutUserInput = {
+    where: LikeWhereUniqueInput
+    create: XOR<LikeCreateWithoutUserInput, LikeUncheckedCreateWithoutUserInput>
+  }
+
+  export type LikeCreateManyUserInputEnvelope = {
+    data: LikeCreateManyUserInput | LikeCreateManyUserInput[]
+  }
+
+  export type AddressUpdateManyInput = {
+    where: AddressWhereInput
+    data: AddressUpdateInput
+  }
+
+  export type AddressDeleteManyInput = {
+    where: AddressWhereInput
+  }
+
+  export type LikeUpsertWithWhereUniqueWithoutUserInput = {
+    where: LikeWhereUniqueInput
+    update: XOR<LikeUpdateWithoutUserInput, LikeUncheckedUpdateWithoutUserInput>
+    create: XOR<LikeCreateWithoutUserInput, LikeUncheckedCreateWithoutUserInput>
+  }
+
+  export type LikeUpdateWithWhereUniqueWithoutUserInput = {
+    where: LikeWhereUniqueInput
+    data: XOR<LikeUpdateWithoutUserInput, LikeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type LikeUpdateManyWithWhereWithoutUserInput = {
+    where: LikeScalarWhereInput
+    data: XOR<LikeUpdateManyMutationInput, LikeUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type LikeCreateWithoutArtistInput = {
+    id?: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    Website?: WebsiteCreateNestedOneWithoutLikesInput
+    User: UserCreateNestedOneWithoutLikesInput
+    Movie?: MovieCreateNestedOneWithoutLikesInput
+  }
+
+  export type LikeUncheckedCreateWithoutArtistInput = {
     id?: string
     userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    movieId?: string | null
   }
 
-  export type WebsiteProjectCommentUpdateWithoutWebsiteProjectInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
+  export type LikeCreateOrConnectWithoutArtistInput = {
+    where: LikeWhereUniqueInput
+    create: XOR<LikeCreateWithoutArtistInput, LikeUncheckedCreateWithoutArtistInput>
   }
 
-  export type WebsiteProjectCommentUncheckedUpdateWithoutWebsiteProjectInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
+  export type LikeCreateManyArtistInputEnvelope = {
+    data: LikeCreateManyArtistInput | LikeCreateManyArtistInput[]
   }
 
-  export type WebsiteProjectCommentUncheckedUpdateManyWithoutWebsiteProjectInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type UserLikedWebsiteUpdateWithoutLikedWebsiteInput = {
-    user?: UserUpdateOneRequiredWithoutLikedWebsitesNestedInput
-  }
-
-  export type UserLikedWebsiteUncheckedUpdateWithoutLikedWebsiteInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserLikedWebsiteUncheckedUpdateManyWithoutLikedWebsiteInput = {
-    userId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type SongCommentCreateManySongInput = {
-    id?: string
-    comment: string
-    likes?: number
-  }
-
-  export type UserLikedSongCreateManyLikedSongInput = {
+  export type CommentCreateWithoutArtistInput = {
     id?: string
     userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    website?: WebsiteCreateNestedOneWithoutCommentsInput
+    Song?: SongCreateNestedOneWithoutCommentsInput
+    Movie?: MovieCreateNestedOneWithoutCommentsInput
   }
 
-  export type SongCommentUpdateWithoutSongInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
+  export type CommentUncheckedCreateWithoutArtistInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    songId?: string | null
+    movieId?: string | null
   }
 
-  export type SongCommentUncheckedUpdateWithoutSongInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
+  export type CommentCreateOrConnectWithoutArtistInput = {
+    where: CommentWhereUniqueInput
+    create: XOR<CommentCreateWithoutArtistInput, CommentUncheckedCreateWithoutArtistInput>
   }
 
-  export type SongCommentUncheckedUpdateManyWithoutSongInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
+  export type CommentCreateManyArtistInputEnvelope = {
+    data: CommentCreateManyArtistInput | CommentCreateManyArtistInput[]
   }
 
-  export type UserLikedSongUpdateWithoutLikedSongInput = {
-    user?: UserUpdateOneRequiredWithoutLikedSongsNestedInput
+  export type SongCreateWithoutArtistInput = {
+    id?: string
+    img: string
+    title: string
+    albumName: string
+    artist: string
+    genre: string
+    releaseDate: string
+    duration: string
+    plays?: number
+    song: string
+    likes?: number
+    comments?: CommentCreateNestedManyWithoutSongInput
   }
 
-  export type UserLikedSongUncheckedUpdateWithoutLikedSongInput = {
+  export type SongUncheckedCreateWithoutArtistInput = {
+    id?: string
+    img: string
+    title: string
+    albumName: string
+    artist: string
+    genre: string
+    releaseDate: string
+    duration: string
+    plays?: number
+    song: string
+    likes?: number
+    comments?: CommentUncheckedCreateNestedManyWithoutSongInput
+  }
+
+  export type SongCreateOrConnectWithoutArtistInput = {
+    where: SongWhereUniqueInput
+    create: XOR<SongCreateWithoutArtistInput, SongUncheckedCreateWithoutArtistInput>
+  }
+
+  export type SongCreateManyArtistInputEnvelope = {
+    data: SongCreateManyArtistInput | SongCreateManyArtistInput[]
+  }
+
+  export type LikeUpsertWithWhereUniqueWithoutArtistInput = {
+    where: LikeWhereUniqueInput
+    update: XOR<LikeUpdateWithoutArtistInput, LikeUncheckedUpdateWithoutArtistInput>
+    create: XOR<LikeCreateWithoutArtistInput, LikeUncheckedCreateWithoutArtistInput>
+  }
+
+  export type LikeUpdateWithWhereUniqueWithoutArtistInput = {
+    where: LikeWhereUniqueInput
+    data: XOR<LikeUpdateWithoutArtistInput, LikeUncheckedUpdateWithoutArtistInput>
+  }
+
+  export type LikeUpdateManyWithWhereWithoutArtistInput = {
+    where: LikeScalarWhereInput
+    data: XOR<LikeUpdateManyMutationInput, LikeUncheckedUpdateManyWithoutArtistInput>
+  }
+
+  export type CommentUpsertWithWhereUniqueWithoutArtistInput = {
+    where: CommentWhereUniqueInput
+    update: XOR<CommentUpdateWithoutArtistInput, CommentUncheckedUpdateWithoutArtistInput>
+    create: XOR<CommentCreateWithoutArtistInput, CommentUncheckedCreateWithoutArtistInput>
+  }
+
+  export type CommentUpdateWithWhereUniqueWithoutArtistInput = {
+    where: CommentWhereUniqueInput
+    data: XOR<CommentUpdateWithoutArtistInput, CommentUncheckedUpdateWithoutArtistInput>
+  }
+
+  export type CommentUpdateManyWithWhereWithoutArtistInput = {
+    where: CommentScalarWhereInput
+    data: XOR<CommentUpdateManyMutationInput, CommentUncheckedUpdateManyWithoutArtistInput>
+  }
+
+  export type SongUpsertWithWhereUniqueWithoutArtistInput = {
+    where: SongWhereUniqueInput
+    update: XOR<SongUpdateWithoutArtistInput, SongUncheckedUpdateWithoutArtistInput>
+    create: XOR<SongCreateWithoutArtistInput, SongUncheckedCreateWithoutArtistInput>
+  }
+
+  export type SongUpdateWithWhereUniqueWithoutArtistInput = {
+    where: SongWhereUniqueInput
+    data: XOR<SongUpdateWithoutArtistInput, SongUncheckedUpdateWithoutArtistInput>
+  }
+
+  export type SongUpdateManyWithWhereWithoutArtistInput = {
+    where: SongScalarWhereInput
+    data: XOR<SongUpdateManyMutationInput, SongUncheckedUpdateManyWithoutArtistInput>
+  }
+
+  export type SongScalarWhereInput = {
+    AND?: SongScalarWhereInput | SongScalarWhereInput[]
+    OR?: SongScalarWhereInput[]
+    NOT?: SongScalarWhereInput | SongScalarWhereInput[]
+    id?: StringFilter<"Song"> | string
+    img?: StringFilter<"Song"> | string
+    title?: StringFilter<"Song"> | string
+    albumName?: StringFilter<"Song"> | string
+    artist?: StringFilter<"Song"> | string
+    genre?: StringFilter<"Song"> | string
+    releaseDate?: StringFilter<"Song"> | string
+    duration?: StringFilter<"Song"> | string
+    plays?: IntFilter<"Song"> | number
+    song?: StringFilter<"Song"> | string
+    likes?: IntFilter<"Song"> | number
+    artistId?: StringNullableFilter<"Song"> | string | null
+  }
+
+  export type LikeCreateManyMovieInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    artistId?: string | null
+  }
+
+  export type CommentCreateManyMovieInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    songId?: string | null
+    artistId?: string | null
+  }
+
+  export type LikeUpdateWithoutMovieInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    Website?: WebsiteUpdateOneWithoutLikesNestedInput
+    User?: UserUpdateOneRequiredWithoutLikesNestedInput
+    Artist?: ArtistUpdateOneWithoutLikesNestedInput
+  }
+
+  export type LikeUncheckedUpdateWithoutMovieInput = {
     userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserLikedSongUncheckedUpdateManyWithoutLikedSongInput = {
+  export type LikeUncheckedUpdateManyWithoutMovieInput = {
     userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserLikedWebsiteCreateManyUserInput = {
-    id?: string
-    likedWebsiteId: string
+  export type CommentUpdateWithoutMovieInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    website?: WebsiteUpdateOneWithoutCommentsNestedInput
+    Song?: SongUpdateOneWithoutCommentsNestedInput
+    Artist?: ArtistUpdateOneWithoutCommentsNestedInput
   }
 
-  export type UserLikedSongCreateManyUserInput = {
-    id?: string
-    likedSongId: string
+  export type CommentUncheckedUpdateWithoutMovieInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    songId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserLikedArtistCreateManyUserInput = {
+  export type CommentUncheckedUpdateManyWithoutMovieInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    songId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LikeCreateManyWebsiteInput = {
     id?: string
-    likedArtistId: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type CommentCreateManyWebsiteInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    songId?: string | null
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type LikeUpdateWithoutWebsiteInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    User?: UserUpdateOneRequiredWithoutLikesNestedInput
+    Artist?: ArtistUpdateOneWithoutLikesNestedInput
+    Movie?: MovieUpdateOneWithoutLikesNestedInput
+  }
+
+  export type LikeUncheckedUpdateWithoutWebsiteInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LikeUncheckedUpdateManyWithoutWebsiteInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CommentUpdateWithoutWebsiteInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    Song?: SongUpdateOneWithoutCommentsNestedInput
+    Artist?: ArtistUpdateOneWithoutCommentsNestedInput
+    Movie?: MovieUpdateOneWithoutCommentsNestedInput
+  }
+
+  export type CommentUncheckedUpdateWithoutWebsiteInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    songId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CommentUncheckedUpdateManyWithoutWebsiteInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    songId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CommentCreateManySongInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    comment: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    artistId?: string | null
+    movieId?: string | null
+  }
+
+  export type CommentUpdateWithoutSongInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    website?: WebsiteUpdateOneWithoutCommentsNestedInput
+    Artist?: ArtistUpdateOneWithoutCommentsNestedInput
+    Movie?: MovieUpdateOneWithoutCommentsNestedInput
+  }
+
+  export type CommentUncheckedUpdateWithoutSongInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CommentUncheckedUpdateManyWithoutSongInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type LikeCreateManyUserInput = {
+    id?: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    artistId?: string | null
+    movieId?: string | null
   }
 
   export type AddressUpdateInput = {
@@ -15603,78 +14147,168 @@ export namespace Prisma {
     zip?: StringFieldUpdateOperationsInput | string
   }
 
-  export type UserLikedWebsiteUpdateWithoutUserInput = {
-    likedWebsite?: WebsiteProjectUpdateOneRequiredWithoutLikedByUsersNestedInput
+  export type LikeUpdateWithoutUserInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    Website?: WebsiteUpdateOneWithoutLikesNestedInput
+    Artist?: ArtistUpdateOneWithoutLikesNestedInput
+    Movie?: MovieUpdateOneWithoutLikesNestedInput
   }
 
-  export type UserLikedWebsiteUncheckedUpdateWithoutUserInput = {
-    likedWebsiteId?: StringFieldUpdateOperationsInput | string
+  export type LikeUncheckedUpdateWithoutUserInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserLikedWebsiteUncheckedUpdateManyWithoutUserInput = {
-    likedWebsiteId?: StringFieldUpdateOperationsInput | string
+  export type LikeUncheckedUpdateManyWithoutUserInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    artistId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserLikedSongUpdateWithoutUserInput = {
-    likedSong?: SongUpdateOneRequiredWithoutLikedByUsersNestedInput
-  }
-
-  export type UserLikedSongUncheckedUpdateWithoutUserInput = {
-    likedSongId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserLikedSongUncheckedUpdateManyWithoutUserInput = {
-    likedSongId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserLikedArtistUpdateWithoutUserInput = {
-    likedArtist?: ArtistUpdateOneRequiredWithoutLikedByUsersNestedInput
-  }
-
-  export type UserLikedArtistUncheckedUpdateWithoutUserInput = {
-    likedArtistId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserLikedArtistUncheckedUpdateManyWithoutUserInput = {
-    likedArtistId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ArtistCommentCreateManyArtistInput = {
+  export type LikeCreateManyArtistInput = {
     id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    movieId?: string | null
+  }
+
+  export type CommentCreateManyArtistInput = {
+    id?: string
+    userId: string
+    category: $Enums.Category
+    itemId: string
     comment: string
+    timestamp?: Date | string
+    websiteId?: string | null
+    songId?: string | null
+    movieId?: string | null
+  }
+
+  export type SongCreateManyArtistInput = {
+    id?: string
+    img: string
+    title: string
+    albumName: string
+    artist: string
+    genre: string
+    releaseDate: string
+    duration: string
+    plays?: number
+    song: string
     likes?: number
   }
 
-  export type UserLikedArtistCreateManyLikedArtistInput = {
-    id?: string
-    userId: string
+  export type LikeUpdateWithoutArtistInput = {
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    Website?: WebsiteUpdateOneWithoutLikesNestedInput
+    User?: UserUpdateOneRequiredWithoutLikesNestedInput
+    Movie?: MovieUpdateOneWithoutLikesNestedInput
   }
 
-  export type ArtistCommentUpdateWithoutArtistInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ArtistCommentUncheckedUpdateWithoutArtistInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type ArtistCommentUncheckedUpdateManyWithoutArtistInput = {
-    comment?: StringFieldUpdateOperationsInput | string
-    likes?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type UserLikedArtistUpdateWithoutLikedArtistInput = {
-    user?: UserUpdateOneRequiredWithoutLikedArtistsNestedInput
-  }
-
-  export type UserLikedArtistUncheckedUpdateWithoutLikedArtistInput = {
+  export type LikeUncheckedUpdateWithoutArtistInput = {
     userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type UserLikedArtistUncheckedUpdateManyWithoutLikedArtistInput = {
+  export type LikeUncheckedUpdateManyWithoutArtistInput = {
     userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CommentUpdateWithoutArtistInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    website?: WebsiteUpdateOneWithoutCommentsNestedInput
+    Song?: SongUpdateOneWithoutCommentsNestedInput
+    Movie?: MovieUpdateOneWithoutCommentsNestedInput
+  }
+
+  export type CommentUncheckedUpdateWithoutArtistInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    songId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type CommentUncheckedUpdateManyWithoutArtistInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
+    itemId?: StringFieldUpdateOperationsInput | string
+    comment?: StringFieldUpdateOperationsInput | string
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+    websiteId?: NullableStringFieldUpdateOperationsInput | string | null
+    songId?: NullableStringFieldUpdateOperationsInput | string | null
+    movieId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SongUpdateWithoutArtistInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    albumName?: StringFieldUpdateOperationsInput | string
+    artist?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    plays?: IntFieldUpdateOperationsInput | number
+    song?: StringFieldUpdateOperationsInput | string
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: CommentUpdateManyWithoutSongNestedInput
+  }
+
+  export type SongUncheckedUpdateWithoutArtistInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    albumName?: StringFieldUpdateOperationsInput | string
+    artist?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    plays?: IntFieldUpdateOperationsInput | number
+    song?: StringFieldUpdateOperationsInput | string
+    likes?: IntFieldUpdateOperationsInput | number
+    comments?: CommentUncheckedUpdateManyWithoutSongNestedInput
+  }
+
+  export type SongUncheckedUpdateManyWithoutArtistInput = {
+    img?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    albumName?: StringFieldUpdateOperationsInput | string
+    artist?: StringFieldUpdateOperationsInput | string
+    genre?: StringFieldUpdateOperationsInput | string
+    releaseDate?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    plays?: IntFieldUpdateOperationsInput | number
+    song?: StringFieldUpdateOperationsInput | string
+    likes?: IntFieldUpdateOperationsInput | number
   }
 
 
@@ -15683,9 +14317,13 @@ export namespace Prisma {
    * Aliases for legacy arg types
    */
     /**
-     * @deprecated Use WebsiteProjectCountOutputTypeDefaultArgs instead
+     * @deprecated Use MovieCountOutputTypeDefaultArgs instead
      */
-    export type WebsiteProjectCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WebsiteProjectCountOutputTypeDefaultArgs<ExtArgs>
+    export type MovieCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MovieCountOutputTypeDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use WebsiteCountOutputTypeDefaultArgs instead
+     */
+    export type WebsiteCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WebsiteCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use SongCountOutputTypeDefaultArgs instead
      */
@@ -15703,45 +14341,37 @@ export namespace Prisma {
      */
     export type AddressArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AddressDefaultArgs<ExtArgs>
     /**
-     * @deprecated Use WebsiteProjectDefaultArgs instead
+     * @deprecated Use LikeDefaultArgs instead
      */
-    export type WebsiteProjectArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WebsiteProjectDefaultArgs<ExtArgs>
+    export type LikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = LikeDefaultArgs<ExtArgs>
     /**
-     * @deprecated Use WebsiteProjectCommentDefaultArgs instead
+     * @deprecated Use CommentDefaultArgs instead
      */
-    export type WebsiteProjectCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WebsiteProjectCommentDefaultArgs<ExtArgs>
+    export type CommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CommentDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use CardDefaultArgs instead
+     */
+    export type CardArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = CardDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use MovieDefaultArgs instead
+     */
+    export type MovieArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = MovieDefaultArgs<ExtArgs>
+    /**
+     * @deprecated Use WebsiteDefaultArgs instead
+     */
+    export type WebsiteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = WebsiteDefaultArgs<ExtArgs>
     /**
      * @deprecated Use SongDefaultArgs instead
      */
     export type SongArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SongDefaultArgs<ExtArgs>
     /**
-     * @deprecated Use SongCommentDefaultArgs instead
-     */
-    export type SongCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = SongCommentDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use UserLikedSongDefaultArgs instead
-     */
-    export type UserLikedSongArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserLikedSongDefaultArgs<ExtArgs>
-    /**
      * @deprecated Use UserDefaultArgs instead
      */
     export type UserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserDefaultArgs<ExtArgs>
     /**
-     * @deprecated Use UserLikedWebsiteDefaultArgs instead
-     */
-    export type UserLikedWebsiteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserLikedWebsiteDefaultArgs<ExtArgs>
-    /**
      * @deprecated Use ArtistDefaultArgs instead
      */
     export type ArtistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ArtistDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use ArtistCommentDefaultArgs instead
-     */
-    export type ArtistCommentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = ArtistCommentDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use UserLikedArtistDefaultArgs instead
-     */
-    export type UserLikedArtistArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = UserLikedArtistDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany

@@ -100,7 +100,51 @@ Prisma.NullTypes = {
  * Enums
  */
 
-exports.Prisma.WebsiteProjectScalarFieldEnum = {
+exports.Prisma.LikeScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  category: 'category',
+  itemId: 'itemId',
+  timestamp: 'timestamp',
+  websiteId: 'websiteId',
+  artistId: 'artistId',
+  movieId: 'movieId'
+};
+
+exports.Prisma.CommentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  category: 'category',
+  itemId: 'itemId',
+  comment: 'comment',
+  timestamp: 'timestamp',
+  websiteId: 'websiteId',
+  songId: 'songId',
+  artistId: 'artistId',
+  movieId: 'movieId'
+};
+
+exports.Prisma.CardScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  cardId: 'cardId',
+  amount: 'amount',
+  currency: 'currency',
+  transactionType: 'transactionType',
+  status: 'status',
+  timestamp: 'timestamp'
+};
+
+exports.Prisma.MovieScalarFieldEnum = {
+  id: 'id',
+  img: 'img',
+  title: 'title',
+  genre: 'genre',
+  description: 'description',
+  releaseDate: 'releaseDate'
+};
+
+exports.Prisma.WebsiteScalarFieldEnum = {
   id: 'id',
   img: 'img',
   title: 'title',
@@ -108,15 +152,7 @@ exports.Prisma.WebsiteProjectScalarFieldEnum = {
   technologies: 'technologies',
   description: 'description',
   release_date: 'release_date',
-  link: 'link',
-  likes: 'likes'
-};
-
-exports.Prisma.WebsiteProjectCommentScalarFieldEnum = {
-  id: 'id',
-  comment: 'comment',
-  websiteProjectId: 'websiteProjectId',
-  likes: 'likes'
+  link: 'link'
 };
 
 exports.Prisma.SongScalarFieldEnum = {
@@ -130,20 +166,8 @@ exports.Prisma.SongScalarFieldEnum = {
   duration: 'duration',
   plays: 'plays',
   song: 'song',
-  likes: 'likes'
-};
-
-exports.Prisma.SongCommentScalarFieldEnum = {
-  id: 'id',
-  comment: 'comment',
-  songId: 'songId',
-  likes: 'likes'
-};
-
-exports.Prisma.UserLikedSongScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  likedSongId: 'likedSongId'
+  likes: 'likes',
+  artistId: 'artistId'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -152,33 +176,13 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name'
 };
 
-exports.Prisma.UserLikedWebsiteScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  likedWebsiteId: 'likedWebsiteId'
-};
-
 exports.Prisma.ArtistScalarFieldEnum = {
   id: 'id',
   img: 'img',
   title: 'title',
   genre: 'genre',
   description: 'description',
-  releaseDate: 'releaseDate',
-  likes: 'likes'
-};
-
-exports.Prisma.ArtistCommentScalarFieldEnum = {
-  id: 'id',
-  comment: 'comment',
-  artistId: 'artistId',
-  likes: 'likes'
-};
-
-exports.Prisma.UserLikedArtistScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  likedArtistId: 'likedArtistId'
+  releaseDate: 'releaseDate'
 };
 
 exports.Prisma.SortOrder = {
@@ -190,19 +194,33 @@ exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
+exports.Category = exports.$Enums.Category = {
+  ARTIST: 'ARTIST',
+  SONG: 'SONG',
+  WEBSITE: 'WEBSITE',
+  MOVIE: 'MOVIE'
+};
 
+exports.TransactionType = exports.$Enums.TransactionType = {
+  PURCHASE: 'PURCHASE',
+  REFUND: 'REFUND'
+};
+
+exports.Status = exports.$Enums.Status = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED'
+};
 
 exports.Prisma.ModelName = {
-  WebsiteProject: 'WebsiteProject',
-  WebsiteProjectComment: 'WebsiteProjectComment',
+  Like: 'Like',
+  Comment: 'Comment',
+  Card: 'Card',
+  Movie: 'Movie',
+  Website: 'Website',
   Song: 'Song',
-  SongComment: 'SongComment',
-  UserLikedSong: 'UserLikedSong',
   User: 'User',
-  UserLikedWebsite: 'UserLikedWebsite',
-  Artist: 'Artist',
-  ArtistComment: 'ArtistComment',
-  UserLikedArtist: 'UserLikedArtist'
+  Artist: 'Artist'
 };
 
 /**
