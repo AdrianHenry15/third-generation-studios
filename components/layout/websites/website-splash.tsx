@@ -84,7 +84,7 @@ const WebsiteSplash = () => {
                                 </div>
                                 <p className="text-gray-400 text-sm">Released: {website.release_date}</p>
                                 <p className="w-full md:max-w-[70%] lg:max-w-[50%] xl:max-w-[35%] text-gray-200">
-                                    {truncateString(website.description, 150)}
+                                    {truncateString(website.technologies!, 150)}
                                 </p>
                             </div>
                         </SwiperSlide>

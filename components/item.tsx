@@ -31,7 +31,7 @@ const Item = (props: ItemProps) => {
                     alt={props.title}
                 />
                 {/* ACTION OVERLAY */}
-                <ActionOverlay itemType={props.itemType} websiteTitle={props.title} websiteLink={props.websiteLink} itemID={props.itemID} />
+                {/* <ActionOverlay itemType={props.itemType} websiteTitle={props.title} websiteLink={props.websiteLink} itemID={props.itemID} /> */}
             </ImageContainer>
             {/* TITLE AND INFO */}
             <p className="text-white font-semibold text-sm w-[80%] hover:text-red-500 transition-colors duration-300 cursor-pointer">

@@ -6,23 +6,23 @@ import React from "react";
 import Pic from "@/public/music/jack.jpg";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { useItemStore } from "stores/item-store";
-import { useLikeStore } from "stores/like-store";
+import { useFavoriteStore } from "stores/favorite-store";
 
 const TrackDisplay = () => {
-    const likeStore = useLikeStore();
+    const likeStore = useFavoriteStore();
     const { currentItemID, currentItemType } = useItemStore();
 
-    const isItemLiked =
+    const isItemFavorited =
         currentItemType &&
         currentItemID &&
-        Array.isArray(likeStore.likedItems[currentItemType]) &&
-        likeStore.likedItems[currentItemType].includes(currentItemID);
+        Array.isArray(likeStore.favoritedItems[currentItemType]) &&
+        likeStore.favoritedItems[currentItemType].includes(currentItemID);
 
     const handleLike = () => {
-        if (isItemLiked) {
-            likeStore.unlikeItem(currentItemType!, currentItemID!);
+        if (isItemFavorited) {
+            likeStore.unFavoriteItem(currentItemType!, currentItemID!);
         } else {
-            likeStore.likeItem(currentItemType!, currentItemID!);
+            likeStore.favoriteItem(currentItemType!, currentItemID!);
         }
     };
 
@@ -37,9 +37,9 @@ const TrackDisplay = () => {
                 <h5 className="text-white font-semibold">Track Name</h5>
                 <p className="text-gray-400 text-xs">Artist Name</p>
             </div>
-            {/* LIKE BUTTON */}
+            {/* FAVORITE BUTTON */}
             <p className="z-20 cursor-pointer text-white hover:scale-125 scale-100 transition-transform duration-300" onClick={handleLike}>
-                {isItemLiked ? <FaHeart /> : <FaRegHeart />}
+                {isItemFavorited ? <FaHeart /> : <FaRegHeart />}
             </p>
         </div>
     );

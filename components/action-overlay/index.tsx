@@ -4,10 +4,10 @@ import React, { useState } from "react";
 
 import PlayButton from "./play-button";
 import SaveButton from "./save-button";
-import LikeButton from "./like-button";
 import OpenButton from "./open-button";
 import OpenLinkModal from "../modals/open-link-modal";
 import { ItemType } from "@/lib/types";
+import FavoriteButton from "./favorite-button";
 
 interface IActionOverlayProps {
     // website?: boolean;
@@ -33,7 +33,7 @@ const ActionOverlay = (props: IActionOverlayProps) => {
     return (
         <div className="absolute cursor-pointer top-0 left-0 w-full h-full bg-black/20 text-white">
             {/* LIKE */}
-            <LikeButton itemType={props.itemType} itemID={props.itemID!} />
+            <FavoriteButton itemType={props.itemType} itemID={props.itemID!} />
 
             {/* SAVE */}
             <SaveButton />
