@@ -1,29 +1,61 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export const GET = async (request: Request) => {
-    const url = new URL(request.url);
-    const category = url.searchParams.get("category");
-    const itemId = url.searchParams.get("itemId");
-    // Get likes for the specified item
-    // Implement your logic to fetch likes for the item based on category and itemId
-    return NextResponse.json({ message: "All Likes on Item successfully fetched.", category, itemId });
-};
+export async function POST(req: NextRequest) {
+    try {
+        // Extract category from the URL path
+        const { pathname } = req.nextUrl;
+        const category = pathname.split("/")[3]; // Adjust the index based on your URL structure
+        const itemId = pathname.split("/")[4]; // Adjust the index based on your URL structure
 
-export const POST = async (request: Request) => {
-    const url = new URL(request.url);
-    const category = url.searchParams.get("category");
-    const itemId = url.searchParams.get("itemId");
+        if (!category) {
+            throw new Error("Category is missing in the URL");
+        }
 
-    if (!category || !itemId) {
-        return NextResponse.json(new Error("Invalid request"));
+        // Your logic for handling the like operation can go here
+
+        return NextResponse.json({ message: "Like added", category, itemId });
+    } catch (error) {
+        console.error("Error in API route:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
-    // Create a like for the specified item
-    // Implement your logic to add a like for the item based on category and itemId
-    return NextResponse.json("Like created successfully.");
-};
+}
 
-export const DELETE = async () => {
-    // Remove a like for the specified item
-    // Implement your logic to delete a like for the item based on category and itemId
-    return NextResponse.json("Like deleted successfully.");
-};
+export async function GET(req: NextRequest) {
+    try {
+        // Extract category from the URL path
+        const { pathname } = req.nextUrl;
+        const category = pathname.split("/")[3]; // Adjust the index based on your URL structure
+        const itemId = pathname.split("/")[4]; // Adjust the index based on your URL structure
+
+        if (!category) {
+            throw new Error("Category is missing in the URL");
+        }
+
+        // Your logic for handling the like operation can go here
+
+        return NextResponse.json({ message: "Like retreived", category, itemId });
+    } catch (error) {
+        console.error("Error in API route:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    try {
+        // Extract category and itemId from the URL path
+        const { pathname } = req.nextUrl;
+        const category = pathname.split("/")[3]; // Adjust the index based on your URL structure
+        const itemId = pathname.split("/")[4]; // Adjust the index based on your URL structure
+
+        if (!category) {
+            throw new Error("Category is missing in the URL");
+        }
+
+        // Your logic for handling the delete operation can go here
+
+        return NextResponse.json({ message: "Like deleted", category, itemId });
+    } catch (error) {
+        console.error("Error in API route:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}
