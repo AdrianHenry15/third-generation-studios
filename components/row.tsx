@@ -4,16 +4,16 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Item from "./item";
 import axios from "axios";
-import { ItemType } from "@/lib/types";
+import { Category } from "@/lib/types";
 
 interface IMusicRowProps {
     title: string;
     item?: any[];
     fetchURL?: string;
-    itemType: ItemType;
+    category: Category;
 }
 
-const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, itemType }) => {
+const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, category }) => {
     const [items, setItems] = useState<any[]>([]); // Adjust 'any' to the actual type of your movie data
 
     const ItemList = item ? item : [];
@@ -62,11 +62,11 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, itemType }) => {
                         style={{ width: "100%", height: "100%" }}
                     >
                         {/* MOVIE ITEM */}
-                        {itemType === ItemType.MOVIE ? (
+                        {category === Category.MOVIE ? (
                             <ul>
                                 {items.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <Item itemID={item.id} itemType={itemType} title={item.title} img={item.backdrop_path} />
+                                        <Item itemID={item.id} itemType={category} title={item.title} img={item.backdrop_path} />
                                     </SwiperSlide>
                                 ))}
                             </ul>
@@ -83,7 +83,7 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, itemType }) => {
                                             title={item.title}
                                             img={item.img}
                                             itemID={item.id}
-                                            itemType={itemType}
+                                            itemType={category}
                                         />
                                     </SwiperSlide>
                                 ))}

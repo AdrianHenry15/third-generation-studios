@@ -3,7 +3,7 @@ export type NavMenu = {
     link: string;
 };
 
-export enum ItemType {
+export enum Category {
     WEBSITE = "Website",
     MUSIC = "Music",
     ARTIST = "Artist",
@@ -21,7 +21,6 @@ export type ProjectType = {
 };
 
 export type WebsiteProjectType = ProjectType & {
-    technologies: string;
     link: string;
 };
 

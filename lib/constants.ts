@@ -13,14 +13,14 @@ export const NavMenuItems: NavMenu[] = [
         title: "Music",
         link: "/music",
     },
-    {
-        title: "Movie Picks",
-        link: "/movie-picks",
-    },
-    {
-        title: "Stock Picks",
-        link: "/stock-picks",
-    },
+    // {
+    //     title: "Movie Picks",
+    //     link: "/movie-picks",
+    // },
+    // {
+    //     title: "Stock Picks",
+    //     link: "/stock-picks",
+    // },
     {
         title: "Pricing",
         link: "/pricing",
