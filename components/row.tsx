@@ -66,7 +66,7 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, category }) => {
                             <ul>
                                 {items.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <Item itemID={item.id} itemType={category} title={item.title} img={item.backdrop_path} />
+                                        <Item itemID={item.id} category={category} title={item.title} img={item.backdrop_path} />
                                     </SwiperSlide>
                                 ))}
                             </ul>
@@ -83,7 +83,7 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, category }) => {
                                             title={item.title}
                                             img={item.img}
                                             itemID={item.id}
-                                            itemType={category}
+                                            category={category}
                                         />
                                     </SwiperSlide>
                                 ))}

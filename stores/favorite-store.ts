@@ -1,19 +1,19 @@
 import { create } from "zustand";
-import { ItemType } from "@/lib/types";
+import { Category } from "@/lib/types";
 
 type FavoriteStore = {
-    favoritedItems: Record<ItemType, string[]>;
-    favoriteItem: (category: ItemType, id: string) => void;
-    unFavoriteItem: (category: ItemType, id: string) => void;
+    favoritedItems: Record<Category, string[]>;
+    favoriteItem: (category: Category, id: string) => void;
+    unFavoriteItem: (category: Category, id: string) => void;
 };
 
 export const useFavoriteStore = create<FavoriteStore>((set) => ({
     favoritedItems: {
-        [ItemType.WEBSITE]: [],
-        [ItemType.MUSIC]: [],
-        [ItemType.ARTIST]: [],
-        [ItemType.MOVIE]: [],
-        [ItemType.NONE]: [],
+        [Category.WEBSITE]: [],
+        [Category.MUSIC]: [],
+        [Category.ARTIST]: [],
+        [Category.MOVIE]: [],
+        [Category.NONE]: [],
     },
     favoriteItem: (category, id) => {
         set((state) => {

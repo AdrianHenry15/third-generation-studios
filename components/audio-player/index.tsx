@@ -6,7 +6,7 @@ import RightPanel from "./right-panel";
 import TrackDisplay from "./track-display";
 import Controls from "./controls";
 import { useItemStore } from "stores/item-store";
-import { ItemType } from "@/lib/types";
+import { Category } from "@/lib/types";
 
 const AudioPlayer = () => {
     const { currentItemID, currentItemType } = useItemStore();
