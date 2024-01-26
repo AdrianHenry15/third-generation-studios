@@ -2,18 +2,19 @@
 
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import Item from "./item";
 import axios from "axios";
 import { Category } from "@/lib/types";
 
-interface IMusicRowProps {
+interface IRowProps {
     title: string;
     item?: any[];
     fetchURL?: string;
     category: Category;
 }
 
-const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, category }) => {
+const Row: React.FC<IRowProps> = ({ title, item, fetchURL, category }) => {
     const [items, setItems] = useState<any[]>([]); // Adjust 'any' to the actual type of your movie data
 
     const ItemList = item ? item : [];
@@ -66,7 +67,7 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, category }) => {
                             <ul>
                                 {items.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <Item itemID={item.id} category={category} title={item.title} img={item.backdrop_path} />
+                                        <Item itemId={item.id} category={category} title={item.title} img={item.backdrop_path} />
                                     </SwiperSlide>
                                 ))}
                             </ul>
@@ -77,12 +78,9 @@ const Row: React.FC<IMusicRowProps> = ({ title, item, fetchURL, category }) => {
                                     <SwiperSlide key={id}>
                                         <Item
                                             websiteLink={item.link}
-                                            // artist={artist}
-                                            // website={website}
-                                            // music={music}
                                             title={item.title}
                                             img={item.img}
-                                            itemID={item.id}
+                                            itemId={item.id}
                                             category={category}
                                         />
                                     </SwiperSlide>

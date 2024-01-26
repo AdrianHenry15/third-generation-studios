@@ -3,7 +3,7 @@ import prisma from "db";
 
 export async function GET() {
     // Fetch artists from the Prisma MongoDB database
-    const artists = await prisma.artist.findMany({
+    const AllArtists = await prisma.artist.findMany({
         select: {
             id: true,
             img: true,
@@ -16,14 +16,14 @@ export async function GET() {
     });
 
     // Respond with the fetched artists
-    return NextResponse.json({ message: "artists successfully fetched!", data: artists });
+    return NextResponse.json({ message: "artists successfully fetched!", data: AllArtists });
 }
 
 export async function POST(req: Request) {
     const { id, img, title, genre, description, releaseDate, songs } = await req.json();
 
     // create artist
-    const artist = await prisma.artist.create({
+    const CreatedArtist = await prisma.artist.create({
         data: {
             id: id,
             img: img,
@@ -36,14 +36,14 @@ export async function POST(req: Request) {
     });
 
     // Respond with the created artists
-    return NextResponse.json({ message: "artists successfully created!", data: artist });
+    return NextResponse.json({ message: "artists successfully created!", data: CreatedArtist });
 }
 
 export async function PUT(req: Request) {
     const { id, img, title, genre, description, releaseDate, songs } = await req.json();
 
-    // create artist
-    const artist = await prisma.artist.update({
+    // update artist
+    const UpdatedArtist = await prisma.artist.update({
         where: {
             id: id,
         },
@@ -57,20 +57,20 @@ export async function PUT(req: Request) {
         },
     });
 
-    // Respond with the created artists
-    return NextResponse.json({ message: "artists successfully updated!", data: artist });
+    // Respond with the updated artists
+    return NextResponse.json({ message: "artists successfully updated!", data: UpdatedArtist });
 }
 
 export async function DELETE(req: NextRequest) {
     const { id } = await req.json();
 
-    // create artist
-    const artist = await prisma.artist.delete({
+    // delete artist
+    const DeletedArtist = await prisma.artist.delete({
         where: {
             id: id,
         },
     });
 
-    // Respond with the created artists
-    return NextResponse.json({ message: "artists successfully deleted!", data: artist });
+    // Respond with the deleted artists
+    return NextResponse.json({ message: "artists successfully deleted!", data: DeletedArtist });
 }

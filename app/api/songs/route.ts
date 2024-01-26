@@ -3,7 +3,7 @@ import prisma from "db";
 
 export async function GET() {
     // Fetch songs from the Prisma MongoDB database
-    const songs = await prisma.song.findMany({
+    const AllSongs = await prisma.song.findMany({
         select: {
             id: true,
             img: true,
@@ -20,14 +20,14 @@ export async function GET() {
     });
 
     // Respond with the fetched songs
-    return NextResponse.json({ message: "Songs successfully fetched!", data: songs });
+    return NextResponse.json({ message: "Songs successfully fetched!", data: AllSongs });
 }
 
 export async function POST(req: Request) {
     const { id, img, title, genre, albumName, artist, duration, plays, song, likes, releaseDate } = await req.json();
 
     // create song
-    const createdSong = await prisma.song.create({
+    const CreatedSong = await prisma.song.create({
         data: {
             id: id,
             img: img,
@@ -45,14 +45,14 @@ export async function POST(req: Request) {
     });
 
     // Respond with the created songs
-    return NextResponse.json({ message: "Songs successfully created!", data: createdSong });
+    return NextResponse.json({ message: "Songs successfully created!", data: CreatedSong });
 }
 
 export async function PUT(req: Request) {
     const { id, img, title, genre, albumName, artist, duration, plays, song, likes, releaseDate } = await req.json();
 
     // update song
-    const updatedSong = await prisma.song.update({
+    const UpdatedSong = await prisma.song.update({
         where: {
             id: id,
         },
@@ -72,19 +72,19 @@ export async function PUT(req: Request) {
     });
 
     // Respond with the updated songs
-    return NextResponse.json({ message: "Songs successfully updated!", data: updatedSong });
+    return NextResponse.json({ message: "Songs successfully updated!", data: UpdatedSong });
 }
 
 export async function DELETE(req: NextRequest) {
     const { id } = await req.json();
 
-    // create song
-    const song = await prisma.song.delete({
+    // deleted song
+    const DeletedSong = await prisma.song.delete({
         where: {
             id: id,
         },
     });
 
-    // Respond with the created songs
-    return NextResponse.json({ message: "Songs successfully deleted!", data: song });
+    // Respond with the deleted songs
+    return NextResponse.json({ message: "Songs successfully deleted!", data: DeletedSong });
 }

@@ -5,12 +5,12 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const id = params.id;
 
     // get artist
-    const website = await prisma.artist.findUnique({
+    const artist = await prisma.artist.findUnique({
         where: {
             id: String(id),
         },
     });
 
     // Respond with the found artist
-    return NextResponse.json({ message: "Artist successfully retrieved!", data: website });
+    return NextResponse.json({ message: "Artist successfully retrieved!", data: artist });
 }

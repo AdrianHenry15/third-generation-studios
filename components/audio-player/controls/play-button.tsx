@@ -5,9 +5,9 @@ import { useItemStore } from "stores/item-store";
 
 const AudioPlayerPlayButton = () => {
     const { isPlaying, play, pause } = useAudioPlayerStore();
-    const { currentItemID, currentItemType } = useItemStore();
+    const { currentItemId, currentCategory } = useItemStore();
     const handlePlayPause = () => {
-        isPlaying ? pause() : play(currentItemID!, currentItemType!);
+        isPlaying ? pause() : play(currentItemId!, currentCategory!);
     };
     return (
         <p className="cursor-pointer scale-100 hover:scale-110 transition-transform duration-300 ease-in-out" onClick={handlePlayPause}>

@@ -1,16 +1,16 @@
-import { ItemType } from "@/lib/types";
+import { Category } from "@/lib/types";
 import { create } from "zustand";
 
 interface ItemStoreState {
-    currentItemID: string; // Store id of currently playing item
-    currentItemType: ItemType; // Store type of currently playing item
-    setCurrentItemType: (currentTrackType: ItemType) => void;
-    setCurrentItemID: (currentItemId: string) => void;
+    currentItemId: string; // Store id of currently playing item
+    currentCategory: Category; // Store type of currently playing item
+    setCurrentCategory: (currentTrackType: Category) => void;
+    setCurrentItemId: (currentItemId: string) => void;
 }
 
 export const useItemStore = create<ItemStoreState>((set) => ({
-    currentItemID: "",
-    currentItemType: {} as ItemType,
-    setCurrentItemType: (currentItemType: ItemType) => set({ currentItemType: currentItemType }),
-    setCurrentItemID: (currentItemID: string) => set({ currentItemID: currentItemID }),
+    currentItemId: "",
+    currentCategory: {} as Category,
+    setCurrentCategory: (currentCategory: Category) => set({ currentCategory: currentCategory }),
+    setCurrentItemId: (currentItemId: string) => set({ currentItemId: currentItemId }),
 }));

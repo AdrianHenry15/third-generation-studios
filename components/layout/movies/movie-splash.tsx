@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
-import requests from "@/lib/movie-requests";
+import requests from "@/lib/requests";
 import { MovieType } from "@/lib/types";
 
 const MovieSplash = () => {

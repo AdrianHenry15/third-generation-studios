@@ -12,9 +12,9 @@ const ArtistIcon = (props: IArtistIconProps) => {
     return (
         <div className={`${props.className} my-4 mr-10 min-w-[120px]`}>
             {/* {props.artist.toLowerCase() === "search" ? <MusicImage img={props.img} /> : <Image src={props.img} alt="" />} */}
-            <ArtistImage artist={props.artist.name} img={props.artist.img} />
+            <ArtistImage artist={props.artist.title} img={props.artist.img} />
             <div>
-                <p className="text-white">{props.artist.name}</p>
+                <p className="text-white">{props.artist.title}</p>
             </div>
         </div>
     );

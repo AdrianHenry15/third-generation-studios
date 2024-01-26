@@ -1,4 +1,4 @@
-import { ArtistType, MusicProjectType, WebsiteProjectType } from "./types";
+import { ArtistType, SongType, WebsiteType } from "./types";
 
 // WEBSITES IMAGES
 import Mollys from "@/public/websites/mollys-edit.png";
@@ -7,7 +7,6 @@ import TaharkaDemo from "@/public/websites/taharka-vercel-shopify-edit.png";
 import TaharkaShopify from "@/public/websites/taharka-shopify-edit.png";
 import Zoo from "@/public/websites/zookeeper-edit.png";
 import Gameboy from "@/public/websites/gameboy-edit.png";
-import Osk from "@/public/websites/osk-edit.png";
 import Calendar from "@/public/websites/calendar-edit.png";
 import Taskmaster from "@/public/websites/taskmaster-edit.png";
 import Taskinator from "@/public/websites/taskinator-edit.png";
@@ -24,7 +23,7 @@ import Timb from "@/public/music/timb.jpg";
 import Uzi from "@/public/music/uzivert.jpg";
 import Lotus from "@/public/music/wlotus.jpg";
 
-export const PersonalProjects: WebsiteProjectType[] = [
+export const PersonalProjects: WebsiteType[] = [
     {
         id: "website-1",
         img: Gameboy,
@@ -42,7 +41,7 @@ export const PersonalProjects: WebsiteProjectType[] = [
         link: "https://react-portfolio-2.vercel.app/",
     },
 ];
-export const SchoolProjects: WebsiteProjectType[] = [
+export const SchoolProjects: WebsiteType[] = [
     {
         id: "website-3",
         img: Zoo,
@@ -93,7 +92,7 @@ export const SchoolProjects: WebsiteProjectType[] = [
     },
 ];
 
-export const ClientProjects: WebsiteProjectType[] = [
+export const ClientProjects: WebsiteType[] = [
     {
         id: "website-9",
         img: Mollys,
@@ -136,6 +135,7 @@ export const Artists: ArtistType[] = [
         genre: "Hip-Hop/Rap",
         description: "An Artist",
         release_date: "2024",
+        songs: [],
     },
     {
         id: "artist-2",
@@ -144,10 +144,11 @@ export const Artists: ArtistType[] = [
         genre: "Hip-Hop/Rap",
         description: "An Artist",
         release_date: "2024",
+        songs: [],
     },
 ];
 
-export const JafarriProjects: MusicProjectType[] = [
+export const JafarriProjects: SongType[] = [
     {
         id: "song-1",
         img: Jack,
@@ -162,7 +163,7 @@ export const JafarriProjects: MusicProjectType[] = [
     },
 ];
 
-export const SearchOriginalProjects: MusicProjectType[] = [
+export const SearchOriginalProjects: SongType[] = [
     {
         id: "song-2",
         img: Jack,

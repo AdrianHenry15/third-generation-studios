@@ -3,13 +3,13 @@
 import { create } from "zustand";
 
 import { useItemStore } from "./item-store";
-import { ItemType } from "@/lib/types";
+import { Category } from "@/lib/types";
 
-const { setCurrentItemID, setCurrentItemType } = useItemStore.getState();
+const { setCurrentItemId, setCurrentCategory } = useItemStore.getState();
 
 interface AudioPlayerState {
     isPlaying: boolean;
-    play: (itemID: string, itemType: ItemType) => void;
+    play: (itemID: string, category: Category) => void;
     pause: () => void;
     isShuffled: boolean;
     isRepeat: boolean;
@@ -23,9 +23,9 @@ interface AudioPlayerState {
 
 export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
     isPlaying: false,
-    play: (itemID, itemType) => {
-        setCurrentItemID(itemID);
-        setCurrentItemType(itemType);
+    play: (itemID, category) => {
+        setCurrentItemId(itemID);
+        setCurrentCategory(category);
         set((state) => ({
             isPlaying: true,
         }));

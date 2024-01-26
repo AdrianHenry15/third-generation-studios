@@ -1,14 +1,14 @@
 "use client";
 
-import { ItemType } from "@/lib/types";
-import React, { useEffect, useState } from "react";
+import { Category } from "@/lib/types";
+import React, { useState } from "react";
 
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { useFavoriteStore } from "stores/favorite-store";
 
 interface IFavoriteButtonProps {
-    itemType: ItemType;
-    itemID: string;
+    category: Category;
+    itemId: string;
 }
 
 const FavoriteButton = (props: IFavoriteButtonProps) => {
@@ -17,9 +17,9 @@ const FavoriteButton = (props: IFavoriteButtonProps) => {
 
     const handleLike = () => {
         if (isItemFavorited) {
-            favoriteStore.unFavoriteItem(props.itemType, props.itemID);
+            favoriteStore.unFavoriteItem(props.category, props.itemId);
         } else {
-            favoriteStore.favoriteItem(props.itemType, props.itemID);
+            favoriteStore.favoriteItem(props.category, props.itemId);
         }
     };
 

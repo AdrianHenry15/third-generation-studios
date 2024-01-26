@@ -24,7 +24,7 @@ const FooterMenu = () => {
                 <div>
                     {NavMenuAltItems.map((item) => {
                         return (
-                            <li className={`${pathname === item.link ? "underline" : ""} my-4`} key={item.title}>
+                            <li className={`${pathname === item.link ? "underline" : ""} my-4 mx-4`} key={item.title}>
                                 <Link href={item.link}>{item.title}</Link>
                             </li>
                         );

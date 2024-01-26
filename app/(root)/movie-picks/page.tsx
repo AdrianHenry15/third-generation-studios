@@ -1,5 +1,5 @@
 import MovieSplash from "@/components/layout/movies/movie-splash";
-import MovieRequests from "@/lib/movie-requests";
+import MovieRequests from "@/lib/requests";
 import Row from "@/components/row";
 import { Category } from "@/lib/types";
 

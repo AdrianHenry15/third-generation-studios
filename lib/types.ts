@@ -11,7 +11,7 @@ export enum Category {
     NONE = "",
 }
 
-export type ProjectType = {
+export type ItemType = {
     id: string;
     img: any;
     title: string;
@@ -20,11 +20,11 @@ export type ProjectType = {
     release_date: string;
 };
 
-export type WebsiteProjectType = ProjectType & {
+export type WebsiteType = ItemType & {
     link: string;
 };
 
-export type MusicProjectType = ProjectType & {
+export type SongType = ItemType & {
     album_name?: string;
     lyrics?: string;
     artist: string;
@@ -33,12 +33,13 @@ export type MusicProjectType = ProjectType & {
     song: any;
 };
 
-export type ArtistType = ProjectType & {
+export type ArtistType = ItemType & {
     link?: string;
     label?: string;
+    songs: [];
 };
 
-export type MovieType = ProjectType & {
+export type MovieType = ItemType & {
     backdrop_path: string;
     overview: string;
 };

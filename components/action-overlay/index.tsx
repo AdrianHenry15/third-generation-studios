@@ -6,18 +6,15 @@ import PlayButton from "./play-button";
 import SaveButton from "./save-button";
 import OpenButton from "./open-button";
 import OpenLinkModal from "../modals/open-link-modal";
-import { ItemType } from "@/lib/types";
 import FavoriteButton from "./favorite-button";
 
+import { Category } from "@/lib/types";
+
 interface IActionOverlayProps {
-    // website?: boolean;
-    // music?: boolean;
-    // movie?: boolean;
-    // artist?: boolean;
     websiteLink?: string;
     websiteTitle?: string;
-    itemID?: string;
-    itemType: ItemType;
+    itemId?: string;
+    category: Category;
 }
 
 const ActionOverlay = (props: IActionOverlayProps) => {
@@ -30,25 +27,31 @@ const ActionOverlay = (props: IActionOverlayProps) => {
     const closeWebsiteModal = () => {
         setWebsiteModalOpen(false);
     };
+
+    const handleAction = () => {
+        if (props.category === Category.MUSIC) {
+            console.log("music");
+        } else if (props.category === Category.WEBSITE) {
+            openWebsite();
+        } else if (props.category === Category.MOVIE) {
+            console.log("movie");
+        } else if (props.category === Category.ARTIST) {
+            console.log("artist");
+        }
+    };
     return (
         <div className="absolute cursor-pointer top-0 left-0 w-full h-full bg-black/20 text-white">
             {/* LIKE */}
-            <FavoriteButton itemType={props.itemType} itemID={props.itemID!} />
+            {/* <FavoriteButton category={props.category} itemId={props.itemId!} /> */}
 
             {/* SAVE */}
-            <SaveButton />
+            {/* <SaveButton /> */}
+
+            {/* OPEN ITEM */}
+            <OpenButton onClick={handleAction} />
 
             {/* PLAY/PAUSE BUTTON */}
-            {props.itemType === ItemType.MUSIC && <PlayButton itemType={props.itemType} itemID={props.itemID!} />}
-
-            {/* WEBSITE OPEN BUTTON */}
-            {props.itemType === ItemType.WEBSITE && <OpenButton onClick={() => openWebsite()} />}
-
-            {/* MOVIE OPEN BUTTON */}
-            {props.itemType === ItemType.MOVIE && <OpenButton onClick={() => {}} />}
-
-            {/* ARTIST OPEN BUTTON */}
-            {props.itemType === ItemType.ARTIST && <OpenButton onClick={() => {}} />}
+            {props.category === Category.MUSIC && <PlayButton category={props.category} itemId={props.itemId!} />}
 
             {/* OpenLinkModal */}
             {isWebsiteModalOpen && (

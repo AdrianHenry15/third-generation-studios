@@ -10,19 +10,19 @@ import { useFavoriteStore } from "stores/favorite-store";
 
 const TrackDisplay = () => {
     const likeStore = useFavoriteStore();
-    const { currentItemID, currentItemType } = useItemStore();
+    const { currentItemId, currentCategory } = useItemStore();
 
     const isItemFavorited =
-        currentItemType &&
-        currentItemID &&
-        Array.isArray(likeStore.favoritedItems[currentItemType]) &&
-        likeStore.favoritedItems[currentItemType].includes(currentItemID);
+        currentCategory &&
+        currentItemId &&
+        Array.isArray(likeStore.favoritedItems[currentCategory]) &&
+        likeStore.favoritedItems[currentCategory].includes(currentItemId);
 
     const handleLike = () => {
         if (isItemFavorited) {
-            likeStore.unFavoriteItem(currentItemType!, currentItemID!);
+            likeStore.unFavoriteItem(currentCategory!, currentItemId!);
         } else {
-            likeStore.favoriteItem(currentItemType!, currentItemID!);
+            likeStore.favoriteItem(currentCategory!, currentItemId!);
         }
     };
 

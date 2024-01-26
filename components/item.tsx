@@ -10,7 +10,7 @@ interface ItemProps {
     title: string;
     img: any;
     websiteLink?: string;
-    itemID: string;
+    itemId: string;
     category: Category;
 }
 
@@ -27,7 +27,7 @@ const Item = (props: ItemProps) => {
                     alt={props.title}
                 />
                 {/* ACTION OVERLAY */}
-                {/* <ActionOverlay category={props.category} websiteTitle={props.title} websiteLink={props.websiteLink} itemID={props.itemID} /> */}
+                <ActionOverlay category={props.category} websiteTitle={props.title} websiteLink={props.websiteLink} itemId={props.itemId} />
             </ImageContainer>
             {/* TITLE AND INFO */}
             <p className="text-white font-semibold text-sm w-[80%] hover:text-red-500 transition-colors duration-300 cursor-pointer">
