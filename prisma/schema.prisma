@@ -10,13 +10,13 @@ datasource db {
 
 // Define your data model
 model Website {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  img          String
-  title        String
-  description  String?
-  release_date String?
-  link         String
-  createdAt    DateTime @default(now())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  img         String
+  title       String
+  description String?
+  releaseDate String?
+  link        String
+  createdAt   DateTime @default(now())
 }
 
 model Song {
