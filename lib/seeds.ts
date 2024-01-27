@@ -1,6 +1,6 @@
 // seeds/seed.ts
 
-import prisma from "db";
+import prisma from "../db";
 import { ArtistType, SongType, WebsiteType } from "./types";
 import { Artists, ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "./projects";
 
