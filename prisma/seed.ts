@@ -1,8 +1,6 @@
-// seeds/seed.ts
-
 import prisma from "../db";
-import { ArtistType, SongType, WebsiteType } from "./types";
-import { Artists, ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "./projects";
+import { ArtistType, SongType, WebsiteType } from "../lib/types";
+import { Artists, ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "../lib/projects";
 
 // Import your images here
 
@@ -10,7 +8,7 @@ import { Artists, ClientProjects, JafarriProjects, PersonalProjects, SchoolProje
 
 async function seedArtists(artists: ArtistType[]) {
     for (const artist of artists) {
-        await prisma.artist.create({
+        await prisma.artist.createMany({
             data: {
                 id: artist.id,
                 img: artist.img,
@@ -25,7 +23,7 @@ async function seedArtists(artists: ArtistType[]) {
 
 async function seedMusicProjects(musicProjects: SongType[]) {
     for (const musicProject of musicProjects) {
-        await prisma.song.create({
+        await prisma.song.createMany({
             data: {
                 id: musicProject.id,
                 img: musicProject.img,
@@ -44,7 +42,7 @@ async function seedMusicProjects(musicProjects: SongType[]) {
 
 async function seedWebsiteProjects(websiteProjects: WebsiteType[]) {
     for (const websiteProject of websiteProjects) {
-        await prisma.website.create({
+        await prisma.website.createMany({
             data: {
                 id: websiteProject.id,
                 img: websiteProject.img,

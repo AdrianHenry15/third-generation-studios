@@ -5,7 +5,7 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "seed": "ts-node lib/seeds.ts"
+        "seed": "node ts-node/esm ./prisma/seed.ts"
     },
     "dependencies": {
         "@clerk/clerk-js": "^4.68.1",

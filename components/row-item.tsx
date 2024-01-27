@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import ItemContainer from "@/components/containers/item-container";
 import ImageContainer from "@/components/containers/image-container";
 import ActionOverlay from "@/components/action-overlay";
 import { Category } from "@/lib/types";
+import EmptyRowItem from "./empty-row-item";
 
-interface ItemProps {
+interface IRowItemProps {
     title: string;
     img: any;
     websiteLink?: string;
@@ -14,7 +15,21 @@ interface ItemProps {
     category: Category;
 }
 
-const Item = (props: ItemProps) => {
+const RowItem = (props: IRowItemProps) => {
+    const [emptyImage, setEmptyImage] = useState(false);
+
+    const getImageSrc = () => {
+        const Image = props.img === "" ? "" : props.img;
+        const ImageUrl = props.img === "" ? "" : `https://image.tmdb.org/t/p/w500/${props.img}`;
+
+        if (props.category === Category.MOVIE) {
+            ImageUrl === "" ? setEmptyImage(false) : setEmptyImage(true);
+            return ImageUrl;
+        } else {
+            Image === "" ? setEmptyImage(false) : setEmptyImage(true);
+            return Image;
+        }
+    };
     return (
         <ItemContainer>
             {/* IMAGE */}
@@ -24,6 +39,7 @@ const Item = (props: ItemProps) => {
                     height={props.category === Category.MOVIE ? 1000 : 0}
                     className="w-full block object-center object-cover md:max-h-[130px] xl:max-h-[200px]"
                     src={props.category === Category.MOVIE ? `https://image.tmdb.org/t/p/w500/${props.img}` : props.img}
+                    // src={getImageSrc()}
                     alt={props.title}
                 />
                 {/* ACTION OVERLAY */}
@@ -37,4 +53,4 @@ const Item = (props: ItemProps) => {
     );
 };
 
-export default Item;
+export default RowItem;

@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import Item from "./item";
+import RowItem from "./row-item";
 import axios from "axios";
 import { Category } from "@/lib/types";
+import EmptyRowItem from "./empty-row-item";
 
 interface IRowProps {
     title: string;
@@ -67,7 +68,7 @@ const Row: React.FC<IRowProps> = ({ title, item, fetchURL, category }) => {
                             <ul>
                                 {items.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <Item itemId={item.id} category={category} title={item.title} img={item.backdrop_path} />
+                                        <RowItem itemId={item.id} category={category} title={item.title} img={item.backdrop_path} />
                                     </SwiperSlide>
                                 ))}
                             </ul>
@@ -76,7 +77,7 @@ const Row: React.FC<IRowProps> = ({ title, item, fetchURL, category }) => {
                             <ul>
                                 {ItemList.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <Item
+                                        <RowItem
                                             websiteLink={item.link}
                                             title={item.title}
                                             img={item.img}
@@ -90,6 +91,10 @@ const Row: React.FC<IRowProps> = ({ title, item, fetchURL, category }) => {
                     </Swiper>
                 </div>
             </div>
+            {/* <div>
+                <h5>Create Item</h5>
+                <EmptyRowItem />
+            </div> */}
         </div>
     );
 };
