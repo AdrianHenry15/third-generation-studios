@@ -76,7 +76,7 @@ const Row: React.FC<IRowProps> = ({ title, item, fetchURL, category }) => {
                             // MUSIC, WEBSITE ITEM (DEFAULT)
                             <ul>
                                 {ItemList.map((item, id) => (
-                                    <SwiperSlide key={id}>
+                                    <SwiperSlide className="py-10 mx-2" key={id}>
                                         <RowItem
                                             websiteLink={item.link}
                                             title={item.title}

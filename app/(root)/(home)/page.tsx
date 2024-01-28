@@ -13,7 +13,7 @@ export default function HomePage() {
         <div className="bg-black">
             <HomeSplash />
             <Row category={Category.WEBSITE} title="All Websites" item={AllProjects} />
-            <Row category={Category.MUSIC} title="All Music" item={AllMusic} />
+            <Row category={Category.SONG} title="All Music" item={AllMusic} />
             {/* <Row itemType={ItemType.MOVIE} title="Now Playing" fetchURL={requests.requestNowPlaying} /> */}
         </div>
     );

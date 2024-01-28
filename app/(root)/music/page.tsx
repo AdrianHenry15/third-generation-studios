@@ -8,7 +8,7 @@ export default function MusicPage() {
         <div className="px-10 flex flex-col h-full bg-black">
             <MusicSplash />
             <Row category={Category.ARTIST} title="Artists" item={Artists} />
-            <Row category={Category.MUSIC} title="Original Tracks By Search" item={SearchOriginalProjects} />
+            <Row category={Category.SONG} title="Original Tracks By Search" item={SearchOriginalProjects} />
         </div>
     );
 }

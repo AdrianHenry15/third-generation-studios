@@ -1,53 +1,43 @@
-"use client";
+import React from "react";
+import Link from "next/link";
 
 import { Category } from "@/lib/types";
-import React, { useState } from "react";
-import { useAuth } from "@clerk/nextjs";
 
 import { LuPlus } from "react-icons/lu";
-import UploadSong from "./upload-song";
-import UploadWebsite from "./upload-website";
-import UploadArtist from "./upload-artist";
 
 interface ICreateItemButtonProps {
     category: Category;
     itemId: string;
 }
 
-const CreateItemButton = (props: ICreateItemButtonProps) => {
-    const [uploadSong, setUploadSong] = useState(false);
-    const [uploadWebsite, setUploadWebsite] = useState(false);
-    const [uploadArtist, setUploadArtist] = useState(false);
-    const { isSignedIn } = useAuth();
+const CreateItemButton = async (props: ICreateItemButtonProps) => {
+    // const { isSignedIn } = useAuth();
 
-    const handleItemClick = () => {
+    const getHref = () => {
         if (props.category === Category.SONG) {
-            setUploadSong(true);
+            return "/create/upload/songs";
         } else if (props.category === Category.WEBSITE) {
-            setUploadWebsite(true);
+            return "/create/websites";
         } else if (props.category === Category.ARTIST) {
-            setUploadArtist(true);
+            return "/create/artists";
         } else {
-            null;
+            return "";
         }
     };
-    if (!isSignedIn) {
-        return null;
-    } else {
-        return (
-            <div className="relative w-full h-full">
-                <p
-                    className="z-20 absolute top-4 left-4 text-white hover:scale-125 scale-100 transition-transform duration-300"
-                    onClick={() => handleItemClick()}
-                >
-                    <LuPlus size={20} />
-                </p>
-                {uploadSong ? <UploadSong /> : null}
-                {uploadWebsite ? <UploadWebsite /> : null}
-                {uploadArtist ? <UploadArtist /> : null}
-            </div>
-        );
-    }
+    // if (!isSignedIn) {
+    //     return null;
+    // } else {
+    return (
+        <div className="relative w-full h-full">
+            <Link
+                href={getHref()}
+                className="z-20 absolute top-4 left-4 text-white hover:scale-125 scale-100 transition-transform duration-300"
+            >
+                <LuPlus size={20} />
+            </Link>
+        </div>
+    );
 };
+// };
 
 export default CreateItemButton;
