@@ -5,7 +5,7 @@ export type NavMenu = {
 
 export enum Category {
     WEBSITE = "Website",
-    MUSIC = "Music",
+    SONG = "Song",
     ARTIST = "Artist",
     MOVIE = "Movie",
     NONE = "",

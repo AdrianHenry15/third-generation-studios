@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
-import requests from "@/lib/requests";
+import { MovieRequests } from "@/lib/requests";
 import { MovieType } from "@/lib/types";
 
 const MovieSplash = () => {
@@ -22,7 +22,7 @@ const MovieSplash = () => {
 
     // get data for movies from api
     useEffect(() => {
-        axios.get(requests.requestPopular).then((response) => {
+        axios.get(MovieRequests.requestPopular).then((response) => {
             setMovies(response.data.results);
         });
     }, []);

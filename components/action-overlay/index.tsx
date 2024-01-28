@@ -9,6 +9,7 @@ import OpenLinkModal from "../modals/open-link-modal";
 import FavoriteButton from "./favorite-button";
 
 import { Category } from "@/lib/types";
+import CreateItemButton from "./create-item";
 
 interface IActionOverlayProps {
     websiteLink?: string;
@@ -29,8 +30,8 @@ const ActionOverlay = (props: IActionOverlayProps) => {
     };
 
     const handleAction = () => {
-        if (props.category === Category.MUSIC) {
-            console.log("music");
+        if (props.category === Category.SONG) {
+            console.log("song");
         } else if (props.category === Category.WEBSITE) {
             openWebsite();
         } else if (props.category === Category.MOVIE) {
@@ -47,11 +48,14 @@ const ActionOverlay = (props: IActionOverlayProps) => {
             {/* SAVE */}
             {/* <SaveButton /> */}
 
+            {/* CREATE ITEM BUTTON */}
+            <CreateItemButton category={props.category} itemId={props.itemId!} />
+
             {/* OPEN ITEM */}
             <OpenButton onClick={handleAction} />
 
             {/* PLAY/PAUSE BUTTON */}
-            {props.category === Category.MUSIC && <PlayButton category={props.category} itemId={props.itemId!} />}
+            {props.category === Category.SONG && <PlayButton category={props.category} itemId={props.itemId!} />}
 
             {/* OpenLinkModal */}
             {isWebsiteModalOpen && (

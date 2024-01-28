@@ -10,7 +10,7 @@ type FavoriteStore = {
 export const useFavoriteStore = create<FavoriteStore>((set) => ({
     favoritedItems: {
         [Category.WEBSITE]: [],
-        [Category.MUSIC]: [],
+        [Category.SONG]: [],
         [Category.ARTIST]: [],
         [Category.MOVIE]: [],
         [Category.NONE]: [],
