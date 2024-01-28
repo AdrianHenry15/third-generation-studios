@@ -9,7 +9,7 @@ import { Category } from "@/lib/types";
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
 interface ISplashProps {
-    items: [];
+    items: any[];
     category: Category;
     fetchUrl: string;
     img: any;

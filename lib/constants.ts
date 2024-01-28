@@ -36,3 +36,18 @@ export const NavMenuAltItems: NavMenu[] = [
         link: "/estimate",
     },
 ];
+
+export const CreatePageNavMenu: NavMenu[] = [
+    {
+        title: "Upload Song",
+        link: "/create/upload/songs",
+    },
+    {
+        title: "Create Artist",
+        link: "/create/artists",
+    },
+    {
+        title: "Create Website",
+        link: "/create/websites",
+    },
+];

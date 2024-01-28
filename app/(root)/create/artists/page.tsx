@@ -1,5 +1,5 @@
 import React from "react";
 
-export default function UploadArtistPage() {
-    return <div></div>;
+export default function CreateArtistPage() {
+    return <div>Create Artist Page</div>;
 }

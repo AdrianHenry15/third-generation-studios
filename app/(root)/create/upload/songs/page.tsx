@@ -1,5 +1,5 @@
 import React from "react";
 
 export default function UploadSongsPage() {
-    return <div>stuff</div>;
+    return <div className="bg-red-700">Upload Songs Page</div>;
 }

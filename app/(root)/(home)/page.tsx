@@ -1,4 +1,4 @@
-import { ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "@/lib/projects";
+import { Artists, ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "@/lib/projects";
 
 import HomeSplash from "@/components/layout/home/home-splash";
 import Row from "@/components/row";
@@ -13,7 +13,8 @@ export default function HomePage() {
         <div className="bg-black">
             <HomeSplash />
             <Row category={Category.WEBSITE} title="All Websites" item={AllProjects} />
-            <Row category={Category.SONG} title="All Music" item={AllMusic} />
+            <Row category={Category.ARTIST} title="All Artists" item={Artists} />
+            <Row category={Category.SONG} title="All Songs" item={AllMusic} />
             {/* <Row itemType={ItemType.MOVIE} title="Now Playing" fetchURL={requests.requestNowPlaying} /> */}
         </div>
     );
