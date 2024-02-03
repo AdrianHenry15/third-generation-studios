@@ -165,16 +165,16 @@ export const JafarriProjects: SongType[] = [
 
 export const SearchOriginalProjects: SongType[] = [
     {
-        id: "song-2",
+        id: "a-long-run-c-minor-88-bpm",
         img: Jack,
-        title: "Song 1",
-        album_name: "Search",
-        artist: "Original",
+        title: "A Long Run CMinor 88bpm",
+        album_name: "",
+        artist: "Search",
         genre: "Hip-Hop/Rap",
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        song: "",
+        song: "../public/audio-files/a-long-run-cminor-88bpm.wav",
     },
     {
         id: "artist-3",

@@ -10,16 +10,19 @@ import FavoriteButton from "./favorite-button";
 
 import { Category } from "@/lib/types";
 import CreateItemButton from "./create-item";
+import { useRouter } from "next/navigation";
 
 interface IActionOverlayProps {
     websiteLink?: string;
     websiteTitle?: string;
     itemId?: string;
     category: Category;
+    audioFile?: string;
 }
 
 const ActionOverlay = (props: IActionOverlayProps) => {
     const [isWebsiteModalOpen, setWebsiteModalOpen] = useState(false);
+    const router = useRouter();
 
     const openWebsite = () => {
         setWebsiteModalOpen(true);
@@ -37,7 +40,7 @@ const ActionOverlay = (props: IActionOverlayProps) => {
         } else if (props.category === Category.MOVIE) {
             console.log("movie");
         } else if (props.category === Category.ARTIST) {
-            console.log("artist");
+            router.push(`/music/artists/${props.itemId}`);
         }
     };
     return (
@@ -49,13 +52,15 @@ const ActionOverlay = (props: IActionOverlayProps) => {
             {/* <SaveButton /> */}
 
             {/* CREATE ITEM BUTTON */}
-            <CreateItemButton category={props.category} itemId={props.itemId!} />
+            {/* <CreateItemButton category={props.category} itemId={props.itemId!} /> */}
 
             {/* OPEN ITEM */}
             <OpenButton onClick={handleAction} />
 
             {/* PLAY/PAUSE BUTTON */}
-            {props.category === Category.SONG && <PlayButton category={props.category} itemId={props.itemId!} />}
+            {props.category === Category.SONG && (
+                <PlayButton audioFile={props.audioFile!} category={props.category} itemId={props.itemId!} />
+            )}
 
             {/* OpenLinkModal */}
             {isWebsiteModalOpen && (

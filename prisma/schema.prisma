@@ -23,14 +23,13 @@ model Song {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   img         String
   title       String
-  albumName   String   @map("album_name")
+  album       String   @map("album")
   artist      String
   genre       String
   releaseDate String   @map("release_date")
   duration    String
   plays       Int      @default(0)
-  song        String
-  likes       Int      @default(0) // Assuming likes is an integer count
+  file        String
   Artist      Artist?  @relation(fields: [artistId], references: [id])
   artistId    String?  @db.ObjectId
   createdAt   DateTime @default(now())
@@ -49,9 +48,7 @@ model Artist {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   img         String
   title       String
-  genre       String
   description String
-  releaseDate String   @map("release_date")
   songs       Song[]
   createdAt   DateTime @default(now())
 }

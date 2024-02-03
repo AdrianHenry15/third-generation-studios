@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import React from "react";
 
 import { useItemStore } from "./item-store";
 import { Category } from "@/lib/types";
@@ -9,6 +10,7 @@ const { setCurrentItemId, setCurrentCategory } = useItemStore.getState();
 
 interface AudioPlayerState {
     isPlaying: boolean;
+    audioRef: React.RefObject<HTMLAudioElement>;
     play: (itemID: string, category: Category) => void;
     pause: () => void;
     isShuffled: boolean;
@@ -23,14 +25,23 @@ interface AudioPlayerState {
 
 export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
     isPlaying: false,
+    audioRef: React.createRef(),
     play: (itemID, category) => {
         setCurrentItemId(itemID);
         setCurrentCategory(category);
         set((state) => ({
             isPlaying: true,
         }));
+        if (useAudioPlayerStore.getState().audioRef.current) {
+            useAudioPlayerStore.getState().audioRef.current?.play();
+        }
     },
-    pause: () => set({ isPlaying: false }),
+    pause: () => {
+        set({ isPlaying: false });
+        if (useAudioPlayerStore.getState().audioRef.current) {
+            useAudioPlayerStore.getState().audioRef.current?.pause();
+        }
+    },
     isShuffled: false,
     isRepeat: false,
     playlist: [], // Your playlist items here
