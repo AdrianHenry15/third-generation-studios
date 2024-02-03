@@ -13,9 +13,9 @@ const Controls = () => {
     const AltButton = "text-gray-400 hover:text-white cursor-pointer transition-colors duration-300 ease-in-out";
 
     return (
-        <div className="flex-col hidden md:flex">
+        <div className="flex-col flex-1 hidden md:flex">
             {/* PLAYER ACTIONS */}
-            <div className="flex items-center">
+            <div className="flex justify-center items-center">
                 {/* SHUFFLE */}
                 <BiShuffle className={AltButton} size={20} />
                 {/* PREVIOUS */}

@@ -27,9 +27,9 @@ const TrackDisplay = () => {
     };
 
     return (
-        <div className="relative flex items-center">
+        <div className="flex flex-1 items-center">
             {/* IMAGE */}
-            <div className="relative h-min">
+            <div className="h-min">
                 <Image className="w-14" src={currentItemImg} alt="artwork" />
             </div>
             {/* ARTIST/SONG */}

@@ -5,13 +5,13 @@ import { useItemStore } from "stores/item-store";
 
 const AudioPlayerPlayButton = () => {
     const { isPlaying, play, pause, audioRef } = useAudioPlayerStore();
-    const { currentItemId, currentCategory } = useItemStore();
+    const { currentItemId, currentCategory, currentAudioFile } = useItemStore();
     const handlePlayPause = () => {
         isPlaying ? pause() : play(currentItemId!, currentCategory!);
     };
     return (
         <div>
-            <audio ref={audioRef} src=""></audio>
+            <audio ref={audioRef} src={currentAudioFile}></audio>
             <p className="cursor-pointer scale-100 hover:scale-110 transition-transform duration-300 ease-in-out" onClick={handlePlayPause}>
                 {isPlaying ? <IoPauseCircle size={40} className="text-white" /> : <IoPlayCircle size={40} className="text-white" />}
             </p>

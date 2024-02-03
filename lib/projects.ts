@@ -23,6 +23,8 @@ import Timb from "@/public/music/timb.jpg";
 import Uzi from "@/public/music/uzivert.jpg";
 import Lotus from "@/public/music/wlotus.jpg";
 
+// AUDIO FILES
+
 export const PersonalProjects: WebsiteType[] = [
     {
         id: "website-1",

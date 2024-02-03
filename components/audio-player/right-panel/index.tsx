@@ -4,7 +4,7 @@ import MobilePlayButton from "./mobile-play-button";
 
 const RightPanel = () => {
     return (
-        <div className="flex">
+        <div className="flex flex-1 justify-end">
             {/* VOLUME */}
             <div className="hidden md:flex">
                 <VolumeSlider />

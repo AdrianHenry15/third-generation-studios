@@ -16,8 +16,15 @@ interface IPlayButtonProps {
 
 const PlayButton = (props: IPlayButtonProps) => {
     const { isPlaying, play, pause, audioRef } = useAudioPlayerStore();
-    const { currentItemId, currentCategory, setCurrentArtistName, setCurrentItemImg, setCurrentItemTitle, setCurrentAudioFile } =
-        useItemStore();
+    const {
+        currentItemId,
+        currentCategory,
+        currentAudioFile,
+        setCurrentArtistName,
+        setCurrentItemImg,
+        setCurrentItemTitle,
+        setCurrentAudioFile,
+    } = useItemStore();
 
     const handleClick = () => {
         if (isPlaying && currentItemId === props.currentItemId && currentCategory === props.currentCategory) {
@@ -33,7 +40,6 @@ const PlayButton = (props: IPlayButtonProps) => {
 
     return (
         <div>
-            <audio ref={audioRef} src={props.currentAudioFile}></audio>
             <p className="z-20" onClick={handleClick}>
                 {isPlaying && currentItemId === props.currentItemId && currentCategory === props.currentCategory ? (
                     <IoPauseCircle
