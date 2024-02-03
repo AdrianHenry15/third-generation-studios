@@ -30,7 +30,7 @@ export type SongType = ItemType & {
     artist: string;
     duration: string;
     plays: number;
-    song: any;
+    audio_file: any;
 };
 
 export type ArtistType = ItemType & {

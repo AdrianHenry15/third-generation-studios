@@ -6,28 +6,36 @@ import { useAudioPlayerStore } from "stores/audio-player-store";
 import { useItemStore } from "stores/item-store";
 
 interface IPlayButtonProps {
-    category: Category;
-    itemId: string;
-    audioFile: string;
+    currentCategory: Category;
+    currentItemId: string;
+    currentAudioFile: string;
+    currentArtistName: string;
+    currentItemImg: any;
+    currentItemTitle: string;
 }
 
 const PlayButton = (props: IPlayButtonProps) => {
     const { isPlaying, play, pause, audioRef } = useAudioPlayerStore();
-    const { currentItemId, currentCategory } = useItemStore();
+    const { currentItemId, currentCategory, setCurrentArtistName, setCurrentItemImg, setCurrentItemTitle, setCurrentAudioFile } =
+        useItemStore();
 
     const handleClick = () => {
-        if (isPlaying && currentItemId === props.itemId && currentCategory === props.category) {
+        if (isPlaying && currentItemId === props.currentItemId && currentCategory === props.currentCategory) {
             pause();
         } else {
-            play(props.itemId, props.category);
+            play(props.currentItemId, props.currentCategory);
+            setCurrentAudioFile(props.currentAudioFile);
+            setCurrentArtistName(props.currentArtistName);
+            setCurrentItemImg(props.currentItemImg);
+            setCurrentItemTitle(props.currentItemTitle);
         }
     };
 
     return (
         <div>
-            <audio ref={audioRef} src={props.audioFile}></audio>
+            <audio ref={audioRef} src={props.currentAudioFile}></audio>
             <p className="z-20" onClick={handleClick}>
-                {isPlaying && currentItemId === props.itemId && currentCategory === props.category ? (
+                {isPlaying && currentItemId === props.currentItemId && currentCategory === props.currentCategory ? (
                     <IoPauseCircle
                         size={70}
                         className="text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hover:scale-110 scale-100 transition-transform duration-300"

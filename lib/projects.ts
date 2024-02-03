@@ -159,7 +159,7 @@ export const JafarriProjects: SongType[] = [
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        song: "",
+        audio_file: "",
     },
 ];
 
@@ -174,7 +174,7 @@ export const SearchOriginalProjects: SongType[] = [
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        song: "../public/audio-files/a-long-run-cminor-88bpm.wav",
+        audio_file: "../public/audio-files/a-long-run-cminor-88bpm.wav",
     },
     {
         id: "artist-3",
@@ -186,7 +186,7 @@ export const SearchOriginalProjects: SongType[] = [
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        song: "",
+        audio_file: "",
     },
     {
         id: "artist-4",
@@ -198,7 +198,7 @@ export const SearchOriginalProjects: SongType[] = [
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        song: "",
+        audio_file: "",
     },
     {
         id: "artist-5",
@@ -210,7 +210,7 @@ export const SearchOriginalProjects: SongType[] = [
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        song: "",
+        audio_file: "",
     },
     {
         id: "artist-6",
@@ -222,6 +222,6 @@ export const SearchOriginalProjects: SongType[] = [
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        song: "",
+        audio_file: "",
     },
 ];

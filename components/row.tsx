@@ -6,7 +6,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import RowItem from "./row-item";
 import axios from "axios";
 import { Category } from "@/lib/types";
-import EmptyRowItem from "./empty-row-item";
 
 interface IRowProps {
     title: string;
@@ -68,7 +67,14 @@ const Row: React.FC<IRowProps> = ({ title, item, fetchURL, category }) => {
                             <ul>
                                 {items.map((item, id) => (
                                     <SwiperSlide key={id}>
-                                        <RowItem itemId={item.id} category={category} title={item.title} img={item.backdrop_path} />
+                                        <RowItem
+                                            currentAudioFile=""
+                                            currentItemId={item.id}
+                                            currentItemCategory={category}
+                                            currentItemTitle={item.title}
+                                            currentArtistName=""
+                                            currentItemImg={item.backdrop_path}
+                                        />
                                     </SwiperSlide>
                                 ))}
                             </ul>
@@ -79,10 +85,12 @@ const Row: React.FC<IRowProps> = ({ title, item, fetchURL, category }) => {
                                     <SwiperSlide className="py-10 mx-2" key={id}>
                                         <RowItem
                                             websiteLink={item.link}
-                                            title={item.title}
-                                            img={item.img}
-                                            itemId={item.id}
-                                            category={category}
+                                            currentItemTitle={item.title}
+                                            currentArtistName={item.artist}
+                                            currentItemImg={item.img}
+                                            currentItemId={item.id}
+                                            currentItemCategory={category}
+                                            currentAudioFile={item.audio_file}
                                         />
                                     </SwiperSlide>
                                 ))}

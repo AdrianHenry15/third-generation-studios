@@ -3,21 +3,21 @@
 import React, { useState } from "react";
 
 import PlayButton from "./play-button";
-import SaveButton from "./save-button";
 import OpenButton from "./open-button";
 import OpenLinkModal from "../modals/open-link-modal";
-import FavoriteButton from "./favorite-button";
 
 import { Category } from "@/lib/types";
-import CreateItemButton from "./create-item";
 import { useRouter } from "next/navigation";
 
 interface IActionOverlayProps {
-    websiteLink?: string;
-    websiteTitle?: string;
-    itemId?: string;
-    category: Category;
-    audioFile?: string;
+    websiteLink: string;
+    websiteTitle: string;
+    currentItemId: string;
+    currentCategory: Category;
+    currentAudioFile: string;
+    currentItemTitle: string;
+    currentItemImg: any;
+    currentArtistName: string;
 }
 
 const ActionOverlay = (props: IActionOverlayProps) => {
@@ -33,14 +33,14 @@ const ActionOverlay = (props: IActionOverlayProps) => {
     };
 
     const handleAction = () => {
-        if (props.category === Category.SONG) {
+        if (props.currentCategory === Category.SONG) {
             console.log("song");
-        } else if (props.category === Category.WEBSITE) {
+        } else if (props.currentCategory === Category.WEBSITE) {
             openWebsite();
-        } else if (props.category === Category.MOVIE) {
+        } else if (props.currentCategory === Category.MOVIE) {
             console.log("movie");
-        } else if (props.category === Category.ARTIST) {
-            router.push(`/music/artists/${props.itemId}`);
+        } else if (props.currentCategory === Category.ARTIST) {
+            router.push(`/music/artists/${props.currentItemId}`);
         }
     };
     return (
@@ -58,8 +58,15 @@ const ActionOverlay = (props: IActionOverlayProps) => {
             <OpenButton onClick={handleAction} />
 
             {/* PLAY/PAUSE BUTTON */}
-            {props.category === Category.SONG && (
-                <PlayButton audioFile={props.audioFile!} category={props.category} itemId={props.itemId!} />
+            {props.currentCategory === Category.SONG && (
+                <PlayButton
+                    currentArtistName={props.currentArtistName!}
+                    currentItemImg={props.currentItemImg}
+                    currentItemTitle={props.currentItemTitle!}
+                    currentAudioFile={props.currentAudioFile!}
+                    currentCategory={props.currentCategory}
+                    currentItemId={props.currentItemId!}
+                />
             )}
 
             {/* OpenLinkModal */}

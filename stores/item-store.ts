@@ -9,12 +9,14 @@ interface ItemStoreState {
     currentItemTitle: string;
     currentItemImg: any;
     currentArtistName: string;
+    currentAudioFile: string;
 
     setCurrentCategory: (currentTrackType: Category) => void;
     setCurrentItemId: (currentItemId: string) => void;
     setCurrentItemTitle: (currentItemTitle: string) => void;
     setCurrentItemImg: (currentItemImg: any) => void;
     setCurrentArtistName: (currentArtistName: string) => void;
+    setCurrentAudioFile: (currentAudioFile: string) => void;
 }
 
 export const useItemStore = create<ItemStoreState>((set) => ({
@@ -23,10 +25,12 @@ export const useItemStore = create<ItemStoreState>((set) => ({
     currentItemTitle: "",
     currentItemImg: null,
     currentArtistName: "",
+    currentAudioFile: "",
 
     setCurrentCategory: (currentCategory: Category) => set({ currentCategory }),
     setCurrentItemId: (currentItemId: string) => set({ currentItemId }),
     setCurrentItemTitle: (currentItemTitle: string) => set({ currentItemTitle }),
     setCurrentItemImg: (currentItemImg: any) => set({ currentItemImg }),
     setCurrentArtistName: (currentArtistName: string) => set({ currentArtistName }),
+    setCurrentAudioFile: (currentAudioFile: string) => set({ currentAudioFile }),
 }));
