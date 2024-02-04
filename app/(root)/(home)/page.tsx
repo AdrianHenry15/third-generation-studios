@@ -1,9 +1,12 @@
+"use client";
+
 import { Artists, ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "@/lib/projects";
 
 import HomeSplash from "@/components/layout/home/home-splash";
 import Row from "@/components/row";
 
 import { Category } from "@/lib/types";
+import ReactAudioPlayer from "react-audio-player";
 
 export default function HomePage() {
     const AllProjects = [...ClientProjects, ...SchoolProjects, ...PersonalProjects];

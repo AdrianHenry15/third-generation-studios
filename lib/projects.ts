@@ -176,7 +176,7 @@ export const SearchOriginalProjects: SongType[] = [
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        audio_file: "../public/audio-files/a-long-run-cminor-88bpm.wav",
+        audio_file: "../audio-files/a-long-run-cminor-88bpm.wav",
     },
     {
         id: "artist-3",
@@ -188,7 +188,7 @@ export const SearchOriginalProjects: SongType[] = [
         release_date: "2021",
         duration: "2:33",
         plays: 0,
-        audio_file: "",
+        audio_file: "../audio-files/aggro-120bpm-gminor.wav",
     },
     {
         id: "artist-4",

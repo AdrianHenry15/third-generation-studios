@@ -11,7 +11,7 @@ const AudioPlayerPlayButton = () => {
     };
     return (
         <div>
-            <audio ref={audioRef} src={currentAudioFile}></audio>
+            <audio ref={audioRef} src={currentAudioFile!} />
             <p className="cursor-pointer scale-100 hover:scale-110 transition-transform duration-300 ease-in-out" onClick={handlePlayPause}>
                 {isPlaying ? <IoPauseCircle size={40} className="text-white" /> : <IoPlayCircle size={40} className="text-white" />}
             </p>
