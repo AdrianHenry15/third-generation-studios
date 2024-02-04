@@ -51,3 +51,5 @@ export const CreatePageNavMenu: NavMenu[] = [
         link: "/create/websites",
     },
 ];
+
+export const WebsitePackage = [{ name: "Basic" }, { name: "Standard" }, { name: "Premium" }];
