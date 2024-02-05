@@ -38,7 +38,7 @@ const RowItem = (props: IRowItemProps) => {
                 <Image
                     width={props.currentItemCategory === Category.MOVIE ? 1000 : 0}
                     height={props.currentItemCategory === Category.MOVIE ? 1000 : 0}
-                    className="w-full block object-center object-cover md:max-h-[130px] xl:max-h-[200px]"
+                    className="w-full block object-center object-cover md:h-[130px] xl:h-[175px]"
                     src={
                         props.currentItemCategory === Category.MOVIE
                             ? `https://image.tmdb.org/t/p/w500/${props.currentItemImg}`

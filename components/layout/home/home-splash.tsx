@@ -63,7 +63,7 @@ const HomeSplash = () => {
                                 <Image
                                     width={1000}
                                     height={1000}
-                                    className="w-full object-cover h-[50%] md:h-[35%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
+                                    className="w-full object-cover h-[50%] lg:h-[35%] lg:w-[100%] xl:h-[60%] xl:w-[50%]"
                                     src={project.img}
                                     alt={project.title}
                                 />

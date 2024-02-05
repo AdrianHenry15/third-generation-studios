@@ -15,8 +15,8 @@ export type ItemType = {
     id: string;
     img: any;
     title: string;
-    genre?: string;
-    description?: string;
+    backdrop_path: string;
+    overview: string;
     release_date: string;
 };
 
@@ -25,21 +25,11 @@ export type WebsiteType = ItemType & {
 };
 
 export type SongType = ItemType & {
-    album_name?: string;
-    lyrics?: string;
     artist: string;
-    duration: string;
-    plays: number;
     audio_file: any;
 };
 
 export type ArtistType = ItemType & {
-    link?: string;
-    label?: string;
+    stream_links?: string;
     songs: [];
-};
-
-export type MovieType = ItemType & {
-    backdrop_path: string;
-    overview: string;
 };
