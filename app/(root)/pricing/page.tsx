@@ -31,10 +31,10 @@ const PremiumFeatures = [
 
 export default function PricingPage() {
     return (
-        <section className="px-10 flex flex-col w-full justify-center h-full bg-black">
+        <section className="flex flex-col w-full justify-center h-full bg-black px-2 md:px-[20%] lg:px-2">
             {/* PRICING HEADER */}
             <div className="flex flex-col py-24 px-4 text-center">
-                <h5 className="text-red-600 font-semibold text-sm">Pricing</h5>
+                <h5 className="text-red-600 font-semibold text-sm">Website Pricing</h5>
                 <h1 className="text-white text-4xl font-bold">
                     Get your <span className="text-red-600">free</span> estimate today!
                 </h1>
@@ -46,25 +46,25 @@ export default function PricingPage() {
                     popular
                     title={"Basic"}
                     description={"For a simple online presence"}
-                    price={"200 - 1500"}
+                    price={"189.00 to $1,499.00"}
                     features={BasicFeatures}
                 />
                 <PricingCard
                     title={"Standard"}
                     description={"For a more dynamic online presence"}
-                    price={"1500 - 5000"}
+                    price={"1,499.00 to $4,999"}
                     features={StandardFeatures}
                 />
                 <PricingCard
                     title={"Premium"}
-                    description={"For a more sophisticated and unique online presence"}
-                    price={"+5000"}
+                    description={"For a more sophisticated online presence"}
+                    price={"+4999"}
                     features={PremiumFeatures}
                 />
             </div>
             {/* GET ESTIMATE BUTTON */}
             <div className="w-full flex justify-center items-center my-10">
-                <Link className="w-1/2 bg-red-600 rounded-full flex py-2 justify-center lg:w-1/3 xl:w-1/4" href={"/estimate"}>
+                <Link className="w-[90%] bg-red-600 rounded-full flex py-4 justify-center md:w-[50%] lg:w-[40%]" href={"/estimate"}>
                     <span className="text-white font-semibold">Get Free Estimate</span>
                 </Link>
             </div>

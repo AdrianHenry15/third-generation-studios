@@ -1,5 +1,3 @@
-import { CheckIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
 import React from "react";
 import { BiCheck } from "react-icons/bi";
 
@@ -13,19 +11,23 @@ interface IPricingCardProps {
 
 const PricingCard = (props: IPricingCardProps) => {
     return (
-        <div className="flex flex-col flex-1 relative pb-10 mx-2 bg-white rounded-lg shadow-lg shadow-white my-6">
-            <div className="flex bg-red-600 rounded-t-lg justify-between p-2">
+        <div className="flex flex-col flex-1 relative pb-10 mx-2 bg-white rounded-md shadow-lg shadow-white my-6">
+            <div className="flex bg-red-600 rounded-t-md justify-between p-2">
                 <h4 className="font-semibold text-xl">{props.title}</h4>
                 <div className="flex justify-between items-center">
-                    {props.popular && <span className="bg-black text-white text-xs items-center flex rounded-lg p-2">Most Popular</span>}
+                    {props.popular && (
+                        <span className="bg-black text-white text-xs items-center flex rounded-lg py-2 px-6 font-semibold">
+                            Most Popular
+                        </span>
+                    )}
                 </div>
             </div>
             <div className="p-4">
                 {/* TOP */}
-                <span className="text-2xl font-light flex justify-center">{props.description}</span>
+                <span className="text-4xl font-light flex justify-center text-center">{props.description}</span>
                 {/* PRICING */}
                 <div className="flex items-center my-10">
-                    <h2 className="text-4xl font-bold flex mr-2">{`$${props.price}`}</h2>
+                    <h2 className="text-2xl font-bold flex mr-2">{`$${props.price}`}</h2>
                     <p className="text-xs">USD</p>
                 </div>
                 {/* FEATURES */}
