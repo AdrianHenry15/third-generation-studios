@@ -3,14 +3,13 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Autoplay, Navigation } from "swiper/modules";
+import { A11y, Autoplay } from "swiper/modules";
 
 import { ClientProjects } from "@/lib/projects";
 
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
 import "swiper/css";
-import "swiper/css/navigation";
 import Link from "next/link";
 
 const HomeSplash = () => {
@@ -38,37 +37,24 @@ const HomeSplash = () => {
         return () => observer.disconnect(); // Cleanup observer on component unmount
     }, []);
 
-    // no full paragraph, includes elipsis
-    const truncateString = (str: string, num: number) => {
-        if (str?.length > num) {
-            return str.slice(0, num) + "...";
-        }
-    };
-
     return (
-        <div className="w-[100%] h-[750px] self-center text-white">
+        <div className="w-full self-center text-white h-screen">
             <div className="w-full h-full">
                 <Swiper
-                    modules={[Navigation, A11y, Autoplay]}
-                    className="h-full"
+                    modules={[A11y, Autoplay]}
+                    centeredSlides={true}
+                    className="w-full h-full"
                     navigation
-                    spaceBetween={0}
                     slidesPerView={1}
                     autoplay={{ delay: 5000 }}
                 >
                     {ClientProjects.map((project) => (
                         <SwiperSlide key={project.id}>
-                            <div className="absolute w-full h-[750px] bg-gradient-to-r from-black"></div>
+                            <div className="absolute w-full bg-gradient-to-r from-black h-screen"></div>
                             <div className="w-full h-full flex justify-center items-center">
-                                <Image
-                                    width={1000}
-                                    height={1000}
-                                    className="w-full object-cover h-[50%] lg:h-[35%] lg:w-[100%] xl:h-[60%] xl:w-[50%]"
-                                    src={project.img}
-                                    alt={project.title}
-                                />
+                                <Image className="w-full h-full object-cover" src={project.img} alt={project.title} />
                             </div>
-                            <div className="absolute w-full top-[37%] p-4 left-10 md:top[35%] md:p-8">
+                            <div className="absolute w-full top-[35%] p-4 left-10 md:top[35%] md:p-8">
                                 <Image src={Logo} alt="logo" className="w-24 py-2" />
                                 <h1 className="text-white text-[30px] md:text-5xl">{project.title}</h1>
                                 <div className="my-4">

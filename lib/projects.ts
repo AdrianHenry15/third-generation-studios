@@ -1,10 +1,10 @@
 import { ArtistType, SongType, WebsiteType } from "./types";
 
 // WEBSITES IMAGES
-import Mollys from "@/public/websites/mollys.png";
+import Mollys from "@/public/websites/mollys.jpg";
 import Brite from "@/public/websites/brite.png";
-import TaharkaDemo from "@/public/websites/taharkademo.png";
-import TaharkaShopify from "@/public/websites/taharka-shopify.png";
+import TaharkaDemo from "@/public/websites/taharkabros1.webp";
+import TaharkaShopify from "@/public/websites/taharkabros2.jpg";
 import Zoo from "@/public/websites/zoo.png";
 import Gameboy from "@/public/websites/gameboy.png";
 import Calendar from "@/public/websites/calendar.png";
