@@ -47,18 +47,20 @@ const TrackItem = (props: ITrackItemProps) => {
                 {/* ITEM INFO */}
                 <figcaption className="flex flex-col">
                     {/* ROW 1 */}
-                    <div className="flex justify-start items-center mt-2">
-                        {/* PRICE */}
-                        <p className="text-blue-600 font-semibold">{"$" + props.price + ".00"}</p>
-                        {/* DOT DIVIDER */}
-                        <BsDot size={20} className="text-gray-500" />
-                        {/* TODO: IF FREE RENDER FREE ICON */}
-                        {props.isFree && (
-                            <div className="flex items-center text-[10px] font-semibold bg-red-900 bg-transparent-75 px-2 rounded-full">
-                                <IoMdDownload className="mr-[1px] text-red-400" size={10} />
-                                <p className="text-red-400">FREE</p>
-                            </div>
-                        )}
+                    <div className="flex flex-col justify-start mt-2 md:items-center md:flex-row">
+                        <div className="flex">
+                            {/* PRICE */}
+                            <p className="text-blue-600 font-semibold">{"$" + props.price + ".00"}</p>
+                            {/* DOT DIVIDER */}
+                            <BsDot size={20} className="text-gray-500" />
+                            {/* TODO: IF FREE RENDER FREE ICON */}
+                            {props.isFree && (
+                                <div className="flex items-center text-[10px] font-semibold bg-red-900 bg-transparent-75 px-2 rounded-full">
+                                    <IoMdDownload className="mr-[1px] text-red-400" size={10} />
+                                    <p className="text-red-400">FREE</p>
+                                </div>
+                            )}
+                        </div>
                         {/* DOT DIVIDER */}
                         <BsDot size={20} className="text-gray-500" />
                         {/* TEMPO */}
@@ -67,11 +69,11 @@ const TrackItem = (props: ITrackItemProps) => {
                         </div>
                     </div>
                     {/* ROW 2 */}
-                    <div className="flex items-center my-2">
+                    <div className="flex items-start my-2 flex-col md:items-center md:flex-row">
                         {/* TRACK TITLE */}
                         <h5 className="text-white font-semibold">{props.trackTitle}</h5>
                         {/* DOT DIVIDER */}
-                        <BsDot size={20} className="text-gray-500" />
+                        <BsDot size={20} className="text-gray-500 hidden md:flex" />
                         {/* KEY */}
                         <div className="flex items-center">
                             <p className="text-gray-600 text-xs underline-offset-4 underline">{props.trackScale}</p>
