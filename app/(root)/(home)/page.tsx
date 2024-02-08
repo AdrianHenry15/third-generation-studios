@@ -1,25 +1,30 @@
 "use client";
 
-import { Artists, ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "@/lib/projects";
-
+import { AllSearchTracks, ClientProjects, PersonalProjects, SchoolProjects } from "@/lib/projects";
 import HomeSplash from "@/components/layout/home/home-splash";
-import Row from "@/components/row";
-
 import { Category } from "@/lib/types";
 import TrackRow from "@/components/layout/music/tracks/track-row";
+import WebsiteRow from "@/components/layout/websites/website-row";
+import SectionTitle from "@/components/section-title";
 
 export default function HomePage() {
     const AllProjects = [...ClientProjects, ...SchoolProjects, ...PersonalProjects];
-    const AllMusic = [...SearchOriginalProjects, ...JafarriProjects];
+    const AllMusic = [...AllSearchTracks];
 
     return (
-        <div className="bg-black">
+        <section className="bg-black flex flex-col">
+            {/* SPLASH */}
             <HomeSplash />
-            <Row category={Category.WEBSITE} title="All Websites" item={AllProjects} />
-            <TrackRow />
-            {/* <Row category={Category.ARTIST} title="All Artists" item={Artists} /> */}
-            {/* <Row category={Category.SONG} title="All Songs" item={AllMusic} /> */}
-            {/* <Row itemType={ItemType.MOVIE} title="Now Playing" fetchURL={requests.requestNowPlaying} /> */}
-        </div>
+            <div className="px-4 md:px-10">
+                {/* SECTION TITLE */}
+                {/* <div className="py-44 text-center">
+                    <p className="text-sm text-red-600 font-bold">Websites</p>
+                </div> */}
+                <SectionTitle title="Websites" />
+                <WebsiteRow category={Category.WEBSITE} title="All Websites" item={AllProjects} />
+                <SectionTitle title="Music" />
+                <TrackRow />
+            </div>
+        </section>
     );
 }

@@ -1,60 +1,85 @@
 import Image from "next/image";
 import React from "react";
 
+import { BsDot } from "react-icons/bs";
+import { IoMdDownload } from "react-icons/io";
+
 import PlayButton from "@/components/action-overlay/play-button";
 import { Category } from "@/lib/types";
+import ImageContainer from "@/components/containers/image-container";
 
 interface ITrackItemProps {
     category: Category;
-    itemId: string;
+    trackId: string;
     audioFile: string;
     artistName: string;
-    itemImg: any;
-    itemTitle: string;
+    trackImg: any;
+    trackTitle: string;
     isFree: boolean;
-    price: string;
+    price: number;
+    bpm: string;
+    trackScale: string;
 }
 
 const TrackItem = (props: ITrackItemProps) => {
     return (
-        <figure>
+        <figure className="flex flex-col">
             {/* HOVER CONTAINER */}
-            <div>
+            <div className="p-4 ease-in-out transition-colors duration-300 hover:bg-gray-900 rounded-lg cursor-pointer">
                 {/* IMAGE CONTAINER  */}
-                <div>
+                <div className="relative">
                     {/* IMAGE */}
-                    <span>
-                        <Image src="" alt="" />
-                    </span>
+                    <ImageContainer>
+                        <Image className="object-cover rounded-md" src={props.trackImg} alt={props.trackId} />
+                    </ImageContainer>
                     {/* PLAY BUTTON */}
-                    <span>
+                    <span className="cursor-pointer">
                         <PlayButton
                             currentCategory={props.category}
-                            currentItemId={props.itemId}
+                            currentItemId={props.trackId}
                             currentAudioFile={props.audioFile}
                             currentArtistName={props.artistName}
-                            currentItemImg={props.itemImg}
-                            currentItemTitle={props.itemTitle}
+                            currentItemImg={props.trackImg}
+                            currentItemTitle={props.trackTitle}
                         />
                     </span>
                 </div>
                 {/* ITEM INFO */}
                 <figcaption className="flex flex-col">
                     {/* ROW 1 */}
-                    <div className="flex">
+                    <div className="flex justify-start items-center mt-2">
                         {/* PRICE */}
-                        <p className="text-blue-600">{props.price}</p>
+                        <p className="text-blue-600 font-semibold">{"$" + props.price + ".00"}</p>
+                        {/* DOT DIVIDER */}
+                        <BsDot size={20} className="text-gray-500" />
                         {/* TODO: IF FREE RENDER FREE ICON */}
-                        {props.isFree && <p className="text-xs font-semibold bg-orange-800 text-orange-400">FREE</p>}
+                        {props.isFree && (
+                            <div className="flex items-center text-[10px] font-semibold bg-red-900 bg-transparent-75 px-2 rounded-full">
+                                <IoMdDownload className="mr-[1px] text-red-400" size={10} />
+                                <p className="text-red-400">FREE</p>
+                            </div>
+                        )}
+                        {/* DOT DIVIDER */}
+                        <BsDot size={20} className="text-gray-500" />
+                        {/* TEMPO */}
+                        <div>
+                            <p className="text-gray-600">{props.bpm}</p>
+                        </div>
                     </div>
                     {/* ROW 2 */}
-                    <div>
+                    <div className="flex items-center my-2">
                         {/* TRACK TITLE */}
-                        <h5>{props.itemTitle}</h5>
+                        <h5 className="text-white font-semibold">{props.trackTitle}</h5>
+                        {/* DOT DIVIDER */}
+                        <BsDot size={20} className="text-gray-500" />
+                        {/* KEY */}
+                        <div className="flex items-center">
+                            <p className="text-gray-600 text-xs underline-offset-4 underline">{props.trackScale}</p>
+                        </div>
                     </div>
                     {/* ROW 3 */}
                     <div>
-                        <p>{props.artistName}</p>
+                        <p className="text-sm font-semibold">{props.artistName}</p>
                     </div>
                 </figcaption>
             </div>

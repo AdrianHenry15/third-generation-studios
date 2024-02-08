@@ -4,32 +4,44 @@ export type NavMenu = {
 };
 
 export enum Category {
-    WEBSITE = "Website",
-    SONG = "Song",
-    ARTIST = "Artist",
-    MOVIE = "Movie",
-    NONE = "",
+    WEBSITE,
+    TRACK,
+    ARTIST,
+    MOVIE,
+    NONE,
 }
 
-export type ItemType = {
+export type WebsiteType = {
     id: string;
     img: any;
     title: string;
-    backdrop_path: string;
     overview: string;
     release_date: string;
+    link: string; // Add link property
+    backdrop_path: any;
 };
 
-export type WebsiteType = ItemType & {
-    link: string;
+export type SongType = {
+    id: string;
+    img: any;
+    title: string;
+    overview: string;
+    artist: ArtistType; // Rename artist_name from artist
+    release_date: string;
+    audio_file: string; // Change any to string for audio_file
+    backdrop_path: any;
+    bpm: string;
+    price: number;
+    key: string;
+    isFree: boolean;
 };
 
-export type SongType = ItemType & {
-    artist: string;
-    audio_file: any;
-};
-
-export type ArtistType = ItemType & {
-    stream_links?: string;
-    songs: [];
+export type ArtistType = {
+    id: string;
+    img: any;
+    title: string;
+    overview: string;
+    release_date: string;
+    songs: SongType[]; // Change songs type from an empty array to SongType[]
+    backdrop_path: any;
 };

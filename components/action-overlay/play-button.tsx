@@ -15,7 +15,7 @@ interface IPlayButtonProps {
 }
 
 const PlayButton = (props: IPlayButtonProps) => {
-    const { isPlaying, play, pause, audioRef } = useAudioPlayerStore();
+    const { isPlaying, play, pause } = useAudioPlayerStore();
     const {
         currentItemId,
         currentCategory,

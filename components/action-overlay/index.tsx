@@ -14,10 +14,10 @@ interface IActionOverlayProps {
     websiteTitle: string;
     currentItemId: string;
     currentCategory: Category;
-    currentAudioFile: string;
     currentItemTitle: string;
     currentItemImg: any;
-    currentArtistName: string;
+    currentAudioFile?: string;
+    currentArtistName?: string;
 }
 
 const ActionOverlay = (props: IActionOverlayProps) => {
@@ -33,7 +33,7 @@ const ActionOverlay = (props: IActionOverlayProps) => {
     };
 
     const handleAction = () => {
-        if (props.currentCategory === Category.SONG) {
+        if (props.currentCategory === Category.TRACK) {
             console.log("song");
         } else if (props.currentCategory === Category.WEBSITE) {
             openWebsite();
@@ -58,7 +58,7 @@ const ActionOverlay = (props: IActionOverlayProps) => {
             <OpenButton onClick={handleAction} />
 
             {/* PLAY/PAUSE BUTTON */}
-            {props.currentCategory === Category.SONG && (
+            {props.currentCategory === Category.TRACK && (
                 <PlayButton
                     currentArtistName={props.currentArtistName!}
                     currentItemImg={props.currentItemImg}
