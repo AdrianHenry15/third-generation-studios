@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 
 import { BsDot } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
@@ -8,7 +9,7 @@ import PlayButton from "@/components/action-overlay/play-button";
 import { Category } from "@/lib/types";
 import ImageContainer from "@/components/containers/image-container";
 
-interface ITrackItemProps {
+interface ITrackRowItemProps {
     category: Category;
     trackId: string;
     audioFile: string;
@@ -21,16 +22,18 @@ interface ITrackItemProps {
     trackScale: string;
 }
 
-const TrackItem = (props: ITrackItemProps) => {
+const TrackRowItem = (props: ITrackRowItemProps) => {
     return (
         <figure className="flex flex-col">
             {/* HOVER CONTAINER */}
-            <div className="p-4 ease-in-out transition-colors duration-300 hover:bg-gray-900 rounded-lg cursor-pointer">
+            <div className="p-4 ease-in-out transition-colors duration-300 hover:bg-gray-900 rounded-lg">
                 {/* IMAGE CONTAINER  */}
                 <div className="relative">
                     {/* IMAGE */}
                     <ImageContainer>
-                        <Image className="object-cover rounded-md" src={props.trackImg} alt={props.trackId} />
+                        <Link href={`/music/track/${props.trackId}`}>
+                            <Image className="object-cover rounded-md" src={props.trackImg} alt={props.trackId} />
+                        </Link>
                     </ImageContainer>
                     {/* PLAY BUTTON */}
                     <span className="cursor-pointer">
@@ -47,7 +50,7 @@ const TrackItem = (props: ITrackItemProps) => {
                 {/* ITEM INFO */}
                 <figcaption className="flex flex-col">
                     {/* ROW 1 */}
-                    <div className="flex flex-col justify-start mt-2 md:items-center md:flex-row">
+                    <div className="flex flex-col justify-start mt-2 lg:items-center lg:flex-row">
                         <div className="flex">
                             {/* PRICE */}
                             <p className="text-blue-600 font-semibold">{"$" + props.price + ".00"}</p>
@@ -55,14 +58,16 @@ const TrackItem = (props: ITrackItemProps) => {
                             <BsDot size={20} className="text-gray-500" />
                             {/* TODO: IF FREE RENDER FREE ICON */}
                             {props.isFree && (
-                                <div className="flex items-center text-[10px] font-semibold bg-red-900 bg-transparent-75 px-2 rounded-full">
+                                <div className="flex items-center text-[8px] font-semibold bg-red-900 bg-transparent-75 px-2 rounded-full">
                                     <IoMdDownload className="mr-[1px] text-red-400" size={10} />
                                     <p className="text-red-400">FREE</p>
                                 </div>
                             )}
                         </div>
                         {/* DOT DIVIDER */}
-                        <BsDot size={20} className="text-gray-500" />
+                        <div>
+                            <BsDot size={20} className="text-gray-500" />
+                        </div>
                         {/* TEMPO */}
                         <div>
                             <p className="text-gray-600">{props.bpm}</p>
@@ -71,7 +76,9 @@ const TrackItem = (props: ITrackItemProps) => {
                     {/* ROW 2 */}
                     <div className="flex items-start my-2 flex-col md:items-center md:flex-row">
                         {/* TRACK TITLE */}
-                        <h5 className="text-white font-semibold">{props.trackTitle}</h5>
+                        <Link href={`/music/track/${props.trackId}`}>
+                            <h5 className="text-white font-semibold hover:underline underline-offset-4">{props.trackTitle}</h5>
+                        </Link>
                         {/* DOT DIVIDER */}
                         <BsDot size={20} className="text-gray-500 hidden md:flex" />
                         {/* KEY */}
@@ -80,13 +87,13 @@ const TrackItem = (props: ITrackItemProps) => {
                         </div>
                     </div>
                     {/* ROW 3 */}
-                    <div>
-                        <p className="text-sm font-semibold">{props.artistName}</p>
-                    </div>
+                    <Link href={`/music/${props.artistName}`}>
+                        <p className="text-sm font-semibold hover:underline underline-offset-4">{props.artistName}</p>
+                    </Link>
                 </figcaption>
             </div>
         </figure>
     );
 };
 
-export default TrackItem;
+export default TrackRowItem;

@@ -30,7 +30,7 @@ export default function VolumeSlider(props: IVolumeSliderProps) {
     return (
         <Box sx={{ width: 200 }}>
             <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                {volume > 0.5 ? <LuVolume2 size={30} /> : <LuVolume1 size={30} />}
+                {volume > 0.5 ? <LuVolume2 size={25} /> : <LuVolume1 size={25} />}
                 <Slider color="error" aria-label="Volume" value={volume * 100} onChange={handleVolumeChange} />
             </Stack>
         </Box>

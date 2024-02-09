@@ -1,5 +1,5 @@
 import React from "react";
-import TrackItem from "./track-item";
+import TrackRowItem from "./track-row-item";
 import { Category } from "@/lib/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AllSearchTracks } from "@/lib/projects";
@@ -46,7 +46,7 @@ const TrackRow = () => {
                     {AllSearchTracks.map((track) => {
                         return (
                             <SwiperSlide key={track.id}>
-                                <TrackItem
+                                <TrackRowItem
                                     category={Category.TRACK}
                                     trackId={track.id}
                                     audioFile={track.audio_file}
