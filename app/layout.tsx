@@ -34,7 +34,9 @@ export default async function MainLayout({ children }: { children: React.ReactNo
                     <div className="flex flex-col">
                         <Suspense fallback={<Loader />}>
                             {children}
-                            <AudioPlayer />
+                            <Suspense fallback={<Loader />}>
+                                <AudioPlayer />
+                            </Suspense>
                         </Suspense>
                     </div>
                 </body>
