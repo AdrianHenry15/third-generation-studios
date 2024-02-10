@@ -5,7 +5,7 @@ import React from "react";
 interface ITrackItemProps {
     trackName: string;
     trackImg: any;
-    artist: string;
+    artistName: string;
     // hasCollaborators: boolean;
     // collaborator?: ArtistType[];
 }
@@ -22,7 +22,7 @@ const TrackItem = (props: ITrackItemProps) => {
                 {/* TRACK TITLE */}
                 <h1 className="text-white">{props.trackName}</h1>
                 {/* ARTIST */}
-                <p className="text-white">{props.artist}</p>
+                <p className="text-white">{props.artistName}</p>
                 <div>
                     {/* LIKE */}
                     <div></div>
