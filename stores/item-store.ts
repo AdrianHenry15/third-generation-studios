@@ -1,7 +1,8 @@
 "use client";
 
-import { Category, SongType } from "@/lib/types";
 import { create } from "zustand";
+
+import { Category, SongType } from "@/lib/types";
 
 interface ItemStoreState {
     currentTrack: SongType;
