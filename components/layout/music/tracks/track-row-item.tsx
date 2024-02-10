@@ -6,20 +6,11 @@ import { BsDot } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
 
 import PlayButton from "@/components/action-overlay/play-button";
-import { Category } from "@/lib/types";
+import { SongType } from "@/lib/types";
 import ImageContainer from "@/components/containers/image-container";
 
 interface ITrackRowItemProps {
-    category: Category;
-    trackId: string;
-    audioFile: string;
-    artistName: string;
-    trackImg: any;
-    trackTitle: string;
-    isFree: boolean;
-    price: number;
-    bpm: string;
-    trackScale: string;
+    currentTrack: SongType;
 }
 
 const TrackRowItem = (props: ITrackRowItemProps) => {
@@ -31,20 +22,13 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                 <div className="relative">
                     {/* IMAGE */}
                     <ImageContainer>
-                        <Link href={`/music/track/${props.trackId}`}>
-                            <Image className="object-cover rounded-md" src={props.trackImg} alt={props.trackId} />
+                        <Link href={`/music/track/${props.currentTrack.id}`}>
+                            <Image className="object-cover rounded-md" src={props.currentTrack.img} alt={props.currentTrack.title} />
                         </Link>
                     </ImageContainer>
                     {/* PLAY BUTTON */}
                     <span className="cursor-pointer">
-                        <PlayButton
-                            currentCategory={props.category}
-                            currentItemId={props.trackId}
-                            currentAudioFile={props.audioFile}
-                            currentArtistName={props.artistName}
-                            currentItemImg={props.trackImg}
-                            currentItemTitle={props.trackTitle}
-                        />
+                        <PlayButton currentTrack={props.currentTrack} />
                     </span>
                 </div>
                 {/* ITEM INFO */}
@@ -53,11 +37,11 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                     <div className="flex flex-col justify-start mt-2 lg:items-center lg:flex-row">
                         <div className="flex">
                             {/* PRICE */}
-                            <p className="text-blue-600 font-semibold">{"$" + props.price + ".00"}</p>
+                            <p className="text-blue-600 font-semibold">{"$" + props.currentTrack.price + ".00"}</p>
                             {/* DOT DIVIDER */}
                             <BsDot size={20} className="text-gray-500" />
                             {/* TODO: IF FREE RENDER FREE ICON */}
-                            {props.isFree && (
+                            {props.currentTrack.isFree && (
                                 <div className="flex items-center text-[8px] font-semibold bg-red-900 bg-transparent-75 px-2 rounded-full">
                                     <IoMdDownload className="mr-[1px] text-red-400" size={10} />
                                     <p className="text-red-400">FREE</p>
@@ -70,25 +54,25 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                         </div>
                         {/* TEMPO */}
                         <div>
-                            <p className="text-gray-600">{props.bpm}</p>
+                            <p className="text-gray-600">{props.currentTrack.bpm}</p>
                         </div>
                     </div>
                     {/* ROW 2 */}
                     <div className="flex items-start my-2 flex-col md:items-center md:flex-row">
                         {/* TRACK TITLE */}
-                        <Link href={`/music/track/${props.trackId}`}>
-                            <h5 className="text-white font-semibold hover:underline underline-offset-4">{props.trackTitle}</h5>
+                        <Link href={`/music/track/${props.currentTrack.id}`}>
+                            <h5 className="text-white font-semibold hover:underline underline-offset-4">{props.currentTrack.title}</h5>
                         </Link>
                         {/* DOT DIVIDER */}
                         <BsDot size={20} className="text-gray-500 hidden md:flex" />
                         {/* KEY */}
                         <div className="flex items-center">
-                            <p className="text-gray-600 text-xs underline-offset-4 underline">{props.trackScale}</p>
+                            <p className="text-gray-600 text-xs underline-offset-4 underline">{props.currentTrack.key}</p>
                         </div>
                     </div>
                     {/* ROW 3 */}
-                    <Link href={`/music/${props.artistName}`}>
-                        <p className="text-sm font-semibold hover:underline underline-offset-4">{props.artistName}</p>
+                    <Link href={`/music/${props.currentTrack.artist.title}`}>
+                        <p className="text-sm font-semibold hover:underline underline-offset-4">{props.currentTrack.artist.title}</p>
                     </Link>
                 </figcaption>
             </div>

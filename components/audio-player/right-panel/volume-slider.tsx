@@ -4,20 +4,12 @@ import * as React from "react";
 
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Slider, { SliderTypeMap } from "@mui/material/Slider";
+import Slider from "@mui/material/Slider";
 
-import { FaVolumeLow, FaVolumeOff } from "react-icons/fa6";
-import { FaVolumeUp } from "react-icons/fa";
 import { useAudioPlayerStore } from "stores/audio-player-store";
-import { Category } from "@/lib/types";
-import { LuVolume, LuVolume1, LuVolume2 } from "react-icons/lu";
+import { LuVolume1, LuVolume2 } from "react-icons/lu";
 
-interface IVolumeSliderProps {
-    itemId: string;
-    category: Category;
-}
-
-export default function VolumeSlider(props: IVolumeSliderProps) {
+export default function VolumeSlider() {
     const [volume, setVolume] = React.useState(0.5);
     const { audioRef } = useAudioPlayerStore(); // Get setVolume from store
 

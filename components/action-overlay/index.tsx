@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 
-import PlayButton from "./play-button";
 import OpenButton from "./open-button";
 import OpenLinkModal from "../modals/open-link-modal";
 
@@ -45,29 +44,8 @@ const ActionOverlay = (props: IActionOverlayProps) => {
     };
     return (
         <div className="absolute cursor-pointer top-0 left-0 w-full h-full bg-black/20 text-white">
-            {/* LIKE */}
-            {/* <FavoriteButton category={props.category} itemId={props.itemId!} /> */}
-
-            {/* SAVE */}
-            {/* <SaveButton /> */}
-
-            {/* CREATE ITEM BUTTON */}
-            {/* <CreateItemButton category={props.category} itemId={props.itemId!} /> */}
-
             {/* OPEN ITEM */}
             <OpenButton onClick={handleAction} />
-
-            {/* PLAY/PAUSE BUTTON */}
-            {props.currentCategory === Category.TRACK && (
-                <PlayButton
-                    currentArtistName={props.currentArtistName!}
-                    currentItemImg={props.currentItemImg}
-                    currentItemTitle={props.currentItemTitle!}
-                    currentAudioFile={props.currentAudioFile!}
-                    currentCategory={props.currentCategory}
-                    currentItemId={props.currentItemId!}
-                />
-            )}
 
             {/* OpenLinkModal */}
             {isWebsiteModalOpen && (

@@ -4,7 +4,7 @@ import { SongType } from "@/lib/types";
 
 interface TrackStoreState {
     currentTrack: SongType;
-    setTrack: (track: SongType) => void;
+    setCurrentTrack: (currentTrack: SongType) => void;
 }
 
 export const useTrackStore = create<TrackStoreState>((set) => ({
@@ -30,5 +30,5 @@ export const useTrackStore = create<TrackStoreState>((set) => ({
         key: "",
         isFree: false,
     },
-    setTrack: (track) => set((state) => ({ currentTrack: track })),
+    setCurrentTrack: (currentTrack) => set((state) => ({ currentTrack: currentTrack })),
 }));

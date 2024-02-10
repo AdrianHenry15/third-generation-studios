@@ -46,18 +46,7 @@ const TrackRow = () => {
                     {AllSearchTracks.map((track) => {
                         return (
                             <SwiperSlide key={track.id}>
-                                <TrackRowItem
-                                    category={Category.TRACK}
-                                    trackId={track.id}
-                                    audioFile={track.audio_file}
-                                    artistName={track.artist.title}
-                                    trackImg={track.img}
-                                    trackTitle={track.title}
-                                    isFree={track.isFree}
-                                    price={track.price}
-                                    bpm={track.bpm}
-                                    trackScale={track.key}
-                                />
+                                <TrackRowItem currentTrack={track} />
                             </SwiperSlide>
                         );
                     })}

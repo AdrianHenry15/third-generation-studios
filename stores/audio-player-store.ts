@@ -11,16 +11,15 @@ const { setCurrentItemId, setCurrentCategory } = useItemStore.getState();
 interface AudioPlayerState {
     isPlaying: boolean;
     audioRef: React.RefObject<HTMLAudioElement>;
-    play: (itemID: string, category: Category) => void;
+    play: (trackId: string) => void;
     pause: () => void;
 }
 
 export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
     isPlaying: false,
     audioRef: React.createRef(),
-    play: async (itemID, category) => {
-        await setCurrentItemId(itemID);
-        await setCurrentCategory(category);
+    play: async (trackId) => {
+        await setCurrentItemId(trackId);
 
         const audioRef = useAudioPlayerStore.getState().audioRef.current;
         if (audioRef) {
