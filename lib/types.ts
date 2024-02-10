@@ -3,14 +3,6 @@ export type NavMenu = {
     link: string;
 };
 
-export enum Category {
-    WEBSITE,
-    TRACK,
-    ARTIST,
-    MOVIE,
-    NONE,
-}
-
 export type WebsiteType = {
     id: string;
     img: any;

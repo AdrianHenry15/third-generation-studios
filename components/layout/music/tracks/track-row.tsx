@@ -1,12 +1,11 @@
 import React from "react";
 import TrackRowItem from "./track-row-item";
-import { Category } from "@/lib/types";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { AllSearchTracks } from "@/lib/projects";
+import { AllSearchTracks } from "@/lib/tracks";
 
 const TrackRow = () => {
     return (
-        <div>
+        <div className="p-32">
             {/* ROW TITLE */}
             <div>
                 <h5 className="text-white text-2xl my-2 font-bold">All Tracks By Search</h5>

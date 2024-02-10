@@ -8,12 +8,14 @@ import { IoMdDownload } from "react-icons/io";
 import PlayButton from "@/components/action-overlay/play-button";
 import { SongType } from "@/lib/types";
 import ImageContainer from "@/components/containers/image-container";
+import { useTrackStore } from "stores/track-store";
 
 interface ITrackRowItemProps {
     currentTrack: SongType;
 }
 
 const TrackRowItem = (props: ITrackRowItemProps) => {
+    const { setCurrentTrack } = useTrackStore();
     return (
         <figure className="flex flex-col">
             {/* HOVER CONTAINER */}
@@ -22,7 +24,7 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                 <div className="relative">
                     {/* IMAGE */}
                     <ImageContainer>
-                        <Link href={`/music/track/${props.currentTrack.id}`}>
+                        <Link onClick={() => setCurrentTrack(props.currentTrack)} href={`/music/track/${props.currentTrack.id}`}>
                             <Image className="object-cover rounded-md" src={props.currentTrack.img} alt={props.currentTrack.title} />
                         </Link>
                     </ImageContainer>

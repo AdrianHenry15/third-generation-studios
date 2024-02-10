@@ -1,28 +1,23 @@
-import { ArtistType } from "@/lib/types";
+"use client";
+
 import Image from "next/image";
 import React from "react";
+import { useTrackStore } from "stores/track-store";
 
-interface ITrackItemProps {
-    trackName: string;
-    trackImg: any;
-    artistName: string;
-    // hasCollaborators: boolean;
-    // collaborator?: ArtistType[];
-}
-
-const TrackItem = (props: ITrackItemProps) => {
+const TrackItem = () => {
+    const { currentTrack } = useTrackStore();
     return (
         <article className="flex flex-col">
             {/* TRACK INFO */}
             <header>
                 {/* TRACK IMAGE */}
                 <figure>
-                    <Image src={props.trackImg} alt="track-image" />
+                    <Image src={currentTrack.img} alt="track-image" />
                 </figure>
                 {/* TRACK TITLE */}
-                <h1 className="text-white">{props.trackName}</h1>
+                <h1 className="text-white">{currentTrack.title}</h1>
                 {/* ARTIST */}
-                <p className="text-white">{props.artistName}</p>
+                <p className="text-white">{currentTrack.artist.title}</p>
                 <div>
                     {/* LIKE */}
                     <div></div>

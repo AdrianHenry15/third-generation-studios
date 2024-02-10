@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
 
-import { ClientProjects } from "@/lib/projects";
+import { ClientWebsites } from "@/lib/websites";
 
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
@@ -48,19 +48,19 @@ const HomeSplash = () => {
                     slidesPerView={1}
                     autoplay={{ delay: 5000 }}
                 >
-                    {ClientProjects.map((project) => (
-                        <SwiperSlide key={project.id}>
+                    {ClientWebsites.map((website) => (
+                        <SwiperSlide key={website.id}>
                             <div className="absolute w-full bg-gradient-to-r from-black h-screen"></div>
                             <div className="w-full h-full flex justify-center items-center">
-                                <Image className="w-full h-full object-cover" src={project.img} alt={project.title} />
+                                <Image className="w-full h-full object-cover" src={website.img} alt={website.title} />
                             </div>
                             <div className="absolute w-full top-[35%] p-4 left-10 md:top[35%] md:p-8">
                                 <Image src={Logo} alt="logo" className="w-24 py-2" />
-                                <h1 className="text-white text-[30px] md:text-5xl">{project.title}</h1>
+                                <h1 className="text-white text-[30px] md:text-5xl">{website.title}</h1>
                                 <div className="my-4">
                                     <Link
                                         target="_blank"
-                                        href={project.link}
+                                        href={website.link}
                                         className="border bg-gray-300 text-black border-gray-300 py-2 px-5"
                                     >
                                         Go To Website
@@ -69,7 +69,7 @@ const HomeSplash = () => {
                                         Make Inquiry
                                     </Link>
                                 </div>
-                                <p className="text-gray-400 text-sm">{project.release_date}</p>
+                                <p className="text-gray-400 text-sm">{website.release_date}</p>
                             </div>
                         </SwiperSlide>
                     ))}
