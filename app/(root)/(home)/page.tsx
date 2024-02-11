@@ -11,7 +11,7 @@ export default function HomePage() {
             <HomeSplash />
             <div className="px-4 md:px-10">
                 <WebsiteRow />
-                <div className="border-y-[1px] border-gray-700 px-10">
+                <div className="border-y-[1px] border-gray-700">
                     <TrackRow />
                 </div>
             </div>

@@ -5,13 +5,12 @@ import React from "react";
 import RightPanel from "./right-panel";
 import TrackDisplay from "./track-display";
 import Controls from "./controls";
-import { useItemStore } from "stores/item-store";
+import { useTrackStore } from "stores/track-store";
 
 const AudioPlayer = () => {
-    const { currentItemId, currentCategory } = useItemStore();
-    console.log(currentItemId, currentCategory);
+    const { currentTrack } = useTrackStore();
 
-    return currentItemId === "" ? null : (
+    return currentTrack.id === "" ? null : (
         <div className="bg-black z-50 px-4 py-10 text-white fixed justify-between bottom-0 w-full h-[75px] flex items-center">
             {/* ARTWORK, ARTIST, SONG, LIKE BUTTON */}
             <TrackDisplay />

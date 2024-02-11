@@ -1,4 +1,4 @@
-import { Category, SongType } from "@/lib/types";
+import { SongType } from "@/lib/types";
 import React from "react";
 
 import { IoPauseCircle, IoPlayCircle } from "react-icons/io5";
@@ -17,7 +17,7 @@ const PlayButton = (props: IPlayButtonProps) => {
         if (isPlaying && currentTrack.id === props.currentTrack.id) {
             pause();
         } else {
-            play(props.currentTrack.id);
+            play(props.currentTrack);
             setCurrentTrack(props.currentTrack);
         }
     };
