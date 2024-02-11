@@ -7,6 +7,7 @@ import { useTrackStore } from "stores/track-store";
 
 interface IPlayButtonProps {
     currentTrack: SongType;
+    className?: string;
 }
 
 const PlayButton = (props: IPlayButtonProps) => {
@@ -23,7 +24,7 @@ const PlayButton = (props: IPlayButtonProps) => {
     };
 
     return (
-        <div>
+        <div className={`${props.className} `}>
             <p className="z-20" onClick={handleClick}>
                 {isPlaying && currentTrack.id === props.currentTrack.id ? (
                     <IoPauseCircle
