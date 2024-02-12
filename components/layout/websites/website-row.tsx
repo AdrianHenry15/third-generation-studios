@@ -7,10 +7,15 @@ import axios from "axios";
 import WebsiteRowItem from "./website-row-item";
 import { ClientWebsites } from "@/lib/websites";
 
-const WebsiteRow = () => {
+interface IWebsiteRowProps {
+    title: string;
+    items: any[];
+}
+
+const WebsiteRow = (props: IWebsiteRowProps) => {
     return (
         <div className="relative h-max py-4">
-            <h2 className="text-white font-bold text-xl lg:text-2xl py-2">All Websites</h2>
+            <h2 className="text-white font-bold text-xl lg:text-2xl py-2">{props.title}</h2>
             <div className="relative flex group items-center">
                 <div className="w-full h-max overflow-hidden flex scroll-smooth relative">
                     <Swiper
@@ -44,7 +49,7 @@ const WebsiteRow = () => {
                         style={{ width: "100%", height: "100%" }}
                     >
                         <ul>
-                            {ClientWebsites.map((item) => (
+                            {props.items.map((item) => (
                                 <SwiperSlide className="py-10 mx-2" key={item.id}>
                                     <WebsiteRowItem currentWebsite={item} />
                                 </SwiperSlide>
