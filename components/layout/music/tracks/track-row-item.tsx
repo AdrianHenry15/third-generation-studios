@@ -41,10 +41,10 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                             {/* PRICE */}
                             <p className="text-blue-600 font-semibold">{"$" + props.currentTrack.price + ".00"}</p>
                             {/* DOT DIVIDER */}
-                            <BsDot size={20} className="text-gray-500" />
+                            <BsDot size={20} className="text-gray-500 hidden md:flex" />
                             {/* TODO: IF FREE RENDER FREE ICON */}
                             {props.currentTrack.isFree && (
-                                <div className="flex items-center text-[8px] font-semibold bg-red-900 bg-transparent-75 px-2 rounded-full">
+                                <div className="flex items-center ml-2 text-[8px] font-semibold hover:border-zinc-700 hover:border-[1px] transition-all duration-300 ease-in-out  px-2 rounded-full md:ml-0">
                                     <IoMdDownload className="mr-[1px] text-red-400" size={10} />
                                     <p className="text-red-400">FREE</p>
                                 </div>
@@ -52,11 +52,11 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                         </div>
                         {/* DOT DIVIDER */}
                         <div>
-                            <BsDot size={20} className="text-gray-500" />
+                            <BsDot size={20} className="text-gray-500 hidden md:flex" />
                         </div>
                         {/* TEMPO */}
                         <div>
-                            <p className="text-gray-600">{props.currentTrack.bpm}</p>
+                            <p className="text-gray-600 hidden md:flex">{props.currentTrack.bpm}</p>
                         </div>
                     </div>
                     {/* ROW 2 */}
@@ -68,12 +68,12 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                         {/* DOT DIVIDER */}
                         <BsDot size={20} className="text-gray-500 hidden md:flex" />
                         {/* KEY */}
-                        <div className="flex items-center">
+                        <div className="items-center hidden md:flex">
                             <p className="text-gray-600 text-xs underline-offset-4 underline">{props.currentTrack.key}</p>
                         </div>
                     </div>
                     {/* ROW 3 */}
-                    <Link href={`/music/${props.currentTrack.artist.title}`}>
+                    <Link className="w-min flex" href={`/music/${props.currentTrack.artist.title}`}>
                         <p className="text-sm font-semibold hover:underline underline-offset-4">{props.currentTrack.artist.title}</p>
                     </Link>
                 </figcaption>

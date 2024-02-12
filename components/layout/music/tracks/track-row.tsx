@@ -5,7 +5,7 @@ import { AllSearchTracks } from "@/lib/tracks";
 
 const TrackRow = () => {
     return (
-        <div className="py-24 px-10">
+        <div className="py-24 md:px-10">
             {/* ROW TITLE */}
             <div>
                 <h5 className="text-white text-2xl my-2 font-bold">All Tracks By Search</h5>
