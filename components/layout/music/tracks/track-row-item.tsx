@@ -25,7 +25,12 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                     {/* IMAGE */}
                     <ImageContainer>
                         <Link onClick={() => setCurrentTrack(props.currentTrack)} href={`/music/track/${props.currentTrack.id}`}>
-                            <Image className="object-cover rounded-md" src={props.currentTrack.img} alt={props.currentTrack.title} />
+                            <Image
+                                loading="lazy"
+                                className="object-cover rounded-md"
+                                src={props.currentTrack.img}
+                                alt={props.currentTrack.title}
+                            />
                         </Link>
                     </ImageContainer>
                     {/* PLAY BUTTON */}
@@ -44,7 +49,7 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                             <BsDot size={20} className="text-gray-500 hidden md:flex" />
                             {/* TODO: IF FREE RENDER FREE ICON */}
                             {props.currentTrack.isFree && (
-                                <div className="flex items-center ml-2 text-[8px] font-semibold hover:border-zinc-700 hover:border-[1px] transition-all duration-300 ease-in-out  px-2 rounded-full md:ml-0">
+                                <div className="flex items-center ml-2 text-[8px] font-semibold border-transparent border-[1px] hover:border-zinc-700 hover:border-[1px] transition-all duration-300 ease-in-out  px-2 rounded-full md:ml-0">
                                     <IoMdDownload className="mr-[1px] text-red-400" size={10} />
                                     <p className="text-red-400">FREE</p>
                                 </div>

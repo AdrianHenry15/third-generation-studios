@@ -24,7 +24,7 @@ const PlayButton = (props: IPlayButtonProps) => {
     };
 
     return (
-        <div className={`${props.className} `}>
+        <div className={`${props.className} cursor-pointer`}>
             <p className="z-20" onClick={handleClick}>
                 {isPlaying && currentTrack.id === props.currentTrack.id ? (
                     <IoPauseCircle

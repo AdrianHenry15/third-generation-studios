@@ -20,6 +20,7 @@ const WebsiteRowItem = (props: IWebsiteRowItemProps) => {
             {/* IMAGE */}
             <ImageContainer>
                 <Image
+                    loading="lazy"
                     className="w-full block object-center object-cover cursor-pointer h-[90px] md:h-[130px] xl:h-[175px]"
                     src={props.currentWebsite.img}
                     alt={props.currentWebsite.title}
