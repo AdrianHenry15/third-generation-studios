@@ -15,7 +15,7 @@ interface IWebsiteRowProps {
 const WebsiteRow = (props: IWebsiteRowProps) => {
     return (
         <div className="relative h-max py-4">
-            <h2 className="text-white font-bold text-xl lg:text-2xl py-2">{props.title}</h2>
+            <h5 className="text-white text-3xl my-2 font-semibold">{props.title}</h5>
             <div className="relative flex group items-center">
                 <div className="w-full h-max overflow-hidden flex scroll-smooth relative">
                     <Swiper

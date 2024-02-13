@@ -2,13 +2,19 @@ import React from "react";
 import TrackRowItem from "./track-row-item";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { AllSearchTracks } from "@/lib/tracks";
+import { SongType } from "@/lib/types";
 
-const TrackRow = () => {
+interface ITrackRowProps {
+    items: SongType[];
+    title: string;
+}
+
+const TrackRow = (props: ITrackRowProps) => {
     return (
-        <div className="py-24 md:px-10">
+        <div className="py-24">
             {/* ROW TITLE */}
             <div>
-                <h5 className="text-white text-2xl my-2 font-bold">All Tracks By Search</h5>
+                <h5 className="text-white text-3xl my-2 font-semibold">{props.title}</h5>
             </div>
             {/* ROW ITEMS */}
             <Swiper
@@ -42,7 +48,7 @@ const TrackRow = () => {
                 style={{ width: "100%", height: "100%" }}
             >
                 <div>
-                    {AllSearchTracks.map((track) => {
+                    {props.items.map((track) => {
                         return (
                             <SwiperSlide key={track.id}>
                                 <TrackRowItem currentTrack={track} />

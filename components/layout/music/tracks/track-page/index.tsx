@@ -20,7 +20,7 @@ const TrackItem = () => {
                 {/* TRACK IMAGE AND INFO */}
                 <figure className="relative md:h-[50%]">
                     {/* BG SHADOW OVERLAY  */}
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center md:justify-normal">
                         <div className="relative lg:mr-4">
                             <div className="absolute w-full h-full bg-gradient-to-r from-black md:w-[95%] md:hidden"></div>
                             <Image

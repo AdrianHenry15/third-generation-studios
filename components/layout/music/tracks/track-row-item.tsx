@@ -44,21 +44,19 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                     <div className="flex flex-col justify-start mt-2 lg:items-center lg:flex-row">
                         <div className="flex">
                             {/* PRICE */}
-                            <p className="text-blue-600 font-semibold">{"$" + props.currentTrack.price + ".00"}</p>
+                            {/* <p className="text-blue-600 font-semibold">{"$" + props.currentTrack.price + ".00"}</p> */}
                             {/* DOT DIVIDER */}
-                            <BsDot size={20} className="text-gray-500 hidden md:flex" />
+                            {/* <BsDot size={20} className="text-gray-500 hidden md:flex" /> */}
                             {/* TODO: IF FREE RENDER FREE ICON */}
-                            {props.currentTrack.isFree && (
+                            {/* {props.currentTrack.isFree && (
                                 <div className="flex items-center ml-2 text-[8px] font-semibold border-transparent border-[1px] hover:border-zinc-700 hover:border-[1px] transition-all duration-300 ease-in-out  px-2 rounded-full md:ml-0">
                                     <IoMdDownload className="mr-[1px] text-red-400" size={10} />
                                     <p className="text-red-400">FREE</p>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                         {/* DOT DIVIDER */}
-                        <div>
-                            <BsDot size={20} className="text-gray-500 hidden md:flex" />
-                        </div>
+                        <div>{/* <BsDot size={20} className="text-gray-500 hidden md:flex" /> */}</div>
                         {/* TEMPO */}
                         <div>
                             <p className="text-gray-600 hidden md:flex">{props.currentTrack.bpm}</p>
