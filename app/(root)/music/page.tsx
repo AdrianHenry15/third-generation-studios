@@ -1,14 +1,15 @@
+"use client";
+
 import MusicSplash from "@/components/layout/music/music-splash";
-import Row from "@/components/row";
-import { Artists, SearchOriginalProjects } from "@/lib/projects";
-import { Category } from "@/lib/types";
+import TrackRow from "@/components/layout/music/tracks/track-row";
+import { AllSearchTracks } from "@/lib/tracks";
 
 export default function MusicPage() {
     return (
         <div className="px-10 flex flex-col h-full bg-black">
             <MusicSplash />
-            <Row category={Category.ARTIST} title="Artists" item={Artists} />
-            <Row category={Category.SONG} title="Original Tracks By Search" item={SearchOriginalProjects} />
+            {/* <ArtistRow /> */}
+            <TrackRow title="All Tracks By Search" items={AllSearchTracks} />
         </div>
     );
 }

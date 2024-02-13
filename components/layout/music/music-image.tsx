@@ -11,7 +11,7 @@ interface IMusicImageProps {
 const MusicImage = (props: IMusicImageProps) => {
     return (
         <div className="relative">
-            <Image width={1000} height={1000} src={props.img} alt="pic" />
+            <Image loading="lazy" width={1000} height={1000} src={props.img} alt="pic" />
             {props.artist.toLowerCase() === "search" ? <Image src={logo} alt="logo" className="absolute w-4 m-2 top-0" /> : null}
         </div>
     );

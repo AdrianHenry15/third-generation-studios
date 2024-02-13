@@ -1,47 +1,32 @@
-import { Category } from "@/lib/types";
+import { SongType } from "@/lib/types";
 import React from "react";
 
 import { IoPauseCircle, IoPlayCircle } from "react-icons/io5";
 import { useAudioPlayerStore } from "stores/audio-player-store";
-import { useItemStore } from "stores/item-store";
+import { useTrackStore } from "stores/track-store";
 
 interface IPlayButtonProps {
-    currentCategory: Category;
-    currentItemId: string;
-    currentAudioFile: string;
-    currentArtistName: string;
-    currentItemImg: any;
-    currentItemTitle: string;
+    currentTrack: SongType;
+    className?: string;
 }
 
 const PlayButton = (props: IPlayButtonProps) => {
-    const { isPlaying, play, pause, audioRef } = useAudioPlayerStore();
-    const {
-        currentItemId,
-        currentCategory,
-        currentAudioFile,
-        setCurrentArtistName,
-        setCurrentItemImg,
-        setCurrentItemTitle,
-        setCurrentAudioFile,
-    } = useItemStore();
+    const { isPlaying, play, pause } = useAudioPlayerStore();
+    const { currentTrack, setCurrentTrack } = useTrackStore();
 
     const handleClick = () => {
-        if (isPlaying && currentItemId === props.currentItemId && currentCategory === props.currentCategory) {
+        if (isPlaying && currentTrack.id === props.currentTrack.id) {
             pause();
         } else {
-            play(props.currentItemId, props.currentCategory);
-            setCurrentAudioFile(props.currentAudioFile);
-            setCurrentArtistName(props.currentArtistName);
-            setCurrentItemImg(props.currentItemImg);
-            setCurrentItemTitle(props.currentItemTitle);
+            play(props.currentTrack);
+            setCurrentTrack(props.currentTrack);
         }
     };
 
     return (
-        <div>
+        <div className={`${props.className} cursor-pointer`}>
             <p className="z-20" onClick={handleClick}>
-                {isPlaying && currentItemId === props.currentItemId && currentCategory === props.currentCategory ? (
+                {isPlaying && currentTrack.id === props.currentTrack.id ? (
                     <IoPauseCircle
                         size={70}
                         className="text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hover:scale-110 scale-100 transition-transform duration-300"

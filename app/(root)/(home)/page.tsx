@@ -1,25 +1,22 @@
 "use client";
 
-import { Artists, ClientProjects, JafarriProjects, PersonalProjects, SchoolProjects, SearchOriginalProjects } from "@/lib/projects";
-
 import HomeSplash from "@/components/layout/home/home-splash";
-import Row from "@/components/row";
-
-import { Category } from "@/lib/types";
 import TrackRow from "@/components/layout/music/tracks/track-row";
+import WebsiteRow from "@/components/layout/websites/website-row";
+import { AllSearchTracks } from "@/lib/tracks";
+import { ClientWebsites } from "@/lib/websites";
 
 export default function HomePage() {
-    const AllProjects = [...ClientProjects, ...SchoolProjects, ...PersonalProjects];
-    const AllMusic = [...SearchOriginalProjects, ...JafarriProjects];
-
     return (
-        <div className="bg-black">
+        <section className="bg-black flex flex-col">
+            {/* SPLASH */}
             <HomeSplash />
-            <Row category={Category.WEBSITE} title="All Websites" item={AllProjects} />
-            {/* <TrackRow /> */}
-            {/* <Row category={Category.ARTIST} title="All Artists" item={Artists} /> */}
-            {/* <Row category={Category.SONG} title="All Songs" item={AllMusic} /> */}
-            {/* <Row itemType={ItemType.MOVIE} title="Now Playing" fetchURL={requests.requestNowPlaying} /> */}
-        </div>
+            <div className="px-4 md:px-10">
+                <WebsiteRow title="Client Websites" items={ClientWebsites} />
+                <div className="border-y-[1px] border-gray-700">
+                    <TrackRow title="All Tracks By Search" items={AllSearchTracks} />
+                </div>
+            </div>
+        </section>
     );
 }

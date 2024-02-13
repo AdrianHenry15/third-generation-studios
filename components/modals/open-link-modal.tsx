@@ -2,14 +2,14 @@ import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Button from "../button";
 
-interface IOpenLinkModalProps {
+interface IOpenWebsiteModalProps {
     isOpen: boolean;
     closeModal: () => void;
     title: string;
     link: string;
 }
 
-const OpenLinkModal = (props: IOpenLinkModalProps) => {
+const OpenWebsiteModal = (props: IOpenWebsiteModalProps) => {
     const openLink = () => {
         window.open(props.link, "_blank");
         props.closeModal();
@@ -63,4 +63,4 @@ const OpenLinkModal = (props: IOpenLinkModalProps) => {
     );
 };
 
-export default OpenLinkModal;
+export default OpenWebsiteModal;

@@ -9,10 +9,10 @@ export const NavMenuItems: NavMenu[] = [
         title: "Websites",
         link: "/websites",
     },
-    // {
-    //     title: "Music",
-    //     link: "/music",
-    // },
+    {
+        title: "Music",
+        link: "/music",
+    },
     // {
     //     title: "Movie Picks",
     //     link: "/movie-picks",

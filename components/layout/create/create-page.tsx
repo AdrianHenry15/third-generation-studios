@@ -22,7 +22,7 @@ const CreatePage = () => {
                     {/* INPUT */}
                     <div>
                         <h5>Title*</h5>
-                        <Input onChange={() => {}} />
+                        {/* <Input onChange={() => {}} /> */}
                     </div>
                     {/* GENRE */}
                     {/* TAGS */}

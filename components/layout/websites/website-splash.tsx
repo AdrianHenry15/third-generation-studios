@@ -5,12 +5,13 @@ import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay, Navigation } from "swiper/modules";
 
-import { ClientProjects } from "@/lib/projects";
+import { ClientWebsites } from "@/lib/websites";
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
+import { truncateString } from "@/lib/helpers";
 
 const WebsiteSplash = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -37,13 +38,6 @@ const WebsiteSplash = () => {
         return () => observer.disconnect(); // Cleanup observer on component unmount
     }, []);
 
-    // no full paragraph, includes elipsis
-    const truncateString = (str: string, num: number) => {
-        if (str?.length > num) {
-            return str.slice(0, num) + "...";
-        }
-    };
-
     return (
         <div ref={containerRef} className="fade-in w-[100%] h-[750px] self-center text-white">
             <div className="w-full h-full">
@@ -55,7 +49,7 @@ const WebsiteSplash = () => {
                     slidesPerView={1}
                     autoplay={{ delay: 5000 }}
                 >
-                    {ClientProjects.map((website) => (
+                    {ClientWebsites.map((website) => (
                         <SwiperSlide key={website.id}>
                             <div className="absolute w-full h-[750px] bg-gradient-to-r from-black"></div>
                             <div className="w-full h-full flex justify-center items-center">
@@ -84,7 +78,7 @@ const WebsiteSplash = () => {
                                 </div>
                                 <p className="text-gray-400 text-sm">Released: {website.release_date}</p>
                                 <p className="w-full md:max-w-[70%] lg:max-w-[50%] xl:max-w-[35%] text-gray-200">
-                                    {truncateString(website.description!, 150)}
+                                    {truncateString(website.overview!, 150)}
                                 </p>
                             </div>
                         </SwiperSlide>
