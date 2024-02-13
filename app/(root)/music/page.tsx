@@ -1,6 +1,5 @@
 "use client";
 
-import ArtistRow from "@/components/layout/music/artist/artist-row";
 import MusicSplash from "@/components/layout/music/music-splash";
 import TrackRow from "@/components/layout/music/tracks/track-row";
 import { AllSearchTracks } from "@/lib/tracks";
