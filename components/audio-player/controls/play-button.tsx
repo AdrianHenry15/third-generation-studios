@@ -1,7 +1,6 @@
 import React from "react";
 import { IoPauseCircle, IoPlayCircle } from "react-icons/io5";
 import { useAudioPlayerStore } from "stores/audio-player-store";
-import { useItemStore } from "stores/item-store";
 import { useTrackStore } from "stores/track-store";
 
 const AudioPlayerPlayButton = () => {
@@ -9,7 +8,7 @@ const AudioPlayerPlayButton = () => {
     const { currentTrack } = useTrackStore();
 
     const handlePlayPause = () => {
-        isPlaying ? pause() : play(currentTrack.id);
+        isPlaying ? pause() : play(currentTrack);
     };
 
     return (

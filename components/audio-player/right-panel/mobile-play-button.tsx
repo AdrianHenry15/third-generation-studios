@@ -11,7 +11,7 @@ const MobilePlayButton = () => {
     const { currentTrack } = useTrackStore();
 
     const handlePlayPause = () => {
-        isPlaying ? pause() : play(currentTrack.id);
+        isPlaying ? pause() : play(currentTrack);
     };
     return (
         <p className="cursor-pointer scale-100 hover:scale-110 transition-transform duration-300 ease-in-out" onClick={handlePlayPause}>
