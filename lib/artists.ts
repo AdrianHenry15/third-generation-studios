@@ -9,26 +9,26 @@ export const SearchArtistProfile: ArtistType = {
     overview: "An Artist",
     release_date: "2024",
     songs: [],
-    backdrop_path: "",
+    backdrop_path: Search,
 };
 
 export const Artists: ArtistType[] = [
     {
-        id: "artist-1",
+        id: "search",
         img: Search,
         title: "Search",
         overview: "An Artist",
         release_date: "2024",
         songs: [],
-        backdrop_path: "",
+        backdrop_path: Search,
     },
     {
-        id: "artist-2",
+        id: "jafarri",
         img: Search,
         title: "Jafarri",
         overview: "An Artist",
         release_date: "2024",
         songs: [],
-        backdrop_path: "",
+        backdrop_path: Search,
     },
 ];

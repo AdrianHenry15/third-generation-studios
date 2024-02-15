@@ -57,10 +57,6 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                         </div>
                         {/* DOT DIVIDER */}
                         <div>{/* <BsDot size={20} className="text-gray-500 hidden md:flex" /> */}</div>
-                        {/* TEMPO */}
-                        <div>
-                            <p className="text-gray-600 hidden md:flex">{props.currentTrack.bpm}</p>
-                        </div>
                     </div>
                     {/* ROW 2 */}
                     <div className="flex items-start my-2 flex-col md:items-center md:flex-row">
@@ -69,16 +65,22 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                             <h5 className="text-white font-semibold hover:underline underline-offset-4">{props.currentTrack.title}</h5>
                         </Link>
                         {/* DOT DIVIDER */}
-                        <BsDot size={20} className="text-gray-500 hidden md:flex" />
-                        {/* KEY */}
-                        <div className="items-center hidden md:flex">
-                            <p className="text-gray-600 text-xs underline-offset-4 underline">{props.currentTrack.key}</p>
-                        </div>
+                        {/* <BsDot size={20} className="text-gray-500 hidden md:flex" /> */}
                     </div>
                     {/* ROW 3 */}
-                    <Link className="w-min flex" href={`/music/${props.currentTrack.artist.title}`}>
+                    <Link className="w-min flex" href={`/music/artist/${props.currentTrack.artist.id}`}>
                         <p className="text-sm font-semibold hover:underline underline-offset-4">{props.currentTrack.artist.title}</p>
                     </Link>
+                    <div className="flex items-center justify-evenly my-2 py-2 border-t-[1px] border-zinc-900 ">
+                        {/* KEY */}
+                        <span className="items-center flex mr-2">
+                            <p className="text-gray-600 text-xs underline-offset-4 underline">{props.currentTrack.key}</p>
+                        </span>
+                        {/* TEMPO */}
+                        <span>
+                            <p className="text-gray-600 text-xs flex underline-offset-4 underline">{props.currentTrack.bpm}</p>
+                        </span>
+                    </div>
                 </figcaption>
             </div>
         </figure>
