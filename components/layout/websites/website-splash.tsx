@@ -3,15 +3,14 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { A11y, Autoplay, Navigation } from "swiper/modules";
+import { A11y, Autoplay } from "swiper/modules";
+import Link from "next/link";
 
 import { ClientWebsites } from "@/lib/websites";
+
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
 import "swiper/css";
-import "swiper/css/navigation";
-import Link from "next/link";
-import { truncateString } from "@/lib/helpers";
 
 const WebsiteSplash = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -39,29 +38,23 @@ const WebsiteSplash = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="fade-in w-[100%] h-[750px] self-center text-white">
-            <div className="w-full h-full">
+        <div className="w-full self-center text-white h-screen">
+            <div ref={containerRef} className="fade-in w-full h-full">
                 <Swiper
-                    modules={[Navigation, A11y, Autoplay]}
-                    className="h-full"
+                    modules={[A11y, Autoplay]}
+                    centeredSlides={true}
+                    className="w-full h-full"
                     navigation
-                    spaceBetween={0}
                     slidesPerView={1}
                     autoplay={{ delay: 5000 }}
                 >
                     {ClientWebsites.map((website) => (
                         <SwiperSlide key={website.id}>
-                            <div className="absolute w-full h-[750px] bg-gradient-to-r from-black"></div>
+                            <div className="absolute w-full bg-gradient-to-r from-black h-screen"></div>
                             <div className="w-full h-full flex justify-center items-center">
-                                <Image
-                                    width={1000}
-                                    height={1000}
-                                    className="w-full object-cover h-[50%] md:h-[50%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
-                                    src={website.img}
-                                    alt={website.title}
-                                />
+                                <Image className="w-full h-full object-cover" src={website.img} alt={website.title} />
                             </div>
-                            <div className="absolute w-full top-[37%] left-10 p-4 md:top-[35%] md:p-8">
+                            <div className="absolute w-full top-[35%] p-4 left-10 md:top[35%] md:p-8">
                                 <Image src={Logo} alt="logo" className="w-24 py-2" />
                                 <h1 className="text-white text-[30px] md:text-5xl">{website.title}</h1>
                                 <div className="my-4">
@@ -76,10 +69,7 @@ const WebsiteSplash = () => {
                                         Make Inquiry
                                     </Link>
                                 </div>
-                                <p className="text-gray-400 text-sm">Released: {website.release_date}</p>
-                                <p className="w-full md:max-w-[70%] lg:max-w-[50%] xl:max-w-[35%] text-gray-200">
-                                    {truncateString(website.overview!, 150)}
-                                </p>
+                                <p className="text-gray-400 text-sm">{website.release_date}</p>
                             </div>
                         </SwiperSlide>
                     ))}
