@@ -50,6 +50,12 @@ export const ChillHipHopBeats: SongType[] = [
     },
 ];
 
+// export const AtmosphericHipHop: SongType[] = [
+//     {
+
+//     }
+// ]
+
 export const HipHopBeats: SongType[] = [
     {
         id: "chance",
@@ -102,9 +108,9 @@ export const HipHopBeats: SongType[] = [
         release_date: "2024",
         audio_file: "../audio-files/public/dressin-d-sharp-minor-160bpm.mp3",
         backdrop_path: DrakeBackdrop,
-        bpm: "95bpm",
+        bpm: "160bpm",
         price: 99.0,
-        key: "G-Minor",
+        key: "D#-Minor",
         isFree: true,
     },
 ];
