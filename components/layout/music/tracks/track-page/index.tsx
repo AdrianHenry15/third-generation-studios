@@ -3,16 +3,17 @@
 import Image from "next/image";
 import React from "react";
 
-import { IoShareOutline } from "react-icons/io5";
-
 import TrackDetails from "./track-details";
 import TrackInfoMobileOverlay from "./track-info-mobile-overlay";
 import PlayButton from "@/components/action-overlay/play-button";
-import { useTrackStore } from "stores/track-store";
-import Licensing from "./licensing";
+import { SongType } from "@/lib/types";
 
-const TrackItem = () => {
-    const { currentTrack } = useTrackStore();
+interface ITrackItemProps {
+    track: SongType;
+}
+
+const TrackItem = (props: ITrackItemProps) => {
+    // const { track } = useTrackStore();
     return (
         <article className="flex flex-col lg:px-4">
             {/* TRACK INFO */}
@@ -26,17 +27,17 @@ const TrackItem = () => {
                             <Image
                                 loading="lazy"
                                 className="object-cover w-full h-[50%] md:w-[175px] md:h-min"
-                                src={currentTrack.img}
+                                src={props.track.img}
                                 alt="track-image"
                             />
-                            <PlayButton className="hidden md:flex" currentTrack={currentTrack} />
+                            <PlayButton className="hidden md:flex" currentTrack={props.track} />
                         </div>
                         {/* TRACK INFO ON MED AND ABOVE SCREENS */}
                         <figcaption className="hidden md:flex md:flex-col md:ml-4">
                             {/* TRACK TITLE */}
-                            <h1 className="text-white text-4xl">{currentTrack.title}</h1>
+                            <h1 className="text-white text-4xl">{props.track.title}</h1>
                             {/* ARTIST */}
-                            <p>{currentTrack.artist.title}</p>
+                            <p>{props.track.artist.title}</p>
                         </figcaption>
                     </div>
 
@@ -55,7 +56,7 @@ const TrackItem = () => {
             {/* BUY BUTTON */}
             {/* <button className="flex justify-center items-center bg-blue-500 w-11/12 self-center py-2 rounded-lg my-2">
                 <AiOutlineShoppingCart className="text-white mr-2" />
-                <p className="text-white">Buy For ${currentTrack.price}.00</p>
+                <p className="text-white">Buy For ${track.price}.00</p>
             </button> */}
             {/* TRACK DETAILS HEADER */}
             <TrackDetails />

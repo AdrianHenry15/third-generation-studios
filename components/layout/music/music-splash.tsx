@@ -72,7 +72,7 @@ const MusicSplash = () => {
                                     width={1000}
                                     height={1000}
                                     className="w-full object-cover h-[50%] md:h-[50%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
-                                    src={track?.img}
+                                    src={track?.backdrop_path}
                                     alt={track?.title}
                                 />
                             </div>
