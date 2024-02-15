@@ -58,12 +58,12 @@ const ArtistSplash = (props: IArtistSplashProps) => {
                 <div className="absolute w-full h-[750px] bg-gradient-to-r from-black"></div>
                 <div className="w-full h-full flex justify-center items-center">
                     <Image
-                        className="w-full object-cover h-[50%] md:h-[50%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
+                        className="w-full object-cover h-[50%] md:h-[50%] md:w-[100%] lg:h-[100%] lg:w-[100%]"
                         src={props.artist.img!}
                         alt={props.artist.title}
                     />
                 </div>
-                <div className="absolute w-full top-[37%] left-10 p-4 md:p-8">
+                <div className="absolute w-full top-[35%] left-10 p-4 md:p-8">
                     <span>
                         <Image src={Logo} alt="logo" className="w-24 py-2" />
                     </span>

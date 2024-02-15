@@ -3,7 +3,7 @@ import { ArtistType } from "./types";
 import Search from "@/public/music/backdrops/plane-backdrop.jpg";
 
 export const SearchArtistProfile: ArtistType = {
-    id: "artist-1",
+    id: "search",
     img: Search,
     title: "Search",
     overview: "An Artist",
