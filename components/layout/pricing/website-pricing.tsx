@@ -68,7 +68,7 @@ const WebsitePricing = () => {
                             key={index}
                             title={license.title}
                             price={license.price}
-                            fileType={license.description}
+                            description={license.description}
                             selected={index === selectedCardIndex}
                             onClick={() => handleCardClick(index)}
                         />
