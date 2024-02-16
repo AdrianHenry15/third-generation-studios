@@ -35,9 +35,9 @@ const PremiumFeatures = [
 ];
 
 const LicenseData = [
-    { title: "Basic", price: "10", description: "Online Presence" },
-    { title: "Standard", price: "15", description: "More Dynamic" },
-    { title: "Premium", price: "20", description: "More Sophisticated" },
+    { title: "Basic", price: 10, description: "Online Presence" },
+    { title: "Standard", price: 15, description: "More Dynamic" },
+    { title: "Premium", price: 20, description: "More Sophisticated" },
 ];
 
 const WebsitePricing = () => {

@@ -31,11 +31,12 @@ export default function HomePage() {
 
         return () => observer.disconnect(); // Cleanup observer on component unmount
     }, []);
+
     return (
         <section className="bg-black flex flex-col">
             {/* SPLASH */}
             <HomeSplash />
-            <div ref={containerRef} className="fade-in flex flex-col items-center justify-evenly pb-48 md:items-center md:flex-row">
+            <div ref={containerRef} className="flex flex-col items-center justify-evenly pb-48 md:items-center md:flex-row">
                 <Link href={"/websites"}>
                     <h1 className={`${LinkClass} pb-36 md:pb-0`}>Websites</h1>
                 </Link>

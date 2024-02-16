@@ -37,3 +37,10 @@ export type ArtistType = {
     songs: SongType[]; // Change songs type from an empty array to SongType[]
     backdrop_path: any;
 };
+
+export type LicenseDataType = {
+    title: string;
+    price: number;
+    fileType?: string;
+    description?: string;
+};
