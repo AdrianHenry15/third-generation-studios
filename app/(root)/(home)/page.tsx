@@ -6,7 +6,8 @@ import HomeSplash from "@/components/layout/home/home-splash";
 import Link from "next/link";
 
 export default function HomePage() {
-    const LinkClass = "text-white text-[100px] transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-600 font-bold";
+    const LinkClass =
+        "text-white transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-600 font-bold text-6xl md:text-[50px] lg:text-[75px]";
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -34,9 +35,9 @@ export default function HomePage() {
         <section className="bg-black flex flex-col">
             {/* SPLASH */}
             <HomeSplash />
-            <div ref={containerRef} className="fade-in flex items-center justify-evenly pb-48">
+            <div ref={containerRef} className="fade-in flex flex-col items-center justify-evenly pb-48 md:items-center md:flex-row">
                 <Link href={"/websites"}>
-                    <h1 className={LinkClass}>Websites</h1>
+                    <h1 className={`${LinkClass} pb-36 md:pb-0`}>Websites</h1>
                 </Link>
                 <Link href={"/music"}>
                     <h1 className={LinkClass}>Music</h1>

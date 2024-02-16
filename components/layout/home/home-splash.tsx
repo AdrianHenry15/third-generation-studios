@@ -35,7 +35,7 @@ const HomeSplash = () => {
     return (
         <div className="w-full self-center text-white h-screen flex">
             <div ref={containerRef} className="fade-in w-full h-[80%] flex items-center justify-center">
-                <Image className="px-64" src={Logo} alt="logo" />
+                <Image className="px-14 md:px-64 lg:px-52 xl:px-[500px]" src={Logo} alt="logo" />
             </div>
         </div>
     );

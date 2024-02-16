@@ -1,8 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 
 import PricingHeader from "./pricing-header";
-import PricingCard from "@/components/pricing-card";
 import Link from "next/link";
+import LicenseCard from "@/components/license-card";
 
 const BasicFeatures = [
     "Up to 5 static pages (e.g. Home, About Us, Services, Contact)",
@@ -32,35 +34,46 @@ const PremiumFeatures = [
     "Ongoing maintenance and support",
 ];
 
+const LicenseData = [
+    { title: "Basic", price: "10", description: "Online Presence" },
+    { title: "Standard", price: "15", description: "More Dynamic" },
+    { title: "Premium", price: "20", description: "More Sophisticated" },
+];
+
 const WebsitePricing = () => {
+    const [selectedCardIndex, setSelectedCardIndex] = useState(-1);
+
+    const handleCardClick = (index: number) => {
+        if (index === selectedCardIndex) {
+            // Clicked on already selected card, deselect it
+            setSelectedCardIndex(-1);
+        } else {
+            // Clicked on a different card, select it
+            setSelectedCardIndex(index);
+        }
+    };
+
     return (
         <div>
             {/*WEBSITE PRICING HEADER */}
             <PricingHeader pricingType="Wesbite" />
             {/* WEBSITE PRICING CARDS */}
-            <div className="flex flex-col lg:flex-row">
-                <PricingCard
-                    hasFeatures
-                    popular
-                    title={"Website Basic"}
-                    description={"For a simple online presence"}
-                    price={"$189.00"}
-                    features={BasicFeatures}
-                />
-                <PricingCard
-                    hasFeatures
-                    title={"Website Standard"}
-                    description={"For a more dynamic online presence"}
-                    price={"$1,375.00"}
-                    features={StandardFeatures}
-                />
-                <PricingCard
-                    hasFeatures
-                    title={"Website Premium"}
-                    description={"For a more sophisticated online presence"}
-                    price={"$3,450.00"}
-                    features={PremiumFeatures}
-                />
+            <div className="flex flex-col p-4 lg:px-24 xl:px-64">
+                <div className="flex border-b-[1px] border-zinc-900">
+                    <h5 className="text-white mb-2 text-2xl">Website Pricing</h5>
+                </div>
+                <div className="flex items-center">
+                    {LicenseData.map((license, index) => (
+                        <LicenseCard
+                            key={index}
+                            title={license.title}
+                            price={license.price}
+                            fileType={license.description}
+                            selected={index === selectedCardIndex}
+                            onClick={() => handleCardClick(index)}
+                        />
+                    ))}
+                </div>
             </div>
             {/* GET WEBSITE ESTIMATE BUTTON */}
             <div className="w-full flex justify-center items-center my-10">
