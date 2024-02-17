@@ -1,4 +1,4 @@
-export type NavMenu = {
+export type NavMenuType = {
     title: string;
     link: string;
 };
@@ -43,4 +43,11 @@ export type LicenseDataType = {
     price: number;
     fileType?: string;
     description?: string;
+    value: LicenseType;
 };
+
+export enum LicenseType {
+    BASIC,
+    STANDARD,
+    PREMIUM,
+}

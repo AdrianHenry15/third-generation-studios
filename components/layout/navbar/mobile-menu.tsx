@@ -1,13 +1,15 @@
 "use client";
 
-import { Dialog, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
+import { SignedOut } from "@clerk/nextjs";
+
+import { Dialog, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import { NavMenuItems } from "../../../lib/constants";
-import { NavMenu } from "../../../lib/types";
+import { NavMenuType } from "../../../lib/types";
 import UserIcon from "./user-icon";
 import Button from "@/components/button";
 
@@ -28,7 +30,7 @@ export default function MobileMenu() {
                 aria-label="Open mobile menu"
                 className="flex h-11 w-11 items-center justify-center rounded-full text-black transition-colors overflow-hidden"
             >
-                <Bars3Icon className="h-6 text-white" />
+                <Bars3Icon className="h-6 z-20 text-white" />
             </button>
             <Transition show={isOpen}>
                 <Dialog onClose={closeMobileMenu} className="relative z-50">
@@ -62,13 +64,13 @@ export default function MobileMenu() {
                                     >
                                         <XMarkIcon className="h-6" />
                                     </button>
-                                    <div>
+                                    <div className="md:mr-[600px]">
                                         <UserIcon />
                                     </div>
                                 </div>
 
                                 <ul className="flex w-full flex-col h-full">
-                                    {NavMenuItems.map((item: NavMenu) => (
+                                    {NavMenuItems.map((item: NavMenuType) => (
                                         <Link
                                             key={item.title}
                                             href={item.link}
@@ -84,9 +86,11 @@ export default function MobileMenu() {
                             </div>
                             {/* NAV BUTTONS */}
                             <ul className="bottom-0 fixed flex flex-col self-start w-full">
-                                <Link onClick={closeMobileMenu} className="w-full px-10 justify-start hidden sm:flex" href={"/contact-us"}>
-                                    <Button roundedFull className="mb-4 w-full py-4 flex justify-center sm:w-[300px]" name="Sign In" />
-                                </Link>
+                                <SignedOut>
+                                    <Link onClick={closeMobileMenu} className="w-full px-10 justify-start hidden sm:flex" href={"/sign-in"}>
+                                        <Button roundedFull className="mb-4 w-full py-4 flex justify-center sm:w-[300px]" name="Sign In" />
+                                    </Link>
+                                </SignedOut>
                                 <Link onClick={closeMobileMenu} className="w-full px-10 flex justify-start" href={"/contact-us"}>
                                     <Button
                                         roundedFull

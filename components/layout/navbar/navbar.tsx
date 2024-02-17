@@ -7,10 +7,11 @@ import dynamic from "next/dynamic";
 
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
-import MobileHeader from "@/components/layout/navbar/mobile-menu";
+import MobileMenu from "@/components/layout/navbar/mobile-menu";
 import { NavMenuItems } from "@/lib/constants";
-import { NavMenu } from "@/lib/types";
+import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
+import NewMobileMenu from "./new-mobile-menu";
 
 const UserIcon = dynamic(() => import("@/components/layout/navbar/user-icon"), { ssr: false });
 
@@ -27,7 +28,8 @@ export default function Navbar(props: INavbarProps) {
         >
             {/* MOBILE CONTAINER */}
             <div className="absolute self-center right-0 xl:hidden">
-                <MobileHeader />
+                {/* <MobileMenu /> */}
+                <NewMobileMenu />
             </div>
             {/* TITLE & LINKS  */}
             <div className="flex w-full my-2 justify-evenly">
@@ -38,7 +40,7 @@ export default function Navbar(props: INavbarProps) {
                     </Link>
                     {/* LINKS  */}
                     <ul className="hidden text-white items-center xl:flex">
-                        {NavMenuItems.map((item: NavMenu) => (
+                        {NavMenuItems.map((item: NavMenuType) => (
                             <li
                                 className={`mx-2 transition-all duration-300 ease-in-out hover:text-red-700 hover:underline ${
                                     pathname === item.link ? "underline" : ""

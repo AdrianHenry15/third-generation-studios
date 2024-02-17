@@ -39,9 +39,7 @@ const PricingItem = (props: IPricingItemProps) => {
                     {props.licenseData.map((license, index) => (
                         <LicenseCard
                             key={index}
-                            title={license.title}
-                            price={license.price}
-                            fileType={license.fileType || license.description}
+                            license={license}
                             selected={index === selectedCardIndex}
                             onClick={() => handleCardClick(index)}
                         />
