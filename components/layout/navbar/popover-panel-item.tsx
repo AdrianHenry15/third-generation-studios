@@ -1,17 +1,21 @@
 import { NavMenuType } from "@/lib/types";
 import Link from "next/link";
 import React from "react";
-import { IconType } from "react-icons";
 
 interface IPopoverPanelItem {
     icon: React.ReactNode;
     page: NavMenuType;
     description: string;
+    onClick: () => void;
 }
 
 const PopoverPanelItem = (props: IPopoverPanelItem) => {
     return (
-        <Link href={props.page.link} className="p-2 mx-4 hover:bg-gray-200 rounded-lg transition-colors duration-300 ease-in-out">
+        <Link
+            onClick={props.onClick}
+            href={props.page.link}
+            className="p-2 mx-4 hover:bg-gray-200 rounded-lg transition-colors duration-300 ease-in-out"
+        >
             <div className="flex items-center justify-start">
                 {/* ICON */}
                 <span className="mr-4 bg-red-600/75 rounded-lg p-4">{props.icon}</span>
