@@ -15,8 +15,8 @@ import { Loader } from "./loader";
 import Button from "./button";
 import Dropdown from "./inputs/dropdown";
 import Input from "./inputs/input";
-import { WebsitePackage } from "@/lib/constants";
 import Textarea from "./inputs/textarea";
+import { WebsitePricingData } from "@/lib/pricing-data";
 
 const ContactForm = () => {
     // SWITCH BETWEEN CONTACT AND ESTIMATE FORM | BOTH FORMS DO THE SAME THING FOR NOW
@@ -139,7 +139,7 @@ const ContactForm = () => {
                         inputLabel={"Choose Package:"}
                         control={control}
                         errors={errors}
-                        options={WebsitePackage}
+                        options={WebsitePricingData}
                         errorText="Package is required."
                     />
                     {/* COMMENT */}
