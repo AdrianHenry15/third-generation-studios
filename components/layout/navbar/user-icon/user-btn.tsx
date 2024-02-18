@@ -35,7 +35,7 @@ const UserBtn = () => {
                             leaveFrom="opacity-100 translate-y-0"
                             leaveTo="opacity-0 translate-y-1"
                         >
-                            <Popover.Panel className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[350px] transform ml-7">
+                            <Popover.Panel className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[350px] transform ml-4">
                                 <div className="flex flex-col relative rounded-lg shadow-lg shadow-black bg-white p-6">
                                     <div className="flex items-center mb-4">
                                         <span className="mr-4">
