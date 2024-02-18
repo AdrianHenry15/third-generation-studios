@@ -7,7 +7,6 @@ import ItemContainer from "@/components/containers/item-container";
 import ImageContainer from "@/components/containers/image-container";
 import { WebsiteType } from "@/lib/types";
 import OpenLinkModal from "@/components/modals/open-link-modal";
-import Link from "next/link";
 
 interface IWebsiteRowItemProps {
     currentWebsite: WebsiteType;

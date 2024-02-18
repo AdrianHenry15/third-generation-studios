@@ -36,7 +36,7 @@ const NewMobileMenu = () => {
                         >
                             <Popover.Panel className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[350px] transform ml-7">
                                 <div className="flex flex-col relative shadow-lg rounded-lg bg-white pt-10">
-                                    <div className="flex justify-end m-4 absolute top-0 right-0">
+                                    <div className="flex justify-end absolute top-0 right-0">
                                         <UserIcon />
                                     </div>
                                     <div className="flex flex-col">

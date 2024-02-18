@@ -18,12 +18,6 @@ const UserIcon = () => {
                 {/* Mount the UserButton component */}
                 <div onClick={() => setUserIconModalOpen(true)} className="flex relative items-center cursor-pointer">
                     {/* USER IMAGE */}
-                    {/* {isSignedIn && (
-                        <span className="mr-2">
-                            <Image className="rounded-full" width={35} height={35} src={image!} alt="user-image" />
-                        </span>
-                    )} */}
-                    {/* <UserButton /> */}
                     <UserBtn />
                 </div>
             </SignedIn>

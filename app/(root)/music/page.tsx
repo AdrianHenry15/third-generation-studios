@@ -6,10 +6,12 @@ import { AllSearchTracks } from "@/lib/tracks";
 
 export default function MusicPage() {
     return (
-        <div className="px-10 flex flex-col h-full bg-black">
+        <div className="flex flex-col h-full bg-black">
             <MusicSplash />
-            {/* <ArtistRow /> */}
-            <TrackRow title="All Tracks By Search" items={AllSearchTracks} />
+            <div className="px-10">
+                {/* <ArtistRow /> */}
+                <TrackRow title="All Tracks By Search" items={AllSearchTracks} />
+            </div>
         </div>
     );
 }
