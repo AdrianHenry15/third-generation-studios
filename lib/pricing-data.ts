@@ -14,3 +14,8 @@ export const WebsitePricingData: LicenseDataType[] = [
     { title: "Standard", price: 500, description: "More Dynamic", value: LicenseType.STANDARD },
     { title: "Premium", price: 2000, description: "More Sophisticated", value: LicenseType.PREMIUM },
 ];
+
+export const LicensePackageType: LicenseDataType[] = [
+    { title: "Website", price: 0, description: "", value: LicenseType.BASIC },
+    { title: "Music", price: 0, description: "", value: LicenseType.BASIC },
+];

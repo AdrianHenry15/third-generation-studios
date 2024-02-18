@@ -1,30 +1,30 @@
 "use client";
 
-import React from "react";
-import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
+import React, { useState } from "react";
+import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
 
 import { BiChevronDown } from "react-icons/bi";
+import UserBtn from "./user-btn";
 
 const UserIcon = () => {
+    const [userIconModalOpen, setUserIconModalOpen] = useState(false);
     const { user, isSignedIn } = useUser();
     const image = user?.hasImage ? user.imageUrl : "";
     return (
         <div>
             <SignedIn>
                 {/* Mount the UserButton component */}
-                <div className="flex items-center">
+                <div onClick={() => setUserIconModalOpen(true)} className="flex relative items-center cursor-pointer">
                     {/* USER IMAGE */}
-                    {isSignedIn && (
+                    {/* {isSignedIn && (
                         <span className="mr-2">
                             <Image className="rounded-full" width={35} height={35} src={image!} alt="user-image" />
                         </span>
-                    )}
-                    {/* DROPDOWN ARROW */}
-                    <span>
-                        <BiChevronDown size={15} />
-                    </span>
+                    )} */}
+                    {/* <UserButton /> */}
+                    <UserBtn />
                 </div>
             </SignedIn>
             <SignedOut>

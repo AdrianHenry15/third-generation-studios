@@ -16,7 +16,7 @@ import Button from "./button";
 import Dropdown from "./inputs/dropdown";
 import Input from "./inputs/input";
 import Textarea from "./inputs/textarea";
-import { WebsitePricingData } from "@/lib/pricing-data";
+import { LicensePackageType, WebsitePricingData } from "@/lib/pricing-data";
 
 const ContactForm = () => {
     // SWITCH BETWEEN CONTACT AND ESTIMATE FORM | BOTH FORMS DO THE SAME THING FOR NOW
@@ -78,6 +78,7 @@ const ContactForm = () => {
         email: getValues("email"),
         address: getValues("address"),
         service: getValues("package"),
+        serviceType: getValues("packageType"),
         comment: getValues("comment"),
     };
 
@@ -133,7 +134,16 @@ const ContactForm = () => {
                         errorRequiredText={"Email is Required."}
                         errorPatternText={"Email is not valid."}
                     />
-                    {/* SERVICE */}
+                    {/* PACKAGE TYPE */}
+                    <Dropdown
+                        inputName={"packageType"}
+                        inputLabel={"Choose Package Type:"}
+                        control={control}
+                        errors={errors}
+                        options={LicensePackageType}
+                        errorText="Package Type is required."
+                    />
+                    {/* PACKAGE */}
                     <Dropdown
                         inputName={"package"}
                         inputLabel={"Choose Package:"}

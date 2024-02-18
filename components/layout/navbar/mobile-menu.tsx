@@ -10,7 +10,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import { NavMenuItems } from "../../../lib/constants";
 import { NavMenuType } from "../../../lib/types";
-import UserIcon from "./user-icon";
+import UserIcon from "./user-icon/user-icon";
 import Button from "@/components/button";
 
 export default function MobileMenu() {

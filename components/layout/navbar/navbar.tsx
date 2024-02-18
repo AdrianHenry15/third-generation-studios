@@ -6,14 +6,12 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
-
-import MobileMenu from "@/components/layout/navbar/mobile-menu";
-import { NavMenuItems } from "@/lib/constants";
+import { NavMenuTypeItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
 import NewMobileMenu from "./new-mobile-menu";
 
-const UserIcon = dynamic(() => import("@/components/layout/navbar/user-icon"), { ssr: false });
+const UserIcon = dynamic(() => import("@/components/layout/navbar/user-icon/user-icon"), { ssr: false });
 
 interface INavbarProps {
     className?: string;
@@ -40,7 +38,7 @@ export default function Navbar(props: INavbarProps) {
                     </Link>
                     {/* LINKS  */}
                     <ul className="hidden text-white items-center xl:flex">
-                        {NavMenuItems.map((item: NavMenuType) => (
+                        {NavMenuTypeItems.map((item: NavMenuType) => (
                             <li
                                 className={`mx-2 transition-all duration-300 ease-in-out hover:text-red-700 hover:underline ${
                                     pathname === item.link ? "underline" : ""

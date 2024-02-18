@@ -10,7 +10,7 @@ import { CgWebsite } from "react-icons/cg";
 import { IoMdPricetags } from "react-icons/io";
 
 import PopoverPanelItem from "./popover-panel-item";
-import UserIcon from "./user-icon";
+import UserIcon from "./user-icon/user-icon";
 
 const NewMobileMenu = () => {
     return (
@@ -35,39 +35,41 @@ const NewMobileMenu = () => {
                             leaveTo="opacity-0 translate-y-1"
                         >
                             <Popover.Panel className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[350px] transform ml-7">
-                                <div className="flex flex-col relative bg-white">
-                                    <div onClick={close} className="flex justify-end m-4">
+                                <div className="flex flex-col relative shadow-lg rounded-lg bg-white pt-10">
+                                    <div className="flex justify-end m-4 absolute top-0 right-0">
                                         <UserIcon />
                                     </div>
-                                    <PopoverPanelItem
-                                        onClick={close}
-                                        icon={<BsMusicNoteBeamed size={25} />}
-                                        page={{
-                                            title: "Music",
-                                            link: "/music",
-                                        }}
-                                        description={"Music by Artists"}
-                                    />
-                                    <PopoverPanelItem
-                                        onClick={close}
-                                        icon={<CgWebsite size={25} />}
-                                        page={{
-                                            title: "Websites",
-                                            link: "/websites",
-                                        }}
-                                        description={"Websites By Devs"}
-                                    />
-                                    <PopoverPanelItem
-                                        onClick={close}
-                                        icon={<IoMdPricetags size={25} />}
-                                        page={{
-                                            title: "Pricing",
-                                            link: "/pricing",
-                                        }}
-                                        description={"Prices For Music & Websites"}
-                                    />
+                                    <div className="flex flex-col">
+                                        <PopoverPanelItem
+                                            onClick={close}
+                                            icon={<BsMusicNoteBeamed size={25} />}
+                                            page={{
+                                                title: "Music",
+                                                link: "/music",
+                                            }}
+                                            description={"Music by Artists"}
+                                        />
+                                        <PopoverPanelItem
+                                            onClick={close}
+                                            icon={<CgWebsite size={25} />}
+                                            page={{
+                                                title: "Websites",
+                                                link: "/websites",
+                                            }}
+                                            description={"Websites By Devs"}
+                                        />
+                                        <PopoverPanelItem
+                                            onClick={close}
+                                            icon={<IoMdPricetags size={25} />}
+                                            page={{
+                                                title: "Pricing",
+                                                link: "/pricing",
+                                            }}
+                                            description={"Prices For Music & Websites"}
+                                        />
+                                    </div>
                                     {/* POPOVER FOOTER */}
-                                    <div className="px-4 py-6 mt-4 bg-gray-100 flex justify-evenly">
+                                    <div className="px-4 py-6 mt-4 bg-gray-100 rounded-b-lg flex justify-evenly">
                                         {/* CONTACT US BUTTON */}
                                         <Link
                                             onClick={close}
