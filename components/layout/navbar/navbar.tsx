@@ -62,9 +62,9 @@ export default function Navbar(props: INavbarProps) {
                     </Link>
                 </ul>
                 {/* USER ICON */}
-                <div className="hidden xl:flex xl:items-center">
+                {/* <div className="hidden xl:flex xl:items-center">
                     <UserIcon />
-                </div>
+                </div> */}
             </div>
         </nav>
     );
