@@ -9,14 +9,11 @@ import { BiChevronDown } from "react-icons/bi";
 import UserBtn from "./user-btn";
 
 const UserIcon = () => {
-    const [userIconModalOpen, setUserIconModalOpen] = useState(false);
-    const { user, isSignedIn } = useUser();
-    const image = user?.hasImage ? user.imageUrl : "";
     return (
         <div>
             <SignedIn>
                 {/* Mount the UserButton component */}
-                <div onClick={() => setUserIconModalOpen(true)} className="flex relative items-center cursor-pointer">
+                <div className="flex relative items-center cursor-pointer">
                     {/* USER IMAGE */}
                     <UserBtn />
                 </div>

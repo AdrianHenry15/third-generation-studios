@@ -54,8 +54,8 @@ const UserBtn = () => {
                                             onClick={close}
                                             icon={<PiGearSixLight className="text-gray-500" size={15} />}
                                             page={{
-                                                title: "My Account",
-                                                link: "/account",
+                                                title: "My Profile",
+                                                link: "/profile",
                                             }}
                                         />
                                         <UserPopoverPanelItem
