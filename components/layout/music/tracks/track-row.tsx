@@ -18,30 +18,30 @@ const TrackRow = (props: ITrackRowProps) => {
             </div>
             {/* ROW ITEMS */}
             <Swiper
-                slidesPerView={5.5}
+                slidesPerView={5.3}
                 spaceBetween={10}
                 pagination={{
                     clickable: true,
                 }}
                 breakpoints={{
                     375: {
-                        slidesPerView: 2.5,
+                        slidesPerView: 2.3,
                         spaceBetween: 10,
                     },
                     580: {
-                        slidesPerView: 3.5,
+                        slidesPerView: 3.3,
                         spaceBetween: 10,
                     },
                     768: {
-                        slidesPerView: 4.5,
+                        slidesPerView: 4.3,
                         spaceBetween: 10,
                     },
                     1043: {
-                        slidesPerView: 5.5,
+                        slidesPerView: 5.3,
                         spaceBetween: 10,
                     },
                     1490: {
-                        slidesPerView: 5.5,
+                        slidesPerView: 5.3,
                         spaceBetween: 10,
                     },
                 }}

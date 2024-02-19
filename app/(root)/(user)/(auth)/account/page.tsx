@@ -1,7 +1,9 @@
+import Account from "@/components/layout/user/account/account";
+
 export default function UserAccountPage() {
     return (
-        <div>
-            <h5 className="text-white">User Account Page Coming Soon</h5>
+        <div className="flex h-full w-full justify-center bg-black">
+            <Account />
         </div>
     );
 }

@@ -9,9 +9,10 @@ interface IInputProps {
     errors?: FieldErrors;
     errorRequiredText?: string;
     errorPatternText?: string;
+    onChange?: (value: string) => void;
 }
 
-const Input = ({ inputName, control, errors, errorRequiredText, errorPatternText, placeholder }: IInputProps) => {
+const Input = ({ inputName, control, errors, errorRequiredText, errorPatternText, placeholder, onChange }: IInputProps) => {
     const InputClass = "border-2 border-gray-400 my-2 p-2 rounded-sm w-full shadow-md";
 
     return (
