@@ -54,7 +54,7 @@ const MusicSplash = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="fade-in w-[100%] self-center text-white md:h-[750px]">
+        <div ref={containerRef} className="fade-in w-[100%] h-[300px] self-center text-white md:h-[750px]">
             <div className="w-full md:h-full">
                 <Swiper
                     modules={[A11y, Autoplay]}
@@ -71,7 +71,7 @@ const MusicSplash = () => {
                                 <Image
                                     width={1000}
                                     height={1000}
-                                    className="w-full object-cover h-[50%] md:h-[50%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
+                                    className="w-full object-cover h-[200px] md:h-[50%] md:w-[66%] lg:h-[60%] lg:w-[50%]"
                                     src={track?.backdrop_path}
                                     alt={track?.title}
                                 />

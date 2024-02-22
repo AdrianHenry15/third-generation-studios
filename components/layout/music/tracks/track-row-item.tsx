@@ -71,9 +71,9 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                     <Link className="w-min flex" href={`/music/artist/${props.currentTrack.artist.id}`}>
                         <p className="text-sm font-semibold hover:underline underline-offset-4">{props.currentTrack.artist.title}</p>
                     </Link>
-                    <div className="flex items-center justify-evenly my-2 py-2 border-t-[1px] border-zinc-900 ">
+                    <div className="flex justify-evenly my-2 py-2 border-t-[1px] border-zinc-900 flex-col items-start md:items-center md:flex-row">
                         {/* KEY */}
-                        <span className="items-center flex mr-2">
+                        <span className="items-center flex mr-2 mb-2 md:mb-0">
                             <p className="text-gray-600 text-xs underline-offset-4 underline">{props.currentTrack.key}</p>
                         </span>
                         {/* TEMPO */}
