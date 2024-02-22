@@ -10,6 +10,7 @@ import { NavMenuTypeItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
 import NewMobileMenu from "./new-mobile-menu";
+import { CgShoppingCart } from "react-icons/cg";
 
 const UserIcon = dynamic(() => import("@/components/layout/navbar/user-icon/user-icon"), { ssr: false });
 
@@ -54,17 +55,21 @@ export default function Navbar(props: INavbarProps) {
                 </div>
                 {/* NAV BUTTONS */}
                 <ul className="hidden items-center xl:flex">
-                    <Link className="mr-4" href={"/contact-us"}>
+                    <Link href={"/contact-us"}>
                         <Button roundedFull name="Contact Us" altColor />
                     </Link>
                     <Link href={"/estimate"}>
-                        <Button className="animate-pulse" roundedFull name="Get Your Free Estimate" />
+                        <Button className="animate-pulse mx-4" roundedFull name="Get Your Free Estimate" />
                     </Link>
-                </ul>
-                {/* USER ICON */}
-                {/* <div className="hidden xl:flex xl:items-center">
+                    {/* USER ICON */}
+                    {/* <div className="hidden xl:flex xl:items-center">
                     <UserIcon />
                 </div> */}
+                    {/* CART */}
+                    <div className="p-2 flex items-center bg-red-600 rounded-full ">
+                        <CgShoppingCart className="text-white" size={20} />
+                    </div>
+                </ul>
             </div>
         </nav>
     );

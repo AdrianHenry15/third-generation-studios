@@ -3,12 +3,17 @@ import { create } from "zustand";
 import { WebsiteType } from "@/lib/types";
 import { persist } from "zustand/middleware";
 
-interface WebsiteStoreState {
+interface IWebsiteState {
     currentWebsite: WebsiteType;
+}
+
+interface IWebsiteActions {
     setWebsite: (website: WebsiteType) => void;
 }
 
-export const useWebsiteStore = create<WebsiteStoreState>()(
+type WebsiteStore = IWebsiteState & IWebsiteActions;
+
+export const useWebsiteStore = create<WebsiteStore>()(
     persist(
         (set) => ({
             currentWebsite: {
