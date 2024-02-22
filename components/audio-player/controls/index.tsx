@@ -15,15 +15,15 @@ const Controls = () => {
             {/* PLAYER ACTIONS */}
             <div className="flex justify-center items-center">
                 {/* SHUFFLE */}
-                <BiShuffle className={AltButton} size={20} />
+                {/* <BiShuffle className={AltButton} size={20} /> */}
                 {/* PREVIOUS */}
-                <MdSkipPrevious className={SkipButton} size={30} />
+                {/* <MdSkipPrevious className={SkipButton} size={30} /> */}
                 {/* PLAY/PAUSE */}
                 <AudioPlayerPlayButton />
                 {/* NEXT */}
-                <MdSkipNext className={SkipButton} size={30} />
+                {/* <MdSkipNext className={SkipButton} size={30} /> */}
                 {/* REPEAT */}
-                <LuRepeat2 className={AltButton} size={20} />
+                {/* <LuRepeat2 className={AltButton} size={20} /> */}
             </div>
             {/* DURATION */}
             <div></div>

@@ -20,7 +20,7 @@ const MusicSplash = () => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const { isPlaying, play, pause } = useAudioPlayerStore();
-    const { setCurrentTrack } = useTrackStore();
+    const { currentTrack, setCurrentTrack } = useTrackStore();
 
     const handleClick = (currentTrack: SongType) => {
         if (isPlaying && currentTrack.id === currentTrack.id) {
@@ -83,13 +83,14 @@ const MusicSplash = () => {
                                 </span>
                                 <h1 className="text-white text-3x1 md:text-5xl">{track?.title}</h1>
                                 <div className="my-4">
+                                    {/* <button className="border  text-white border-gray-300 py-2 px-5 ml-4">Play Previous Track</button> */}
                                     <button
                                         onClick={() => handleClick(track)}
                                         className="border bg-gray-300 text-black border-gray-300 py-2 px-5"
                                     >
-                                        {isPlaying ? "Pause" : "Play"}
+                                        {isPlaying && track.id === currentTrack.id ? "Pause" : "Play"}
                                     </button>
-                                    <button className="border  text-white border-gray-300 py-2 px-5 ml-4">Watch Later</button>
+                                    {/* <button className="border  text-white border-gray-300 py-2 px-5 ml-4">Play Next Track</button> */}
                                 </div>
                                 <p className="text-gray-400 text-sm">Released: {track?.release_date}</p>
                                 <p className="w-full md:max-w-[70%] lg:max-w-[50%] xl:max-w-[35%] text-gray-200">
