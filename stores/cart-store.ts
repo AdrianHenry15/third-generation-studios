@@ -5,6 +5,7 @@ import { create } from "zustand";
 interface Product {
     id: number;
     name: string;
+    img: any;
     price: number;
     quantity: number;
 }

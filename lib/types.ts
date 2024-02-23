@@ -15,6 +15,7 @@ export type WebsiteType = {
 
 export type Product = {
     id: number;
+    img: any;
     name: string;
     price: number;
     quantity: number;

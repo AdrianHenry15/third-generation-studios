@@ -1,18 +1,14 @@
-"use client";
-
+// Cart.tsx
 import React, { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
-
-import { Bars3Icon } from "@heroicons/react/24/outline";
-import { BsMusicNoteBeamed } from "react-icons/bs";
-import { CgWebsite } from "react-icons/cg";
-import { IoMdPricetags } from "react-icons/io";
-
 import { IoCartOutline } from "react-icons/io5";
 import CartItem from "./cart-item";
+import { useCartStore } from "stores/cart-store";
 
 const Cart = () => {
+    const { items, getTotalPrice, updateQuantity, removeItem } = useCartStore(); // Retrieve items, getTotalPrice, updateQuantity, and removeItem from the cart store
+
     return (
         <div className="absolute right-4 top-1">
             <Popover className="relative">
@@ -37,13 +33,23 @@ const Cart = () => {
                             leaveTo="opacity-0 translate-y-1"
                         >
                             <Popover.Panel className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[350px] transform ml-7">
-                                <div className="flex flex-col relative shadow-lg rounded-lg bg-black border-[1px] border-white pt-10">
-                                    {/* <div className="flex justify-end absolute top-0 right-0">
-                                        <UserIcon />
-                                    </div> */}
-                                    {/* CART ITEMS */}
+                                <div className="flex flex-col relative shadow-lg rounded-lg bg-black border-[1px] border-white pt-4">
                                     <div className="flex flex-col">
-                                        <CartItem />
+                                        {items.length === 0 ? (
+                                            <div className="text-white p-4 text-center">There are no items in your shopping cart.</div>
+                                        ) : (
+                                            items.map((item) => (
+                                                <CartItem
+                                                    key={item.id}
+                                                    item={item}
+                                                    updateQuantity={updateQuantity}
+                                                    removeItem={removeItem}
+                                                />
+                                            ))
+                                        )}
+                                        <div className="total-price text-white p-4 text-center border-t-[1px] border-zinc-600">
+                                            Total: ${getTotalPrice().toFixed(2)}
+                                        </div>
                                     </div>
                                     {/* POPOVER FOOTER */}
                                     <div className="px-4 py-6 mt-4 bg-gray-100 rounded-b-lg flex justify-evenly">
