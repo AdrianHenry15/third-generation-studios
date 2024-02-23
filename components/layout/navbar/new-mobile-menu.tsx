@@ -10,7 +10,6 @@ import { CgWebsite } from "react-icons/cg";
 import { IoMdPricetags } from "react-icons/io";
 
 import PopoverPanelItem from "./popover-panel-item";
-import UserIcon from "./user-icon/user-icon";
 
 const NewMobileMenu = () => {
     return (

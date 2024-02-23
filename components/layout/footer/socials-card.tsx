@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 
 import { AiFillFacebook, AiOutlineInstagram } from "react-icons/ai";
+import { FaYoutube } from "react-icons/fa";
 
 const SocialsCard = () => {
     return (
@@ -11,6 +12,9 @@ const SocialsCard = () => {
             </Link>
             <Link target="_blank" href="https://www.instagram.com/wearethirdgenerationstudios">
                 <AiOutlineInstagram size={35} />
+            </Link>
+            <Link target="_blank" href="https://www.youtube.com/channel/UCHqCJi8VGNVUVAiOQNtEsrw">
+                <FaYoutube size={35} />
             </Link>
         </div>
     );
