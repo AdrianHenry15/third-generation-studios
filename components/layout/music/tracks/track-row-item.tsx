@@ -21,18 +21,18 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
             {/* HOVER CONTAINER */}
             <div className="p-4 ease-in-out transition-colors duration-300 hover:bg-gray-900 rounded-lg">
                 {/* IMAGE CONTAINER  */}
-                <div className="relative">
+                <div className="relative flex aspect-square">
                     {/* IMAGE */}
-                    <ImageContainer>
+                    <div>
                         <Link onClick={() => setCurrentTrack(props.currentTrack)} href={`/music/track/${props.currentTrack.id}`}>
                             <Image
                                 loading="lazy"
-                                className="object-cover rounded-md"
+                                className="object-cover w-full h-full rounded-md"
                                 src={props.currentTrack.img}
                                 alt={props.currentTrack.title}
                             />
                         </Link>
-                    </ImageContainer>
+                    </div>
                     {/* PLAY BUTTON */}
                     <span className="cursor-pointer">
                         <PlayButton currentTrack={props.currentTrack} />
