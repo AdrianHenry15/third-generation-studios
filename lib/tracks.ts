@@ -1,149 +1,470 @@
 import { SongType } from "./types";
 import { SearchArtistProfile } from "./artists";
 
-// MUSIC IMAGES
-import Carmack from "@/public/music/CARMACK.jpg";
-import Drake from "@/public/music/drake.jpg";
-import Durks from "@/public/music/durks.jpg";
-import Inception from "@/public/music/inception.jpg";
-import JackHarlow from "@/public/music/jack.jpg";
-import Rema from "@/public/music/rema.jpg";
-import Succession from "@/public/music/succession.jpg";
-import Timb from "@/public/music/timb.jpg";
-import TobiLou from "@/public/music/tobi-lou.jpg";
-import TrippieRedd from "@/public/music/tredd.jpg";
-import TravisScott from "@/public/music/tscotty.jpg";
-import UziVert from "@/public/music/uzivert.jpg";
-import Lotus from "@/public/music/wlotus.jpg";
-import KidCudi from "@/public/music/ye cudi.jpg";
-import Future from "@/public/music/futue.jpg";
-import Yeat from "@/public/music/yeatt.jpg";
-import AsherRoth from "@/public/music/ashrothcover.png";
-// BACKDROPS
-import DrakeBackdrop from "@/public/music/backdrops/drake-backdrop.webp";
-import FutureBackdrop from "@/public/music/backdrops/future-backdrop.webp";
-import JackHarlowBackdrop from "@/public/music/backdrops/jack-harlow-backdrop.webp";
-import KidCudiBackdrop from "@/public/music/backdrops/kid-cudi-backdrop.webp";
-import LogicBackdrop from "@/public/music/backdrops/logic-backdrop.webp";
-import PlaneBackdrop from "@/public/music/backdrops/plane-backdrop.jpg";
-import TimbalandBackdrop from "@/public/music/backdrops/timbaland-backdrop.jpg";
-import TobiLouBackdrop from "@/public/music/backdrops/tobi-lou-backdrop.jpg";
-import TravisScottBackdrop from "@/public/music/backdrops/travis-scott-backdrop.webp";
-import YeatBackdrop from "@/public/music/backdrops/yeat-backdrop.webp";
-import UziBackdrop from "@/public/music/backdrops/uzibackdrop.webp";
-import AsherRothBackdrop from "@/public/music/backdrops/asher-roth-backdrop.jpg";
+// IMAGES
+import ChillHipHopImg from "@/public/music/chill-hiphop.jpg";
+import HipHopImg from "@/public/music/hiphop.jpg";
+import HyperpopImg from "@/public/music/hyperpop.jpg";
+import ElectronicImg from "@/public/music/electronic.jpg";
+import HouseImg from "@/public/music/house.jpg";
+
+export const AfroBeats: SongType[] = [
+    {
+        id: "los-bienes",
+        img: ChillHipHopImg,
+        title: "Los Bienes",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/los-bienes-e-flat-minor-101bpm.mp3",
+        backdrop_path: ChillHipHopImg,
+        bpm: "101bpm",
+        price: 19.0,
+        key: "Eb-Minor",
+        isFree: true,
+    },
+    {
+        id: "signals",
+        img: ChillHipHopImg,
+        title: "Signals",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/signals-98bpm-c-sharp-minor.mp3",
+        backdrop_path: ChillHipHopImg,
+        bpm: "98bpm",
+        price: 19.0,
+        key: "C#-Minor",
+        isFree: true,
+    },
+];
 
 export const ChillHipHopBeats: SongType[] = [
     {
         id: "design",
-        img: AsherRoth,
+        img: ChillHipHopImg,
         title: "Design",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/design-cminor-180bpm.wav",
-        backdrop_path: AsherRothBackdrop,
+        backdrop_path: ChillHipHopImg,
         bpm: "180bpm",
-        price: 99.0,
+        price: 19.0,
         key: "C-Minor",
+        isFree: true,
+    },
+    {
+        id: "gaslight",
+        img: ChillHipHopImg,
+        title: "Gaslight",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/gaslight-d-sharp-major-175bpm.mp3",
+        backdrop_path: ChillHipHopImg,
+        bpm: "175bpm",
+        price: 19.0,
+        key: "D#-Major",
+        isFree: false,
+    },
+];
+
+export const FreeBeats: SongType[] = [
+    {
+        id: "a-long-run",
+        img: HyperpopImg,
+        title: "A Long Run",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/a-long-run-88bpm-cminor.mp3",
+        backdrop_path: HyperpopImg,
+        bpm: "88bpm",
+        price: 0,
+        key: "C-Minor",
+        isFree: true,
+    },
+    {
+        id: "lumps",
+        img: HyperpopImg,
+        title: "Lumps",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/lumps-140bpm-cminor.mp3",
+        backdrop_path: HyperpopImg,
+        bpm: "140bpm",
+        price: 0,
+        key: "C-Minor",
+        isFree: true,
+    },
+    {
+        id: "suffer",
+        img: HipHopImg,
+        title: "Suffer",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/suffer-141bpm-cminor.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "141bpm",
+        price: 0,
+        key: "C-Minor",
+        isFree: true,
+    },
+    {
+        id: "swarm",
+        img: HyperpopImg,
+        title: "Swarm",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/swarm-140bpm-emajor.mp3",
+        backdrop_path: HyperpopImg,
+        bpm: "140bpm",
+        price: 0,
+        key: "E-Major",
+        isFree: true,
+    },
+    {
+        id: "the-valley",
+        img: ElectronicImg,
+        title: "The Valley",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/the-valley-80bpm-aminor.mp3",
+        backdrop_path: ElectronicImg,
+        bpm: "80bpm",
+        price: 0,
+        key: "A-Minor",
+        isFree: true,
+    },
+    {
+        id: "vibrant",
+        img: HipHopImg,
+        title: "Vibrant",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/vibrant-120bpm-fminor.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "120bpm",
+        price: 0,
+        key: "F-Minor",
         isFree: true,
     },
 ];
 
-// export const AtmosphericHipHop: SongType[] = [
-//     {
-
-//     }
-// ]
-
 export const HipHopBeats: SongType[] = [
     {
+        id: "aggro",
+        img: HipHopImg,
+        title: "Aggro",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/aggro-120bpm-gminor.wav",
+        backdrop_path: HipHopImg,
+        bpm: "120bpm",
+        price: 19.0,
+        key: "G-Minor",
+        isFree: false,
+    },
+    {
+        id: "ancestors",
+        img: HipHopImg,
+        title: "Ancestors",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/ancestors-140bpm-cminor.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "140bpm",
+        price: 19.0,
+        key: "C-Minor",
+        isFree: false,
+    },
+    {
+        id: "association",
+        img: HipHopImg,
+        title: "Association",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/association-140bpm-c-sharp-minor.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "140bpm",
+        price: 19.0,
+        key: "C#-Minor",
+        isFree: false,
+    },
+    {
         id: "chance",
-        img: Timb,
+        img: HipHopImg,
         title: "Chance",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/chance-90bpm-emajor.mp3",
-        backdrop_path: Timb,
+        backdrop_path: HipHopImg,
         bpm: "90bpm",
-        price: 99.0,
+        price: 19.0,
         key: "E-Major",
-        isFree: true,
+        isFree: false,
     },
     {
         id: "chedda",
-        img: KidCudi,
+        img: HipHopImg,
         title: "Chedda",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/chedda-73bpm-d-sharp-minor.mp3",
-        backdrop_path: KidCudi,
+        backdrop_path: HipHopImg,
         bpm: "73bpm",
-        price: 99.0,
+        price: 19.0,
         key: "D#-Minor",
-        isFree: true,
+        isFree: false,
     },
     {
         id: "cripple",
-        img: Drake,
+        img: HipHopImg,
         title: "Cripple",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
-        audio_file: "../audio-files/cripple-dminor-95bpm.mp3",
-        backdrop_path: DrakeBackdrop,
+        audio_file: "../audio-files/cripple-95bpm-dminor.wav",
+        backdrop_path: HipHopImg,
         bpm: "95bpm",
-        price: 99.0,
-        key: "G-Minor",
-        isFree: true,
+        price: 19.0,
+        key: "D-Minor",
+        isFree: false,
     },
     {
         id: "dressin",
-        img: Drake,
+        img: HipHopImg,
         title: "Dressin",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
-        audio_file: "../audio-files/public/dressin-d-sharp-minor-160bpm.mp3",
-        backdrop_path: DrakeBackdrop,
+        audio_file: "../audio-files/dressin-d-sharp-minor-160bpm.mp3",
+        backdrop_path: HipHopImg,
         bpm: "160bpm",
-        price: 99.0,
+        price: 19.0,
         key: "D#-Minor",
-        isFree: true,
+        isFree: false,
+    },
+    {
+        id: "festival",
+        img: HipHopImg,
+        title: "Festival",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/festival-142bpm-fminor.wav",
+        backdrop_path: HipHopImg,
+        bpm: "142bpm",
+        price: 19.0,
+        key: "F-Minor",
+        isFree: false,
+    },
+    {
+        id: "ghosts",
+        img: HipHopImg,
+        title: "Ghosts",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/ghosts-80bpm-cminor.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "142bpm",
+        price: 19.0,
+        key: "F-Minor",
+        isFree: false,
+    },
+    {
+        id: "god",
+        img: HipHopImg,
+        title: "God",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/god-eminor-80bpm.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "80bpm",
+        price: 19.0,
+        key: "E-Minor",
+        isFree: false,
+    },
+    {
+        id: "hyphee",
+        img: HipHopImg,
+        title: "Hyphee",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/hyphee-94bpm-f-sharp-minor.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "94bpm",
+        price: 19.0,
+        key: "F#-Minor",
+        isFree: false,
+    },
+    {
+        id: "im-up",
+        img: HipHopImg,
+        title: "Im Up",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/im-up-cminor-148bpm.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "148bpm",
+        price: 19.0,
+        key: "C-Minor",
+        isFree: false,
+    },
+    {
+        id: "in-da-sky",
+        img: HipHopImg,
+        title: "Im Da Sky",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/in-da-sky-fminor-140bpm.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "140bpm",
+        price: 19.0,
+        key: "F-Minor",
+        isFree: false,
+    },
+    {
+        id: "jackman-drake",
+        img: HipHopImg,
+        title: "Jackman Drake",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/jackman-drake-99bpm-bminor.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "99bpm",
+        price: 19.0,
+        key: "B-Minor",
+        isFree: false,
+    },
+    {
+        id: "ja-morant",
+        img: HipHopImg,
+        title: "Ja Morant",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/ja-morant-83bpm-eminor.mp3",
+        backdrop_path: HipHopImg,
+        bpm: "83bpm",
+        price: 19.0,
+        key: "E-Minor",
+        isFree: false,
+    },
+    {
+        id: "sumn-groovy",
+        img: HipHopImg,
+        title: "Sumn Groovy",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/sumn-groovy-78bpm-cminor.wav",
+        backdrop_path: HipHopImg,
+        bpm: "78bpm",
+        price: 19.0,
+        key: "C-Minor",
+        isFree: false,
+    },
+    {
+        id: "this-kounts",
+        img: HipHopImg,
+        title: "This Kounts",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/this-kounts-a-sharp-minor-140bpm.wav",
+        backdrop_path: HipHopImg,
+        bpm: "140bpm",
+        price: 19.0,
+        key: "A#-Minor",
+        isFree: false,
+    },
+];
+
+export const HouseBeats: SongType[] = [
+    {
+        id: "ocean-vibes",
+        img: HouseImg,
+        title: "Ocean Vibes",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/ocean-vibes-gminor-100bpm.mp3",
+        backdrop_path: HouseImg,
+        bpm: "100bpm",
+        price: 19.0,
+        key: "G-Minor",
+        isFree: false,
     },
 ];
 
 export const HyperpopBeats: SongType[] = [
     {
         id: "candy",
-        img: Yeat,
+        img: HyperpopImg,
         title: "Candy",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/candy-f-sharp-minor-165bpm.wav",
-        backdrop_path: YeatBackdrop,
+        backdrop_path: HyperpopImg,
         bpm: "165bpm",
-        price: 99.0,
+        price: 19.0,
         key: "F#-Minor",
-        isFree: true,
+        isFree: false,
     },
     {
         id: "dillon-brooks",
-        img: UziVert,
+        img: HyperpopImg,
         title: "Dillon Brooks",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/dillon-brooks-f-sharp-minor-156bpm.mp3",
-        backdrop_path: UziBackdrop,
+        backdrop_path: HyperpopImg,
         bpm: "156bpm",
-        price: 99.0,
+        price: 19.0,
         key: "F#-Minor",
-        isFree: true,
+        isFree: false,
+    },
+    {
+        id: "grindin-top",
+        img: HyperpopImg,
+        title: "Grindin Top",
+        overview: "",
+        artist: SearchArtistProfile, // Reference the SearchArtistProfile object
+        release_date: "2024",
+        audio_file: "../audio-files/grindin-top-154bpm-amajor.mp3",
+        backdrop_path: HyperpopImg,
+        bpm: "154bpm",
+        price: 19.0,
+        key: "A-Major",
+        isFree: false,
     },
 ];
 
-export const AllSearchTracks: SongType[] = [...HyperpopBeats, ...HipHopBeats, ...ChillHipHopBeats];
+export const AllSearchTracks: SongType[] = [
+    ...AfroBeats,
+    ...ChillHipHopBeats,
+    ...FreeBeats,
+    ...HipHopBeats,
+    ...HouseBeats,
+    ...HyperpopBeats,
+];
