@@ -71,14 +71,16 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                     <Link className="w-min flex" href={`/music/artist/${props.currentTrack.artist.id}`}>
                         <p className="text-sm font-semibold hover:underline underline-offset-4">{props.currentTrack.artist.title}</p>
                     </Link>
-                    <div className="flex justify-evenly my-2 py-2 border-t-[1px] border-zinc-900 flex-col items-start md:items-center md:flex-row">
+                    <div className="flex justify-start my-2 py-2 border-t-[1px] border-zinc-900 items-start md:items-center">
                         {/* KEY */}
-                        <span className="items-center flex mr-2 mb-2 md:mb-0">
-                            <p className="text-gray-600 text-xs underline-offset-4 underline">{props.currentTrack.key}</p>
+                        <span className="items-center flex mr-2 mb-2 p-2 bg-zinc-900 rounded-lg text-xs md:mb-0">
+                            <h5 className="text-white mr-2">Tempo: </h5>
+                            <p className="text-gray-400 text-xs">{props.currentTrack.key}</p>
                         </span>
                         {/* TEMPO */}
-                        <span>
-                            <p className="text-gray-600 text-xs flex underline-offset-4 underline">{props.currentTrack.bpm}</p>
+                        <span className="flex items-center p-2 bg-zinc-900 rounded-lg text-xs">
+                            <h5 className="mr-2 text-white">Bpm: </h5>
+                            <p className="text-gray-400 text-xs flex">{props.currentTrack.bpm}</p>
                         </span>
                     </div>
                 </figcaption>
