@@ -25,7 +25,7 @@ const TrackRow = (props: ITrackRowProps) => {
                 }}
                 breakpoints={{
                     375: {
-                        slidesPerView: 2.3,
+                        slidesPerView: 1.3,
                         spaceBetween: 10,
                     },
                     580: {
@@ -51,7 +51,7 @@ const TrackRow = (props: ITrackRowProps) => {
                     {props.items.map((track) => {
                         return (
                             <SwiperSlide key={track.id}>
-                                <TrackRowItem currentTrack={track} />
+                                <TrackRowItem track={track} />
                             </SwiperSlide>
                         );
                     })}

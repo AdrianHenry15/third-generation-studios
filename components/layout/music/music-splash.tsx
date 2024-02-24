@@ -66,7 +66,7 @@ const MusicSplash = () => {
                 >
                     {AllSearchTracks.map((track) => (
                         <SwiperSlide key={track.id}>
-                            <div className="absolute w-full h-[750px] bg-gradient-to-r from-black hidden md:flex"></div>
+                            <div className="absolute w-1/2 h-[750px] bg-gradient-to-r from-black hidden md:flex"></div>
                             <div className="w-full h-full flex justify-center items-center">
                                 <Image
                                     width={1000}
