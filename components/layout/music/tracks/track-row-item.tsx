@@ -3,7 +3,6 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
-import usePopover from "@headlessui/react";
 
 import PlayButton from "@/components/action-overlay/play-button";
 import { SongType } from "@/lib/types";
