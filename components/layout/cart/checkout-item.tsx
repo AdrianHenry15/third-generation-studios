@@ -3,8 +3,6 @@ import React from "react";
 
 interface ICheckoutItemProps {
     item: SongType;
-    increaseQuantity: () => void;
-    decreaseQuantity: () => void;
     removeItem: () => void;
 }
 

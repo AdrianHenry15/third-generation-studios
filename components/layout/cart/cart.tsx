@@ -1,5 +1,6 @@
-// Cart.tsx
-import React, { Fragment, useEffect } from "react";
+"use client";
+
+import React, { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { IoCartOutline } from "react-icons/io5";
@@ -42,6 +43,9 @@ const Cart = () => {
                         >
                             <Popover.Panel className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[350px] transform ml-7">
                                 <div className="flex flex-col relative shadow-lg rounded-lg bg-black border-[1px] border-white">
+                                    <div>
+                                        <h5 className="text-white font-semibold text-xl mx-4 mt-4">Your Cart</h5>
+                                    </div>
                                     <div className="flex flex-col">
                                         {items.length === 0 ? (
                                             <div className="text-white p-4 text-center">There are no items in your shopping cart.</div>

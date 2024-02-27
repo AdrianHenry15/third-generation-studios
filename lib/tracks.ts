@@ -2,8 +2,11 @@ import { SongType } from "./types";
 import { SearchArtistProfile } from "./artists";
 
 // IMAGES
-import ChillHipHopImg from "@/public/music/chill-hiphop.jpg";
+import AfroBeatImg from "@/public/music/chill-hiphop.jpg";
+import ChillImg from "@/public/music/chill.jpg";
 import HipHopImg from "@/public/music/hiphop.jpg";
+import HipHopImg2 from "@/public/music/hiphop2.jpg";
+import HipHopImg3 from "@/public/music/hiphop3.jpg";
 import HyperpopImg from "@/public/music/hyperpop.jpg";
 import ElectronicImg from "@/public/music/electronic.jpg";
 import HouseImg from "@/public/music/house.jpg";
@@ -11,13 +14,13 @@ import HouseImg from "@/public/music/house.jpg";
 export const AfroBeats: SongType[] = [
     {
         id: "los-bienes",
-        img: ChillHipHopImg,
+        img: AfroBeatImg,
         title: "Los Bienes",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/los-bienes-e-flat-minor-101bpm.mp3",
-        backdrop_path: ChillHipHopImg,
+        backdrop_path: AfroBeatImg,
         bpm: "101",
         price: 19.0,
         key: "Eb-Minor",
@@ -25,13 +28,13 @@ export const AfroBeats: SongType[] = [
     },
     {
         id: "signals",
-        img: ChillHipHopImg,
+        img: AfroBeatImg,
         title: "Signals",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/signals-98bpm-c-sharp-minor.mp3",
-        backdrop_path: ChillHipHopImg,
+        backdrop_path: AfroBeatImg,
         bpm: "98",
         price: 19.0,
         key: "C#-Minor",
@@ -42,13 +45,13 @@ export const AfroBeats: SongType[] = [
 export const ChillHipHopBeats: SongType[] = [
     {
         id: "design",
-        img: ChillHipHopImg,
+        img: ChillImg,
         title: "Design",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/design-cminor-180bpm.wav",
-        backdrop_path: ChillHipHopImg,
+        backdrop_path: ChillImg,
         bpm: "180",
         price: 19.0,
         key: "C-Minor",
@@ -56,13 +59,13 @@ export const ChillHipHopBeats: SongType[] = [
     },
     {
         id: "gaslight",
-        img: ChillHipHopImg,
+        img: ChillImg,
         title: "Gaslight",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/gaslight-d-sharp-major-175bpm.mp3",
-        backdrop_path: ChillHipHopImg,
+        backdrop_path: ChillImg,
         bpm: "175",
         price: 19.0,
         key: "D#-Major",
@@ -174,13 +177,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "ancestors",
-        img: HipHopImg,
+        img: HipHopImg2,
         title: "Ancestors",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/ancestors-140bpm-cminor.mp3",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg2,
         bpm: "140",
         price: 19.0,
         key: "C-Minor",
@@ -188,13 +191,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "association",
-        img: HipHopImg,
+        img: HipHopImg3,
         title: "Association",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/association-140bpm-c-sharp-minor.mp3",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg3,
         bpm: "140",
         price: 19.0,
         key: "C#-Minor",
@@ -216,13 +219,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "chedda",
-        img: HipHopImg,
+        img: HipHopImg2,
         title: "Chedda",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/chedda-73bpm-d-sharp-minor.mp3",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg2,
         bpm: "73",
         price: 19.0,
         key: "D#-Minor",
@@ -230,13 +233,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "cripple",
-        img: HipHopImg,
+        img: HipHopImg3,
         title: "Cripple",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/cripple-95bpm-dminor.wav",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg3,
         bpm: "95",
         price: 19.0,
         key: "D-Minor",
@@ -258,13 +261,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "festival",
-        img: HipHopImg,
+        img: HipHopImg2,
         title: "Festival",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/festival-142bpm-fminor.wav",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg2,
         bpm: "142",
         price: 19.0,
         key: "F-Minor",
@@ -272,13 +275,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "ghosts",
-        img: HipHopImg,
+        img: HipHopImg3,
         title: "Ghosts",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/ghosts-80bpm-cminor.mp3",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg3,
         bpm: "142",
         price: 19.0,
         key: "F-Minor",
@@ -300,13 +303,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "hyphee",
-        img: HipHopImg,
+        img: HipHopImg2,
         title: "Hyphee",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/hyphee-94bpm-f-sharp-minor.mp3",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg2,
         bpm: "94",
         price: 19.0,
         key: "F#-Minor",
@@ -314,13 +317,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "im-up",
-        img: HipHopImg,
+        img: HipHopImg3,
         title: "Im Up",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/im-up-cminor-148bpm.mp3",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg3,
         bpm: "148",
         price: 19.0,
         key: "C-Minor",
@@ -342,13 +345,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "jackman-drake",
-        img: HipHopImg,
+        img: HipHopImg2,
         title: "Jackman Drake",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/jackman-drake-99bpm-bminor.mp3",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg2,
         bpm: "99",
         price: 19.0,
         key: "B-Minor",
@@ -356,13 +359,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "ja-morant",
-        img: HipHopImg,
+        img: HipHopImg3,
         title: "Ja Morant",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/ja-morant-83bpm-eminor.mp3",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg3,
         bpm: "83",
         price: 19.0,
         key: "E-Minor",
@@ -384,13 +387,13 @@ export const HipHopBeats: SongType[] = [
     },
     {
         id: "this-kounts",
-        img: HipHopImg,
+        img: HipHopImg2,
         title: "This Kounts",
         overview: "",
         artist: SearchArtistProfile, // Reference the SearchArtistProfile object
         release_date: "2024",
         audio_file: "../audio-files/this-kounts-a-sharp-minor-140bpm.wav",
-        backdrop_path: HipHopImg,
+        backdrop_path: HipHopImg2,
         bpm: "140",
         price: 19.0,
         key: "A#-Minor",

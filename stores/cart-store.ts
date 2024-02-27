@@ -16,7 +16,7 @@ interface CartActions {
 
 type CartStore = CartState & CartActions;
 
-export const useCartStore = create<CartStore>((set) => {
+export const useCartStore = create<CartStore>((set, get) => {
     const initialState: CartState = {
         items: [],
         isCartModalOpen: false, // Initialize modal state to closed
@@ -41,7 +41,10 @@ export const useCartStore = create<CartStore>((set) => {
             set((state) => ({
                 items: state.items.filter((item) => item.id !== id),
             })),
-        getTotalPrice: () => initialState.items.reduce((total, item) => total + item.price, 0),
+        getTotalPrice: () => {
+            const items = get().items;
+            return items.reduce((total, item) => total + item.price, 0);
+        },
         toggleCartModal: () => set((state) => ({ isCartModalOpen: !state.isCartModalOpen })), // Toggle modal state
     };
 });
