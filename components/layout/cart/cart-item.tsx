@@ -26,7 +26,7 @@ const CartItem: React.FC<CartItemProps> = ({ track, removeItem }) => {
                 <div className="flex flex-col justify-center items-center">
                     <div className="details">
                         <h3 className="text-white">{track.title}</h3>
-                        <p>Price: ${track.price}.00</p>
+                        <p>Price: ${track.price.toFixed(2)}</p>
                     </div>
                 </div>
             </Link>

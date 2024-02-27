@@ -10,7 +10,6 @@ export default function MusicPage() {
         <div className="flex flex-col h-full bg-black">
             <MusicSplash />
             <div className="p-10">
-                {/* <ArtistRow /> */}
                 <TrackRow title="Hip-Hop Tracks By Search" items={HipHopBeats} />
                 <TrackRow title="Hyperpop Tracks By Search" items={HyperpopBeats} />
                 <TrackRow title="Chill Hip-Hop Tracks By Search" items={ChillHipHopBeats} />

@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import usePopover from "@headlessui/react";
 
 import PlayButton from "@/components/action-overlay/play-button";
 import { SongType } from "@/lib/types";
@@ -13,7 +16,14 @@ interface ITrackRowItemProps {
 
 const TrackRowItem = (props: ITrackRowItemProps) => {
     const { setCurrentTrack } = useTrackStore();
-    const { addItem } = useCartStore();
+    const { addItem, toggleCartModal } = useCartStore();
+
+    const handleAddItemClick = () => {
+        // Add item to cart
+        addItem(props.track);
+        // Open cart modal
+        toggleCartModal(true);
+    };
 
     return (
         <figure className="flex flex-col">
@@ -72,8 +82,8 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                 </figcaption>
                 <div className="flex w-full items-center justify-center">
                     <button
-                        className="bg-blue-600 w-full items-center justify-center rounded-lg py-1 flex self-center text-center"
-                        onClick={() => addItem(props.track)}
+                        className="bg-blue-600 w-full items-center justify-center rounded-lg py-2 flex self-center text-center"
+                        onClick={() => handleAddItemClick()}
                     >
                         <p className="text-sm text-white items-center">Add To Cart</p>
                     </button>

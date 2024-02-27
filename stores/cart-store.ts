@@ -11,7 +11,7 @@ interface CartActions {
     addItem: (item: SongType) => void;
     removeItem: (id: string) => void;
     getTotalPrice: () => number;
-    toggleCartModal: () => void; // Add a function to toggle modal state
+    toggleCartModal: (isOpen: boolean) => void; // Add a function to toggle modal state
 }
 
 type CartStore = CartState & CartActions;
@@ -45,6 +45,6 @@ export const useCartStore = create<CartStore>((set, get) => {
             const items = get().items;
             return items.reduce((total, item) => total + item.price, 0);
         },
-        toggleCartModal: () => set((state) => ({ isCartModalOpen: !state.isCartModalOpen })), // Toggle modal state
+        toggleCartModal: (isOpen) => set((state) => ({ ...state, isCartModalOpen: isOpen })), // Update modal state based on isOpen parameter
     };
 });
