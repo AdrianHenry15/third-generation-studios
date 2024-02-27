@@ -1,24 +1,17 @@
-"use client";
-
+// cart-store.ts
 import { create } from "zustand";
-
-interface Product {
-    id: number;
-    name: string;
-    img: any;
-    price: number;
-    quantity: number;
-}
+import { SongType } from "@/lib/types";
 
 interface CartState {
-    items: Product[];
+    items: SongType[];
+    isCartModalOpen: boolean; // Add a new state variable to manage modal state
 }
 
 interface CartActions {
-    addItem: (item: Product) => void;
-    removeItem: (id: number) => void;
-    updateQuantity: (id: number, quantity: number) => void;
+    addItem: (item: SongType) => void;
+    removeItem: (id: string) => void;
     getTotalPrice: () => number;
+    toggleCartModal: () => void; // Add a function to toggle modal state
 }
 
 type CartStore = CartState & CartActions;
@@ -26,19 +19,29 @@ type CartStore = CartState & CartActions;
 export const useCartStore = create<CartStore>((set) => {
     const initialState: CartState = {
         items: [],
+        isCartModalOpen: false, // Initialize modal state to closed
     };
 
     return {
         ...initialState,
-        addItem: (item) => set((state) => ({ items: [...state.items, item] })),
+        addItem: (item) =>
+            set((state) => {
+                // Check if the item already exists in the cart
+                const existingItemIndex = state.items.findIndex((cartItem) => cartItem.id === item.id);
+
+                // If the item already exists in the cart, don't add it again
+                if (existingItemIndex !== -1) {
+                    return state;
+                }
+
+                // Otherwise, add the item to the cart
+                return { items: [...state.items, item] };
+            }),
         removeItem: (id) =>
             set((state) => ({
                 items: state.items.filter((item) => item.id !== id),
             })),
-        updateQuantity: (id, quantity) =>
-            set((state) => ({
-                items: state.items.map((item) => (item.id === id ? { ...item, quantity } : item)),
-            })),
-        getTotalPrice: () => initialState.items.reduce((total, item) => total + item.price * item.quantity, 0),
+        getTotalPrice: () => initialState.items.reduce((total, item) => total + item.price, 0),
+        toggleCartModal: () => set((state) => ({ isCartModalOpen: !state.isCartModalOpen })), // Toggle modal state
     };
 });

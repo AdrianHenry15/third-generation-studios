@@ -3,41 +3,34 @@
 import React from "react";
 import Image from "next/image";
 
-import { Product } from "@/lib/types";
+import { SongType } from "@/lib/types";
 
 interface CartItemProps {
-    item: Product;
-    updateQuantity: (id: number, quantity: number) => void;
-    removeItem: (id: number) => void;
+    track: SongType;
+    removeItem: (id: string) => void;
 }
 
-const CartItem: React.FC<CartItemProps> = ({ item, updateQuantity, removeItem }) => {
-    const { id, name, img, price, quantity } = item;
-
-    const handleQuantityChange = (newQuantity: number) => {
-        updateQuantity(id, newQuantity);
-    };
-
-    const handleRemoveItem = () => {
-        removeItem(id);
-    };
-
+const CartItem: React.FC<CartItemProps> = ({ track, removeItem }) => {
     return (
-        <div className="cart-item">
-            <div className="item-info">
-                <Image src={img} alt={name} />
-                <div className="details">
-                    <h3>{name}</h3>
-                    <p>Price: ${price}</p>
-                    <p>Quantity: {quantity}</p>
+        <div className="flex flex-col items-center p-4 my-1">
+            <div className="flex items-center justify-start w-full">
+                {/* IMAGE */}
+                <span className="flex items-center mr-2">
+                    <Image className="items-start aspect-square object-cover w-16 rounded-md" src={track.img} alt={track.title} />
+                </span>
+                {/* ITEM INFO */}
+                <div className="flex flex-col justify-center items-center">
+                    <div className="details">
+                        <h3 className="text-white">{track.title}</h3>
+                        <p>Price: ${track.price}</p>
+                    </div>
                 </div>
             </div>
-            <div className="actions">
-                <button onClick={() => handleQuantityChange(quantity - 1)} disabled={quantity <= 1}>
-                    -
+            {/* CART ACTIONS */}
+            <div className="flex w-full justify-start mt-4">
+                <button onClick={() => removeItem(track.id)}>
+                    <p className="text-white hover:text-red-600 duration-300 ease-in-out transition-colors">Remove</p>
                 </button>
-                <button onClick={() => handleQuantityChange(quantity + 1)}>+</button>
-                <button onClick={handleRemoveItem}>Remove</button>
             </div>
         </div>
     );

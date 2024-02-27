@@ -13,14 +13,6 @@ export type WebsiteType = {
     backdrop_path: any;
 };
 
-export type Product = {
-    id: number;
-    img: any;
-    name: string;
-    price: number;
-    quantity: number;
-};
-
 export type SongType = {
     id: string;
     img: any;

@@ -2,13 +2,10 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 
-import { BsDot } from "react-icons/bs";
-import { IoMdDownload } from "react-icons/io";
-
 import PlayButton from "@/components/action-overlay/play-button";
 import { SongType } from "@/lib/types";
-import ImageContainer from "@/components/containers/image-container";
 import { useTrackStore } from "stores/track-store";
+import { useCartStore } from "stores/cart-store";
 
 interface ITrackRowItemProps {
     track: SongType;
@@ -16,6 +13,8 @@ interface ITrackRowItemProps {
 
 const TrackRowItem = (props: ITrackRowItemProps) => {
     const { setCurrentTrack } = useTrackStore();
+    const { addItem } = useCartStore();
+
     return (
         <figure className="flex flex-col">
             {/* HOVER CONTAINER */}
@@ -71,6 +70,14 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                         </span>
                     </div>
                 </figcaption>
+                <div className="flex w-full items-center justify-center">
+                    <button
+                        className="bg-blue-600 w-full items-center justify-center rounded-lg py-1 flex self-center text-center"
+                        onClick={() => addItem(props.track)}
+                    >
+                        <p className="text-sm text-white items-center">Add To Cart</p>
+                    </button>
+                </div>
             </div>
         </figure>
     );

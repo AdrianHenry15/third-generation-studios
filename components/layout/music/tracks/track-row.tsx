@@ -11,7 +11,7 @@ interface ITrackRowProps {
 
 const TrackRow = (props: ITrackRowProps) => {
     return (
-        <div className="py-24">
+        <div className="py-2">
             {/* ROW TITLE */}
             <div>
                 <h5 className="text-white text-3xl my-2 font-semibold">{props.title}</h5>
@@ -29,15 +29,15 @@ const TrackRow = (props: ITrackRowProps) => {
                         spaceBetween: 10,
                     },
                     580: {
-                        slidesPerView: 3.3,
+                        slidesPerView: 2.3,
                         spaceBetween: 10,
                     },
                     768: {
-                        slidesPerView: 4.3,
+                        slidesPerView: 3.3,
                         spaceBetween: 10,
                     },
                     1043: {
-                        slidesPerView: 5.3,
+                        slidesPerView: 4.3,
                         spaceBetween: 10,
                     },
                     1490: {
