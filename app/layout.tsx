@@ -5,6 +5,8 @@ import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Loader } from "@/components/loader";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -30,6 +32,8 @@ export default async function MainLayout({ children }: { children: React.ReactNo
                 {/* <link rel="icon" href="/triangle-32.png" sizes="32x32" />
                 <link rel="icon" href="/triangle-16.png" sizes="16x16" /> */}
                 <body className={inter.variable}>
+                    <Analytics />
+                    <SpeedInsights />
                     <Toaster />
                     <div className="flex flex-col">
                         <Suspense fallback={<Loader />}>
