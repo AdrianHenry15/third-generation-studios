@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { Fragment, RefObject, createRef } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { IoCartOutline } from "react-icons/io5";
@@ -8,7 +8,7 @@ import CartItem from "./cart-item";
 import { useCartStore } from "stores/cart-store";
 
 const Cart = () => {
-    const { items, isCartModalOpen, getTotalPrice, removeItem } = useCartStore(); // Retrieve items, getTotalPrice, updateQuantity, and removeItem from the cart store
+    const { items, getTotalPrice, removeItem } = useCartStore(); // Retrieve items, getTotalPrice, updateQuantity, and removeItem from the cart store
 
     return (
         <div className="absolute right-4 top-1">
@@ -41,7 +41,7 @@ const Cart = () => {
                             leaveTo="opacity-0 translate-y-1"
                         >
                             <Popover.Panel static className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[350px] transform ml-7">
-                                <div className="flex flex-col relative shadow-lg rounded-lg bg-black border-[1px] border-white">
+                                <div className="flex flex-col relative shadow-lg rounded-lg bg-black border-[1px] border-white max-h-96 overflow-y-scroll overflow-hidden">
                                     <div>
                                         <h5 className="text-white font-semibold text-xl mx-4 mt-4">Your Cart</h5>
                                     </div>
