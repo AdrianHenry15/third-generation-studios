@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 const title = "Third Generation Studios";
-const description = "Adrian Henry";
+const description = "The best developers of websites and sound production";
 export const metadata: Metadata = {
     title,
     description,
