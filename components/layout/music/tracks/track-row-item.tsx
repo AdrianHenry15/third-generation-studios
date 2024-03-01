@@ -15,7 +15,7 @@ interface ITrackRowItemProps {
 
 const TrackRowItem = (props: ITrackRowItemProps) => {
     const { setCurrentTrack } = useTrackStore();
-    const { addItem, toggleCartModal } = useCartStore();
+    const { addItem, toggleCartModal, items } = useCartStore();
 
     const handleAddItemClick = () => {
         // Add item to cart
@@ -81,7 +81,11 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                 </figcaption>
                 <div className="flex w-full items-center justify-center">
                     <button
-                        className="bg-blue-600 w-full items-center justify-center rounded-lg py-2 flex self-center text-center"
+                        className={`${
+                            items.find((item) => item.id === props.track.id)
+                                ? "bg-red-600/75 cursor-not-allowed"
+                                : "bg-blue-600 hover:scale-105"
+                        } w-full items-center justify-center rounded-lg py-2 flex self-center text-center transition-all ease-in-out duration-300`}
                         onClick={() => handleAddItemClick()}
                     >
                         <p className="text-sm text-white items-center">Add To Cart</p>

@@ -51,19 +51,18 @@ const Cart = () => {
                                         ) : (
                                             items.map((item) => <CartItem removeItem={removeItem} key={item.id} track={item} />)
                                         )}
-                                        <div className="total-price text-white p-4 text-center border-t-[1px] border-zinc-600">
-                                            Total: ${getTotalPrice().toFixed(2)}
-                                        </div>
                                     </div>
                                     {/* POPOVER FOOTER */}
-                                    <div className="px-4 py-6 mt-4 bg-gray-100 rounded-b-lg flex justify-evenly">
+                                    <div className="w-full rounded-b-lg flex justify-center">
                                         {/* CONTACT US BUTTON */}
                                         <Link
                                             onClick={close}
-                                            className="bg-blue-600/90 px-10 py-2 rounded-full hover:bg-red-600 transition-all duration-300 ease-in-out"
+                                            className="bg-blue-600/90 w-full px-10 m-4 py-2 rounded-full hover:bg-red-600 transition-all duration-300 ease-in-out"
                                             href={"/cart/checkout"}
                                         >
-                                            <h5 className="hover:text-white transition-colors duration-300 ease-in-out">Checkout</h5>
+                                            <h5 className="hover:text-white text-center transition-colors duration-300 ease-in-out">
+                                                Checkout
+                                            </h5>
                                         </Link>
                                     </div>
                                 </div>
