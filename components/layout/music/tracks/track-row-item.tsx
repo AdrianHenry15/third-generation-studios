@@ -15,14 +15,7 @@ interface ITrackRowItemProps {
 
 const TrackRowItem = (props: ITrackRowItemProps) => {
     const { setCurrentTrack } = useTrackStore();
-    const { addItem, toggleCartModal, items } = useCartStore();
-
-    const handleAddItemClick = () => {
-        // Add item to cart
-        addItem(props.track);
-        // Open cart modal
-        toggleCartModal(true);
-    };
+    const { addItem, items } = useCartStore();
 
     return (
         <figure className="flex flex-col">
@@ -86,7 +79,7 @@ const TrackRowItem = (props: ITrackRowItemProps) => {
                                 ? "bg-red-600/75 cursor-not-allowed"
                                 : "bg-blue-600 hover:scale-105"
                         } w-full items-center justify-center rounded-lg py-2 flex self-center text-center transition-all ease-in-out duration-300`}
-                        onClick={() => handleAddItemClick()}
+                        onClick={() => addItem(props.track)}
                     >
                         <p className="text-sm text-white items-center">Add To Cart</p>
                     </button>

@@ -27,14 +27,14 @@ export default function Navbar(props: INavbarProps) {
             className={`${props.className} text-sm whitespace-nowrap font-semibold flex w-full self-center bg-black sticky top-0 z-50 py-2`}
         >
             {/* MOBILE CONTAINER */}
-            <div className="absolute self-center left-0 xl:hidden">
+            <div className="absolute self-center flex flex-1 left-0 xl:hidden">
                 {/* <MobileMenu /> */}
                 <NewMobileMenu />
             </div>
             {/* TITLE & LINKS  */}
             <div className="flex w-full my-2 justify-evenly">
                 <div className="flex items-center">
-                    <Link href="/" className="lg:mr-10">
+                    <Link href="/" className="flex-1 flex lg:mr-10">
                         {/* TODO: LOGO */}
                         <Image className="" src={Logo} alt="logo" width={200} />
                     </Link>
@@ -64,14 +64,14 @@ export default function Navbar(props: INavbarProps) {
                     </Link>
                 </ul>
                 {/* USER ICON */}
-                {/* <div className="hidden xl:flex xl:items-center">
-                    <UserIcon />
-                </div> */}
-                {/* CART */}
-                {/* <div className="p-2 flex items-center absolute right-6 top-1">
-                    <IoCartOutline className="text-white" size={20} />
-                </div> */}
-                <Cart />
+                <div className="flex items-center absolute top-1 right-4 md:top-1 md:right-1 lg:relative">
+                    <div className="flex items-center lg:mb-1">
+                        <Cart />
+                    </div>
+                    <div className="hidden md:flex">
+                        <UserIcon />
+                    </div>
+                </div>
             </div>
         </nav>
     );

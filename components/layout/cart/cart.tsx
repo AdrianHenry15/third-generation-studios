@@ -11,7 +11,7 @@ const Cart = () => {
     const { items, getTotalPrice, removeItem } = useCartStore(); // Retrieve items, getTotalPrice, updateQuantity, and removeItem from the cart store
 
     return (
-        <div className="absolute right-4 top-1">
+        <div className="flex">
             <Popover className="relative">
                 {({ open, close }) => (
                     <>

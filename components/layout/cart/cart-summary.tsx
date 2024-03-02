@@ -37,7 +37,7 @@ const CartSummary = () => {
         emailjs
             .send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
             .then((response) => {
-                toast.success("Your email has been sent successfully!");
+                toast.success("Someone from our team will review and get back to you shortly!");
                 console.log("SUCCESS!", response.status, response.text);
             })
             .catch((error) => {
@@ -52,7 +52,7 @@ const CartSummary = () => {
     const getBtnText = (): string => {
         // IF LOADING
         if (loading) {
-            return "Checking Out...";
+            return "Submitting...";
         }
 
         // IF THERE ARE NO ITEMS IN CART
@@ -60,7 +60,7 @@ const CartSummary = () => {
             return "No Items In Cart";
         }
 
-        return "Checkout For Files";
+        return "Submit For Review";
     };
 
     return (

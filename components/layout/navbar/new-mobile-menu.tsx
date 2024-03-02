@@ -10,6 +10,7 @@ import { CgWebsite } from "react-icons/cg";
 import { IoMdPricetags } from "react-icons/io";
 
 import PopoverPanelItem from "./popover-panel-item";
+import UserIcon from "./user-icon/user-icon";
 
 const NewMobileMenu = () => {
     return (
@@ -35,9 +36,9 @@ const NewMobileMenu = () => {
                         >
                             <Popover.Panel className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[42px] transform ml-7">
                                 <div className="flex flex-col relative shadow-lg rounded-lg bg-white pt-10">
-                                    {/* <div className="flex justify-end absolute top-0 right-0">
+                                    <div className="flex justify-end absolute top-4 right-2">
                                         <UserIcon />
-                                    </div> */}
+                                    </div>
                                     <div className="flex flex-col">
                                         <PopoverPanelItem
                                             onClick={close}
