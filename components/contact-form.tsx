@@ -84,7 +84,14 @@ const ContactForm = () => {
 
     return (
         <section className="flex flex-col items-center py-20 shadow-inner relative w-full md:px-4">
-            {isOpen && <ConfirmationModal confirmEstimate={confirmEstimate} isOpen={isOpen} closeModal={() => setIsOpen(false)} />}
+            {isOpen && (
+                <ConfirmationModal
+                    loading={loading}
+                    confirmEstimate={confirmEstimate}
+                    isOpen={isOpen}
+                    closeModal={() => setIsOpen(false)}
+                />
+            )}
             {estimateSuccess && <SuccessModal isOpen={estimateSuccess} closeModal={() => setEstimateSuccess(false)} />}
             {loading ? <Loader /> : null}
             <h1 className="text-3xl mb-10 font-light animate-bounce">{`${
