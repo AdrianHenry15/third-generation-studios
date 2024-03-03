@@ -17,17 +17,17 @@ import Dropdown from "./inputs/dropdown";
 import Input from "./inputs/input";
 import Textarea from "./inputs/textarea";
 import { LicensePackageType, WebsitePricingData } from "@/lib/pricing-data";
+import { useUser } from "@clerk/nextjs";
 
 const ContactForm = () => {
     // SWITCH BETWEEN CONTACT AND ESTIMATE FORM | BOTH FORMS DO THE SAME THING FOR NOW
     const pathname = usePathname();
+    const { user, isSignedIn } = useUser();
 
     const [inputClicked, setInputClicked] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [estimateSuccess, setEstimateSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    const InputClass = "border-2 border-gray-400 my-2 p-2 rounded-sm w-full shadow-md";
 
     // EMAIL JS
     const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID as string;
@@ -110,6 +110,7 @@ const ContactForm = () => {
                         inputName={"firstName"}
                         inputLabel={"First Name"}
                         placeholder={"First Name*"}
+                        defaultValue={isSignedIn ? user.firstName! : ""}
                         control={control}
                         errors={errors}
                         errorPatternText="First Name is required."
@@ -119,6 +120,7 @@ const ContactForm = () => {
                         inputName={"lastName"}
                         inputLabel={"Last Name"}
                         placeholder={"Last Name*"}
+                        defaultValue={isSignedIn ? user.lastName! : ""}
                         control={control}
                         errorPatternText="Last Name is required."
                     />
@@ -127,6 +129,7 @@ const ContactForm = () => {
                         inputName={"phoneNumber"}
                         inputLabel={"Phone Number"}
                         placeholder={"Phone Number*"}
+                        defaultValue={isSignedIn ? user.primaryPhoneNumber?.phoneNumber : ""}
                         control={control}
                         errors={errors}
                         errorPatternText={"Phone Number is not valid."}
@@ -136,6 +139,7 @@ const ContactForm = () => {
                         inputName={"email"}
                         inputLabel={"Email"}
                         placeholder={"Email*"}
+                        defaultValue={isSignedIn ? user?.primaryEmailAddress?.emailAddress : ""}
                         control={control}
                         errors={errors}
                         errorRequiredText={"Email is Required."}
@@ -163,7 +167,7 @@ const ContactForm = () => {
                     <Textarea inputName={"comment"} inputLabel={"Comment"} placeholder={"Comment"} control={control} />
                     <div className={`${inputClicked ? "" : "animate-pulse"} my-10`}>
                         <Button
-                            onClick={() => {}}
+                            onClick={() => setInputClicked(true)}
                             submit
                             name={`${pathname === "/contact-us" ? "Contact Us" : "Get Your Free Estimate"}`}
                             className="w-full justify-center"
