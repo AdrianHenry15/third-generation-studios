@@ -8,16 +8,23 @@ import { SongType } from "@/lib/types";
 
 const { setCurrentTrack } = useTrackStore.getState();
 
-interface AudioPlayerState {
+interface IAudioPlayerState {
     isPlaying: boolean;
     audioRef: React.RefObject<HTMLAudioElement>;
+}
+
+interface IAudioPlayerActions {
     play: (track: SongType) => void;
     pause: () => void;
 }
 
-export const useAudioPlayerStore = create<AudioPlayerState>((set) => ({
+type AudioPlayerStore = IAudioPlayerState & IAudioPlayerActions;
+
+export const useAudioPlayerStore = create<AudioPlayerStore>((set) => ({
+    // STATE
     isPlaying: false,
     audioRef: React.createRef(),
+    // ACTIONS
     play: async (track) => {
         await setCurrentTrack(track);
 

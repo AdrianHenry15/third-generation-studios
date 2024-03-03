@@ -47,7 +47,7 @@ export type LicenseDataType = {
 };
 
 export enum LicenseType {
-    BASIC,
-    STANDARD,
-    PREMIUM,
+    BASIC = "Basic",
+    STANDARD = "Standard",
+    PREMIUM = "Premium",
 }

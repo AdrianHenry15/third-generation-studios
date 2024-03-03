@@ -1,14 +1,17 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 import { SongType } from "@/lib/types";
-import { AllSearchTracks } from "@/lib/tracks";
 
-interface TrackStoreState {
+interface ITrackState {
     currentTrack: SongType;
+}
+
+interface ITrackActions {
     setCurrentTrack: (currentTrack: SongType) => void;
 }
 
-export const useTrackStore = create<TrackStoreState>()(
+type TrackStore = ITrackState & ITrackActions;
+
+export const useTrackStore = create<TrackStore>()(
     // persist(
     (set) => ({
         currentTrack: {

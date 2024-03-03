@@ -1,6 +1,4 @@
-import MusicPricing from "@/components/layout/pricing/music-pricing";
 import PricingItem from "@/components/layout/pricing/pricing-item";
-import WebsitePricing from "@/components/layout/pricing/website-pricing";
 import { MusicLicenseData, WebsitePricingData } from "@/lib/pricing-data";
 
 export default function PricingPage() {

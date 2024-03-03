@@ -1,7 +1,6 @@
 import React from "react";
 import TrackRowItem from "./track-row-item";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { AllSearchTracks } from "@/lib/tracks";
 import { SongType } from "@/lib/types";
 
 interface ITrackRowProps {
@@ -11,7 +10,7 @@ interface ITrackRowProps {
 
 const TrackRow = (props: ITrackRowProps) => {
     return (
-        <div className="py-24">
+        <div className="py-2">
             {/* ROW TITLE */}
             <div>
                 <h5 className="text-white text-3xl my-2 font-semibold">{props.title}</h5>
@@ -25,19 +24,19 @@ const TrackRow = (props: ITrackRowProps) => {
                 }}
                 breakpoints={{
                     375: {
-                        slidesPerView: 2.3,
+                        slidesPerView: 1.3,
                         spaceBetween: 10,
                     },
                     580: {
-                        slidesPerView: 3.3,
+                        slidesPerView: 2.3,
                         spaceBetween: 10,
                     },
                     768: {
-                        slidesPerView: 4.3,
+                        slidesPerView: 3.3,
                         spaceBetween: 10,
                     },
                     1043: {
-                        slidesPerView: 5.3,
+                        slidesPerView: 4.3,
                         spaceBetween: 10,
                     },
                     1490: {
@@ -51,7 +50,7 @@ const TrackRow = (props: ITrackRowProps) => {
                     {props.items.map((track) => {
                         return (
                             <SwiperSlide key={track.id}>
-                                <TrackRowItem currentTrack={track} />
+                                <TrackRowItem track={track} />
                             </SwiperSlide>
                         );
                     })}

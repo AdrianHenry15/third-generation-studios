@@ -15,14 +15,14 @@ const UserBtn = () => {
     const image = user?.hasImage ? user.imageUrl : "";
 
     return (
-        <div className="top-16 w-full max-w-sm m-4">
+        <div className="top-16 w-full max-w-sm flex text-center h-full mx-4">
             <Popover className="relative">
                 {({ close }) => (
                     <>
                         <Popover.Button>
                             {isSignedIn && (
                                 <span className="flex items-center justify-center hover:bg-zinc-500 hover:scale-125 hover:rounded-full transition-all duration-300 ease-in-out">
-                                    <Image className="rounded-full" width={35} height={35} src={image!} alt="user-image" />
+                                    <Image className="rounded-full" width={25} height={25} src={image!} alt="user-image" />
                                 </span>
                             )}
                         </Popover.Button>
