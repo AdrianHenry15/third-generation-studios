@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import { persist, createJSONStorage } from "zustand/middleware";
 import { SongType } from "@/lib/types";
-import { AllSearchTracks } from "@/lib/tracks";
 
 interface ITrackState {
     currentTrack: SongType;

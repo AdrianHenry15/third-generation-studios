@@ -1,7 +1,6 @@
 import React from "react";
 import TrackRowItem from "./track-row-item";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { AllSearchTracks } from "@/lib/tracks";
 import { SongType } from "@/lib/types";
 
 interface ITrackRowProps {

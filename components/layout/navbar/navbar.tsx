@@ -9,8 +9,7 @@ import Logo from "@/public/logos/thirdgenstudios-logo.png";
 import { NavMenuTypeItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
-import NewMobileMenu from "./new-mobile-menu";
-import { IoCartOutline } from "react-icons/io5";
+import MobileMenu from "./mobile-menu";
 import Cart from "../cart/cart";
 
 const UserIcon = dynamic(() => import("@/components/layout/navbar/user-icon/user-icon"), { ssr: false });
@@ -29,7 +28,7 @@ export default function Navbar(props: INavbarProps) {
             {/* MOBILE CONTAINER */}
             <div className="absolute self-center flex flex-1 left-0 xl:hidden">
                 {/* <MobileMenu /> */}
-                <NewMobileMenu />
+                <MobileMenu />
             </div>
             {/* TITLE & LINKS  */}
             <div className="flex w-full my-2 justify-evenly">

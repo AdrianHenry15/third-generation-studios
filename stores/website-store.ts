@@ -1,7 +1,7 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 import { WebsiteType } from "@/lib/types";
-import { persist } from "zustand/middleware";
 
 interface IWebsiteState {
     currentWebsite: WebsiteType;

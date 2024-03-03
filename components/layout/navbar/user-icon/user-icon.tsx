@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
-import { SignedIn, SignedOut, SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import React from "react";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
-import Image from "next/image";
 
-import { BiChevronDown } from "react-icons/bi";
 import UserBtn from "./user-btn";
 
 const UserIcon = () => {
