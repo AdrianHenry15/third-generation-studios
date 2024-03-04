@@ -54,7 +54,7 @@ const MusicSplash = () => {
     }, []);
 
     return (
-        <div ref={containerRef} className="fade-in w-[100%] h-[300px] self-center text-white md:h-[750px]">
+        <div ref={containerRef} className="fade-in w-[100%] h-[300px] self-center text-white md:h-[750px] mb-4 md:mb-0">
             <div className="w-full md:h-full">
                 <Swiper
                     modules={[A11y, Autoplay]}

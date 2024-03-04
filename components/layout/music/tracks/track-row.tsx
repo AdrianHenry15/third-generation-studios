@@ -10,7 +10,7 @@ interface ITrackRowProps {
 
 const TrackRow = (props: ITrackRowProps) => {
     return (
-        <div className="py-2">
+        <div className="py-2 px-4">
             {/* ROW TITLE */}
             <div>
                 <h5 className="text-white text-3xl my-2 font-semibold">{props.title}</h5>
