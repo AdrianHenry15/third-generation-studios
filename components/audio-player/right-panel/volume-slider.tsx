@@ -13,6 +13,14 @@ export default function VolumeSlider() {
     const [volume, setVolume] = React.useState(0.5);
     const { audioRef } = useAudioPlayerStore(); // Get setVolume from store
 
+    // useEffect hook to set volume when component mounts
+    React.useEffect(() => {
+        // Check if audioRef is available
+        if (audioRef.current) {
+            audioRef.current.volume = volume;
+        }
+    }, [audioRef, volume]);
+
     const handleVolumeChange = (e: any) => {
         const newVolume = (e.target.value as any) / 100;
         setVolume(newVolume);
