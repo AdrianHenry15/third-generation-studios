@@ -1,12 +1,14 @@
 import React from "react";
 
-import { BiShuffle } from "react-icons/bi";
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
-import { LuRepeat2 } from "react-icons/lu";
 
 import AudioPlayerPlayButton from "./play-button";
+import { useAudioPlayerStore } from "stores/audio-player-store";
+import Duration from "./duration";
 
 const Controls = () => {
+    const { playNext, playPrevious } = useAudioPlayerStore();
+
     const SkipButton = "mx-4 text-gray-400 hover:text-white cursor-pointer transition-colors duration-300 ease-in-out";
     const AltButton = "text-gray-400 hover:text-white cursor-pointer transition-colors duration-300 ease-in-out";
 
@@ -17,16 +19,16 @@ const Controls = () => {
                 {/* SHUFFLE */}
                 {/* <BiShuffle className={AltButton} size={20} /> */}
                 {/* PREVIOUS */}
-                {/* <MdSkipPrevious className={SkipButton} size={30} /> */}
+                <MdSkipPrevious onClick={() => playPrevious()} className={SkipButton} size={30} />
                 {/* PLAY/PAUSE */}
                 <AudioPlayerPlayButton />
                 {/* NEXT */}
-                {/* <MdSkipNext className={SkipButton} size={30} /> */}
+                <MdSkipNext onClick={() => playNext()} className={SkipButton} size={30} />
                 {/* REPEAT */}
                 {/* <LuRepeat2 className={AltButton} size={20} /> */}
             </div>
             {/* DURATION */}
-            <div></div>
+            <Duration />
         </div>
     );
 };
