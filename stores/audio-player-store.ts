@@ -41,6 +41,10 @@ export const useAudioPlayerStore = create<AudioPlayerStore>((set) => ({
                 // Once playback starts, set isPlaying flag to true
                 set({ isPlaying: true });
             });
+            // Listen for the ended event to automatically play the next track
+            audioRef.addEventListener("ended", () => {
+                useAudioPlayerStore.getState().playNext();
+            });
         }
     },
     pause: () => {
