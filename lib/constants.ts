@@ -9,10 +9,10 @@ export const NavMenuItems: NavMenu[] = [
         title: "Websites",
         link: "/websites",
     },
-    {
-        title: "Music",
-        link: "/music",
-    },
+    // {
+    //     title: "Music",
+    //     link: "/music",
+    // },
     // {
     //     title: "Movie Picks",
     //     link: "/movie-picks",
@@ -37,19 +37,19 @@ export const NavMenuAltItems: NavMenu[] = [
     },
 ];
 
-export const CreatePageNavMenu: NavMenu[] = [
-    {
-        title: "Upload Song",
-        link: "/create/upload/songs",
-    },
-    {
-        title: "Create Artist",
-        link: "/create/artists",
-    },
-    {
-        title: "Create Website",
-        link: "/create/websites",
-    },
-];
+// export const CreatePageNavMenu: NavMenu[] = [
+//     {
+//         title: "Upload Song",
+//         link: "/create/upload/songs",
+//     },
+//     {
+//         title: "Create Artist",
+//         link: "/create/artists",
+//     },
+//     {
+//         title: "Create Website",
+//         link: "/create/websites",
+//     },
+// ];
 
 export const WebsitePackage = [{ name: "Basic" }, { name: "Standard" }, { name: "Premium" }];
