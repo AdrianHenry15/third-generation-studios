@@ -35,20 +35,8 @@ const MobileMenu = () => {
                             leaveTo="opacity-0 translate-y-1"
                         >
                             <Popover.Panel className="absolute z-10 mt-1 w-screen max-w-sm -translate-x-[42px] transform ml-7">
-                                <div className="flex flex-col relative shadow-lg rounded-lg bg-white pt-10">
-                                    <div className="flex justify-end absolute top-4 right-2">
-                                        <UserIcon />
-                                    </div>
+                                <div className="flex flex-col relative shadow-lg rounded-lg bg-white pt-4">
                                     <div className="flex flex-col">
-                                        <PopoverPanelItem
-                                            onClick={close}
-                                            icon={<BsMusicNoteBeamed size={25} />}
-                                            page={{
-                                                title: "Music",
-                                                link: "/music",
-                                            }}
-                                            description={"Music by Artists"}
-                                        />
                                         <PopoverPanelItem
                                             onClick={close}
                                             icon={<CgWebsite size={25} />}
@@ -58,7 +46,7 @@ const MobileMenu = () => {
                                             }}
                                             description={"Websites By Devs"}
                                         />
-                                        <PopoverPanelItem
+                                        {/* <PopoverPanelItem
                                             onClick={close}
                                             icon={<IoMdPricetags size={25} />}
                                             page={{
@@ -66,7 +54,7 @@ const MobileMenu = () => {
                                                 link: "/pricing",
                                             }}
                                             description={"Prices For Music & Websites"}
-                                        />
+                                        /> */}
                                     </div>
                                     {/* POPOVER FOOTER */}
                                     <div className="px-4 py-6 mt-4 bg-gray-100 rounded-b-lg flex justify-evenly">

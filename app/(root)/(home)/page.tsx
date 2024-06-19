@@ -36,14 +36,6 @@ export default function HomePage() {
         <section className="bg-black flex flex-col">
             {/* SPLASH */}
             <HomeSplash />
-            <div ref={containerRef} className="flex flex-col items-center justify-evenly pb-48 md:items-center md:flex-row">
-                <Link href={"/websites"}>
-                    <h1 className={`${LinkClass} pb-36 md:pb-0`}>Websites</h1>
-                </Link>
-                <Link href={"/music"}>
-                    <h1 className={LinkClass}>Music</h1>
-                </Link>
-            </div>
         </section>
     );
 }

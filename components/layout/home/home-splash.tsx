@@ -6,6 +6,7 @@ import Image from "next/image";
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 
 import "swiper/css";
+import Link from "next/link";
 
 const HomeSplash = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -34,8 +35,14 @@ const HomeSplash = () => {
 
     return (
         <div className="w-full self-center text-white h-screen flex">
-            <div ref={containerRef} className="fade-in w-full h-[80%] flex items-center justify-center">
+            <div ref={containerRef} className="fade-in w-full h-[80%] flex flex-col items-center justify-center">
                 <Image className="px-14 md:px-64 lg:px-52 xl:px-[500px]" src={Logo} alt="logo" />
+                <Link
+                    className="flex mt-48 text-zinc-300 border-white border-2 text-lg px-12 py-[10px] absolute rounded-xl self-center items-center justify-center ease-in-out duration-200 hover:bg-gray-900"
+                    href={"/websites"}
+                >
+                    Enter
+                </Link>
             </div>
         </div>
     );
