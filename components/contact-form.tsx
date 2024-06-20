@@ -15,19 +15,19 @@ import { Loader } from "./loader";
 import Button from "./button";
 import Dropdown from "./inputs/dropdown";
 import Input from "./inputs/input";
-import { WebsitePackage } from "@/lib/constants";
 import Textarea from "./inputs/textarea";
+import { LicensePackageType, WebsitePricingData } from "@/lib/pricing-data";
+import { useUser } from "@clerk/nextjs";
 
 const ContactForm = () => {
     // SWITCH BETWEEN CONTACT AND ESTIMATE FORM | BOTH FORMS DO THE SAME THING FOR NOW
     const pathname = usePathname();
+    const { user, isSignedIn } = useUser();
 
     const [inputClicked, setInputClicked] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [estimateSuccess, setEstimateSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
-
-    const InputClass = "border-2 border-gray-400 my-2 p-2 rounded-sm w-full shadow-md";
 
     // EMAIL JS
     const SERVICE_ID = process.env.NEXT_PUBLIC_SERVICE_ID as string;
@@ -78,21 +78,29 @@ const ContactForm = () => {
         email: getValues("email"),
         address: getValues("address"),
         service: getValues("package"),
+        serviceType: getValues("packageType"),
         comment: getValues("comment"),
     };
 
     return (
-        <section className="flex flex-col items-center px-4 py-20 shadow-inner relative w-full">
-            {isOpen && <ConfirmationModal confirmEstimate={confirmEstimate} isOpen={isOpen} closeModal={() => setIsOpen(false)} />}
+        <section className="flex flex-col items-center py-20 shadow-inner relative w-full md:px-4">
+            {isOpen && (
+                <ConfirmationModal
+                    loading={loading}
+                    confirmEstimate={confirmEstimate}
+                    isOpen={isOpen}
+                    closeModal={() => setIsOpen(false)}
+                />
+            )}
             {estimateSuccess && <SuccessModal isOpen={estimateSuccess} closeModal={() => setEstimateSuccess(false)} />}
             {loading ? <Loader /> : null}
             <h1 className="text-3xl mb-10 font-light animate-bounce">{`${
                 pathname === "/contact-us" ? "Contact Us" : "Get Your Free Estimate!"
             }`}</h1>
             {/* FORM CONTAINER */}
-            <div className="flex flex-col w-[350px] bg-white p-6 rounded-2xl shadow-red-600 shadow-lg border-2 md:w-[650px]">
+            <div className="flex flex-col w-11/12 bg-white p-6 rounded-2xl shadow-red-600 shadow-lg border-2 md:w-[650px]">
                 {/* LOGO */}
-                <div className="flex justify-center my-2">
+                <div className="flex justify-center my-10">
                     <Image loading="eager" width={200} src={Logo} alt="Brite Logo" />
                 </div>
                 {/* FORM */}
@@ -102,6 +110,7 @@ const ContactForm = () => {
                         inputName={"firstName"}
                         inputLabel={"First Name"}
                         placeholder={"First Name*"}
+                        defaultValue={isSignedIn ? user.firstName! : ""}
                         control={control}
                         errors={errors}
                         errorPatternText="First Name is required."
@@ -111,6 +120,7 @@ const ContactForm = () => {
                         inputName={"lastName"}
                         inputLabel={"Last Name"}
                         placeholder={"Last Name*"}
+                        defaultValue={isSignedIn ? user.lastName! : ""}
                         control={control}
                         errorPatternText="Last Name is required."
                     />
@@ -119,6 +129,7 @@ const ContactForm = () => {
                         inputName={"phoneNumber"}
                         inputLabel={"Phone Number"}
                         placeholder={"Phone Number*"}
+                        defaultValue={isSignedIn ? user.primaryPhoneNumber?.phoneNumber : ""}
                         control={control}
                         errors={errors}
                         errorPatternText={"Phone Number is not valid."}
@@ -128,25 +139,35 @@ const ContactForm = () => {
                         inputName={"email"}
                         inputLabel={"Email"}
                         placeholder={"Email*"}
+                        defaultValue={isSignedIn ? user?.primaryEmailAddress?.emailAddress : ""}
                         control={control}
                         errors={errors}
                         errorRequiredText={"Email is Required."}
                         errorPatternText={"Email is not valid."}
                     />
-                    {/* SERVICE */}
+                    {/* PACKAGE TYPE */}
+                    <Dropdown
+                        inputName={"packageType"}
+                        inputLabel={"Choose Package Type:"}
+                        control={control}
+                        errors={errors}
+                        options={LicensePackageType}
+                        errorText="Package Type is required."
+                    />
+                    {/* PACKAGE */}
                     <Dropdown
                         inputName={"package"}
                         inputLabel={"Choose Package:"}
                         control={control}
                         errors={errors}
-                        options={WebsitePackage}
+                        options={WebsitePricingData}
                         errorText="Package is required."
                     />
                     {/* COMMENT */}
                     <Textarea inputName={"comment"} inputLabel={"Comment"} placeholder={"Comment"} control={control} />
                     <div className={`${inputClicked ? "" : "animate-pulse"} my-10`}>
                         <Button
-                            onClick={() => {}}
+                            onClick={() => setInputClicked(true)}
                             submit
                             name={`${pathname === "/contact-us" ? "Contact Us" : "Get Your Free Estimate"}`}
                             className="w-full justify-center"

@@ -3,6 +3,7 @@ import { Fragment } from "react";
 
 interface IConfirmationModalProps {
     isOpen: boolean;
+    loading: boolean;
     closeModal: () => void;
     confirmEstimate: () => void;
 }
@@ -50,7 +51,7 @@ const ConfirmationModal = (props: IConfirmationModalProps) => {
                                         className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 mr-4 mt-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                         onClick={props.confirmEstimate}
                                     >
-                                        Get Your Free Estimate
+                                        {props.loading ? "Checking Out..." : "Get Your Free Estimate"}
                                     </button>
                                     <button
                                         type="button"

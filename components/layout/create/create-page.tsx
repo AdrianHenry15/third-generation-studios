@@ -1,6 +1,5 @@
 "use client";
 
-import Input from "@/components/inputs/input";
 import Image from "next/image";
 import React from "react";
 

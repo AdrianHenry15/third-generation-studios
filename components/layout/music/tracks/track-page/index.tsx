@@ -7,17 +7,17 @@ import TrackDetails from "./track-details";
 import TrackInfoMobileOverlay from "./track-info-mobile-overlay";
 import PlayButton from "@/components/action-overlay/play-button";
 import { SongType } from "@/lib/types";
+import Licensing from "@/components/licensing";
 
 interface ITrackItemProps {
     track: SongType;
 }
 
 const TrackItem = (props: ITrackItemProps) => {
-    // const { track } = useTrackStore();
     return (
-        <article className="flex flex-col lg:px-4">
+        <article className="flex flex-col">
             {/* TRACK INFO */}
-            <header className="md:bg-zinc-900 md:my-2 md:rounded-lg md:p-4 md:m-4">
+            <header className="md:bg-zinc-900 md:my-2 md:rounded-lg p-4 mx-6">
                 {/* TRACK IMAGE AND INFO */}
                 <figure className="relative md:h-[50%]">
                     {/* BG SHADOW OVERLAY  */}
@@ -44,24 +44,13 @@ const TrackItem = (props: ITrackItemProps) => {
                     {/* TRACK INFO MOBILE OVERLAY */}
                     <TrackInfoMobileOverlay />
                 </figure>
-
-                {/* ACTION SECTION */}
-                {/* <div className="flex justify-center items-center py-10 px-4 lg:hidden">
-                    <div className="flex"> */}
-                {/* TODO: SHARE BUTTON */}
-                {/* <IoShareOutline className="text-white mr-2" size={25} />
-                    </div>
-                </div> */}
             </header>
-            {/* BUY BUTTON */}
-            {/* <button className="flex justify-center items-center bg-blue-500 w-11/12 self-center py-2 rounded-lg my-2">
-                <AiOutlineShoppingCart className="text-white mr-2" />
-                <p className="text-white">Buy For ${track.price}.00</p>
-            </button> */}
-            {/* TRACK DETAILS HEADER */}
-            <TrackDetails />
-            {/* LICENSING */}
-            {/* <Licensing /> */}
+            <div className="p-6">
+                {/* TRACK DETAILS HEADER */}
+                <TrackDetails track={props.track} />
+                {/* LICENSING */}
+                <Licensing />
+            </div>
         </article>
     );
 };

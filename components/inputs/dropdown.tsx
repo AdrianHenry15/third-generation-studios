@@ -1,5 +1,6 @@
 "use client";
 
+import { LicenseDataType } from "@/lib/types";
 import React from "react";
 import { Controller, FieldErrors } from "react-hook-form";
 
@@ -8,7 +9,7 @@ interface IDropdownProps {
     inputLabel: string;
     control: any;
     errors: FieldErrors;
-    options: { name: string }[];
+    options: LicenseDataType[];
     errorText: string;
 }
 
@@ -21,12 +22,12 @@ const Dropdown = ({ inputName, inputLabel, options, errorText, control, errors }
             <Controller
                 name={inputName}
                 control={control}
-                defaultValue={options[0].name}
+                defaultValue={options[0].title}
                 render={({ field }) => (
                     <select className={`${InputClass} py-4`} {...field}>
                         {options.map((service) => (
-                            <option key={service.name} value={service.name}>
-                                {service.name}
+                            <option key={service.title} value={service.title}>
+                                {service.title}
                             </option>
                         ))}
                     </select>

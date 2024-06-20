@@ -13,7 +13,9 @@ interface IFooterProps {
 const Footer = (props: IFooterProps) => {
     return (
         // FULL CONTAINER
-        <footer className={`${props.className} w-full bg-black text-white flex flex-col justify-center px-4`}>
+        <footer
+            className={`${props.className} w-full bg-black text-white flex flex-col justify-center px-4 border-t-[1px] border-zinc-900`}
+        >
             {/* FOOTER MENU */}
             <div className="flex flex-col self-center w-full md:flex-row md:py-2">
                 <LogoCard />

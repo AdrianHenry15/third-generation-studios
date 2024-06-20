@@ -1,24 +1,15 @@
-"use client";
+import { SongType } from "@/lib/types";
+import React from "react";
 
-import React, { useState } from "react";
-import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+interface ITrackDetailsProps {
+    track: SongType;
+}
 
-import { useTrackStore } from "stores/track-store";
-
-const TrackDetails = () => {
-    const { currentTrack } = useTrackStore();
+const TrackDetails = (props: ITrackDetailsProps) => {
     return (
-        <div className="bg-zinc-900 text-white flex flex-col p-4 m-4 rounded-md">
+        <div className="bg-zinc-900 text-white flex flex-col p-4 rounded-md my-4">
             <div className="flex items-center justify-between border-b-[1px] border-zinc-700 pb-2">
                 <h5 className="text-xl text-white">Track Details</h5>
-                {/* {dropdownOpen ? ( */}
-                <BiChevronUp
-                    // onClick={() => setDropdownOpen(false)}
-                    size={35}
-                />
-                {/* ) : ( */}
-                {/* <BiChevronDown onClick={() => setDropdownOpen(true)} size={35} /> */}
-                {/* )} */}
             </div>
             {/* {dropdownOpen && ( */}
             <div className="border-b-[1px] border-zinc-700 py-4">
@@ -26,17 +17,17 @@ const TrackDetails = () => {
                 {/* PUBLISH/RELEASE DATE */}
                 <div className="flex justify-between my-2">
                     <h4 className="text-white">Published</h4>
-                    <p>{currentTrack.release_date}</p>
+                    <p>{props.track.release_date}</p>
                 </div>
                 {/* BPM */}
                 <div className="flex justify-between my-2">
                     <h4 className="text-white">BPM</h4>
-                    <p>{currentTrack.bpm.split("bpm")}</p>
+                    <p>{props.track.bpm.split("bpm")}</p>
                 </div>
                 {/* KEY */}
                 <div className="flex justify-between my-2">
                     <h4 className="text-white">Key</h4>
-                    <p>{currentTrack.key}</p>
+                    <p>{props.track.key}</p>
                 </div>
                 {/* TODO:PLAYS */}
             </div>

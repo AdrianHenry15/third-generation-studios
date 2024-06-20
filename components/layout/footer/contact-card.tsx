@@ -9,7 +9,6 @@ const ContactCard = () => {
                     Contact Us
                 </Link>
                 <div className="w-full">
-                    <address className="text-gray-400 pb-4">2211 Allen Lane Winter Park, FL 32792</address>
                     <div className="flex flex-col text-gray-400">
                         <span className="pb-4">
                             <label>Office: </label>
@@ -17,7 +16,7 @@ const ContactCard = () => {
                         </span>
                         <span className="pb-4">
                             <label>Email: </label>
-                            <Link href="email:adrianhenry2115@gmail.com">adrianhenry2115@gmail.com</Link>
+                            <Link href="email:thirdgenerationstudio@gmail.com">thirdgenerationstudios@gmail.com</Link>
                         </span>
                     </div>
                 </div>
