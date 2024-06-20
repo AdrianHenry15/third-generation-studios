@@ -10,7 +10,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Loader } from "@/components/loader";
 import { ClerkProvider } from "@clerk/nextjs";
-import AudioPlayer from "@/components/audio-player";
 
 const inter = Inter({
     variable: "--font-inter",
@@ -34,12 +33,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
                 <body className={inter.variable}>
                     <Toaster />
                     <div className="flex flex-col">
-                        <Suspense fallback={<Loader />}>
-                            {children}
-                            <Suspense fallback={<Loader />}>
-                                <AudioPlayer />
-                            </Suspense>
-                        </Suspense>
+                        <Suspense fallback={<Loader />}>{children}</Suspense>
                     </div>
                 </body>
             </html>

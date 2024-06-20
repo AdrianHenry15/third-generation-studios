@@ -1,5 +1,5 @@
 import PricingItem from "@/components/layout/pricing/pricing-item";
-import { MusicLicenseData, WebsitePricingData } from "@/lib/pricing-data";
+import { WebsitePricingData } from "@/lib/pricing-data";
 
 export default function PricingPage() {
     return (
@@ -10,14 +10,7 @@ export default function PricingPage() {
                 licenseData={WebsitePricingData}
                 buttonTitle={"Get Free Website Pricing Estimate"}
             />
-            <PricingItem
-                type={"Music"}
-                title={"Music Licensing"}
-                licenseData={MusicLicenseData}
-                buttonTitle={"Get Free Music Licensing Estimate"}
-            />
-            {/* <WebsitePricing />
-            <MusicPricing /> */}
+            {/* <WebsitePricing /> */}
         </section>
     );
 }

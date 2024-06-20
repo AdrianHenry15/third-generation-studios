@@ -10,7 +10,6 @@ import { NavMenuTypeItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
 import MobileMenu from "./mobile-menu";
-import Cart from "../cart/cart";
 
 const UserIcon = dynamic(() => import("@/components/layout/navbar/user-icon/user-icon"), { ssr: false });
 

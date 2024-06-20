@@ -19,22 +19,6 @@ model Website {
   createdAt   DateTime @default(now())
 }
 
-model Song {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  img         String
-  title       String
-  album       String   @map("album")
-  artist      String
-  genre       String
-  releaseDate String   @map("release_date")
-  duration    String
-  plays       Int      @default(0)
-  file        String
-  Artist      Artist?  @relation(fields: [artistId], references: [id])
-  artistId    String?  @db.ObjectId
-  createdAt   DateTime @default(now())
-}
-
 model User {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   email     String    @unique
@@ -42,15 +26,6 @@ model User {
   addresses Address[]
   role      Roles
   createdAt DateTime  @default(now())
-}
-
-model Artist {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  img         String
-  title       String
-  description String
-  songs       Song[]
-  createdAt   DateTime @default(now())
 }
 
 enum TransactionType {
@@ -67,13 +42,6 @@ enum Status {
   PENDING
   COMPLETED
   FAILED
-}
-
-enum Category {
-  ARTIST
-  SONG
-  WEBSITE
-  MOVIE
 }
 
 // Address is an embedded document

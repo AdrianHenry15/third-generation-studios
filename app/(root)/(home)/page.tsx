@@ -3,11 +3,8 @@
 import { useEffect, useRef } from "react";
 
 import HomeSplash from "@/components/layout/home/home-splash";
-import Link from "next/link";
 
 export default function HomePage() {
-    const LinkClass =
-        "text-white transition-all duration-300 ease-in-out hover:scale-105 hover:text-red-600 font-bold text-6xl md:text-[50px] lg:text-[75px]";
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
