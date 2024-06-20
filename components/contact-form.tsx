@@ -16,7 +16,7 @@ import Button from "./button";
 import Dropdown from "./inputs/dropdown";
 import Input from "./inputs/input";
 import Textarea from "./inputs/textarea";
-import { LicensePackageType, WebsitePricingData } from "@/lib/pricing-data";
+import { WebsitePricingData } from "@/lib/pricing-data";
 import { useUser } from "@clerk/nextjs";
 
 const ContactForm = () => {
@@ -144,15 +144,6 @@ const ContactForm = () => {
                         errors={errors}
                         errorRequiredText={"Email is Required."}
                         errorPatternText={"Email is not valid."}
-                    />
-                    {/* PACKAGE TYPE */}
-                    <Dropdown
-                        inputName={"packageType"}
-                        inputLabel={"Choose Package Type:"}
-                        control={control}
-                        errors={errors}
-                        options={LicensePackageType}
-                        errorText="Package Type is required."
                     />
                     {/* PACKAGE */}
                     <Dropdown
