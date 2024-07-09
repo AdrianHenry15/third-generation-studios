@@ -9,6 +9,10 @@ export const NavMenuTypeItems: NavMenuType[] = [
         title: "Websites",
         link: "/websites",
     },
+    {
+        title: "Music",
+        link: "/music",
+    },
     // {
     //     title: "Pricing",
     //     link: "/pricing",
