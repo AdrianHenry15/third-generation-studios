@@ -1,7 +1,8 @@
 export default function MusicPage() {
+    const BeatstoreID = process.env.NEXT_BEATSTORE_ID as string;
     return (
         <div className="flex justify-center bg-black">
-            <iframe src={`https://player.beatstars.com/?storeId=${process.env.BEATSTORE_ID}`} width="100%" height="800" />
+            <iframe src={`https://player.beatstars.com/?storeId=${BeatstoreID}`} width="100%" height="800" />
         </div>
     );
 }

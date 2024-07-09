@@ -10,7 +10,7 @@ const nextConfig = {
         NEXT_PUBLIC_TEMPLATE_ID: process.env.NEXT_PUBLIC_TEMPLATE_ID,
         NEXT_PUBLIC_KEY: process.env.NEXT_PUBLIC_KEY,
         NEXT_PRIVATE_KEY: process.env.NEXT_PRIVATE_KEY,
-        BEATSTORE_ID: process.env.BEATSTORE_ID
+        NEXT_BEATSTORE_ID: process.env.NEXT_BEATSTORE_ID
     },
     images: {
         remotePatterns: [
