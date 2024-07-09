@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import { BsMusicNoteBeamed } from "react-icons/bs";
-import { CgWebsite } from "react-icons/cg";
+import { CgMusicNote, CgWebsite } from "react-icons/cg";
 import { IoMdPricetags } from "react-icons/io";
 
 import PopoverPanelItem from "./popover-panel-item";
@@ -45,6 +45,15 @@ const MobileMenu = () => {
                                                 link: "/websites",
                                             }}
                                             description={"Websites By Devs"}
+                                        />
+                                        <PopoverPanelItem
+                                            onClick={close}
+                                            icon={<CgMusicNote size={25} />}
+                                            page={{
+                                                title: "Music",
+                                                link: "/music",
+                                            }}
+                                            description={"Music by Artists"}
                                         />
                                         {/* <PopoverPanelItem
                                             onClick={close}
