@@ -1,6 +1,12 @@
 import WebsiteRow from "@/components/layout/websites/website-row";
 import WebsiteSplash from "@/components/layout/websites/website-splash";
 import { ClientWebsites, PersonalWebsites, SchoolWebsites } from "@/lib/websites";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Website Designs",
+    description: "Choose A Design and Get An Estimate Today",
+};
 
 export default function WebsitesPage() {
     return (

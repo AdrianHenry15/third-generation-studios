@@ -1,3 +1,10 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Music Store",
+    description: "Find A Song That Fits Your Project",
+};
+
 export default function MusicPage() {
     const BeatstoreID = process.env.NEXT_BEATSTORE_ID as string;
     return (
