@@ -14,7 +14,7 @@ export const NavMenuTypeItems: NavMenuType[] = [
         link: "/music",
     },
     // {
-    //     title: "Pricing",
+    //     title: "Proposal",
     //     link: "/pricing",
     // },
 ];
