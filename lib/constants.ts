@@ -13,10 +13,10 @@ export const NavMenuTypeItems: NavMenuType[] = [
         title: "Music",
         link: "/music",
     },
-    // {
-    //     title: "Available Plans",
-    //     link: "/plans",
-    // },
+    {
+        title: "Available Plans",
+        link: "/plans",
+    },
 ];
 export const NavMenuTypeAltItems: NavMenuType[] = [
     {

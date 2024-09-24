@@ -1,5 +1,5 @@
 import AvailablePlans from "@/components/layout/plans/available-plans";
-import PlansSplash from "@/components/plans-splash";
+import PlansSplash from "@/components/layout/plans/splash";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
