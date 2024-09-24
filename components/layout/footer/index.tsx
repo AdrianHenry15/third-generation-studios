@@ -5,6 +5,7 @@ import ContactCard from "./contact-card";
 import SocialsCard from "./socials-card";
 import FooterMenu from "./footer-menu";
 import LogoCard from "./logo-card";
+import PoweredBy from "./powered-by";
 
 interface IFooterProps {
     className?: string;
@@ -26,6 +27,8 @@ const Footer = (props: IFooterProps) => {
             </div>
             {/* SOCIALS  */}
             <SocialsCard />
+            {/* Powered By */}
+            <PoweredBy />
         </footer>
     );
 };
