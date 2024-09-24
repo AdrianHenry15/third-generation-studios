@@ -29,7 +29,7 @@ export default function Navbar(props: INavbarProps) {
             {/* TITLE & LINKS  */}
             <div className="flex w-full my-2 justify-evenly">
                 <div className="flex items-center">
-                    <Link href="/" className="flex-1 flex lg:mr-10">
+                    <Link href="/websites" className="flex-1 flex lg:mr-10">
                         {/* TODO: LOGO */}
                         <Image className="" src={Logo} alt="logo" width={50} />
                     </Link>

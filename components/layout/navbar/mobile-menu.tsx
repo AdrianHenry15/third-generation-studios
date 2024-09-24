@@ -39,7 +39,7 @@ const MobileMenu = () => {
                                     <div className="flex flex-col">
                                         <PopoverPanelItem
                                             onClick={close}
-                                            icon={<CgWebsite size={25} />}
+                                            icon={<CgWebsite className="text-white" size={25} />}
                                             page={{
                                                 title: "Websites",
                                                 link: "/websites",
@@ -48,7 +48,7 @@ const MobileMenu = () => {
                                         />
                                         <PopoverPanelItem
                                             onClick={close}
-                                            icon={<CgMusicNote size={25} />}
+                                            icon={<CgMusicNote className="text-white" size={25} />}
                                             page={{
                                                 title: "Music",
                                                 link: "/music",
@@ -57,7 +57,7 @@ const MobileMenu = () => {
                                         />
                                         {/* <PopoverPanelItem
                                             onClick={close}
-                                            icon={<IoMdPricetags size={25} />}
+                                            icon={<IoMdPricetags className="text-white" size={25} />}
                                             page={{
                                                 title: "Available Plans",
                                                 link: "/plans",
@@ -70,7 +70,7 @@ const MobileMenu = () => {
                                         {/* CONTACT US BUTTON */}
                                         <Link
                                             onClick={close}
-                                            className="bg-red-600/90 px-10 py-2 rounded-full hover:bg-red-600 transition-all duration-300 ease-in-out"
+                                            className="bg-white px-10 py-2 rounded-full hover:bg-black/25 transition-all duration-300 ease-in-out"
                                             href={"/contact-us"}
                                         >
                                             <h5 className="hover:text-white transition-colors duration-300 ease-in-out">Contact Us</h5>
@@ -78,10 +78,12 @@ const MobileMenu = () => {
                                         {/* ESTIMATE BUTTON */}
                                         <Link
                                             onClick={close}
-                                            className="bg-red-600/90 px-10 py-2 rounded-full hover:bg-red-600 transition-all duration-300 ease-in-out"
+                                            className="bg-black  px-10 py-2 rounded-full hover:bg-black/25 transition-all duration-300 ease-in-out"
                                             href={"/estimate"}
                                         >
-                                            <h5 className="hover:text-white transition-colors duration-300 ease-in-out">Estimate</h5>
+                                            <h5 className="hover:text-white text-white transition-colors duration-300 ease-in-out">
+                                                Estimate
+                                            </h5>
                                         </Link>
                                     </div>
                                 </div>
