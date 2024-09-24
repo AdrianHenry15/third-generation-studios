@@ -18,7 +18,7 @@ const AnimatedDots = () => {
     const dots = useRef<Dot[]>([]);
     const requestRef = useRef<number>(0);
     const frameCount = useRef(0);
-    const fps = 60; // Target frames per second
+    const fps = 30; // Target frames per second (reduced for mobile)
     const [isClient, setIsClient] = useState(false); // To check if running on the client
 
     useEffect(() => {
@@ -29,8 +29,9 @@ const AnimatedDots = () => {
         const canvas = canvasRef.current;
         const context = canvas?.getContext("2d");
 
+        // Detect if it's a mobile device
         const isMobile = window.innerWidth < 768;
-        const numberOfDots = isMobile ? 100 : 200;
+        const numberOfDots = isMobile ? 50 : 150; // Reduced dots on mobile
 
         canvas!.height = window.innerHeight;
 
@@ -118,7 +119,8 @@ const AnimatedDots = () => {
             context.fillStyle = "rgba(0, 0, 0, 0.05)";
             context.fillRect(0, 0, canvas.width, canvas.height);
 
-            const renderInterval = isMobile ? Math.round(fps / 10) : Math.round(fps / 15);
+            // Render dots at reduced intervals on mobile
+            const renderInterval = isMobile ? Math.round(fps / 6) : Math.round(fps / 15);
             if (frameCount.current % renderInterval === 0) {
                 dots.current.forEach((dot) => updateDot(dot));
             }
