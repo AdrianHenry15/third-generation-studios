@@ -1,139 +1,135 @@
 import { useEffect, useRef } from "react";
-import throttle from "lodash.throttle";
+
+interface Dot {
+    x: number;
+    y: number;
+    size: number;
+    alpha: number;
+    speed: number;
+    angle: number;
+    radius: number;
+    centerX: number;
+    centerY: number;
+}
 
 const AnimatedDots = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const mousePos = useRef({ x: 0, y: 0 }); // Store mouse position
+    const mousePos = useRef({ x: 0, y: 0 });
+    const dots = useRef<Dot[]>([]); // Use a ref for dots to maintain state across renders
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas?.getContext("2d");
-        const dots: Dot[] = [];
-        const numberOfDots = window.innerWidth > 1000 ? 500 : 200; // Dynamically set based on screen size
+        const numberOfDots = 500; // Increased number of dots for a denser effect
 
         // Resize the canvas to match the window dimensions
         const resizeCanvas = () => {
             if (canvas) {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
+                // Update dot centers to the new canvas center
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                dots.current.forEach((dot) => {
+                    dot.centerX = centerX;
+                    dot.centerY = centerY;
+                });
             }
         };
 
         // Track mouse movement
         const handleMouseMove = (event: MouseEvent) => {
-            const handleMouseMove = throttle((event: MouseEvent) => {
-                mousePos.current.x = event.clientX;
-                mousePos.current.y = event.clientY;
-            }, 100); // Mouse move event handled every 100ms
+            mousePos.current.x = event.clientX;
+            mousePos.current.y = event.clientY;
+        };
 
-            window.addEventListener("mousemove", handleMouseMove);
+        // Initialize dots array
+        const initializeDots = () => {
+            for (let i = 0; i < numberOfDots; i++) {
+                const dot = createDot();
+                dots.current.push(dot); // Push to the current ref
+            }
+        };
 
-            return () => {
-                window.removeEventListener("mousemove", handleMouseMove);
+        // Create a new dot
+        const createDot = (): Dot => {
+            const radius = Math.random() * (Math.min(window.innerWidth, window.innerHeight) / 2);
+            const angle = Math.random() * Math.PI * 2;
+            return {
+                x: 0, // Placeholder; will be updated in update method
+                y: 0, // Placeholder; will be updated in update method
+                size: Math.random() * 2 + 0.5,
+                alpha: Math.random() * 0.5 + 0.3,
+                speed: Math.random() * 0.002 + 0.0005,
+                angle,
+                radius,
+                centerX: window.innerWidth / 2,
+                centerY: window.innerHeight / 2,
             };
         };
 
-        // Class representing an individual dot (space dust particle)
-        class Dot {
-            x: number;
-            y: number;
-            size: number; // Size of the particle
-            alpha: number; // Opacity for fade effect
-            speed: number; // Speed of particle movement
-            angle: number; // Angle for circular movement
-            radius: number; // Distance from the center
-            centerX: number; // X-coordinate of the center of rotation (middle of page)
-            centerY: number; // Y-coordinate of the center of rotation (middle of page)
-            constructor() {
-                // Initialize dot at a random position within a circular orbit around the page center
-                this.centerX = window.innerWidth / 2; // Set center to middle of page
-                this.centerY = window.innerHeight / 2; // Set center to middle of page
-                this.radius = Math.random() * (Math.min(window.innerWidth, window.innerHeight) / 2); // Random radius from the center
-                this.angle = Math.random() * Math.PI * 2; // Random initial angle for circular movement
-                this.x = this.centerX + this.radius * Math.cos(this.angle);
-                this.y = this.centerY + this.radius * Math.sin(this.angle);
-                this.size = Math.random() * 2 + 0.5; // Smaller size for dense dust effect
-                this.alpha = Math.random() * 0.5 + 0.3; // Randomized opacity for some particles
-                this.speed = Math.random() * 0.002 + 0.0005; // Much slower speed for circular motion
+        // Draw the dot with a glow effect
+        const drawDot = (dot: Dot) => {
+            if (!context) return;
+            context.beginPath();
+            context.arc(dot.x, dot.y, dot.size, 0, Math.PI * 2);
+            context.shadowColor = "rgba(255, 255, 255, 0.5)";
+            context.shadowBlur = dot.size * 2;
+            context.fillStyle = `rgba(255, 255, 255, ${dot.alpha})`;
+            context.fill();
+            context.closePath();
+        };
+
+        // Update the position and alpha of the dot for the animation
+        const updateDot = (dot: Dot) => {
+            // Apply circular movement using angle and radius
+            dot.angle += dot.speed;
+            dot.x = dot.centerX + dot.radius * Math.cos(dot.angle);
+            dot.y = dot.centerY + dot.radius * Math.sin(dot.angle);
+
+            // Attraction to the center: gradually decrease the radius (pull towards the center)
+            dot.radius *= 0.995;
+
+            if (dot.radius < 5) {
+                dot.radius = Math.random() * (Math.min(window.innerWidth, window.innerHeight) / 2);
+                dot.angle = Math.random() * Math.PI * 2;
             }
 
-            // Draw the dot with a glow effect
-            draw() {
-                if (!context) return;
-                context.beginPath();
-                context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            // Apply mouse magnet effect
+            applyMouseAttraction(dot);
 
-                // Glow effect to give the particle a shining look
-                context.shadowColor = "rgba(255, 255, 255, 0.5)";
-                context.shadowBlur = this.size * 2;
+            // Draw the updated dot
+            drawDot(dot);
+        };
 
-                // Apply the main fill for the dot
-                context.fillStyle = `rgba(255, 255, 255, ${this.alpha})`; // Fading opacity
-                context.fill();
-                context.closePath();
+        // Attract the dot to the mouse position if it's close enough
+        const applyMouseAttraction = (dot: Dot) => {
+            const mouseDistance = Math.sqrt(Math.pow(dot.x - mousePos.current.x, 2) + Math.pow(dot.y - mousePos.current.y, 2));
+
+            if (mouseDistance < 100) {
+                const attractionStrength = 0.05;
+                dot.x += (mousePos.current.x - dot.x) * attractionStrength;
+                dot.y += (mousePos.current.y - dot.y) * attractionStrength;
             }
-
-            // Update the position and alpha of the dot for the animation
-            update() {
-                // Apply circular movement using angle and radius
-                this.angle += this.speed; // Increment the angle for circular motion
-                this.x = this.centerX + this.radius * Math.cos(this.angle); // Update x position
-                this.y = this.centerY + this.radius * Math.sin(this.angle); // Update y position
-
-                // Attraction to the center: gradually decrease the radius (pull towards the center)
-                this.radius *= 0.995; // Slowly reduce the radius to simulate gravitational pull
-
-                // If the dot reaches the center, reset it to a new random radius and angle
-                if (this.radius < 5) {
-                    this.radius = Math.random() * (Math.min(window.innerWidth, window.innerHeight) / 2);
-                    this.angle = Math.random() * Math.PI * 2;
-                }
-
-                // Apply mouse magnet effect
-                this.applyMouseAttraction();
-
-                // Draw the updated dot
-                this.draw();
-            }
-
-            // Attract the dot to the mouse position if it's close enough
-            applyMouseAttraction() {
-                const mouseDistance = Math.sqrt(Math.pow(this.x - mousePos.current.x, 2) + Math.pow(this.y - mousePos.current.y, 2));
-
-                // If the dot is within 100px of the mouse, attract it towards the mouse
-                if (mouseDistance < 100) {
-                    const attractionStrength = 0.05;
-                    this.x += (mousePos.current.x - this.x) * attractionStrength;
-                    this.y += (mousePos.current.y - this.y) * attractionStrength;
-                }
-            }
-        }
-
-        // Initialize dots array
-        for (let i = 0; i < numberOfDots; i++) {
-            dots.push(new Dot());
-        }
+        };
 
         // Main animation loop
         const animateDots = () => {
             if (!context || !canvas) return;
 
-            // Clear the canvas slightly to create a "trail" effect
             context.clearRect(0, 0, canvas.width, canvas.height);
-            context.fillStyle = "rgba(0, 0, 0, 0.05)"; // Semi-transparent black for the trail
+            context.fillStyle = "rgba(0, 0, 0, 0.05)";
             context.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Update each dot's position and appearance
-            dots.forEach((dot) => dot.update());
-
-            // Continue animating using requestAnimationFrame
+            dots.current.forEach((dot) => updateDot(dot));
             requestAnimationFrame(animateDots);
         };
 
-        // Set initial canvas size and start the animation
+        // Initialize and start the animation
+        initializeDots();
         resizeCanvas();
-        window.addEventListener("resize", resizeCanvas); // Handle window resizing
-        window.addEventListener("mousemove", handleMouseMove); // Track mouse movement
+        window.addEventListener("resize", resizeCanvas);
+        window.addEventListener("mousemove", handleMouseMove);
 
         animateDots();
 
@@ -142,7 +138,7 @@ const AnimatedDots = () => {
             window.removeEventListener("resize", resizeCanvas);
             window.removeEventListener("mousemove", handleMouseMove);
         };
-    }, []);
+    }, []); // No external dependencies, useEffect will run once on mount
 
     return <canvas ref={canvasRef} className="dots-canvas" />;
 };
