@@ -8,7 +8,7 @@ export default function HomePage() {
         <section className="bg-black flex flex-col">
             {/* SPLASH */}
             <HomeSplash />
-            <AnimatedDots />
+            {/* <AnimatedDots /> */}
         </section>
     );
 }
