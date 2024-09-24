@@ -13,6 +13,4 @@ export type WebsiteType = {
     backdrop_path: any;
 };
 
-export type Plans = "Studio Basic" | "Studio Plus" | "Studio Pro" | "Studio Commerce";
-
-export type AvailablePlansType = {};
+export type AvailablePlansType = "Studio Basic" | "Studio Plus" | "Studio Pro" | "Studio Commerce";

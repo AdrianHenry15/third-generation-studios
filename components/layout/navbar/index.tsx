@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
-import Logo from "@/public/logos/thirdgenstudios-logo.png";
+import Logo from "@/public/logos/new-logo-trans.png";
 import { NavMenuTypeItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
@@ -31,7 +31,7 @@ export default function Navbar(props: INavbarProps) {
                 <div className="flex items-center">
                     <Link href="/" className="flex-1 flex lg:mr-10">
                         {/* TODO: LOGO */}
-                        <Image className="" src={Logo} alt="logo" width={200} />
+                        <Image className="" src={Logo} alt="logo" width={50} />
                     </Link>
                     {/* LINKS  */}
                     <ul className="hidden text-white items-center xl:flex">

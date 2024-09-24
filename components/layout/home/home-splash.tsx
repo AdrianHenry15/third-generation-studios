@@ -6,7 +6,7 @@ import "swiper/css";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-import Logo from "@/public/logos/thirdgenstudios-logo.png";
+import Logo from "@/public/logos/new-logo-trans.png";
 
 const HomeSplash = () => {
     // Constants
@@ -25,9 +25,9 @@ const HomeSplash = () => {
         >
             <div className="w-full self-center text-white h-screen flex">
                 <div className="w-full h-[80%] flex flex-col items-center justify-center">
-                    <Image className="px-14 md:px-64 lg:px-52 xl:px-[500px]" src={Logo} alt="logo" />
+                    <Image className="w-[750px]" src={Logo} alt="logo" />
                     <Link
-                        className="flex mt-48 text-zinc-300 border-white border-2 text-lg px-12 py-[10px] absolute rounded-sm self-center items-center justify-center ease-in-out duration-200 hover:bg-gray-900"
+                        className="flex text-zinc-300 border-white border-2 text-lg px-12 py-[10px] rounded-sm self-center items-center justify-center ease-in-out duration-200 hover:bg-gray-900"
                         href={"/websites"}
                     >
                         Enter

@@ -27,7 +27,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
     return (
         <ClerkProvider>
             <html lang="en">
-                <link rel="icon" href="/logos/triangle.png" sizes="96x96" />
+                <link rel="icon" href="/logos/new-logo-trans.png" sizes="96x96" />
                 {/* <link rel="icon" href="/triangle-32.png" sizes="32x32" />
                 <link rel="icon" href="/triangle-16.png" sizes="16x16" /> */}
                 <body className={inter.variable}>

@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { usePathname } from "next/navigation";
 import emailjs from "@emailjs/browser";
 import toast from "react-hot-toast";
+import { useUser } from "@clerk/nextjs";
 
-import Logo from "../public/logos/thirdgenstudios-logo.png";
+import Logo from "../public/logos/new-logo-trans.png";
 
 import ConfirmationModal from "./modals/confirmation-modal";
 import SuccessModal from "./modals/success-modal";
@@ -16,8 +17,7 @@ import Button from "./button";
 import Dropdown from "./inputs/dropdown";
 import Input from "./inputs/input";
 import Textarea from "./inputs/textarea";
-import { WebsitePricingData } from "@/lib/pricing-data";
-import { useUser } from "@clerk/nextjs";
+import { Plans } from "@/lib/constants";
 
 const ContactForm = () => {
     // SWITCH BETWEEN CONTACT AND ESTIMATE FORM | BOTH FORMS DO THE SAME THING FOR NOW
@@ -39,7 +39,16 @@ const ContactForm = () => {
         getValues,
         control,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            firstName: user?.firstName || "",
+            lastName: user?.lastName || "",
+            phone: user?.primaryPhoneNumber?.phoneNumber || "",
+            email: user?.primaryEmailAddress?.emailAddress || "",
+            comment: "",
+            plan: "",
+        },
+    });
 
     const onSubmit = (data: any) => {
         // open confirmation modal
@@ -76,9 +85,7 @@ const ContactForm = () => {
         lastName: getValues("lastName"),
         phone: getValues("phone"),
         email: getValues("email"),
-        address: getValues("address"),
-        service: getValues("package"),
-        serviceType: getValues("packageType"),
+        plan: getValues("plan"),
         comment: getValues("comment"),
     };
 
@@ -94,14 +101,14 @@ const ContactForm = () => {
             )}
             {estimateSuccess && <SuccessModal isOpen={estimateSuccess} closeModal={() => setEstimateSuccess(false)} />}
             {loading ? <Loader /> : null}
-            <h1 className="text-3xl mb-10 font-light animate-bounce">{`${
+            <h1 className="text-3xl text-white mb-10 font-light animate-bounce">{`${
                 pathname === "/contact-us" ? "Contact Us" : "Get Your Free Estimate!"
             }`}</h1>
             {/* FORM CONTAINER */}
-            <div className="flex flex-col w-11/12 bg-white p-6 rounded-2xl shadow-red-600 shadow-lg border-2 md:w-[650px]">
+            <div className="flex flex-col w-11/12 bg-black p-6 rounded-2xl shadow-white shadow-lg border-2 md:w-[650px]">
                 {/* LOGO */}
                 <div className="flex justify-center my-10">
-                    <Image loading="eager" width={200} src={Logo} alt="Brite Logo" />
+                    <Image loading="eager" width={150} src={Logo} alt="Brite Logo" />
                 </div>
                 {/* FORM */}
                 <form className="self-center w-full md:w-2/3" onSubmit={handleSubmit(onSubmit)}>
@@ -126,7 +133,7 @@ const ContactForm = () => {
                     />
                     {/* PHONE NUMBER */}
                     <Input
-                        inputName={"phoneNumber"}
+                        inputName={"phone"}
                         inputLabel={"Phone Number"}
                         placeholder={"Phone Number*"}
                         defaultValue={isSignedIn ? user.primaryPhoneNumber?.phoneNumber : ""}
@@ -147,12 +154,12 @@ const ContactForm = () => {
                     />
                     {/* PACKAGE */}
                     <Dropdown
-                        inputName={"package"}
-                        inputLabel={"Choose Package:"}
+                        inputName={"plan"}
+                        inputLabel={"Choose Plan:"}
                         control={control}
                         errors={errors}
-                        options={WebsitePricingData}
-                        errorText="Package is required."
+                        options={Plans}
+                        errorText="Plan is required."
                     />
                     {/* COMMENT */}
                     <Textarea inputName={"comment"} inputLabel={"Comment"} placeholder={"Comment"} control={control} />

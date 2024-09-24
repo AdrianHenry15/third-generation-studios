@@ -9,7 +9,7 @@ import Link from "next/link";
 
 import { ClientWebsites } from "@/lib/websites";
 
-import Logo from "@/public/logos/thirdgenstudios-logo.png";
+import Logo from "@/public/logos/new-logo-trans.png";
 
 import "swiper/css";
 
