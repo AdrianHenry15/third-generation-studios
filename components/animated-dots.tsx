@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Dot {
     x: number;
@@ -18,15 +18,20 @@ const AnimatedDots = () => {
     const dots = useRef<Dot[]>([]);
     const requestRef = useRef<number>(0);
     const frameCount = useRef(0);
-    const numberOfDots = 200; // Number of dots
     const fps = 60; // Target frames per second
-    const interval = 1000 / fps;
+    const [isClient, setIsClient] = useState(false); // To check if running on the client
 
     useEffect(() => {
+        setIsClient(typeof window !== "undefined"); // Check if window is available (client-side)
+
+        if (!isClient) return; // Do not run the effect if it's server-side
+
         const canvas = canvasRef.current;
         const context = canvas?.getContext("2d");
 
-        // Set the canvas height to a fixed value for scrolling
+        const isMobile = window.innerWidth < 768;
+        const numberOfDots = isMobile ? 100 : 200;
+
         canvas!.height = window.innerHeight;
 
         const resizeCanvas = () => {
@@ -59,8 +64,8 @@ const AnimatedDots = () => {
                 x: 0,
                 y: 0,
                 size: Math.random() * 2 + 0.5,
-                alpha: Math.random() * 0.5 + 0.3, // Alpha can be adjusted for brightness
-                speed: Math.random() * 0.001 + 0.0005, // Slower speed
+                alpha: Math.random() * 0.5 + 0.3,
+                speed: Math.random() * 0.001 + 0.0005,
                 angle,
                 radius,
                 centerX: window.innerWidth / 2,
@@ -100,7 +105,7 @@ const AnimatedDots = () => {
             const mouseDistanceSquared = dx * dx + dy * dy;
 
             if (mouseDistanceSquared < 10000) {
-                const attractionStrength = 0.01; // Adjusted for slower attraction
+                const attractionStrength = 0.01;
                 dot.x += (mousePos.current.x - dot.x) * attractionStrength;
                 dot.y += (mousePos.current.y - dot.y) * attractionStrength;
             }
@@ -110,13 +115,14 @@ const AnimatedDots = () => {
             if (!context || !canvas) return;
 
             context.clearRect(0, 0, canvas.width, canvas.height);
-            context.fillStyle = "rgba(0, 0, 0, 0.05)"; // Slower fading background
+            context.fillStyle = "rgba(0, 0, 0, 0.05)";
             context.fillRect(0, 0, canvas.width, canvas.height);
 
-            if (frameCount.current % Math.round(fps / 15) === 0) {
-                // Render at 15 fps
+            const renderInterval = isMobile ? Math.round(fps / 10) : Math.round(fps / 15);
+            if (frameCount.current % renderInterval === 0) {
                 dots.current.forEach((dot) => updateDot(dot));
             }
+
             frameCount.current++;
             requestRef.current = requestAnimationFrame(animateDots);
         };
@@ -133,9 +139,11 @@ const AnimatedDots = () => {
             window.removeEventListener("mousemove", handleMouseMove);
             cancelAnimationFrame(requestRef.current);
         };
-    }, []);
+    }, [isClient]); // Ensure window is available (client-side)
 
-    return <canvas ref={canvasRef} className="dots-canvas" style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none" }} />;
+    return isClient ? (
+        <canvas ref={canvasRef} className="dots-canvas" style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none" }} />
+    ) : null;
 };
 
 export default AnimatedDots;
