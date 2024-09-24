@@ -3,15 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 
 import Logo from "@/public/logos/thirdgenstudios-logo.png";
 import { NavMenuTypeItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
 import MobileMenu from "./mobile-menu";
-
-const UserIcon = dynamic(() => import("@/components/layout/navbar/user-icon/user-icon"), { ssr: false });
 
 interface INavbarProps {
     className?: string;

@@ -13,16 +13,6 @@ export type WebsiteType = {
     backdrop_path: any;
 };
 
-export type LicenseDataType = {
-    title: string;
-    price: number;
-    fileType?: string;
-    description?: string;
-    value: LicenseType;
-};
+export type Plans = "Studio Basic" | "Studio Plus" | "Studio Pro" | "Studio Commerce";
 
-export enum LicenseType {
-    BASIC = "Basic",
-    STANDARD = "Standard",
-    PREMIUM = "Premium",
-}
+export type AvailablePlansType = {};

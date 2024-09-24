@@ -55,15 +55,15 @@ const MobileMenu = () => {
                                             }}
                                             description={"Music by Artists"}
                                         />
-                                        {/* <PopoverPanelItem
+                                        <PopoverPanelItem
                                             onClick={close}
                                             icon={<IoMdPricetags size={25} />}
                                             page={{
-                                                title: "Pricing",
-                                                link: "/pricing",
+                                                title: "Available Plans",
+                                                link: "/plans",
                                             }}
-                                            description={"Prices For Music & Websites"}
-                                        /> */}
+                                            description={"Display of Available Plans"}
+                                        />
                                     </div>
                                     {/* POPOVER FOOTER */}
                                     <div className="px-4 py-6 mt-4 bg-gray-100 rounded-b-lg flex justify-evenly">

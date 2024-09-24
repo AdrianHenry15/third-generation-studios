@@ -13,10 +13,10 @@ export const NavMenuTypeItems: NavMenuType[] = [
         title: "Music",
         link: "/music",
     },
-    // {
-    //     title: "Proposal",
-    //     link: "/pricing",
-    // },
+    {
+        title: "Available Plans",
+        link: "/plans",
+    },
 ];
 export const NavMenuTypeAltItems: NavMenuType[] = [
     {
@@ -28,20 +28,3 @@ export const NavMenuTypeAltItems: NavMenuType[] = [
         link: "/estimate",
     },
 ];
-
-// export const CreatePageNavMenu: NavMenu[] = [
-//     {
-//         title: "Upload Song",
-//         link: "/create/upload/songs",
-//     },
-//     {
-//         title: "Create Artist",
-//         link: "/create/artists",
-//     },
-//     {
-//         title: "Create Website",
-//         link: "/create/websites",
-//     },
-// ];
-
-export const WebsitePackage = [{ name: "Basic" }, { name: "Standard" }, { name: "Premium" }];

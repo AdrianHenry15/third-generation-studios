@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
@@ -13,33 +14,9 @@ import Logo from "@/public/logos/thirdgenstudios-logo.png";
 import "swiper/css";
 
 const WebsiteSplash = () => {
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const options = {
-            threshold: 0.1, // Adjust the threshold as needed (percentage of element visibility)
-        };
-
-        const callback: IntersectionObserverCallback = (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    containerRef.current?.classList.add("show");
-                }
-            });
-        };
-
-        const observer = new IntersectionObserver(callback, options);
-
-        if (containerRef.current) {
-            observer.observe(containerRef.current);
-        }
-
-        return () => observer.disconnect(); // Cleanup observer on component unmount
-    }, []);
-
     return (
         <div className="w-full self-center text-white md:h-screen">
-            <div ref={containerRef} className="fade-in w-full md:h-full">
+            <div className="w-full md:h-full">
                 <Swiper
                     modules={[A11y, Autoplay]}
                     centeredSlides={true}
