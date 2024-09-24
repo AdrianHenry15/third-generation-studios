@@ -12,11 +12,11 @@ const ContactCard = () => {
                     <div className="flex flex-col text-gray-400">
                         <span className="pb-4">
                             <label>Office: </label>
-                            <Link href="tel:3213700836">321-370-0836</Link>
+                            <Link href="tel:3213700836">(321) 370-0836</Link>
                         </span>
                         <span className="pb-4">
                             <label>Email: </label>
-                            <Link href="email:thirdgenerationstudio@gmail.com">thirdgenerationstudios@gmail.com</Link>
+                            <Link href="email:thirdgenerationstudio@gmail.com">thirdgenerationstudio@gmail.com</Link>
                         </span>
                     </div>
                 </div>

@@ -24,8 +24,8 @@ const Dropdown = ({ inputName, inputLabel, options, errorText, control, errors }
                 defaultValue={options[0]}
                 render={({ field }) => (
                     <select className={`${InputClass} py-4`} {...field}>
-                        {options.map((item) => (
-                            <option key={item} value={item}>
+                        {options.map((item, index) => (
+                            <option key={`${inputName}-${index}`} value={item}>
                                 {item}
                             </option>
                         ))}
