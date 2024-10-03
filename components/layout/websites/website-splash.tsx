@@ -9,7 +9,7 @@ import Link from "next/link";
 
 import { ClientWebsites } from "@/lib/websites";
 
-import Logo from "@/public/logos/new-logo-trans.png";
+import Logo from "@/public/logos/glowCircle-trans.png";
 
 import "swiper/css";
 
@@ -36,9 +36,9 @@ const WebsiteSplash = () => {
                                 />
                             </div>
 
-                            <div className="w-full top-[35%] p-4 left-10 md:absolute md:top[35%] md:p-8">
+                            <div className="w-full top-[45%] p-4 left-10 md:absolute md:top[35%] md:p-8">
                                 <span>
-                                    <Image src={Logo} alt="logo" className="w-24 py-2" />
+                                    <Image src={Logo} alt="logo" className="w-24 py-2 hidden md:flex" />
                                 </span>
                                 <h1 className="text-white text-[30px] md:text-5xl">{website.title}</h1>
                                 <div className="my-4">

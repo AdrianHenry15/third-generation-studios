@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { FaRegCopyright } from "react-icons/fa6";
 
-import Logo from "@/public/logos/new-logo-trans.png";
+import Logo from "@/public/logos/glowCircle-trans.png";
 import Link from "next/link";
 
 const LogoCard = () => {
