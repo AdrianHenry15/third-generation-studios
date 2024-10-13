@@ -19,7 +19,7 @@ export default function Navbar(props: INavbarProps) {
 
     return (
         <nav
-            className={`${props.className} text-sm whitespace-nowrap font-semibold flex w-full self-center bg-black sticky top-0 z-50 py-2`}
+            className={`${props.className} text-sm whitespace-nowrap font-semibold flex w-full self-center bg-black sticky top-0 z-[100] py-2`}
         >
             {/* MOBILE CONTAINER */}
             <div className="absolute self-center flex flex-1 left-0 xl:hidden">

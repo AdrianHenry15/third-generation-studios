@@ -27,17 +27,17 @@ const WebsiteSplash = () => {
                 >
                     {ClientWebsites.map((website) => (
                         <SwiperSlide key={website.id}>
-                            <div className="hidden absolute w-full bg-gradient-to-r from-black h-screen md:flex"></div>
+                            <div className="hidden absolute w-full bg-gradient-to-r from-black h-screen z-30 md:flex"></div>
                             <div className="flex justify-center relative items-center self-center w-full md:h-full">
                                 <Image
                                     className="object-cover w-full h-[200px] md:w-full md:h-full"
                                     src={website.img}
                                     alt={website.title}
                                 />
-                                <Image src={Logo} alt="logo" className="left-0 bottom-0 w-[50px] absolute" />
+                                <Image src={Logo} alt="logo" className="left-0 bottom-0 w-[50px] absolute md:hidden" />
                             </div>
 
-                            <div className="w-full top-[45%] p-4 left-10 md:absolute md:top-[35%] md:p-8">
+                            <div className="w-full z-50 top-[45%] p-4 left-10 md:absolute md:top-[35%] md:p-8">
                                 <span>
                                     <Image src={Logo} alt="logo" className="w-24 py-2 hidden md:flex" />
                                 </span>
