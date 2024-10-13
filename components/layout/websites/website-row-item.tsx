@@ -26,7 +26,7 @@ const WebsiteRowItem = (props: IWebsiteRowItemProps) => {
                 />
             </ImageContainer>
             {/* TITLE AND INFO */}
-            <p className="text-white font-semibold text-sm w-[80%] hover:text-red-500 transition-colors duration-300 cursor-pointer">
+            <p className="text-white font-semibold text-sm w-[80%] hover:text-zinc-500 transition-colors duration-300 cursor-pointer">
                 {props.currentWebsite.title}
             </p>
 

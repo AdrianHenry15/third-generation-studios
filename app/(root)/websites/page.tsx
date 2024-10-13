@@ -8,6 +8,7 @@ export const metadata: Metadata = {
     description: "Choose A Design and Get An Estimate Today",
 };
 
+// TODO:Add Emailjs, Clerkjs, Square promotions using their websites as references
 export default function WebsitesPage() {
     return (
         <div className="bg-black">

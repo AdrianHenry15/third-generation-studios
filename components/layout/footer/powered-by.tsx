@@ -11,8 +11,8 @@ import EmailJsIcon from "@/public/emailjs.png";
 
 const PoweredBy = () => {
     return (
-        <div className="flex flex-col w-full justify-center py-10 border-t-[1px] border-zinc-900">
-            <h5 className="italic text-sm text-white flex items-center justify-center mb-10">Powered By:</h5>
+        <div className="flex flex-col w-full justify-center py-32 z-10 border-y-[1px] border-zinc-900">
+            <h5 className="text-4xl text-white flex items-center justify-center mb-24">Powered By:</h5>
             <div className="flex items-center justify-around w-full">
                 {/* Clerk */}
                 <Link target="_blank" href="https://clerk.com">
