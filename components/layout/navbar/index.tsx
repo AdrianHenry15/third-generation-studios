@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
-import Logo from "@/public/logos/new-logo-trans.png";
+import Logo from "@/public/logos/glowCircle-trans.png";
 import { NavMenuTypeItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";

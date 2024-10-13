@@ -8,7 +8,7 @@ import emailjs from "@emailjs/browser";
 import toast from "react-hot-toast";
 import { useUser } from "@clerk/nextjs";
 
-import Logo from "../public/logos/new-logo-trans.png";
+import Logo from "../public/logos/glowCircle-trans.png";
 
 import ConfirmationModal from "./modals/confirmation-modal";
 import SuccessModal from "./modals/success-modal";

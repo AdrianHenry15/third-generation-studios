@@ -1,7 +1,7 @@
 "use client";
 
 import { CSSProperties } from "react";
-import { PacmanLoader } from "react-spinners";
+import { PuffLoader } from "react-spinners";
 
 const override: CSSProperties = {
     display: "flex",
@@ -13,5 +13,5 @@ const override: CSSProperties = {
 };
 
 export const Loader = () => {
-    return <PacmanLoader color="black" size={20} cssOverride={override} />;
+    return <PuffLoader color="black" size={150} cssOverride={override} />;
 };
