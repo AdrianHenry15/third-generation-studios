@@ -7,6 +7,7 @@ import ItemContainer from "@/components/containers/item-container";
 import ImageContainer from "@/components/containers/image-container";
 import { WebsiteType } from "@/lib/types";
 import OpenLinkModal from "@/components/modals/open-link-modal";
+import Logo from "@/public/logos/new-logo-trans.png";
 
 interface IWebsiteRowItemProps {
     currentWebsite: WebsiteType;
@@ -24,6 +25,7 @@ const WebsiteRowItem = (props: IWebsiteRowItemProps) => {
                     src={props.currentWebsite.img}
                     alt={props.currentWebsite.title}
                 />
+                <Image src={Logo} alt="logo" className="flex absolute left-2 bottom-2 w-12 sm:w-16" />
             </ImageContainer>
             {/* TITLE AND INFO */}
             <p className="text-white font-semibold text-sm w-[80%] hover:text-red-500 transition-colors duration-300 cursor-pointer">

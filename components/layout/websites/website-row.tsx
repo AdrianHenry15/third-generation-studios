@@ -5,6 +5,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import WebsiteRowItem from "./website-row-item";
 
+import logoImage from "@/public/logos/new-logo-trans.png";
+import Image from "next/image";
+
 interface IWebsiteRowProps {
     title: string;
     items: any[];
@@ -13,7 +16,18 @@ interface IWebsiteRowProps {
 const WebsiteRow = (props: IWebsiteRowProps) => {
     return (
         <div className="relative h-max py-4">
-            <h5 className="text-white text-3xl my-2 font-semibold">{props.title}</h5>
+            <div className="flex flex-col justify-center items-center w-full py-24 md:py-48">
+                {/* Description Title for specific category */}
+                <h5 className="text-4xl flex items-center justify-center text-white w-full px-10 text-center font-semibold md:px-[300px]  ">
+                    {props.title}
+                </h5>
+                {/* Brite Logo */}
+                <div className="flex items-center justify-center w-full">
+                    <div className="flex-shrink-0 p-4">
+                        <Image src={logoImage} alt={`logo`} width={50} height={50} />
+                    </div>
+                </div>
+            </div>
             <div className="relative flex group items-center">
                 <div className="w-full h-max overflow-hidden flex scroll-smooth relative">
                     <Swiper
