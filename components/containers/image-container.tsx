@@ -5,7 +5,7 @@ interface ImageContainerProps {
 }
 
 const ImageContainer = (props: ImageContainerProps) => {
-    return <div className={`flex justify-center items-center relative`}>{props.children}</div>;
+    return <div className={`flex justify-center items-center relative w-full`}>{props.children}</div>;
 };
 
 export default ImageContainer;

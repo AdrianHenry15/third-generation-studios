@@ -7,9 +7,9 @@ const AvailablePlans = () => {
     return (
         <section>
             {/* Title */}
-            <h5 className="flex items-center justify-center w-full font-semibold text-6xl py-10">Available Plans</h5>
+            <h5 className="flex items-center justify-center text-center w-full font-semibold text-6xl py-10">Available Plans</h5>
             {/* Plans */}
-            <div className="flex flex-col lg:flex-row">
+            <div className="flex flex-col xl:flex-row">
                 <Plan
                     description="Everything you need to get started"
                     title="Studio Basic"

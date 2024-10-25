@@ -2,11 +2,12 @@
 
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 
 import WebsiteRowItem from "./website-row-item";
 
 import logoImage from "@/public/logos/glowCircle-trans.png";
-import Image from "next/image";
 
 interface IWebsiteRowProps {
     title: string;
@@ -14,6 +15,12 @@ interface IWebsiteRowProps {
 }
 
 const WebsiteRow = (props: IWebsiteRowProps) => {
+    // Variants for animation
+    const itemVariants = {
+        hidden: { opacity: 0, x: 100 },
+        visible: { opacity: 1, x: 0 },
+    };
+
     return (
         <div className="relative h-max py-4">
             <div className="flex flex-col justify-center items-center w-full py-24 md:py-48">
@@ -28,48 +35,62 @@ const WebsiteRow = (props: IWebsiteRowProps) => {
                     </div>
                 </div>
             </div>
-            <div className="relative flex group items-center">
-                <div className="w-full h-max overflow-hidden flex scroll-smooth relative">
-                    <Swiper
-                        slidesPerView={5.3}
-                        spaceBetween={10}
-                        pagination={{
-                            clickable: true,
-                        }}
-                        breakpoints={{
-                            375: {
-                                slidesPerView: 2.3,
-                                spaceBetween: 10,
-                            },
-                            580: {
-                                slidesPerView: 3.3,
-                                spaceBetween: 10,
-                            },
-                            768: {
-                                slidesPerView: 4.3,
-                                spaceBetween: 10,
-                            },
-                            1043: {
-                                slidesPerView: 5.3,
-                                spaceBetween: 10,
-                            },
-                            1490: {
-                                slidesPerView: 5.3,
-                                spaceBetween: 10,
-                            },
-                        }}
-                        style={{ width: "100%", height: "100%" }}
-                    >
-                        <ul>
-                            {props.items.map((item) => (
-                                <SwiperSlide className="py-10 mx-2" key={item.id}>
+            <motion.div
+                variants={itemVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.01 }} // Trigger when 10% of the component is visible
+                transition={{ duration: 0.8, delay: 0.1 }} // Adjust delay for staggered effect
+            >
+                <Swiper
+                    slidesPerView={5.3}
+                    spaceBetween={10}
+                    className="flex items-center overflow-x-hidden overflow-y-hidden px-6"
+                    pagination={{
+                        clickable: true,
+                    }}
+                    breakpoints={{
+                        // For mobile screens smaller than 576px (very small mobile)
+                        320: {
+                            slidesPerView: 1,
+                        },
+                        // For mobile screens between 576px and 639px
+                        576: {
+                            slidesPerView: 1.5,
+                        },
+                        // When the window is 640px to 767px (small tablets or large mobile devices)
+                        640: {
+                            slidesPerView: 2,
+                        },
+                        // For screens between 768px and 1023px (medium to large tablets)
+                        768: {
+                            slidesPerView: 2.5,
+                        },
+                        // For screens between 1024px and 1279px (small desktops or laptops)
+                        1024: {
+                            slidesPerView: 3,
+                        },
+                        // For screens between 1280px and 1535px (larger desktops)
+                        1280: {
+                            slidesPerView: 4,
+                        },
+                        // For extra-large screens (1536px and up)
+                        1536: {
+                            slidesPerView: 4.5,
+                        },
+                    }}
+                >
+                    <ul>
+                        {props.items.map((item) => (
+                            <SwiperSlide key={item.id}>
+                                <div className="flex-shrink-0">
                                     <WebsiteRowItem currentWebsite={item} />
-                                </SwiperSlide>
-                            ))}
-                        </ul>
-                    </Swiper>
-                </div>
-            </div>
+                                </div>
+                            </SwiperSlide>
+                        ))}
+                    </ul>
+                </Swiper>
+            </motion.div>
         </div>
     );
 };

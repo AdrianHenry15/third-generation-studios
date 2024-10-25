@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { IoMdConstruct } from "react-icons/io";
 import { IconType } from "react-icons/lib";
@@ -27,18 +28,18 @@ const Plan = (props: IPlanProps) => {
     return (
         <div
             className={`${
-                mostPopular ? "border-[3px] border-orange-600" : "border-black border-[3px]"
-            }  flex flex-col  m-4 py-4 px-3 rounded-lg flex-1 h-[700px]`}
+                mostPopular ? "border-[3px] border-green-600" : "border-black border-[3px]"
+            }  flex flex-col p-0 m-2 rounded-lg flex-1 h-[700px] md:m-2 md:p-2`}
         >
-            <div className="flex flex-col w-full p-2 border-[1px] bg-black border-white rounded-lg h-full">
+            <div className="flex flex-col w-full p-6 border-[1px] bg-black border-white rounded-lg h-full overflow-hidden overflow-y-scroll">
                 <h3 className="text-3xl text-white font-semibold text-start">{title}</h3>
-                <p className="text-white">{description}</p>
+                <p className="text-gray-400">{description}</p>
                 {/* Price */}
                 <div className="flex flex-col my-8">
                     <div className="flex items-center">
                         <strong className="text-3xl mr-1 text-white">{`$${price.base}`}</strong>
-                        <p className="text-white">{`/ Yearly payment of $${price.yearly}`}</p>
                     </div>
+                    <p className="text-gray-400">{`Yearly payment of $${price.yearly}`}</p>
                     <p className="text-gray-500 text-sm">{`Monthy payment of $${price.monthly}`}</p>
                 </div>
                 {features.map((item, index) => {
@@ -48,13 +49,17 @@ const Plan = (props: IPlanProps) => {
                                 {/* <IoMdConstruct /> */}
                                 {item.icon}
                             </span>
-                            <div className="flex items-center text-white">
+                            <div className="flex flex-col items-start text-white">
                                 <strong className="mr-1">{item.feature}</strong>
-                                <p className="text-white">{item.description}</p>
+                                <p className="text-gray-400 text-sm">{item.description}</p>
                             </div>
                         </div>
                     );
                 })}
+                <Link
+                    className="hover:scale-105 duration-300 ease-in-out transition-transform text-black bg-white flex items-center justify-center rounded-lg w-full self-center py-2 md:w-1/2"
+                    href={"/estimate"}
+                >{`Get ${title}`}</Link>
             </div>
         </div>
     );

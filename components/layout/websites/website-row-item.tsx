@@ -16,17 +16,20 @@ interface IWebsiteRowItemProps {
 const WebsiteRowItem = (props: IWebsiteRowItemProps) => {
     const [openWebsiteModal, setOpenWebsiteModal] = useState(false);
     return (
-        <ItemContainer onClick={() => setOpenWebsiteModal(true)}>
+        <div
+            className="flex flex-col w-full relative hover:scale-105 scale-100 transition-transform duration-300"
+            onClick={() => setOpenWebsiteModal(true)}
+        >
             {/* IMAGE */}
-            <ImageContainer>
+            <div className={`flex justify-center items-center relative w-full`}>
                 <Image
                     loading="lazy"
                     className="w-full block object-center object-cover cursor-pointer h-[90px] md:h-[130px] xl:h-[175px]"
                     src={props.currentWebsite.img}
                     alt={props.currentWebsite.title}
                 />
-                <Image src={Logo} alt="logo" className="flex absolute left-2 bottom-2 w-12 sm:w-16" />
-            </ImageContainer>
+                <Image src={Logo} alt="logo" className="flex absolute left-2 bottom-2 w-8 sm:w-12" />
+            </div>
             {/* TITLE AND INFO */}
             <p className="text-white font-semibold text-sm w-[80%] hover:text-zinc-500 transition-colors duration-300 cursor-pointer">
                 {props.currentWebsite.title}
@@ -41,7 +44,7 @@ const WebsiteRowItem = (props: IWebsiteRowItemProps) => {
                     link={props.currentWebsite.link}
                 />
             )}
-        </ItemContainer>
+        </div>
     );
 };
 

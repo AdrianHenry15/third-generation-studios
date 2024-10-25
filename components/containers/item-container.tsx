@@ -7,7 +7,10 @@ interface ItemContainerProps {
 
 const ItemContainer = (props: ItemContainerProps) => {
     return (
-        <figure onClick={props.onClick} className="flex flex-col relative hover:scale-105 scale-100 transition-transform duration-300">
+        <figure
+            onClick={props.onClick}
+            className="flex flex-col w-full relative hover:scale-105 scale-100 transition-transform duration-300"
+        >
             {props.children}
         </figure>
     );
