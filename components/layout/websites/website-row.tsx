@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import WebsiteRowItem from "./website-row-item";
 
-import logoImage from "@/public/logos/new-logo-trans.png";
+import logoImage from "@/public/logos/glowCircle-trans.png";
 import Image from "next/image";
 
 interface IWebsiteRowProps {
