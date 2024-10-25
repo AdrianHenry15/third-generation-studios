@@ -14,9 +14,9 @@ export default function WebsitesPage() {
         <div className="bg-black">
             <WebsiteSplash />
             <div className="flex flex-col px-4 py-14 lg:px-10">
-                <WebsiteRow title="Client Websites" items={ClientWebsites} />
-                <WebsiteRow title="Personal Projects" items={PersonalWebsites} />
-                <WebsiteRow title="School Projects" items={SchoolWebsites} />
+                <WebsiteRow title="Your Vision, Our Code—Transforming Ideas into Stunning Websites" items={ClientWebsites} />
+                <WebsiteRow title="Bringing Your Ideas to Life, Crafting Unique Websites for Every Passion!" items={PersonalWebsites} />
+                <WebsiteRow title="Empowering Learning, Showcasing Creativity Through Student Projects!" items={SchoolWebsites} />
             </div>
         </div>
     );
