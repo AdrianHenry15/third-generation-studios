@@ -16,7 +16,7 @@ const ContactCard = () => {
                         </span>
                         <span className="pb-4">
                             <label>Email: </label>
-                            <Link href="email:thirdgenerationstudio@gmail.com">thirdgenerationstudio@gmail.com</Link>
+                            <Link href="email:ahenry@thirdgenerationstudios.com">ahenry@thirdgenerationstudios.com</Link>
                         </span>
                     </div>
                 </div>
