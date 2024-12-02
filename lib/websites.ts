@@ -13,12 +13,13 @@ import Taskinator from "@/public/websites/task-app-1.png";
 import GitBook from "@/public/websites/git-book.png";
 import BudgetTracker from "@/public/websites/budget-tracker.png";
 import Portfolio from "@/public/websites/past-portfolio.png";
+import EGSImg from "@/public/websites/egs-screenshot.png";
 
 // AUDIO FILES
 
 export const PersonalWebsites: WebsiteType[] = [
     {
-        id: "website-1",
+        id: "pw-1",
         img: Gameboy,
         title: "Sound Boy",
         overview: "A Gameboy Display Application",
@@ -27,7 +28,7 @@ export const PersonalWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-2",
+        id: "pw-2",
         img: Portfolio,
         title: "Past Portfolio",
         overview: "A Portfolio",
@@ -38,7 +39,7 @@ export const PersonalWebsites: WebsiteType[] = [
 ];
 export const SchoolWebsites: WebsiteType[] = [
     {
-        id: "website-3",
+        id: "sc-3",
         img: Zoo,
         title: "Zoo Keeper Store",
         overview: "An Ice Cream Shop Application",
@@ -47,7 +48,7 @@ export const SchoolWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-4",
+        id: "sc-4",
         img: Calendar,
         title: "Calendar Application",
         overview: "A Calendar Application",
@@ -56,7 +57,7 @@ export const SchoolWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-5",
+        id: "sc-5",
         img: Taskmaster,
         title: "Taskmaster Pro",
         overview: "A Tasking Application",
@@ -65,7 +66,7 @@ export const SchoolWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-6",
+        id: "sc-6",
         img: Taskinator,
         title: "Taskinator",
         overview: "A Tasking Application",
@@ -74,7 +75,7 @@ export const SchoolWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-7",
+        id: "sc-7",
         img: GitBook,
         title: "Git Book",
         overview: "A Github Search Application",
@@ -83,7 +84,7 @@ export const SchoolWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-8",
+        id: "sc-8",
         img: BudgetTracker,
         title: "Budget Tracker",
         overview: "A Budget Tracker Application",
@@ -95,7 +96,7 @@ export const SchoolWebsites: WebsiteType[] = [
 
 export const ClientWebsites: WebsiteType[] = [
     {
-        id: "website-9",
+        id: "cw-1",
         img: Mollys,
         title: "Molly's Specialty Sweets",
         overview: "A Bakery Application",
@@ -104,7 +105,7 @@ export const ClientWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-10",
+        id: "cw-2",
         img: Brite,
         title: "Brite Lighting LLC",
         overview: "A Building Maintenance Application",
@@ -113,7 +114,7 @@ export const ClientWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-11",
+        id: "cw-3",
         img: TaharkaDemo,
         title: "Taharka Demo",
         overview: "An Ice Cream Shop Application",
@@ -122,12 +123,21 @@ export const ClientWebsites: WebsiteType[] = [
         backdrop_path: "",
     },
     {
-        id: "website-12",
+        id: "cw-4",
         img: TaharkaShopify,
         title: "Taharka Shopify Store",
         overview: "An Ice Cream Shop Application",
         release_date: "2023",
         link: "https://taharkabrothers.com/",
+        backdrop_path: "",
+    },
+    {
+        id: "cw-5",
+        img: EGSImg,
+        title: "EGS Equipment",
+        overview: "A Grass Maintenance Solutions Company",
+        release_date: "2025",
+        link: "https://eckert-equipment.vercel.app/",
         backdrop_path: "",
     },
 ];

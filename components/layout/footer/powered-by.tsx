@@ -9,6 +9,7 @@ import { SiNextdotjs } from "react-icons/si";
 import { GrReactjs } from "react-icons/gr";
 import { SiSanity } from "react-icons/si";
 import EmailJsIcon from "@/public/emailjs.png";
+import { FaStripe } from "react-icons/fa";
 
 const PoweredBy = () => {
     return (
@@ -16,16 +17,16 @@ const PoweredBy = () => {
             <h5 className="text-4xl text-white flex items-center justify-center mb-24">Powered By:</h5>
             <div className="flex items-center justify-around w-full">
                 {/* Clerk */}
-                <Link target="_blank" href="https://clerk.com">
+                <Link target="_blank" href="https://www.sanity.io">
                     <SiSanity className="hover:scale-125 transition-all duration-300 ease-in-out" size={35} />
                 </Link>
                 {/* Sanity */}
-                <Link target="_blank" href="https://www.sanity.io/">
+                <Link target="_blank" href="https://clerk.com/">
                     <Image src={ClerkLogo} alt="clerk-logo" className="hover:scale-125 transition-all duration-300 ease-in-out w-[35px]" />
                 </Link>
                 {/* Square */}
-                <Link target="_blank" href="https://square.com">
-                    <CgSquare className="hover:scale-125 transition-all duration-300 ease-in-out" size={50} />
+                <Link target="_blank" href="https://stripe.com">
+                    <FaStripe className="hover:scale-125 transition-all duration-300 ease-in-out" size={50} />
                 </Link>
                 {/* Vercel */}
                 <Link target="_blank" href="https://vercel.com/">
