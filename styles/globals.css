@@ -43,3 +43,21 @@ canvas.dots-canvas {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
 }
+
+@keyframes wave {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%; /* Extra width for smooth animation */
+    height: 100%;
+    animation: wave 8s linear infinite;
+}

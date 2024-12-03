@@ -5,7 +5,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Website Designs",
-    description: "Choose A Design and Get An Estimate Today",
+    description: "Choose A Design and Schedule An Consultation Today",
 };
 
 // TODO:Add Emailjs, Clerkjs, Square promotions using their websites as references

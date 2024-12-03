@@ -2,11 +2,11 @@ import ContactForm from "@/components/contact-form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Get An Estimate Today",
-    description: "Get An Estimate For Your Web Design Needs",
+    title: "Schedule A Consultation Today",
+    description: "Schedule An Consultation For Your Web Design Needs",
 };
 
-export default function EstimatePage() {
+export default function ConsultationPage() {
     return (
         <div className="bg-black h-full">
             <ContactForm />

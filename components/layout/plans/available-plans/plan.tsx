@@ -59,7 +59,7 @@ const Plan = (props: IPlanProps) => {
             </div>
             <Link
                 className="hover:scale-105 hover:bg-black hover:text-white duration-300 ease-in-out transition-all z-10 text-black my-4 bg-white border-black border-2 flex items-center justify-center rounded-lg w-full self-center py-2 md:w-1/2"
-                href={"/estimate"}
+                href={"/consultation"}
             >{`Get ${title}`}</Link>
         </div>
     );

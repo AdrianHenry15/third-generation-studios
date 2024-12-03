@@ -24,8 +24,8 @@ export const NavMenuTypeAltItems: NavMenuType[] = [
         link: "/contact-us",
     },
     {
-        title: "Get Your Free Estimate",
-        link: "/estimate",
+        title: "Schedule Your Free Consultation",
+        link: "/consultation",
     },
 ];
 

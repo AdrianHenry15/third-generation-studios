@@ -3,8 +3,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-import ItemContainer from "@/components/containers/item-container";
-import ImageContainer from "@/components/containers/image-container";
 import { WebsiteType } from "@/lib/types";
 import OpenLinkModal from "@/components/modals/open-link-modal";
 import Logo from "@/public/logos/glowCircle-trans.png";
@@ -17,14 +15,14 @@ const WebsiteRowItem = (props: IWebsiteRowItemProps) => {
     const [openWebsiteModal, setOpenWebsiteModal] = useState(false);
     return (
         <div
-            className="flex flex-col w-full relative hover:scale-105 scale-100 transition-transform duration-300"
+            className="flex flex-col w-full relative hover:scale-105 scale-100 transition-transform duration-300 "
             onClick={() => setOpenWebsiteModal(true)}
         >
             {/* IMAGE */}
             <div className={`flex justify-center items-center relative w-full`}>
                 <Image
                     loading="lazy"
-                    className="w-full block object-center object-cover cursor-pointer h-[90px] md:h-[130px] xl:h-[175px]"
+                    className="w-full block object-center object-cover cursor-pointer h-[185px]"
                     src={props.currentWebsite.img}
                     alt={props.currentWebsite.title}
                 />

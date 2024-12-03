@@ -27,7 +27,7 @@ const HomeSplash = () => {
                 <div className="w-full h-full flex flex-col items-center justify-center">
                     <Image className="w-[750px]" src={Logo} alt="logo" />
                     <Link
-                        className="flex z-50 text-zinc-300 border-white border-2 text-lg px-12 py-[10px] rounded-sm self-center items-center justify-center ease-in-out duration-500 hover:bg-white"
+                        className="flex z-50 text-zinc-300 border-white border-2 text-lg px-12 py-[10px] rounded-sm self-center items-center justify-center ease-in-out duration-200 hover:bg-white"
                         href={"/websites"}
                     >
                         Enter

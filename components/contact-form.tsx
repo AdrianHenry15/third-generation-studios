@@ -20,13 +20,13 @@ import Textarea from "./inputs/textarea";
 import { Plans } from "@/lib/constants";
 
 const ContactForm = () => {
-    // SWITCH BETWEEN CONTACT AND ESTIMATE FORM | BOTH FORMS DO THE SAME THING FOR NOW
+    // SWITCH BETWEEN CONTACT AND Consultation FORM | BOTH FORMS DO THE SAME THING FOR NOW
     const pathname = usePathname();
     const { user, isSignedIn } = useUser();
 
     const [inputClicked, setInputClicked] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
-    const [estimateSuccess, setEstimateSuccess] = useState(false);
+    const [consultationSuccess, setConsultationSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
 
     // EMAIL JS
@@ -56,15 +56,15 @@ const ContactForm = () => {
         console.log(data);
     };
 
-    const confirmEstimate = () => {
+    const confirmConsultation = () => {
         // EMAIL JS
         emailjs.send(SERVICE_ID as string, TEMPLATE_ID as string, templateParams, PUBLIC_KEY as string).then(
             function (response) {
-                toast.success("Your estimate has been submitted successfully!");
+                toast.success("Your Consultation has been submitted successfully!");
                 console.log("SUCCESS!", response.status, response.text);
             },
             function (error) {
-                toast.error("There was an error submitting your estimate. Please try again.");
+                toast.error("There was an error submitting your Consultation. Please try again.");
                 console.log("FAILED...", error);
             }
         );
@@ -72,7 +72,7 @@ const ContactForm = () => {
         setIsOpen(false);
         setTimeout(() => {
             // open success modal
-            setEstimateSuccess(true);
+            setConsultationSuccess(true);
             setLoading(false);
         }, 1000);
 
@@ -94,15 +94,15 @@ const ContactForm = () => {
             {isOpen && (
                 <ConfirmationModal
                     loading={loading}
-                    confirmEstimate={confirmEstimate}
+                    confirmConsultation={confirmConsultation}
                     isOpen={isOpen}
                     closeModal={() => setIsOpen(false)}
                 />
             )}
-            {estimateSuccess && <SuccessModal isOpen={estimateSuccess} closeModal={() => setEstimateSuccess(false)} />}
+            {consultationSuccess && <SuccessModal isOpen={consultationSuccess} closeModal={() => setConsultationSuccess(false)} />}
             {loading ? <Loader /> : null}
             <h1 className="text-3xl text-white mb-10 font-light animate-bounce">{`${
-                pathname === "/contact-us" ? "Contact Us" : "Get Your Free Estimate!"
+                pathname === "/contact-us" ? "Contact Us" : "Get Your Free Consultation!"
             }`}</h1>
             {/* FORM CONTAINER */}
             <div className="flex flex-col w-11/12 bg-black p-6 rounded-2xl shadow-white shadow-lg border-2 md:w-[650px]">
@@ -167,7 +167,7 @@ const ContactForm = () => {
                         <Button
                             onClick={() => setInputClicked(true)}
                             submit
-                            name={`${pathname === "/contact-us" ? "Contact Us" : "Get Your Free Estimate"}`}
+                            name={`${pathname === "/contact-us" ? "Contact Us" : "Get Your Free Consultation"}`}
                             className="w-full justify-center"
                         ></Button>
                     </div>

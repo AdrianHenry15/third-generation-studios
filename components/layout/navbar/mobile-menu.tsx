@@ -75,14 +75,14 @@ const MobileMenu = () => {
                                         >
                                             <h5 className="hover:text-white transition-colors duration-300 ease-in-out">Contact Us</h5>
                                         </Link>
-                                        {/* ESTIMATE BUTTON */}
+                                        {/* Consultation BUTTON */}
                                         <Link
                                             onClick={close}
                                             className="bg-black  px-10 py-2 rounded-full hover:bg-black/25 transition-all duration-300 ease-in-out"
-                                            href={"/estimate"}
+                                            href={"/consultation"}
                                         >
                                             <h5 className="hover:text-white text-white transition-colors duration-300 ease-in-out">
-                                                Estimate
+                                                Consultation
                                             </h5>
                                         </Link>
                                     </div>

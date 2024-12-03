@@ -54,8 +54,8 @@ export default function Navbar(props: INavbarProps) {
                     <Link href={"/contact-us"}>
                         <Button roundedFull name="Contact Us" altColor />
                     </Link>
-                    <Link href={"/estimate"}>
-                        <Button className="animate-pulse mx-4" roundedFull name="Get Your Free Estimate" />
+                    <Link href={"/consultation"}>
+                        <Button className="animate-pulse mx-4" roundedFull name="Get Your Free Consultation" />
                     </Link>
                 </ul>
             </div>
