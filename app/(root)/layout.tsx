@@ -1,10 +1,10 @@
 import Footer from "@/components/layout/footer";
-import Navbar from "@/components/layout/navbar";
+import Header from "@/components/layout/header";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <div>
-            <Navbar />
+            <Header />
             {children}
             <div className="bg-black pb-14">
                 <Footer />

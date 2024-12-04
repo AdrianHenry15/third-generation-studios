@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 import Logo from "@/public/logos/glowCircle-trans.png";
-import { NavMenuTypeItems } from "@/lib/constants";
+import { NavMenuItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
 import MobileMenu from "./mobile-menu";
@@ -35,7 +35,7 @@ export default function Navbar(props: INavbarProps) {
                     </Link>
                     {/* LINKS  */}
                     <ul className="hidden text-white items-center xl:flex">
-                        {NavMenuTypeItems.map((item: NavMenuType) => (
+                        {NavMenuItems.map((item: NavMenuType) => (
                             <li
                                 className={`mx-2 transition-all duration-300 ease-in-out hover:text-zinc-500 hover:underline ${
                                     pathname === item.link ? "underline" : ""

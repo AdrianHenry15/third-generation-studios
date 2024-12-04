@@ -13,7 +13,7 @@ import Taskinator from "@/public/websites/task-app-1.png";
 import GitBook from "@/public/websites/git-book.png";
 import BudgetTracker from "@/public/websites/budget-tracker.png";
 import Portfolio from "@/public/websites/past-portfolio.png";
-import EGSImg from "@/public/websites/egs-screenshot.png";
+import EGSImg from "@/public/websites/egs-website.jpg";
 
 // AUDIO FILES
 

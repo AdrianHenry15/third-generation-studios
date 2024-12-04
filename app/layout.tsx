@@ -5,8 +5,6 @@ import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Loader } from "@/components/loader";
 import { ClerkProvider } from "@clerk/nextjs";
