@@ -2,29 +2,21 @@ import axios from "axios";
 
 const PRINTFUL_BASE_URL = "https://api.printful.com";
 
-const printfulClient = axios.create({
+export const printfulClient = axios.create({
     baseURL: PRINTFUL_BASE_URL,
     headers: {
+        // USE PRIVATE TOKEN WITH STORE ID
         Authorization: `Bearer ${process.env.PRINTFUL_PRIVATE_TOKEN}`,
+        "X-PF-Store-Id": process.env.PRINTFUL_STORE_ID,
     },
 });
 
-export const fetchPrintfulProducts = async () => {
+export const fetchPrintfulData = async (endpoint: string) => {
     try {
-        const response = await printfulClient.get("/store/products");
-        return response.data.result; // Adjust based on Printful API response
+        const response = await printfulClient.get(endpoint);
+        return response.data;
     } catch (error: any) {
-        console.error("Error fetching Printful products:", error.message);
-        throw error;
-    }
-};
-
-export const createPrintfulOrder = async (orderData: any) => {
-    try {
-        const response = await printfulClient.post("/orders", orderData);
-        return response.data.result;
-    } catch (error: any) {
-        console.error("Error creating Printful order:", error.message);
-        throw error;
+        console.error("Printful API Error:", error.response?.data || error.message);
+        throw new Error("Failed to fetch data from Printful API");
     }
 };

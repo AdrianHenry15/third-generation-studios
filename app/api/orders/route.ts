@@ -1,13 +1,11 @@
+import { fetchPrintfulData } from "@/lib/printful-service";
 import { NextResponse } from "next/server";
-import { createPrintfulOrder } from "@/lib/printful-service";
 
-export async function POST(request: Request) {
-    const orderData = await request.json();
-
+export async function GET() {
     try {
-        const order = await createPrintfulOrder(orderData);
-        return NextResponse.json({ order });
+        const data = await fetchPrintfulData("/orders");
+        return NextResponse.json(data);
     } catch (error: any) {
-        return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

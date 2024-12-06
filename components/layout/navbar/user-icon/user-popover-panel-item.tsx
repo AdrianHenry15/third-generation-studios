@@ -1,4 +1,4 @@
-import { NavMenuType } from "@/lib/types";
+import { NavMenuType } from "@/lib/types/types";
 import Link from "next/link";
 import React from "react";
 

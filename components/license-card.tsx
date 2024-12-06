@@ -1,4 +1,4 @@
-import { LicenseDataType } from "@/lib/types";
+import { LicenseDataType } from "@/lib/types/types";
 import React from "react";
 
 interface ILicenseCardProps {

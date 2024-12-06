@@ -1,4 +1,4 @@
-import { NavMenuType } from "./types";
+import { NavMenuType } from "./types/types";
 
 export const NavMenuItems: NavMenuType[] = [
     {
@@ -10,8 +10,8 @@ export const NavMenuItems: NavMenuType[] = [
         link: "/websites",
     },
     {
-        title: "Music",
-        link: "/music",
+        title: "Merch",
+        link: "/store/products",
     },
     {
         title: "Available Plans",

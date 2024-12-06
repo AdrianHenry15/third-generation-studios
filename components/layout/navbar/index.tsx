@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import Logo from "@/public/logos/glowCircle-trans.png";
 import { NavMenuItems } from "@/lib/constants";
-import { NavMenuType } from "@/lib/types";
+import { NavMenuType } from "@/lib/types/types";
 import Button from "@/components/button";
 import MobileMenu from "./mobile-menu";
 

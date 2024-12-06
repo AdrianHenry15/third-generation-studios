@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 
-import { WebsiteType } from "@/lib/types";
+import { WebsiteType } from "@/lib/types/types";
 import OpenLinkModal from "@/components/modals/open-link-modal";
 import Logo from "@/public/logos/glowCircle-trans.png";
 
