@@ -1,4 +1,4 @@
-export type PrintfulSyncProduct = {
+export type PrintfulSyncProductType = {
     id: number;
     external_id: string;
     name: string;
@@ -8,16 +8,16 @@ export type PrintfulSyncProduct = {
     is_ignored: boolean;
 };
 
-export type PrintfulProductFileOption = {
+export type PrintfulProductFileOptionType = {
     id: string;
     value: string;
 };
 
-export type PrintfulProductFile = {
+export type PrintfulProductFileType = {
     type: string;
     id: number;
     url: string;
-    options: PrintfulProductFileOption[];
+    options: PrintfulProductFileOptionType[];
     hash: string;
     filename: string;
     mime_type: string;
@@ -34,19 +34,19 @@ export type PrintfulProductFile = {
     stitch_count_tier: string;
 };
 
-export type PrintfulProduct = {
+export type PrintfulProductType = {
     variant_id: number;
     product_id: number;
     image: string;
     name: string;
 };
 
-export type PrintfulSyncVariantOption = {
+export type PrintfulSyncVariantOptionType = {
     id: string;
     value: string;
 };
 
-export type PrintfulSyncVariant = {
+export type PrintfulSyncVariantType = {
     id: number;
     external_id: string;
     sync_product_id: number;
@@ -57,9 +57,9 @@ export type PrintfulSyncVariant = {
     currency: string;
     is_ignored: boolean;
     sku: string;
-    product: PrintfulProduct;
-    files: PrintfulProductFile[];
-    options: PrintfulSyncVariantOption[];
+    product: PrintfulProductType;
+    files: PrintfulProductFileType[];
+    options: PrintfulSyncVariantOptionType[];
     main_category_id: number;
     warehouse_product_id: number;
     warehouse_product_variant_id: number;
@@ -68,10 +68,10 @@ export type PrintfulSyncVariant = {
     availability_status: string;
 };
 
-export type PrintfulApiResponse = {
+export type PrintfulProductApiResponse = {
     code: number;
     result: {
-        sync_product: PrintfulSyncProduct;
-        sync_variants: PrintfulSyncVariant[];
+        sync_product: PrintfulSyncProductType;
+        sync_variants: PrintfulSyncVariantType[];
     };
 };

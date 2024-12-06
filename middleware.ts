@@ -16,6 +16,7 @@ export default authMiddleware({
         "/products/(.*)",
         "/api/(.*)",
         "/consultation",
+        "/orders",
     ],
     // publicRoutes: ["/(.*)", "/api/(.*)", "/trpc/(.*)"],
 });

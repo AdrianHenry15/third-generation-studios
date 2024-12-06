@@ -82,23 +82,15 @@ const Header = () => {
                         )}
                         {user ? (
                             <div className="flex items-center space-x-2">
-                                <UserButton />
+                                <UserButton afterSignOutUrl="/store/products" />
                                 <div className="hidden lg:block text-xs">
                                     <p className="text-gray-400">Welcome Back</p>
                                     <p className="font-bold">{user.fullName}!</p>
                                 </div>
                             </div>
                         ) : (
-                            <SignInButton mode="modal" />
+                            <SignInButton afterSignUpUrl="/store/products" afterSignInUrl="/store/products" mode="modal" />
                         )}
-                        {/* {user?.passkeys.length === 0 && (
-                            <button
-                                onClick={createClerkPasskey}
-                                className="bg-white hover:bg-blue-700 hover:text-white animate-pulse text-blue-500 font-bold py-2 px-4 rounded border-blue-300 border"
-                            >
-                                Create passkey
-                            </button>
-                        )} */}
                     </ClerkLoaded>
                 </div>
             </div>
