@@ -1,18 +1,19 @@
 import { persist } from "zustand/middleware";
 import { create } from "zustand";
+import { PrintfulSyncVariant } from "@/lib/types/printful-product-types";
 
 export interface CartItem {
-    product: any;
+    product: PrintfulSyncVariant;
     quantity: number;
 }
 
 interface CartState {
     items: CartItem[];
-    addItem: (product: any) => void;
-    removeItem: (productId: string) => void;
+    addItem: (product: PrintfulSyncVariant) => void;
+    removeItem: (productId: number) => void;
     clearCart: () => void;
     getTotalPrice: () => number;
-    getItemCount: (productId: string) => number;
+    getItemCount: (productId: number) => number;
     getGroupedItems: () => CartItem[];
 }
 
@@ -25,12 +26,12 @@ const useCartStore = create<CartState>()(
             // Adds an item to the Cart, or increments the quantity if the item already exists
             addItem: (product) =>
                 set((state) => {
-                    const existingItem = state.items.find((item) => item.product._id === product._id);
+                    const existingItem = state.items.find((item) => item.product.id === product.id);
                     if (existingItem) {
                         // Increment quantity if the item already exists
                         return {
                             items: state.items.map((item) =>
-                                item.product._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
+                                item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
                             ),
                         };
                     } else {
@@ -43,7 +44,7 @@ const useCartStore = create<CartState>()(
             removeItem: (productId) =>
                 set((state) => ({
                     items: state.items.reduce((acc, item) => {
-                        if (item.product._id === productId) {
+                        if (item.product.id === productId) {
                             if (item.quantity > 1) {
                                 // Decrease quantity if more than 1
                                 acc.push({ ...item, quantity: item.quantity - 1 });
@@ -61,12 +62,12 @@ const useCartStore = create<CartState>()(
 
             // Calculates the total price of all items in the Cart
             getTotalPrice: () => {
-                return get().items.reduce((total, item) => total + (item.product.price ?? 0) * item.quantity, 0);
+                return get().items.reduce((total, item) => total + (parseInt(item.product.retail_price) ?? 0) * item.quantity, 0);
             },
 
             // Returns the quantity of a specific item in the Cart by product ID
             getItemCount: (productId) => {
-                const item = get().items.find((item) => item.product._id === productId);
+                const item = get().items.find((item) => item.product.id === productId);
                 return item ? item.quantity : 0;
             },
 

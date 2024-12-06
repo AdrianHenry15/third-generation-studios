@@ -1,10 +1,10 @@
-import { PrintfulProductsViewType } from "@/lib/types/printful-product-types";
+import { PrintfulSyncProduct } from "@/lib/types/printful-product-types";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function ProductsPage() {
-    const fetchProductss = async (): Promise<PrintfulProductsViewType[]> => {
-        const response = await fetch(`http://localhost:3000/api/products`, {
+export default async function AllProductsPage() {
+    const fetchProducts = async (): Promise<PrintfulSyncProduct[]> => {
+        const response = await fetch(`http://localhost:3000/api/sync-products`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -16,12 +16,13 @@ export default async function ProductsPage() {
         }
 
         const { result } = await response.json();
+        // console.log(result);
         return result;
     };
 
-    let products: PrintfulProductsViewType[] = [];
+    let products: PrintfulSyncProduct[] = [];
     try {
-        products = await fetchProductss();
+        products = await fetchProducts();
     } catch (error) {
         console.error("Failed to fetch products:", error);
     }
@@ -44,7 +45,7 @@ export default async function ProductsPage() {
                             height={300}
                             src={product.thumbnail_url}
                             alt={product.name}
-                            className="w-full h-48 object-cover"
+                            className="w-full h-64 object-cover"
                         />
                         <div className="p-4">
                             <h2 className="text-lg font-semibold">{product.name}</h2>

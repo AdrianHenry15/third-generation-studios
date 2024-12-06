@@ -19,7 +19,7 @@ const Header = () => {
     console.log(user);
 
     return (
-        <header className="flex flex-wrap justify-between items-center px-4 py-2">
+        <header className="flex flex-wrap sticky top-0 z-50 justify-between items-center px-4 py-2 bg-white shadow-md">
             {/* Top row */}
             <div className="flex w-full flex-wrap justify-between items-center">
                 <Link href="/" className="text-2xl font-bold hover:opacity-50 cursor-pointer mx-auto lg:mx-0">
