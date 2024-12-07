@@ -2,15 +2,14 @@
 import "@/styles/globals.css";
 
 import { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Expletus_Sans } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 
 import { Loader } from "@/components/loader";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const inter = Inter({
-    variable: "--font-inter",
+const font = Expletus_Sans({
     subsets: ["latin"],
 });
 
@@ -26,7 +25,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
         <ClerkProvider>
             <html lang="en">
                 <link rel="icon" href="/logos/glowCircle-trans.png" sizes="96x96" />
-                <body className={inter.variable}>
+                <body className={font.className}>
                     <Toaster />
                     <div className="flex flex-col">
                         <Suspense fallback={<Loader />}>{children}</Suspense>

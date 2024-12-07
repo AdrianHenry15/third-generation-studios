@@ -17,7 +17,7 @@ import Button from "./button";
 import Dropdown from "./inputs/dropdown";
 import Input from "./inputs/input";
 import Textarea from "./inputs/textarea";
-import { Plans } from "@/lib/constants";
+import { Plans } from "@/lib/constants/constants";
 
 const ContactForm = () => {
     // SWITCH BETWEEN CONTACT AND Consultation FORM | BOTH FORMS DO THE SAME THING FOR NOW

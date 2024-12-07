@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavMenuAltItems, NavMenuItems } from "@/lib/constants";
+import { NavMenuAltItems, NavMenuItems } from "@/lib/constants/constants";
 
 const FooterMenu = () => {
     const pathname = usePathname();

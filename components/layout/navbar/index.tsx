@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 import Logo from "@/public/logos/glowCircle-trans.png";
-import { NavMenuItems } from "@/lib/constants";
+import { NavMenuItems } from "@/lib/constants/constants";
 import { NavMenuType } from "@/lib/types/types";
 import Button from "@/components/button";
 import MobileMenu from "./mobile-menu";

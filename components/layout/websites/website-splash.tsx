@@ -6,7 +6,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
 import Link from "next/link";
 
-import { ClientWebsites } from "@/lib/websites";
+import { ClientWebsites } from "@/lib/constants/websites";
 
 import Logo from "@/public/logos/glowCircle-trans.png";
 

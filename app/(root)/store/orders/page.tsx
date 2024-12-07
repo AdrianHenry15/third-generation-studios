@@ -5,11 +5,11 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 async function Orders() {
-    // const { userId } = auth();
+    const { userId } = await auth();
 
-    // if (!userId) {
-    //     return redirect("/");
-    // }
+    if (!userId) {
+        return redirect("/");
+    }
 
     const fetchOrders = async (): Promise<PrintfulOrderType[]> => {
         const response = await fetch(`http://localhost:3000/api/orders`, {

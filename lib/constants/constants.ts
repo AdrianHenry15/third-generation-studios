@@ -1,4 +1,4 @@
-import { NavMenuType } from "./types/types";
+import { NavMenuType } from "../types/types";
 
 export const NavMenuItems: NavMenuType[] = [
     {

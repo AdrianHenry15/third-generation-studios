@@ -1,15 +1,15 @@
 import { persist } from "zustand/middleware";
 import { create } from "zustand";
-import { PrintfulSyncVariant } from "@/lib/types/printful-product-types";
+import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
 
 export interface CartItem {
-    product: PrintfulSyncVariant;
+    product: PrintfulSyncVariantType;
     quantity: number;
 }
 
 interface CartState {
     items: CartItem[];
-    addItem: (product: PrintfulSyncVariant) => void;
+    addItem: (product: PrintfulSyncVariantType) => void;
     removeItem: (productId: number) => void;
     clearCart: () => void;
     getTotalPrice: () => number;

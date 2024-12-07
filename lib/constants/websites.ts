@@ -1,4 +1,4 @@
-import { WebsiteType } from "./types/types";
+import { WebsiteType } from "../types/types";
 
 // WEBSITES IMAGES
 import Mollys from "@/public/websites/mollys.jpg";

@@ -1,9 +1,9 @@
-import { PrintfulSyncProduct } from "@/lib/types/printful-product-types";
+import { PrintfulSyncProductType } from "@/lib/types/printful-product-types";
 import Image from "next/image";
 import Link from "next/link";
 
 export default async function AllProductsPage() {
-    const fetchProducts = async (): Promise<PrintfulSyncProduct[]> => {
+    const fetchProducts = async (): Promise<PrintfulSyncProductType[]> => {
         const response = await fetch(`http://localhost:3000/api/sync-products`, {
             headers: {
                 "Content-Type": "application/json",
@@ -20,7 +20,7 @@ export default async function AllProductsPage() {
         return result;
     };
 
-    let products: PrintfulSyncProduct[] = [];
+    let products: PrintfulSyncProductType[] = [];
     try {
         products = await fetchProducts();
     } catch (error) {
@@ -33,7 +33,7 @@ export default async function AllProductsPage() {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <h1 className="text-center text-3xl font-bold py-8">TGS Products</h1>
+            <h1 className="text-center text-4xl font-semibold tracking-wider py-24">Merch Store</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 md:px-8">
                 {products.map((product) => (
                     <div

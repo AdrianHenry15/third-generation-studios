@@ -1,6 +1,6 @@
 import WebsiteRow from "@/components/layout/websites/website-row";
 import WebsiteSplash from "@/components/layout/websites/website-splash";
-import { ClientWebsites, PersonalWebsites, SchoolWebsites } from "@/lib/websites";
+import { ClientWebsites, PersonalWebsites, SchoolWebsites } from "@/lib/constants/websites";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
