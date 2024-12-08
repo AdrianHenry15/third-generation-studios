@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PrintfulOrderRequest } from "./types/printful-order-types";
+import { PrintfulOrderRequest } from "./types/printful-order-request-types";
 
 const PRINTFUL_BASE_URL = "https://api.printful.com";
 

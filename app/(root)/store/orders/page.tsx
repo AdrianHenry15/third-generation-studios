@@ -1,5 +1,5 @@
 import { formatCurrency } from "@/lib/formatCurrency";
-import { PrintfulOrderType } from "@/lib/types/printful-order-types";
+import { PrintfulOrderResponse } from "@/lib/types/printful-order-response-type";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -11,10 +11,10 @@ async function Orders() {
         return redirect("/");
     }
 
-    const fetchOrders = async (): Promise<PrintfulOrderType[]> => {
+    const fetchOrders = async (): Promise<PrintfulOrderResponse[]> => {
         const response = await fetch(`http://localhost:3000/api/orders`, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-": "application/json",
             },
             cache: "no-store", // Ensure fresh data on every request
         });
@@ -27,7 +27,7 @@ async function Orders() {
         return result;
     };
 
-    let orders: PrintfulOrderType[] = [];
+    let orders: PrintfulOrderResponse[] = [];
     try {
         orders = await fetchOrders();
     } catch (error) {

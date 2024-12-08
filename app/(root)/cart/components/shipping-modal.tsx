@@ -1,10 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import CartInput from "./cart-input";
 import { Dialog } from "@headlessui/react";
 import { State, City, ICity, IState } from "country-state-city";
+
+import Autocomplete from "@mui/material/Autocomplete";
+
+import CartInput from "./cart-input";
 import useShippingStore from "@/stores/shipping-store";
+import { TextField } from "@mui/material";
 
 interface IShippingModalProps {
     isModalOpen: boolean;
@@ -28,18 +32,15 @@ const ShippingModal = (props: IShippingModalProps) => {
     // Update cities based on selected state
     useEffect(() => {
         if (state) {
-            const selectedState = states.find((s) => s.name === state); // Find the state object by name
-            if (selectedState) {
-                const fetchedCities = City.getCitiesOfState("US", selectedState.isoCode);
-                setCities(fetchedCities);
-            } else {
-                setCities([]);
-            }
+            const fetchedCities = City.getCitiesOfState("US", state.isoCode);
+            setCities(fetchedCities);
+        } else {
+            setCities([]);
         }
-    }, [state, states]);
+    }, [state]);
 
     return (
-        <Dialog open={isModalOpen} onClose={setIsModalOpen} className="fixed inset-0 z-50 flex items-center justify-center">
+        <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="fixed inset-0 z-50 flex items-center justify-center">
             <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
             <div className="relative bg-white p-8 rounded-lg shadow-lg max-w-lg w-full">
                 <Dialog.Title className="text-2xl font-semibold">Enter Shipping Information</Dialog.Title>
@@ -47,24 +48,23 @@ const ShippingModal = (props: IShippingModalProps) => {
                     Please note: We currently only deliver to select states within the United States.
                 </Dialog.Description>
                 <div className="mt-4 space-y-4">
-                    {/* City Input */}
-                    <CartInput
-                        type="select"
-                        options={cities}
-                        placeholder="Enter your City"
-                        label="City"
-                        value={city}
-                        onSelectChange={setCity}
+                    {/* State Input */}
+                    <Autocomplete
+                        options={states}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} label="State" />}
+                        value={state}
+                        onChange={(event, newValue) => setState(newValue || null)}
                     />
 
-                    {/* State Input */}
-                    <CartInput
-                        type="select"
-                        options={states}
-                        placeholder="Enter your State"
-                        label="State"
-                        value={state}
-                        onSelectChange={setState}
+                    {/* City Input */}
+                    <Autocomplete
+                        options={cities}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} label="City" />}
+                        value={city}
+                        onChange={(event, newValue) => setCity(newValue || null)}
+                        disabled={!state} // Disable if no state is selected
                     />
 
                     {/* ZIP Code Input */}

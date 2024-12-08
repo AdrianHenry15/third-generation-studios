@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { PrintfulSyncVariant } from "@/lib/types/printful-product-types";
-import AddToCartButton from "@/components/cart/add-to-cart-button";
+import AddToCartButton from "@/app/(root)/cart/components/add-to-cart-button";
 
 // Pagination Component
 export default function PaginatedVariants({

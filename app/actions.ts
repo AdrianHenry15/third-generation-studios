@@ -2,18 +2,21 @@
 
 import stripe from "@/lib/stripe";
 import { CartItem } from "@/stores/cart-store";
+import { ICity, IState } from "country-state-city";
 
 export interface Metadata {
     order_number: string;
     customer_name: string;
     customer_phone: string;
     customer_email: string;
+    clerk_user_id: string;
+    // Shipping
+    customer_apartment_no: string;
     customer_address: string;
     customer_zip_code: string;
-    customer_state: string;
-    customer_city: string;
+    customer_state: IState | null;
+    customer_city: ICity | null;
     customer_country: string;
-    clerk_user_id: string;
 }
 
 export type GroupedCartItem = {
@@ -47,7 +50,7 @@ export async function createCheckoutSession(items: GroupedCartItem[], metadata: 
 
         const baseUrl = process.env.NODE_ENV === "production" ? `https://${process.env.VERCEL_URL}` : `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
-        const successUrl = `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}&order_number=${metadata.order_number}`;
+        const successUrl = `${baseUrl}/store/success?session_id={CHECKOUT_SESSION_ID}&order_number=${metadata.order_number}`;
         const cancelUrl = `${baseUrl}/cart`;
 
         // // Create the Printful order
@@ -82,10 +85,19 @@ export async function createCheckoutSession(items: GroupedCartItem[], metadata: 
             metadata: stripeMetadata,
             mode: "payment",
             allow_promotion_codes: true,
-            payment_method_types: ["card", "cashapp", "paypal", "amazon_pay"],
+            payment_method_types: ["card", "cashapp", "amazon_pay"],
+            shipping_address_collection: {
+                allowed_countries: ["US"],
+            },
             custom_text: {
                 shipping_address: {
-                    message: metadata.customer_address,
+                    message: `
+                        ${metadata.customer_address} 
+                        ${metadata.customer_apartment_no} 
+                        ${metadata.customer_city} 
+                        ${metadata.customer_state} 
+                        ${metadata.customer_zip_code} 
+                        ${metadata.customer_country}`,
                 },
             },
             success_url: successUrl,

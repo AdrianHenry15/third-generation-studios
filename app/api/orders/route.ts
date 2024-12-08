@@ -1,5 +1,5 @@
 import { createPrintfulData, fetchPrintfulData } from "@/lib/printful-service";
-import { PrintfulOrderRequest } from "@/lib/types/printful-order-types";
+import { PrintfulOrderRequest } from "@/lib/types/printful-order-request-types";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET() {

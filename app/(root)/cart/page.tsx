@@ -5,7 +5,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 import { createCheckoutSession, Metadata } from "@/app/actions";
-import AddToCartButton from "@/components/cart/add-to-cart-button";
+import AddToCartButton from "@/app/(root)/cart/components/add-to-cart-button";
 import { Loader } from "@/components/loader";
 import useCartStore from "@/stores/cart-store";
 import ShippingModal from "./components/shipping-modal";
@@ -13,7 +13,7 @@ import useShippingStore from "@/stores/shipping-store";
 
 const CartPage = () => {
     const groupedItems = useCartStore((state) => state.getGroupedItems());
-    const { state, city, zip_code, address } = useShippingStore();
+    const { state, city, zip_code, address, apartment_no } = useShippingStore();
 
     const { isSignedIn } = useAuth();
     const { user } = useUser();
@@ -43,6 +43,7 @@ const CartPage = () => {
                 customer_city: city,
                 customer_zip_code: zip_code,
                 customer_address: address,
+                customer_apartment_no: apartment_no,
                 clerk_user_id: user!.id,
             };
 
