@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Button } from "./button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./command";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/utils";
 
 interface CategorySelectorProps {
     categories: any[];

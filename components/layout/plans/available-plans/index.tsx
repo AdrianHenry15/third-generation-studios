@@ -1,6 +1,6 @@
 import React from "react";
 import Plan from "./plan";
-import { StudioBasicFeatures, StudioCommerceFeatures, StudioPlusFeatures, StudioProFeatures } from "@/lib/features";
+import { StudioBasicFeatures, StudioCommerceFeatures, StudioPlusFeatures, StudioProFeatures } from "@/lib/constants/features";
 
 const AvailablePlans = () => {
     return (

@@ -1,7 +1,8 @@
 import { ICity, IState } from "country-state-city";
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-interface ShippingState {
+export interface IShippingAddress {
     state: IState | null;
     city: ICity | null;
     zip_code: string;
@@ -14,17 +15,39 @@ interface ShippingState {
     setApartmentNo: (apartmentNo: string) => void;
 }
 
-const useShippingStore = create<ShippingState>((set) => ({
-    state: null,
-    city: null,
-    zip_code: "",
-    address: "",
-    apartment_no: "",
-    setState: (state) => set({ state }),
-    setCity: (city) => set({ city }),
-    setZipCode: (zip_code) => set({ zip_code }),
-    setAddress: (address) => set({ address }),
-    setApartmentNo: (apartment_no) => set({ apartment_no }),
-}));
+const useShippingStore = create<IShippingAddress>()(
+    persist(
+        (set) => ({
+            state: null,
+            city: null,
+            zip_code: "",
+            address: "",
+            apartment_no: "",
+            setState: (state) => {
+                // console.log("Updated state:", state);
+                set({ state });
+            },
+            setCity: (city) => {
+                // console.log("Updated city:", city);
+                set({ city });
+            },
+            setZipCode: (zip_code) => {
+                // console.log("Updated zip code:", zip_code);
+                set({ zip_code });
+            },
+            setAddress: (address) => {
+                console.log("Updated address:", address);
+                set({ address });
+            },
+            setApartmentNo: (apartment_no) => {
+                // console.log("Updated apartment number:", apartment_no);
+                set({ apartment_no });
+            },
+        }),
+        {
+            name: "shipping-store", // Unique name for persisted storage key
+        }
+    )
+);
 
 export default useShippingStore;

@@ -1,4 +1,4 @@
-import { formatCurrency } from "@/lib/formatCurrency";
+import { formatCurrency } from "@/lib/helpers/format-currency";
 import { PrintfulOrderResponse } from "@/lib/types/printful-order-response-type";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";

@@ -4,16 +4,18 @@ import { SignInButton, useAuth, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
-import { createCheckoutSession, Metadata } from "@/app/actions";
+import { createCheckoutSession, StripeMetadata } from "@/app/actions";
 import AddToCartButton from "@/app/(root)/cart/components/add-to-cart-button";
 import { Loader } from "@/components/loader";
 import useCartStore from "@/stores/cart-store";
 import ShippingModal from "./components/shipping-modal";
 import useShippingStore from "@/stores/shipping-store";
+import Link from "next/link";
 
 const CartPage = () => {
     const groupedItems = useCartStore((state) => state.getGroupedItems());
     const { state, city, zip_code, address, apartment_no } = useShippingStore();
+    const { clearCart } = useCartStore();
 
     const { isSignedIn } = useAuth();
     const { user } = useUser();
@@ -33,21 +35,21 @@ const CartPage = () => {
         setIsLoading(true);
 
         try {
-            const metadata: Metadata = {
+            const StripeMetadata: StripeMetadata = {
                 order_number: crypto.randomUUID(),
                 customer_name: user?.fullName ?? "Guest",
                 customer_email: user?.emailAddresses[0]?.emailAddress ?? "Guest",
                 customer_phone: user?.phoneNumbers[0]?.phoneNumber ?? "Guest",
                 customer_country: "US",
-                customer_state: state,
-                customer_city: city,
+                customer_state: state?.isoCode || "",
+                customer_city: city?.name || "",
                 customer_zip_code: zip_code,
                 customer_address: address,
                 customer_apartment_no: apartment_no,
                 clerk_user_id: user!.id,
             };
 
-            const checkoutUrl = await createCheckoutSession(groupedItems, metadata);
+            const checkoutUrl = await createCheckoutSession(groupedItems, StripeMetadata);
 
             if (checkoutUrl) {
                 window.location.href = checkoutUrl;
@@ -56,6 +58,7 @@ const CartPage = () => {
             console.error("Error creating checkout session:", error);
         } finally {
             setIsLoading(false);
+            clearCart();
         }
     };
 
@@ -72,14 +75,20 @@ const CartPage = () => {
         );
     }
 
+    console.log(groupedItems);
+
     return (
-        <div className="container mx-auto p-4 max-w-6xl">
+        <div className="container mx-auto p-4 max-w-6xl pb-48">
             <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Cart Items */}
                 <div className="flex-grow">
                     {groupedItems.map((item) => (
-                        <div className="mb-4 p-4 border rounded flex items-center justify-between" key={item.product.id}>
+                        <Link
+                            href={`/store/products/${item.product.sync_product_id}`}
+                            className="mb-4 p-4 border rounded flex items-center justify-between"
+                            key={item.product.id}
+                        >
                             <div className="flex items-center cursor-pointer flex-1 min-w-0">
                                 <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 mr-4">
                                     {item.product.product.image && (
@@ -102,7 +111,7 @@ const CartPage = () => {
                             <div className="flex items-center ml-4 flex-shrink-0">
                                 <AddToCartButton product={item.product} />
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
 

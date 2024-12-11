@@ -1,4 +1,4 @@
-import { fetchPrintfulData } from "@/lib/printful-service";
+import { fetchPrintfulData } from "@/lib/helpers/printful/printful-service";
 import { NextResponse } from "next/server";
 
 export async function GET() {

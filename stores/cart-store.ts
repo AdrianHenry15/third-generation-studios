@@ -5,10 +5,14 @@ import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
 export interface CartItem {
     product: PrintfulSyncVariantType;
     quantity: number;
+    size?: string;
+    color?: string;
 }
 
 interface CartState {
     items: CartItem[];
+    setSize: (productId: number, size: string) => void;
+    setColor: (productId: number, color: string) => void;
     addItem: (product: PrintfulSyncVariantType) => void;
     removeItem: (productId: number) => void;
     clearCart: () => void;
@@ -55,6 +59,18 @@ const useCartStore = create<CartState>()(
                         }
                         return acc;
                     }, [] as CartItem[]),
+                })),
+
+            // Updates the size of a specific item in the Cart by product ID
+            setSize: (productId, size) =>
+                set((state) => ({
+                    items: state.items.map((item) => (item.product.id === productId ? { ...item, size } : item)),
+                })),
+
+            // Updates the color of a specific item in the Cart by product ID
+            setColor: (productId, color) =>
+                set((state) => ({
+                    items: state.items.map((item) => (item.product.id === productId ? { ...item, color } : item)),
                 })),
 
             // Clears all items from the Cart

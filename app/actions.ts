@@ -1,21 +1,20 @@
 "use server";
 
-import stripe from "@/lib/stripe";
+import stripe from "@/lib/helpers/stripe";
 import { CartItem } from "@/stores/cart-store";
-import { ICity, IState } from "country-state-city";
 
-export interface Metadata {
+export interface StripeMetadata {
     order_number: string;
     customer_name: string;
     customer_phone: string;
     customer_email: string;
     clerk_user_id: string;
     // Shipping
-    customer_apartment_no: string;
     customer_address: string;
+    customer_apartment_no: string;
     customer_zip_code: string;
-    customer_state: IState | null;
-    customer_city: ICity | null;
+    customer_state: string;
+    customer_city: string;
     customer_country: string;
 }
 
@@ -24,13 +23,21 @@ export type GroupedCartItem = {
     quantity: number;
 };
 
-export async function createCheckoutSession(items: GroupedCartItem[], metadata: Metadata) {
+export async function createCheckoutSession(items: GroupedCartItem[], metadata: StripeMetadata) {
     try {
         const stripeMetadata = {
             order_number: metadata.order_number,
             customer_name: metadata.customer_name,
+            customer_phone: metadata.customer_phone,
             customer_email: metadata.customer_email,
             clerk_user_id: metadata.clerk_user_id,
+            // Shipping
+            customer_address: metadata.customer_address,
+            customer_apartment_no: metadata.customer_apartment_no,
+            customer_zip_code: metadata.customer_zip_code,
+            customer_state: metadata.customer_state,
+            customer_city: metadata.customer_city,
+            customer_country: metadata.customer_country,
         };
 
         const itemsWithoutPrice = items.filter((item) => !item.product.retail_price);
@@ -53,31 +60,6 @@ export async function createCheckoutSession(items: GroupedCartItem[], metadata: 
         const successUrl = `${baseUrl}/store/success?session_id={CHECKOUT_SESSION_ID}&order_number=${metadata.order_number}`;
         const cancelUrl = `${baseUrl}/cart`;
 
-        // // Create the Printful order
-        // const printfulOrderData: PrintfulOrderRequest = {
-        //     recipient: {
-        //         name: metadata.customer_name,
-        //         address1: "123 Main Street", // Replace with actual address
-        //         city: "Example City", // Replace with actual city
-        //         state_code: "CA", // Replace with actual state code
-        //         country_code: "US", // Replace with actual country code
-        //         zip: "90001", // Replace with actual ZIP code
-        //     },
-        //     items: items.map((item) => ({
-        //         variant_id: item.product.product.variant_id, // Ensure this maps correctly to Printful
-        //         quantity: item.quantity,
-        //         files: [], // Populate with relevant file data if applicable
-        //     })),
-        //     packing_slip: {
-        //         email: metadata.customer_email,
-        //         phone: metadata.customer_phone,
-        //         message: "Thank you for your order!",
-        //         logo_url: Logo.src, // Use the source of the imported logo
-        //     },
-        // };
-
-        // await createPrintfulData("/orders", printfulOrderData);
-
         const session = await stripe.checkout.sessions.create({
             customer: customerId,
             customer_creation: customerId ? undefined : "always",
@@ -89,17 +71,6 @@ export async function createCheckoutSession(items: GroupedCartItem[], metadata: 
             shipping_address_collection: {
                 allowed_countries: ["US"],
             },
-            custom_text: {
-                shipping_address: {
-                    message: `
-                        ${metadata.customer_address} 
-                        ${metadata.customer_apartment_no} 
-                        ${metadata.customer_city} 
-                        ${metadata.customer_state} 
-                        ${metadata.customer_zip_code} 
-                        ${metadata.customer_country}`,
-                },
-            },
             success_url: successUrl,
             cancel_url: cancelUrl,
             line_items: items.map((item) => ({
@@ -110,6 +81,10 @@ export async function createCheckoutSession(items: GroupedCartItem[], metadata: 
                         name: item.product.name || "Unnamed Product",
                         description: `Product ID: ${item.product.product.variant_id}`,
                         images: item.product.product.image ? [item.product.product.image] : undefined,
+                        metadata: {
+                            variant_id: item.product.product.variant_id,
+                            files: item.product.files.join(","),
+                        },
                     },
                 },
                 quantity: item.quantity,

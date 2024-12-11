@@ -1,4 +1,4 @@
-import { fetchPrintfulData } from "@/lib/printful-service";
+import { fetchPrintfulData } from "@/lib/helpers/printful/printful-service";
 import { PrintfulProductApiResponse } from "@/lib/types/printful-product-types";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,8 +10,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     try {
-        const data: PrintfulProductApiResponse = await fetchPrintfulData(`/store/products/${id}`);
-        // console.log(data.result.sync_variants);
+        const data = await fetchPrintfulData(`/store/products/${id}`);
+        // console.log(data);
         return NextResponse.json(data);
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });

@@ -17,10 +17,10 @@ const Header = () => {
     const itemCount = useCartStore((state) => state.items.reduce((total, item) => total + item.quantity, 0));
     const pathname = usePathname();
 
-    console.log(user);
+    // console.log(user);
 
     return (
-        <header className="flex flex-wrap sticky top-0 z-50 justify-between items-center px-4 py-2 bg-black shadow-md">
+        <header className="flex flex-wrap sticky top-0 z-[100] justify-between items-center px-4 py-2 bg-black shadow-md">
             {/* Top row */}
             <div className="flex w-full flex-wrap justify-between items-center">
                 <Link href="/" className="text-2xl font-bold hover:opacity-50 cursor-pointer mx-auto lg:mx-0">
@@ -74,7 +74,7 @@ const Header = () => {
                     <ClerkLoaded>
                         {user && (
                             <Link
-                                href={"/orders"}
+                                href={"/store/orders"}
                                 className="flex-1 relative flex justify-center lg:justify-start border-2 lg:flex-none items-center space-x-2 bg-black hover:bg-zinc-800 text-white font-bold py-2 px-4 rounded"
                             >
                                 <PiPackage className="w-6 h-6" />

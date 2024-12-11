@@ -14,3 +14,5 @@ export type WebsiteType = {
 };
 
 export type AvailablePlansType = "Studio Basic" | "Studio Plus" | "Studio Pro" | "Studio Commerce";
+
+export type OrderStatus = "draft" | "pending" | "failed" | "canceled" | "inprocess" | "onhold" | "partial" | "fulfilled" | "archived";

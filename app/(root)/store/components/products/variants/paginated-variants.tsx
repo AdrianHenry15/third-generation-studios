@@ -2,18 +2,18 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { PrintfulSyncVariant } from "@/lib/types/printful-product-types";
 import AddToCartButton from "@/app/(root)/cart/components/add-to-cart-button";
+import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
+import Link from "next/link";
 
 // Pagination Component
 export default function PaginatedVariants({
     productName,
-    productDescription,
     variants,
 }: {
     productName: string;
     productDescription: string;
-    variants: PrintfulSyncVariant[];
+    variants: PrintfulSyncVariantType[];
 }) {
     const [currentPage, setCurrentPage] = useState(0);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -47,7 +47,7 @@ export default function PaginatedVariants({
     const selectedVariant = filteredVariantsByColor.find((variant) => variant.size === selectedSize) || filteredVariantsByColor[0];
 
     return (
-        <div className="min-h-screen bg-gray-100 py-10 px-4">
+        <div className="min-h-screen bg-gray-100 pt-10 pb-48 px-4">
             <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
                 {/* Product Info */}
                 <div className="p-6">
@@ -75,7 +75,7 @@ export default function PaginatedVariants({
                     {/* Details */}
                     <h2 className="text-2xl font-bold text-gray-900 mt-4">{formattedProductName}</h2>
                     <p className="text-lg text-gray-700 mt-2">
-                        Price: {selectedVariant?.retail_price} {selectedVariant?.currency}
+                        Price: ${selectedVariant?.retail_price} {selectedVariant?.currency}
                     </p>
                     <p className="text-sm text-gray-500 mt-1">
                         Size: {selectedVariant?.size}, Color: {currentColor}
@@ -134,7 +134,16 @@ export default function PaginatedVariants({
             </div>
 
             <div className="mt-10">
+                <h5 className="w-full flex items-center justify-center mb-4">Add To Cart</h5>
                 <AddToCartButton product={selectedVariant} />
+            </div>
+            <div className="flex items-center justify-center w-full mt-10">
+                <Link
+                    className="bg-black rounded-lg border-white border-[1px] w-full self-center flex text-white justify-center py-1 md:w-1/3 hover:bg-black/75 ease-in-out duration-200 transition-colors"
+                    href={"/cart"}
+                >
+                    Checkout
+                </Link>
             </div>
         </div>
     );

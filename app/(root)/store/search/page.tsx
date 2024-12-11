@@ -1,4 +1,4 @@
-import { searchProductsByName } from "@/lib/search-products-by-name";
+import { searchProductsByName } from "@/lib/helpers/printful/search-products-by-name";
 import React from "react";
 
 // Next 15 gives you auto query = http://localhost:3000/search?query=page as part of the Form component

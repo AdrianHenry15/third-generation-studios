@@ -1,12 +1,12 @@
 // Root  for the entire structure
 export interface PrintfulOrderRequest {
-    created: Date;
-    updated: Date;
     external_id: string;
     shipping: string;
     recipient: PrintfulOrderRequestRecipient;
     items: PrintfulOrderRequestItem[];
     retail_costs: PrintfulOrderRequestRetailCosts;
+    created?: Date;
+    updated?: Date;
     gift?: PrintfulOrderRequestGift;
     packing_slip?: PrintfulOrderRequestPackingSlip;
 }
@@ -23,8 +23,6 @@ export interface PrintfulOrderRequestRecipient {
     country_code: string;
     country_name: string;
     zip: string;
-    phone: string;
-    email: string;
     tax_number?: string;
 }
 

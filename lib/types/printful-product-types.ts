@@ -69,9 +69,6 @@ export type PrintfulSyncVariantType = {
 };
 
 export type PrintfulProductApiResponse = {
-    code: number;
-    result: {
-        sync_product: PrintfulSyncProductType;
-        sync_variants: PrintfulSyncVariantType[];
-    };
+    sync_product: PrintfulSyncProductType;
+    sync_variants: PrintfulSyncVariantType[];
 };
