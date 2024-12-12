@@ -1,7 +1,7 @@
 "use server";
 
 import stripe from "@/lib/helpers/stripe";
-import { CartItem } from "@/stores/cart-store";
+import { ICartItem } from "@/stores/cart-store";
 
 export interface StripeMetadata {
     order_number: string;
@@ -18,12 +18,12 @@ export interface StripeMetadata {
     customer_country: string;
 }
 
-export type GroupedCartItem = {
-    product: CartItem["product"];
+export type GroupedICartItemType = {
+    product: ICartItem["product"];
     quantity: number;
 };
 
-export async function createCheckoutSession(items: GroupedCartItem[], metadata: StripeMetadata) {
+export async function createCheckoutSession(items: GroupedICartItemType[], metadata: StripeMetadata) {
     try {
         const stripeMetadata = {
             order_number: metadata.order_number,
@@ -83,7 +83,7 @@ export async function createCheckoutSession(items: GroupedCartItem[], metadata: 
                         images: item.product.product.image ? [item.product.product.image] : undefined,
                         metadata: {
                             variant_id: item.product.product.variant_id,
-                            files: item.product.files.join(","),
+                            files: "/public/logos/glowCircle-trans.png",
                         },
                     },
                 },

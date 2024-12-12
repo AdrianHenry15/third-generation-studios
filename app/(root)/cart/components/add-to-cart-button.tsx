@@ -1,11 +1,12 @@
 "use client";
 
-import { PrintfulSyncVariant } from "@/lib/types/printful-product-types";
+import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
 import useCartStore from "@/stores/cart-store";
 import React, { useEffect, useState } from "react";
+import { BiTrash } from "react-icons/bi";
 
 interface AddToCartButtonProps {
-    product: PrintfulSyncVariant; // Expecting PrintfulSyncVariant type here
+    product: PrintfulSyncVariantType; // Expecting PrintfulSyncVariant type here
     disabled?: boolean; // Optional disabled prop
 }
 
@@ -33,7 +34,11 @@ const AddToCartButton = ({ product, disabled }: AddToCartButtonProps) => {
                 ${itemCount === 0 ? "bg-gray-100 cursor-not-allowed" : "bg-gray-200 hover:bg-gray-300"}`}
                 disabled={itemCount === 0 || disabled}
             >
-                <span className={`text-xl font-bold ${itemCount === 0 ? "text-gray-400" : "text-gray-600"}`}>-</span>
+                {itemCount > 1 ? (
+                    <span className={`text-xl font-bold ${itemCount === 0 ? "text-gray-400" : "text-gray-600"}`}>-</span>
+                ) : (
+                    <BiTrash className={`text-xl font-bold ${itemCount === 0 ? "text-gray-400" : "text-gray-600"}`} />
+                )}
             </button>
 
             {/* Display current item count in the cart */}

@@ -53,7 +53,7 @@ const ContactForm = () => {
     const onSubmit = (data: any) => {
         // open confirmation modal
         setIsOpen(true);
-        console.log(data);
+        // console.log(data);
     };
 
     const confirmConsultation = () => {

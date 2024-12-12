@@ -2,7 +2,7 @@ import { persist } from "zustand/middleware";
 import { create } from "zustand";
 import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
 
-export interface CartItem {
+export interface ICartItem {
     product: PrintfulSyncVariantType;
     quantity: number;
     size?: string;
@@ -10,7 +10,7 @@ export interface CartItem {
 }
 
 interface CartState {
-    items: CartItem[];
+    items: ICartItem[];
     setSize: (productId: number, size: string) => void;
     setColor: (productId: number, color: string) => void;
     addItem: (product: PrintfulSyncVariantType) => void;
@@ -18,7 +18,7 @@ interface CartState {
     clearCart: () => void;
     getTotalPrice: () => number;
     getItemCount: (productId: number) => number;
-    getGroupedItems: () => CartItem[];
+    getGroupedItems: () => ICartItem[];
 }
 
 const useCartStore = create<CartState>()(
@@ -58,7 +58,7 @@ const useCartStore = create<CartState>()(
                             acc.push(item); // Keep other items unchanged
                         }
                         return acc;
-                    }, [] as CartItem[]),
+                    }, [] as ICartItem[]),
                 })),
 
             // Updates the size of a specific item in the Cart by product ID

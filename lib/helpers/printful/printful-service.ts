@@ -45,7 +45,7 @@ export async function createOrderInPrintful(session: Stripe.Checkout.Session) {
 
     // Retrieve line items with expanded product data
     const lineItemsWithProduct = await stripe.checkout.sessions.listLineItems(id, { expand: ["data.price.product"] });
-    console.log(lineItemsWithProduct.data[0].price?.metadata);
+    // console.log(lineItemsWithProduct.data[0].price?.metadata);
 
     // Map line items to match Printful items object structure
     const printfulProducts = lineItemsWithProduct.data.map((item) => {
@@ -60,7 +60,7 @@ export async function createOrderInPrintful(session: Stripe.Checkout.Session) {
             variant_id: variantId, // Ensure a valid variant ID
             quantity: item.quantity || 0, // Default quantity to 0 if undefined
             name: item.description || "", // Use the item description as the name, if available
-            retail_price: (item.price?.unit_amount ?? 0 / 100).toFixed(2), // Convert price to a string formatted with two decimals
+            retail_price: 100.0,
             files: [
                 {
                     url: product.metadata.file_url || (process.env.PRINTFUL_FALLBACK_URL as string),

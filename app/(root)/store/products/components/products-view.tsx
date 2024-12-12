@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import AddToCartButton from "@/app/(root)/cart/components/add-to-cart-button";
 import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
 import Link from "next/link";
 
-// Pagination Component
-export default function PaginatedVariants({
+export default function ProductView({
     productName,
     variants,
 }: {
@@ -16,10 +15,6 @@ export default function PaginatedVariants({
     variants: PrintfulSyncVariantType[];
 }) {
     const [currentPage, setCurrentPage] = useState(0);
-    const [selectedSize, setSelectedSize] = useState<string | null>(null);
-
-    // Modify product name to remove anything after the first "/"
-    const formattedProductName = productName.split("/")[0];
 
     // Group variants by color and sizes
     const colorVariants = Array.from(new Set(variants.map((variant) => variant.color)));
@@ -27,6 +22,15 @@ export default function PaginatedVariants({
 
     const currentColor = colorVariants[currentPage];
     const filteredVariantsByColor = variants.filter((variant) => variant.color === currentColor);
+
+    // Dynamically set initial size
+    const [selectedSize, setSelectedSize] = useState<string | null>(filteredVariantsByColor[0]?.size || null);
+
+    useEffect(() => {
+        // Update selectedSize when the color changes
+        setSelectedSize(filteredVariantsByColor[0]?.size || null);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentPage]);
 
     const handleNext = () => {
         if (currentPage < colorVariants.length - 1) {
@@ -46,18 +50,16 @@ export default function PaginatedVariants({
 
     const selectedVariant = filteredVariantsByColor.find((variant) => variant.size === selectedSize) || filteredVariantsByColor[0];
 
+    const formattedProductName = productName.split("/")[0];
+
     return (
         <div className="min-h-screen bg-gray-100 pt-10 pb-48 px-4">
             <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-                {/* Product Info */}
                 <div className="p-6">
                     <h1 className="text-3xl font-bold text-black">{formattedProductName}</h1>
-                    {/* <p className="text-gray-700 mt-4">{productDescription}</p> */}
                 </div>
 
-                {/* Variant Info */}
                 <div className="border-t border-gray-200 p-6">
-                    {/* Image */}
                     {selectedVariant?.product?.image ? (
                         <Image
                             src={selectedVariant.product.image}
@@ -72,7 +74,6 @@ export default function PaginatedVariants({
                         </div>
                     )}
 
-                    {/* Details */}
                     <h2 className="text-2xl font-bold text-gray-900 mt-4">{formattedProductName}</h2>
                     <p className="text-lg text-gray-700 mt-2">
                         Price: ${selectedVariant?.retail_price} {selectedVariant?.currency}
@@ -84,7 +85,6 @@ export default function PaginatedVariants({
                         {selectedVariant?.availability_status === "active" ? "Available" : "Unavailable"}
                     </p>
 
-                    {/* Size Selector */}
                     <div className="mt-4">
                         <h3 className="text-sm font-semibold text-gray-700">Select Size:</h3>
                         <div className="mt-2 flex gap-4">
@@ -105,7 +105,6 @@ export default function PaginatedVariants({
                     </div>
                 </div>
 
-                {/* Pagination Controls */}
                 <div className="flex justify-between items-center border-t border-gray-200 p-6">
                     <button
                         onClick={handlePrev}

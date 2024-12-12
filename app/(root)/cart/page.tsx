@@ -11,6 +11,8 @@ import useCartStore from "@/stores/cart-store";
 import ShippingModal from "./components/shipping-modal";
 import useShippingStore from "@/stores/shipping-store";
 import Link from "next/link";
+import SelectProductModal from "./components/selected-product-modal";
+import CartItem from "./components/cart-item";
 
 const CartPage = () => {
     const groupedItems = useCartStore((state) => state.getGroupedItems());
@@ -24,6 +26,7 @@ const CartPage = () => {
     const [isClient, setIsClient] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isShippingModalOpen, setIsShippingModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // Wait for client to mount
     useEffect(() => {
@@ -75,8 +78,7 @@ const CartPage = () => {
         );
     }
 
-    console.log(groupedItems);
-
+    // console.log(groupedItems);
     return (
         <div className="container mx-auto p-4 max-w-6xl pb-48">
             <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
@@ -84,34 +86,12 @@ const CartPage = () => {
                 {/* Cart Items */}
                 <div className="flex-grow">
                     {groupedItems.map((item) => (
-                        <Link
-                            href={`/store/products/${item.product.sync_product_id}`}
-                            className="mb-4 p-4 border rounded flex items-center justify-between"
-                            key={item.product.id}
-                        >
-                            <div className="flex items-center cursor-pointer flex-1 min-w-0">
-                                <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 mr-4">
-                                    {item.product.product.image && (
-                                        <Image
-                                            src={item.product.product.image}
-                                            alt={item.product.name || "Product image"}
-                                            className="w-full h-full object-cover rounded"
-                                            width={96}
-                                            height={96}
-                                        />
-                                    )}
-                                </div>
-                                <div className="min-w-0">
-                                    <h2 className="text-lg sm:text-xl font-semibold truncate">{item.product.name}</h2>
-                                    <p className="text-sm sm:text-base">
-                                        Price: ${((parseInt(item.product.retail_price) ?? 0) * item.quantity).toFixed(2)}
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="flex items-center ml-4 flex-shrink-0">
-                                <AddToCartButton product={item.product} />
-                            </div>
-                        </Link>
+                        <>
+                            <CartItem openModal={() => setIsModalOpen(true)} item={item} key={item.product.id} />
+                            {isModalOpen && (
+                                <SelectProductModal item={item} isOpen={isModalOpen} closeModal={() => setIsModalOpen(false)} />
+                            )}
+                        </>
                     ))}
                 </div>
 

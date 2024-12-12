@@ -1,6 +1,7 @@
 import { PrintfulProductApiResponse, PrintfulSyncProductType } from "@/lib/types/printful-product-types";
 import Image from "next/image";
 import Link from "next/link";
+import ProductGrid from "./components/product-grid";
 
 export default async function AllProductsPage() {
     const fetchProducts = async (): Promise<PrintfulSyncProductType[]> => {
@@ -54,12 +55,8 @@ export default async function AllProductsPage() {
     return (
         <div className="min-h-screen bg-gray-100 pb-48">
             <h1 className="text-center text-4xl font-semibold tracking-wider py-24">Merch Store</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 md:px-8">
+            {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 md:px-8">
                 {products.map((product) => {
-                    // Safely access sync_variants
-                    // const firstVariant = product.sync_variants?.[0]; // Access the first variant if it exists
-                    const price = getPrice(product);
-
                     return (
                         <div
                             key={product.id}
@@ -74,7 +71,6 @@ export default async function AllProductsPage() {
                             />
                             <div className="p-4">
                                 <h2 className="text-lg font-semibold">{product.name}</h2>
-                                <p className="text-sm text-gray-500">Price: ${price?.toFixed(2)}</p>
                                 <button className="mt-4 w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition">
                                     <Link href={`/store/products/${product.id}`}>View Product</Link>
                                 </button>
@@ -82,7 +78,8 @@ export default async function AllProductsPage() {
                         </div>
                     );
                 })}
-            </div>
+            </div> */}
+            <ProductGrid products={products} />
         </div>
     );
 }

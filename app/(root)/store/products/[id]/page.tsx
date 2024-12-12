@@ -1,5 +1,5 @@
 import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
-import PaginatedVariants from "../../components/products/variants/paginated-variants";
+import ProductView from "../components/products-view";
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -47,8 +47,8 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     // Extract product name and description from the first variant's product field
     const productName = variants[0].name;
     const productDescription = variants[0].product.name;
-    console.log(variants);
+    // console.log(variants);
 
     // Client-side component for pagination
-    return <PaginatedVariants productName={productName} productDescription={productDescription} variants={variants} />;
+    return <ProductView productName={productName} productDescription={productDescription} variants={variants} />;
 }
