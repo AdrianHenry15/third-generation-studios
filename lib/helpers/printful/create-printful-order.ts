@@ -1,29 +1,9 @@
 import { users } from "@clerk/clerk-sdk-node"; // For fetching user data
-import axios from "axios";
 import Stripe from "stripe";
 import stripe from "../stripe";
+import { printfulClient } from "./client";
 
-const PRINTFUL_BASE_URL = "https://api.printful.com";
-
-export const printfulClient = axios.create({
-    baseURL: PRINTFUL_BASE_URL,
-    headers: {
-        Authorization: `Bearer ${process.env.PRINTFUL_PRIVATE_TOKEN}`,
-        "X-PF-Store-Id": process.env.PRINTFUL_STORE_ID,
-    },
-});
-
-export const fetchPrintfulData = async (endpoint: string) => {
-    try {
-        const response = await printfulClient.get(endpoint);
-        return response.data;
-    } catch (error: any) {
-        console.error("Printful API Error:", error.response?.data || error.message);
-        throw new Error("Failed to fetch data from Printful API");
-    }
-};
-
-export async function createOrderInPrintful(session: Stripe.Checkout.Session) {
+export async function createPrintfulOrder(session: Stripe.Checkout.Session) {
     const { id, amount_total, currency, metadata, total_details } = session;
 
     // Recipient metadata fields
@@ -48,26 +28,33 @@ export async function createOrderInPrintful(session: Stripe.Checkout.Session) {
     // console.log(lineItemsWithProduct.data[0].price?.metadata);
 
     // Map line items to match Printful items object structure
-    const printfulProducts = lineItemsWithProduct.data.map((item) => {
-        const product = item.price?.product as Stripe.Product;
-        const variantId = parseInt(product?.metadata.variant_id || "0", 10);
-        // Check if the variant ID is valid
-        if (!variantId || variantId <= 0) {
-            throw new Error("Product variant ID is invalid.");
-        }
+    const printfulProducts = await Promise.all(
+        lineItemsWithProduct.data.map(async (item) => {
+            const product = item.price?.product as Stripe.Product;
+            const variantId = parseInt(product?.metadata.variant_id || "0", 10);
 
-        return {
-            variant_id: variantId, // Ensure a valid variant ID
-            quantity: item.quantity || 0, // Default quantity to 0 if undefined
-            name: item.description || "", // Use the item description as the name, if available
-            retail_price: 100.0,
-            files: [
-                {
-                    url: product.metadata.file_url || (process.env.PRINTFUL_FALLBACK_URL as string),
-                },
-            ],
-        };
-    });
+            // Check if the variant ID is valid
+            if (!variantId || variantId <= 0) {
+                throw new Error("Product variant ID is invalid.");
+            }
+
+            return {
+                variant_id: variantId, // Ensure a valid variant ID
+                quantity: item.quantity || 0, // Default quantity to 0 if undefined
+                files: [
+                    {
+                        url: product.metadata.file_url,
+                        options: [
+                            {
+                                id: "auto_thread_color",
+                                value: true,
+                            },
+                        ],
+                    },
+                ],
+            };
+        })
+    );
 
     // Fetch user data from Clerk using clerkUserId
     let user;
@@ -92,13 +79,8 @@ export async function createOrderInPrintful(session: Stripe.Checkout.Session) {
         zip: customerZipCode,
         phone: `${user.phoneNumbers[0].phoneNumber}`,
     };
-
-    // Shipping method (can be set based on user selection or fallback)
-    const shippingMethod = "standard"; // This could be dynamic based on user choice
-
     // Prepare the Printful order payload
     const orderPayload = {
-        shipping_method: shippingMethod,
         recipient,
         items: printfulProducts,
         packing_slip: {
@@ -108,7 +90,7 @@ export async function createOrderInPrintful(session: Stripe.Checkout.Session) {
         },
         totalPrice: amount_total ? amount_total / 100 : 0,
         status: "paid",
-        orderDate: new Date().toISOString(),
+        orderDate: new Date().toDateString(),
         currency,
         discount: total_details?.amount_discount ? total_details.amount_discount / 100 : 0,
     };
@@ -116,7 +98,7 @@ export async function createOrderInPrintful(session: Stripe.Checkout.Session) {
     // Send the request to Printful API to create the order
     try {
         const response = await printfulClient.post("/orders", orderPayload);
-        console.log("Printful Order Created:", response.data);
+        // console.log("Printful Order Created:", response.data);
         return response.data;
     } catch (error: any) {
         console.error("Printful API Error:", error.response?.data || error.message);

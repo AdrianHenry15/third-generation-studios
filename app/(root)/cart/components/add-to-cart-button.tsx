@@ -1,6 +1,6 @@
 "use client";
 
-import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
+import { PrintfulSyncVariantType } from "@/lib/types/printful/printful-product-types";
 import useCartStore from "@/stores/cart-store";
 import React, { useEffect, useState } from "react";
 import { BiTrash } from "react-icons/bi";
@@ -26,7 +26,7 @@ const AddToCartButton = ({ product, disabled }: AddToCartButtonProps) => {
     }
 
     return (
-        <div className="flex items-center justify-center z-10 space-x-2">
+        <div className="flex items-center justify-center z-50 space-x-2">
             {/* Button to remove the item */}
             <button
                 onClick={() => removeItem(product.id)} // Using product._id to remove the item

@@ -18,12 +18,12 @@ export interface StripeMetadata {
     customer_country: string;
 }
 
-export type GroupedICartItemType = {
+export type GroupedCartItem = {
     product: ICartItem["product"];
     quantity: number;
 };
 
-export async function createCheckoutSession(items: GroupedICartItemType[], metadata: StripeMetadata) {
+export async function createCheckoutSession(items: GroupedCartItem[], metadata: StripeMetadata) {
     try {
         const stripeMetadata = {
             order_number: metadata.order_number,
@@ -83,7 +83,7 @@ export async function createCheckoutSession(items: GroupedICartItemType[], metad
                         images: item.product.product.image ? [item.product.product.image] : undefined,
                         metadata: {
                             variant_id: item.product.product.variant_id,
-                            files: "/public/logos/glowCircle-trans.png",
+                            file_url: item.product.files[0].thumbnail_url,
                         },
                     },
                 },

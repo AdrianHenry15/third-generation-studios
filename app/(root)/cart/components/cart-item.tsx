@@ -3,6 +3,7 @@ import React from "react";
 import AddToCartButton from "./add-to-cart-button";
 import { ICartItem } from "@/stores/cart-store";
 import Link from "next/link";
+import usePrintfulProductStore from "@/stores/printful-product-store";
 
 interface ICartItemProps {
     openModal: () => void;
@@ -11,19 +12,23 @@ interface ICartItemProps {
 
 const CartItem = (props: ICartItemProps) => {
     const { item, openModal } = props;
+    const { products } = usePrintfulProductStore();
+
+    // Find the product from the store
+    const product = products.find((product) => product.id === item.product.sync_product_id);
+
     return (
         <Link
-            // onClick={openModal}
             href={`/store/products/${item.product.sync_product_id}`}
             className="mb-4 p-4 border rounded flex items-center justify-between"
             key={item.product.id}
         >
             <div className="flex items-center cursor-pointer flex-1 min-w-0">
                 <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 mr-4">
-                    {item.product.product.image && (
+                    {product?.id && (
                         <Image
-                            src={item.product.product.image}
-                            alt={item.product.name || "Product image"}
+                            src={product.thumbnail_url} // Use the image from the found product
+                            alt={product.name || "Product image"}
                             className="w-full h-full object-cover rounded"
                             width={96}
                             height={96}

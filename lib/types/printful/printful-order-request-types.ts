@@ -1,10 +1,10 @@
 // Root  for the entire structure
 export interface PrintfulOrderRequest {
-    external_id: string;
-    shipping: string;
+    external_id?: string;
+    shipping?: string;
     recipient: PrintfulOrderRequestRecipient;
     items: PrintfulOrderRequestItem[];
-    retail_costs: PrintfulOrderRequestRetailCosts;
+    retail_costs?: PrintfulOrderRequestRetailCosts;
     created?: Date;
     updated?: Date;
     gift?: PrintfulOrderRequestGift;
@@ -19,33 +19,33 @@ export interface PrintfulOrderRequestRecipient {
     address2?: string;
     city: string;
     state_code: string;
-    state_name: string;
+    state_name?: string;
     country_code: string;
-    country_name: string;
+    country_name?: string;
     zip: string;
     tax_number?: string;
 }
 
 // Individual order item
 export interface PrintfulOrderRequestItem {
-    id: number;
-    external_id: string;
-    variant_id: number;
-    sync_variant_id: number;
-    external_variant_id: string;
-    warehouse_product_variant_id: number;
-    product_template_id: number;
-    external_product_id: string;
-    quantity: number;
-    price: string;
-    retail_price: string;
-    name: string;
-    product: PrintfulOrderRequestProductDetails;
-    files: PrintfulOrderRequestProductFile[];
-    options: PrintfulOrderRequestProductOption[];
+    id?: number;
+    external_id?: string;
+    variant_id?: number;
+    sync_variant_id?: number;
+    external_variant_id?: string;
+    warehouse_product_variant_id?: number;
+    product_template_id?: number;
+    external_product_id?: string;
+    quantity?: number;
+    price?: string;
+    retail_price?: string;
+    name?: string;
+    product?: PrintfulOrderRequestProductDetails;
+    files?: PrintfulOrderRequestProductFile[];
+    options?: PrintfulOrderRequestProductOption[];
     sku?: string | null;
-    discontinued: boolean;
-    out_of_stock: boolean;
+    discontinued?: boolean;
+    out_of_stock?: boolean;
 }
 
 // Product details
@@ -58,12 +58,12 @@ export interface PrintfulOrderRequestProductDetails {
 
 // Product file details
 export interface PrintfulOrderRequestProductFile {
-    type: string;
+    type?: string;
     url: string;
-    options: PrintfulOrderRequestFileOption[];
-    filename: string;
-    visible: boolean;
-    position: PrintfulOrderRequestFilePosition;
+    options?: PrintfulOrderRequestFileOption[];
+    filename?: string;
+    visible?: boolean;
+    position?: PrintfulOrderRequestFilePosition;
 }
 
 // Options for product files

@@ -3,7 +3,7 @@ export type PrintfulSyncProductType = {
     external_id: string;
     name: string;
     variants: number;
-    synced: number;
+    synced: boolean;
     thumbnail_url: string;
     is_ignored: boolean;
 };

@@ -4,7 +4,7 @@ import Fuse from "fuse.js";
 export const searchProductsByName = async (searchParam: string) => {
     try {
         // Fetch all products from your Printful API route
-        const response = await axios.get("/api/printful/products");
+        const response = await axios.get("/api/sync-products");
         const allProducts = response.data || [];
 
         // Configure Fuse.js for fuzzy searching

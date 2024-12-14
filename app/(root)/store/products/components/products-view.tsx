@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import AddToCartButton from "@/app/(root)/cart/components/add-to-cart-button";
-import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
 import Link from "next/link";
+import { PrintfulSyncVariantType } from "@/lib/types/printful/printful-product-types";
 
 export default function ProductView({
     productName,
@@ -19,7 +19,6 @@ export default function ProductView({
     // Group variants by color and sizes
     const colorVariants = Array.from(new Set(variants.map((variant) => variant.color)));
     const sizeOptions = Array.from(new Set(variants.map((variant) => variant.size)));
-
     const currentColor = colorVariants[currentPage];
     const filteredVariantsByColor = variants.filter((variant) => variant.color === currentColor);
 
@@ -49,7 +48,6 @@ export default function ProductView({
     };
 
     const selectedVariant = filteredVariantsByColor.find((variant) => variant.size === selectedSize) || filteredVariantsByColor[0];
-
     const formattedProductName = productName.split("/")[0];
 
     return (
@@ -61,13 +59,15 @@ export default function ProductView({
 
                 <div className="border-t border-gray-200 p-6">
                     {selectedVariant?.product?.image ? (
-                        <Image
-                            src={selectedVariant.product.image}
-                            alt={selectedVariant.name}
-                            width={800}
-                            height={600}
-                            className="w-full h-80 object-cover rounded-md"
-                        />
+                        <span className="h-80 flex justify-center w-full">
+                            <Image
+                                src={selectedVariant.product.image}
+                                alt={selectedVariant.name}
+                                width={800}
+                                height={600}
+                                className="w-48 self-center h-80 object-cover rounded-md"
+                            />
+                        </span>
                     ) : (
                         <div className="w-full h-80 bg-gray-200 flex items-center justify-center rounded-md">
                             <p className="text-gray-500">No image available</p>
@@ -138,7 +138,13 @@ export default function ProductView({
             </div>
             <div className="flex items-center justify-center w-full mt-10">
                 <Link
-                    className="bg-black rounded-lg border-white border-[1px] w-full self-center flex text-white justify-center py-1 md:w-1/3 hover:bg-black/75 ease-in-out duration-200 transition-colors"
+                    className="bg-black rounded-lg mx-2 border-white border-[1px] w-full self-center flex text-white justify-center py-1 md:w-1/3 hover:bg-black/75 ease-in-out duration-200 transition-colors"
+                    href={"/store/products"}
+                >
+                    Keep Shopping
+                </Link>
+                <Link
+                    className="bg-blue-500 rounded-lg mx-2 border-white border-[1px] w-full self-center flex text-white justify-center py-1 md:w-1/3 hover:bg-black/75 ease-in-out duration-200 transition-colors"
                     href={"/cart"}
                 >
                     Checkout

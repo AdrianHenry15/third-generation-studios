@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import stripe from "@/lib/helpers/stripe";
 import Stripe from "stripe";
-import { createOrderInPrintful } from "@/lib/helpers/printful/printful-service";
+import { createPrintfulOrder } from "@/lib/helpers/printful/create-printful-order";
 
 export async function POST(req: NextRequest) {
     const body = await req.text();
@@ -32,8 +32,8 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
 
         try {
-            const order = await createOrderInPrintful(session);
-            console.log("Order created in Printful", order);
+            await createPrintfulOrder(session);
+            console.log("Order created in Printful");
         } catch (err) {
             console.error("Error creating order in Printful:", err);
             return NextResponse.json({ error: "Error creating order" }, { status: 500 });

@@ -1,23 +1,19 @@
 "use client";
 
 import { SignInButton, useAuth, useUser } from "@clerk/nextjs";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 import { createCheckoutSession, StripeMetadata } from "@/app/actions";
-import AddToCartButton from "@/app/(root)/cart/components/add-to-cart-button";
 import { Loader } from "@/components/loader";
 import useCartStore from "@/stores/cart-store";
 import ShippingModal from "./components/shipping-modal";
 import useShippingStore from "@/stores/shipping-store";
-import Link from "next/link";
 import SelectProductModal from "./components/selected-product-modal";
 import CartItem from "./components/cart-item";
 
 const CartPage = () => {
     const groupedItems = useCartStore((state) => state.getGroupedItems());
     const { state, city, zip_code, address, apartment_no } = useShippingStore();
-    const { clearCart } = useCartStore();
 
     const { isSignedIn } = useAuth();
     const { user } = useUser();
@@ -61,7 +57,6 @@ const CartPage = () => {
             console.error("Error creating checkout session:", error);
         } finally {
             setIsLoading(false);
-            clearCart();
         }
     };
 
@@ -117,7 +112,7 @@ const CartPage = () => {
                             {isLoading ? "Processing..." : "Enter Shipping Information"}
                         </button>
                     ) : (
-                        <SignInButton mode="modal">
+                        <SignInButton fallbackRedirectUrl={"/cart"} mode="modal">
                             <button className="mt-4 w-full bg-black text-white px-4 py-2 rounded hover:bg-zinc-800">
                                 Sign in to Checkout
                             </button>

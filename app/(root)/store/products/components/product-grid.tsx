@@ -3,7 +3,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import ProductThumb from "./product-thumb";
-import { PrintfulSyncProductType } from "@/lib/types/printful-product-types";
+import { PrintfulSyncProductType } from "@/lib/types/printful/printful-product-types";
 
 const ProductGrid = ({ products }: { products: PrintfulSyncProductType[] }) => {
     return (

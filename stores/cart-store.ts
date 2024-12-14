@@ -1,6 +1,6 @@
 import { persist } from "zustand/middleware";
 import { create } from "zustand";
-import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
+import { PrintfulSyncVariantType } from "@/lib/types/printful/printful-product-types";
 
 export interface ICartItem {
     product: PrintfulSyncVariantType;

@@ -48,7 +48,7 @@ const Header = () => {
                 <form
                     className="w-full sm-w-auto lg:flex-1 lg:mx-4 mt-2 lg:mt-0"
                     // need this to hit page route
-                    action={"/search"}
+                    action={"/store/search"}
                 >
                     <input
                         className="bg-gray-200 text-gray-800 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 border w-full max-w-4xl"

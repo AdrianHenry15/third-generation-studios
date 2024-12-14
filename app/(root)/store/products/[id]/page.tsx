@@ -1,4 +1,4 @@
-import { PrintfulSyncVariantType } from "@/lib/types/printful-product-types";
+import { PrintfulSyncVariantType } from "@/lib/types/printful/printful-product-types";
 import ProductView from "../components/products-view";
 
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {

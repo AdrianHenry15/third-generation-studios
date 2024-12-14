@@ -1,4 +1,4 @@
-import { PrintfulSyncProductType } from "@/lib/types/printful-product-types";
+import { PrintfulSyncProductType } from "@/lib/types/printful/printful-product-types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
