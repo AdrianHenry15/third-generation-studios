@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
 
@@ -10,8 +10,10 @@ import { IoMdPricetags } from "react-icons/io";
 
 import PopoverPanelItem from "./popover-panel-item";
 import { PiShirtFolded } from "react-icons/pi";
+import ReusableModal from "@/components/modals/resuable-modal";
 
 const MobileMenu = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div className="top-16 w-full max-w-sm px-4">
             <Popover className="relative">
@@ -46,11 +48,14 @@ const MobileMenu = () => {
                                             description={"Websites By Devs"}
                                         />
                                         <PopoverPanelItem
-                                            onClick={close}
+                                            onClick={() => {
+                                                setIsModalOpen(true);
+                                                close();
+                                            }}
                                             icon={<PiShirtFolded className="text-white" size={25} />}
                                             page={{
                                                 title: "Merch",
-                                                link: "https://thirdgenerationstudios.printful.me/",
+                                                link: "",
                                             }}
                                             description={"Merch By Our Clients"}
                                         />
@@ -88,6 +93,18 @@ const MobileMenu = () => {
                                 </div>
                             </Popover.Panel>
                         </Transition>
+                        {/* Modal for Merch */}
+                        {isModalOpen && (
+                            <ReusableModal
+                                isOpen={isModalOpen}
+                                onClose={() => setIsModalOpen(false)}
+                                title="The Merch Store"
+                                description="The Merch Store will send you to a different tab"
+                                onConfirm={() => {
+                                    setIsModalOpen(false);
+                                }}
+                            />
+                        )}
                     </>
                 )}
             </Popover>

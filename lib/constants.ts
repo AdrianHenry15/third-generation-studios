@@ -11,7 +11,7 @@ export const NavMenuTypeItems: NavMenuType[] = [
     },
     {
         title: "Merch",
-        link: "https://thirdgenerationstudios.printful.me/",
+        link: "",
     },
     {
         title: "Music",
