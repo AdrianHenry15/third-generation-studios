@@ -14,6 +14,7 @@ const PopoverPanelItem = (props: IPopoverPanelItem) => {
         <Link
             onClick={props.onClick}
             href={props.page.link}
+            target={props.page.title.toLowerCase() === "merch" ? "_blank" : ""}
             className="p-2 mx-4 hover:bg-black rounded-lg transition-colors duration-300 ease-in-out"
         >
             <div className="flex items-center justify-start">

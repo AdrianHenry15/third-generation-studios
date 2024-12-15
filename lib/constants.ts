@@ -3,19 +3,19 @@ import { NavMenuType } from "./types";
 export const NavMenuTypeItems: NavMenuType[] = [
     {
         title: "Home",
-        link: "/",
-    },
-    {
-        title: "Websites",
         link: "/websites",
-    },
-    {
-        title: "Music",
-        link: "/music",
     },
     {
         title: "Available Plans",
         link: "/plans",
+    },
+    {
+        title: "Merch",
+        link: "https://thirdgenerationstudios.printful.me/",
+    },
+    {
+        title: "Music",
+        link: "/music",
     },
 ];
 export const NavMenuTypeAltItems: NavMenuType[] = [

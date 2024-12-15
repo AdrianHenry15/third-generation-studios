@@ -42,7 +42,7 @@ export default function Navbar(props: INavbarProps) {
                                 }`}
                                 key={item.title}
                             >
-                                <Link href={item.link} className="">
+                                <Link target={item.title.toLowerCase() === "merch" ? "_blank" : ""} href={item.link} className="">
                                     {item.title}
                                 </Link>
                             </li>
