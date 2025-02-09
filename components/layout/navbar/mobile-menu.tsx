@@ -1,18 +1,19 @@
 "use client";
 
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import Link from "next/link";
 
 import { Bars3Icon } from "@heroicons/react/24/outline";
-import { BsMusicNoteBeamed } from "react-icons/bs";
-import { CgMusicNote, CgWebsite } from "react-icons/cg";
+import { CgWebsite } from "react-icons/cg";
 import { IoMdPricetags } from "react-icons/io";
 
 import PopoverPanelItem from "./popover-panel-item";
-import UserIcon from "./user-icon/user-icon";
+import { PiShirtFolded } from "react-icons/pi";
+import ReusableModal from "@/components/modals/resuable-modal";
 
 const MobileMenu = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div className="top-16 w-full max-w-sm px-4">
             <Popover className="relative">
@@ -47,13 +48,16 @@ const MobileMenu = () => {
                                             description={"Websites By Devs"}
                                         />
                                         <PopoverPanelItem
-                                            onClick={close}
-                                            icon={<CgMusicNote className="text-white" size={25} />}
-                                            page={{
-                                                title: "Music",
-                                                link: "/music",
+                                            onClick={() => {
+                                                setIsModalOpen(true);
+                                                close();
                                             }}
-                                            description={"Music by Artists"}
+                                            icon={<PiShirtFolded className="text-white" size={25} />}
+                                            page={{
+                                                title: "Merch",
+                                                link: "",
+                                            }}
+                                            description={"Merch By Our Clients"}
                                         />
                                         <PopoverPanelItem
                                             onClick={close}
@@ -89,6 +93,18 @@ const MobileMenu = () => {
                                 </div>
                             </Popover.Panel>
                         </Transition>
+                        {/* Modal for Merch */}
+                        {isModalOpen && (
+                            <ReusableModal
+                                isOpen={isModalOpen}
+                                onClose={() => setIsModalOpen(false)}
+                                title="The Merch Store"
+                                description="The Merch Store will send you to a different tab"
+                                onConfirm={() => {
+                                    setIsModalOpen(false);
+                                }}
+                            />
+                        )}
                     </>
                 )}
             </Popover>
