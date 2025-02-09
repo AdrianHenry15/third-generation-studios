@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -17,6 +17,7 @@ interface INavbarProps {
 }
 
 export default function Navbar(props: INavbarProps) {
+    const router = useRouter();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [merchLink, setMerchLink] = useState<string | null>(null);
     const pathname = usePathname();
@@ -57,7 +58,7 @@ export default function Navbar(props: INavbarProps) {
                 {/* TITLE & LINKS */}
                 <div className="flex w-full my-2 justify-evenly">
                     <div className="flex items-center">
-                        <Link href="/websites" className="flex-1 flex lg:mr-10">
+                        <Link href="/" className="flex-1 flex lg:mr-10">
                             <Image src={Logo} alt="logo" width={50} />
                         </Link>
                         {/* LINKS */}
@@ -82,12 +83,8 @@ export default function Navbar(props: INavbarProps) {
 
                     {/* NAV BUTTONS */}
                     <ul className="hidden items-center xl:flex">
-                        <Link href="/contact-us">
-                            <Button roundedFull name="Contact Us" altColor />
-                        </Link>
-                        <Link href="/estimate">
-                            <Button className="animate-pulse mx-4" roundedFull name="Get Your Free Estimate" />
-                        </Link>
+                        <Button onClick={() => router.push("/contact-us")} className="bg-white text-black" name="Contact Us" />
+                        <Button onClick={() => router.push("/estimate")} className="mx-4 bg-gray-900 text-white" name="Free Estimate" />
                     </ul>
                 </div>
             </nav>

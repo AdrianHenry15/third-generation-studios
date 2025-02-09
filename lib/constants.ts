@@ -2,7 +2,7 @@ import { NavMenuType } from "./types";
 
 export const NavMenuTypeItems: NavMenuType[] = [
     {
-        title: "Home",
+        title: "Showcase",
         link: "/websites",
     },
     {
@@ -10,13 +10,13 @@ export const NavMenuTypeItems: NavMenuType[] = [
         link: "/plans",
     },
     {
-        title: "Merch",
-        link: "",
-    },
-    {
         title: "Music",
         link: "/music",
     },
+    // {
+    //     title: "About",
+    //     link: "/About",
+    // },
 ];
 export const NavMenuTypeAltItems: NavMenuType[] = [
     {

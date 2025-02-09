@@ -9,12 +9,12 @@ const LogoCard = () => {
     return (
         <span className="flex flex-col justify-center items-center my-4 border-b-[1px] border-zinc-900 border-b-1 pt-10 pb-16 md:flex-1 md:border-none md:justify-start">
             <div className="flex flex-col items-center md:rounded-2xl md:p-10">
-                <Link href={"/websites"}>
+                <Link href={"/"}>
                     <Image loading="eager" width={75} src={Logo} alt="logo" />
                 </Link>
-                <Link href={"/websites"} className="flex items-center text-xs text-zinc-500 mt-2">
+                <Link href={"/"} className="flex items-center text-xs text-zinc-500 mt-2">
                     <FaRegCopyright className="mx-2" />
-                    2024 Third Generation Studios
+                    2025 Third Generation Studios
                 </Link>
             </div>
         </span>

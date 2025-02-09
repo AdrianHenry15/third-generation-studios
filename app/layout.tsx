@@ -1,17 +1,17 @@
 // These styles apply to every route in the application
-import "@/styles/globals.css";
+import "./globals.css";
 
 import { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+// import { Analytics } from "@vercel/analytics/react";
+// import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { Loader } from "@/components/loader";
 import { ClerkProvider } from "@clerk/nextjs";
 
-const inter = Inter({
+const nunito = Nunito({
     variable: "--font-inter",
     subsets: ["latin"],
 });
@@ -28,7 +28,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
         <ClerkProvider>
             <html lang="en">
                 <link rel="icon" href="/logos/glowCircle-trans.png" sizes="96x96" />
-                <body className={inter.variable}>
+                <body className={nunito.variable}>
                     <Toaster />
                     <div className="flex flex-col">
                         <Suspense fallback={<Loader />}>{children}</Suspense>
