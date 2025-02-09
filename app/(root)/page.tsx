@@ -2,12 +2,8 @@
 
 import { motion } from "framer-motion";
 import HeroSection from "./components/hero-section";
-import SectionCard from "./components/section-card";
-import NextLogo from "@/public/logos/next-js-logo-2.png";
-import TailwindCSSLogo from "@/public/logos/tailwind-logo.webp";
-import StripeLogo from "@/public/logos/stripe-logo.webp";
-import ClerkLogo from "@/public/logos/clerk-logo.webp";
-import AnimatedSectionCard from "./components/animated-section-card";
+import IntegrationSection from "./components/integration-section";
+import SectionCardContainer from "./components/integration-section/integration-section-card";
 
 export default function Home() {
     return (
@@ -50,36 +46,9 @@ export default function Home() {
                 >
                     {/* SECTIONS */}
                     {/* STRUCTURE/INTEGRATION/DELIVERY  */}
+                    <IntegrationSection />
                     {/* SECURITY */}
                     {/* STYLING */}
-
-                    <SectionCard
-                        link="https://nextjs.org/"
-                        image={NextLogo}
-                        title="Powered by Next.js"
-                        description="Our website is built on the robust Next.js framework, leveraging its powerful features for a seamless and dynamic user experience."
-                    />
-
-                    <AnimatedSectionCard
-                        animatedBg
-                        link="https://v3.tailwindcss.com/"
-                        image={TailwindCSSLogo}
-                        title="Styled with Tailwind CSS v3"
-                        description="Built using Tailwind CSS, a utility-first framework that empowers rapid, responsive design with limitless customization options."
-                    />
-                    <SectionCard
-                        link="https://stripe.com/"
-                        image={StripeLogo}
-                        title="Seamless Payments with Stripe"
-                        description="Experience secure and efficient transactions with Stripe, ensuring fast, reliable, and hassle-free payment processing for every purchase."
-                    />
-                    <AnimatedSectionCard
-                        animatedBg
-                        link="https://clerk.com/"
-                        image={ClerkLogo}
-                        title="Effortless User Authentication with Clerk"
-                        description="Secure, scalable, and seamless—Clerk simplifies user authentication with powerful features like social logins, multi-factor authentication, and session management."
-                    />
                 </motion.div>
             </section>
         </div>
