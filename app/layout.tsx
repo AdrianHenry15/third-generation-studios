@@ -12,7 +12,7 @@ import { Loader } from "@/components/loader";
 import { ClerkProvider } from "@clerk/nextjs";
 
 const nunito = Nunito({
-    variable: "--font-inter",
+    variable: "--font-nunito",
     subsets: ["latin"],
 });
 

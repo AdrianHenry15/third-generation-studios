@@ -3,14 +3,14 @@ import { motion } from "framer-motion";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 
-interface IIntegrationSectionCardProps {
+interface ICodeIntegrationCardProps {
     title: string;
     description: string;
     image: string | StaticImageData;
     link: string;
 }
 
-const IntegrationSectionCard: React.FC<IIntegrationSectionCardProps> = ({ title, description, image, link }) => {
+const CodeIntegrationCard: React.FC<ICodeIntegrationCardProps> = ({ title, description, image, link }) => {
     return (
         <motion.div
             className="relative p-6 cursor-pointer rounded-xl shadow-lg w-full sm:w-80 md:w-96 lg:w-72 xl:w-80 flex flex-col items-center text-center overflow-hidden border border-white transition-all duration-300 ease-in-out group"
@@ -37,4 +37,4 @@ const IntegrationSectionCard: React.FC<IIntegrationSectionCardProps> = ({ title,
     );
 };
 
-export default IntegrationSectionCard;
+export default CodeIntegrationCard;
