@@ -10,13 +10,21 @@ export const NavMenuTypeItems: NavMenuType[] = [
         link: "/plans",
     },
     {
+        title: "Blog",
+        link: "/blog",
+    },
+    {
         title: "Music",
         link: "/music",
     },
-    // {
-    //     title: "About",
-    //     link: "/About",
-    // },
+    {
+        title: "About",
+        link: "/About",
+    },
+    {
+        title: "Faqs",
+        link: "/faqs",
+    },
 ];
 export const NavMenuTypeAltItems: NavMenuType[] = [
     {
@@ -28,5 +36,7 @@ export const NavMenuTypeAltItems: NavMenuType[] = [
         link: "/consultation",
     },
 ];
+
+export const ReferralSources = ["Card From Brite", "Magazine", "Google", "Facebook", "Word of Mouth", "Other"];
 
 export const Plans = ["Studio Basic", "Studio Plus", "Studio Pro", "Studio Commerce"];

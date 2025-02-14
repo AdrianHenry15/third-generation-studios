@@ -21,7 +21,7 @@ const staggerContainer = {
 
 const SecuritySection = () => (
     <motion.section
-        className="py-16 px-6 bg-black text-white"
+        className="py-16 px-6 z-10 bg-black text-white"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}

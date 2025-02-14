@@ -3,6 +3,11 @@ export type NavMenuType = {
     link: string;
 };
 
+export type FaqType = {
+    question: string;
+    answer: string;
+};
+
 export type WebsiteType = {
     id: string;
     img: any;
