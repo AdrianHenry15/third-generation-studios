@@ -1,49 +1,39 @@
 import type { Config } from "tailwindcss";
-import utilityClasses from "./lib/utility-classes";
 
 const config: Config = {
-    content: ["./pages/**/*.{js,ts,jsx,tsx,mdx}", "./components/**/*.{js,ts,jsx,tsx,mdx}", "./app/**/*.{js,ts,jsx,tsx,mdx}"],
+    content: ["./app/**/*.{js,ts,jsx,tsx,mdx}", "./pages/**/*.{js,ts,jsx,tsx,mdx}", "./components/**/*.{js,ts,jsx,tsx,mdx}"],
     theme: {
         extend: {
-            ...utilityClasses["@layer utilities"],
-            gridTemplateColumns: {
-                "13": "repeat(13, minmax(0, 1fr))",
-            },
-            colors: {
-                blue: {
-                    400: "#2589FE",
-                    500: "#0070F3",
-                    600: "#2F6FEB",
-                },
+            animation: {
+                "infinite-scroll": "infinite-scroll 25s linear infinite",
+                bounce: "bounce 1s infinite",
             },
             keyframes: {
-                shimmer: {
-                    "100%": {
-                        transform: "translateX(100%)",
+                "infinite-scroll": {
+                    from: { transform: "translateX(0)" },
+                    to: { transform: "translateX(-100%)" },
+                },
+                bounce: {
+                    "0%, 100%": {
+                        transform: "translateY(-25%)",
+                        animationTimingFunction: "cubic-bezier(0.8, 0, 1, 1)",
+                    },
+                    "50%": {
+                        transform: "translateY(0)",
+                        animationTimingFunction: "cubic-bezier(0, 0, 0.2, 1)",
                     },
                 },
-                fadeIn: {
-                    from: { opacity: "0" },
-                    to: { opacity: "1" },
-                },
-                marquee: {
-                    "0%": { transform: "translateX(0%)" },
-                    "100%": { transform: "translateX(-100%)" },
-                },
-                blink: {
-                    "0%": { opacity: "0.2" },
-                    "20%": { opacity: "1" },
-                    "100% ": { opacity: "0.2" },
-                },
             },
-            animation: {
-                fadeIn: "fadeIn .3s ease-in-out",
-                carousel: "marquee 60s linear infinite",
-                blink: "blink 1.4s both infinite",
+            backgroundImage: {
+                "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+                "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+                "jumbotron-text": "url('/public/assets/imgs/green-mountains.jpg')",
+            },
+            fontFamily: {
+                robotoFlex: ["Roboto Flex", "sans-serif"], // Custom Font
             },
         },
     },
-
-    plugins: [require("@tailwindcss/forms")],
+    plugins: [],
 };
 export default config;

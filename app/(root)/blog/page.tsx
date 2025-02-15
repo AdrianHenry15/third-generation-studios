@@ -1,4 +1,4 @@
-import { getAllBlogs } from "@/sanity/lib/blogs/getAllBlogs";
+// import { getAllBlogs } from "@/sanity/lib/blogs/getAllBlogs";
 import BlogCard from "./components/blog-card";
 import { Metadata } from "next";
 
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-    const blogs = await getAllBlogs();
+    const blogs = await [];
 
     if (!blogs) {
         return;

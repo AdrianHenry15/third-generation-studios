@@ -13,7 +13,7 @@ import { ClerkLoading, ClerkProvider } from "@clerk/nextjs";
 import DisableDraftMode from "@/components/disable-draft-mode";
 import { VisualEditing } from "next-sanity";
 import { draftMode } from "next/headers";
-import { SanityLive } from "sanity/lib/live";
+import { SanityLive } from "@/sanity/lib/live";
 
 const nunito = Nunito({
     variable: "--font-nunito",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
     return (
-        <ClerkProvider>
+        <ClerkProvider dynamic>
             <html lang="en">
                 <link rel="icon" href="/logos/glowCircle-trans.png" sizes="96x96" />
                 <body className={nunito.variable}>

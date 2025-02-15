@@ -1,25 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    typescript: {
-        ignoreBuildErrors: true,
-    },
-    env: {
-        DATABASE_URL: process.env.DATABASE_URL,
-        NEXT_PUBLIC_SERVICE_ID: process.env.NEXT_PUBLIC_SERVICE_ID,
-        NEXT_PUBLIC_TEMPLATE_ID: process.env.NEXT_PUBLIC_TEMPLATE_ID,
-        NEXT_PUBLIC_KEY: process.env.NEXT_PUBLIC_KEY,
-        NEXT_PRIVATE_KEY: process.env.NEXT_PRIVATE_KEY,
-        NEXT_BEATSTORE_ID: process.env.NEXT_BEATSTORE_ID
-    },
+    /* config options here */
     images: {
         remotePatterns: [
             {
                 protocol: "https",
-                hostname: 'img.clerk.com',
+                hostname: "cdn.sanity.io"
             },
+            {
+                protocol: "https",
+                hostname: "img.clerk.com"
+            },
+        ],
+    },
+    env: {
+        CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+        GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+        GOOGLE_PLACE_ID: process.env.GOOGLE_PLACE_ID,
+        SANITY_API_TOKEN: process.env.SANITY_API_TOKEN,
+        SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
+    },
+    productionBrowserSourceMaps: false,
 
-        ]
-    }
-};
 
-module.exports = nextConfig;
+}
+
+module.exports = nextConfig
