@@ -6,11 +6,16 @@ export const structure: StructureResolver = (S) =>
         .title("Blog")
         .items([
             S.documentTypeListItem("post").title("Posts"),
-            S.documentTypeListItem("category").title("Categories"),
+            S.documentTypeListItem("blogCategory").title("Blog Categories"),
             S.documentTypeListItem("author").title("Authors"),
             S.divider(),
             S.documentTypeListItem("newsletter").title("Newsletters"),
             S.documentTypeListItem("promotion").title("Promotions"),
-            S.documentTypeListItem("faqs").title("Faqs"),
-            ...S.documentTypeListItems().filter((item) => item.getId() && !["post", "category", "author"].includes(item.getId()!)),
+            S.documentTypeListItem("faq").title("Faqs"),
+            S.documentTypeListItem("faqCategory").title("Faq Categories"),
+            ...S.documentTypeListItems().filter(
+                (item) =>
+                    item.getId() &&
+                    !["post", "faqCategory", "blogCategory", "author", "newsletter", "promotion", "faq"].includes(item.getId()!),
+            ),
         ]);

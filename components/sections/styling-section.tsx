@@ -50,7 +50,7 @@ const StylingSection = () => {
                         {styles.map((style, index) => (
                             <Tab key={index} className="focus:outline-none">
                                 {({ selected }) => (
-                                    <motion.button
+                                    <motion.div
                                         className={`px-6 py-2 rounded-lg text-lg font-medium transition-all ${
                                             selected
                                                 ? "bg-blue-500 text-white shadow-lg shadow-blue-500/50"
@@ -60,7 +60,7 @@ const StylingSection = () => {
                                         whileTap={{ scale: 0.95 }}
                                     >
                                         {style.name}
-                                    </motion.button>
+                                    </motion.div>
                                 )}
                             </Tab>
                         ))}

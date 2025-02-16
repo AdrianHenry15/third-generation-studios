@@ -26,9 +26,9 @@ const SocialsCard = () => {
                 <Link className={LinkClass} target="_blank" href="https://soundcloud.com/anjin-iso">
                     <RiSoundcloudFill size={35} />
                 </Link>
-                <Link className={`${LinkClass} bg-white rounded-full p-2`} target="_blank" href="https://www.beatstars.com/anjiniso">
+                {/* <Link className={`${LinkClass} bg-white rounded-full p-2`} target="_blank" href="https://www.beatstars.com/anjiniso">
                     <Image src={BeatstarsImg} alt="beatstars-icon" className="w-[35px] h-[35px]" />
-                </Link>
+                </Link> */}
             </div>
         </div>
     );

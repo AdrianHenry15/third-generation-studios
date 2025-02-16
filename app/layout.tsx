@@ -59,9 +59,9 @@ export default async function MainLayout({ children }: { children: React.ReactNo
                             </ClerkLoading>
                             {children}
                         </Suspense>
-                        {/* Higher order component for live settings when product is published */}
-                        <SanityLive />
                     </div>
+                    {/* Higher order component for live settings when product is published */}
+                    <SanityLive />
                 </body>
             </html>
         </ClerkProvider>

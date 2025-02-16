@@ -1,11 +1,11 @@
-import { AddDocumentIcon } from "@sanity/icons";
+import { LockIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const faqType = defineType({
-    name: "category",
-    title: "Category",
+    name: "faq",
+    title: "Faqs",
     type: "document",
-    icon: AddDocumentIcon,
+    icon: LockIcon,
     fields: [
         defineField({
             name: "question",
@@ -23,9 +23,9 @@ export const faqType = defineType({
             type: "text",
         }),
         defineField({
-            name: "categories",
+            name: "faqCategories",
             type: "array",
-            of: [defineArrayMember({ type: "reference", to: { type: "category" } })],
+            of: [defineArrayMember({ type: "reference", to: { type: "faqCategory" } })],
         }),
     ],
 });

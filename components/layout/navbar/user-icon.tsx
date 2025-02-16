@@ -34,7 +34,7 @@ const UserIcon = () => {
                             </UserButton.MenuItems>
                         )}
                     </UserButton>
-                    <div className="hidden sm:block text-xs">
+                    <div className="hidden sm:block text-xs text-gray-600">
                         <p className="text-gray-400">Welcome Back</p>
                         <p className="font-bold">{user.fullName}!</p>
                     </div>
