@@ -11,7 +11,7 @@ interface IInputAltProps {
 }
 
 const Input = ({ inputName, control, errors, validationRules, placeholder }: IInputAltProps) => {
-    const InputClass = "border-2 border-gray-400 my-2 text-black p-2 rounded-sm w-full shadow-md";
+    const InputClass = "border-2 border-gray-400 my-2 text-white p-2 rounded-sm w-full shadow-md";
 
     return (
         <Controller
@@ -21,17 +21,8 @@ const Input = ({ inputName, control, errors, validationRules, placeholder }: IIn
             defaultValue={""}
             render={({ field }) => (
                 <div>
-                    <input
-                        {...field}
-                        className={InputClass}
-                        type="text"
-                        placeholder={placeholder}
-                    />
-                    {errors && errors[inputName] && (
-                        <p className="text-sm text-red-600 ml-4">
-                            {errors[inputName].message!.toString()}
-                        </p>
-                    )}
+                    <input {...field} className={InputClass} type="text" placeholder={placeholder} />
+                    {errors && errors[inputName] && <p className="text-sm text-red-600 ml-4">{errors[inputName].message!.toString()}</p>}
                 </div>
             )}
         ></Controller>

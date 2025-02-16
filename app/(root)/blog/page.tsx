@@ -1,4 +1,5 @@
 // import { getAllBlogs } from "@/sanity/lib/blogs/getAllBlogs";
+import { getAllPosts } from "@/sanity/lib/posts/getAllPosts";
 import BlogCard from "./components/blog-card";
 import { Metadata } from "next";
 
@@ -21,14 +22,14 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-    const blogs = await [];
+    const blogs = await getAllPosts();
 
     if (!blogs) {
         return;
     }
 
     if (blogs.length < 1) {
-        return <div className="py-48 flex items-center justify-center">No blogs posted.</div>;
+        return <div className="py-48 flex h-screen bg-black text-white items-center justify-center">No blogs posted.</div>;
     }
 
     return (

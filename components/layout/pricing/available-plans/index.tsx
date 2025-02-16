@@ -4,9 +4,9 @@ import { StudioBasicFeatures, StudioCommerceFeatures, StudioPlusFeatures, Studio
 
 const AvailablePlans = () => {
     return (
-        <section>
+        <section className="bg-black">
             {/* Title */}
-            <h5 className="flex items-center justify-center text-center w-full font-semibold text-6xl py-24">Available Plans</h5>
+            <h5 className="flex items-center justify-center text-center w-full font-semibold text-6xl text-white py-24">Available Plans</h5>
             {/* Plans */}
             <div className="flex flex-col xl:flex-row">
                 <Plan description="Everything you need to get started" title="Studio Basic" features={StudioBasicFeatures} />

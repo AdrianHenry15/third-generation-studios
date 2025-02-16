@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
+import { motion } from "framer-motion";
 
 export interface IFeatureProps {
     icon: React.ReactNode;
@@ -14,45 +17,58 @@ interface IPlanProps {
     mostPopular?: boolean;
 }
 
-const Plan = (props: IPlanProps) => {
-    const { title, description, features, mostPopular } = props;
-
+const Plan = ({ title, description, features, mostPopular }: IPlanProps) => {
     return (
-        <div
-            className={`flex flex-col p-6 rounded-xl shadow-lg z-50 ${
-                mostPopular ? "border-4 border-green-500 bg-gradient-to-r from-green-100 to-green-50" : "border border-gray-300 bg-white"
-            } hover:shadow-2xl transition-transform transform hover:scale-105 m-4 md:m-6`}
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            whileHover={{ scale: 1.05, boxShadow: "0px 10px 30px rgba(0, 255, 135, 0.3)" }}
+            className={`flex flex-col p-6 rounded-xl shadow-lg z-50 border-2 transition-transform m-4 md:m-6
+                ${mostPopular ? "border-green-500 bg-gradient-to-r from-black to-gray-900" : "border-gray-700 bg-gray-900"}
+            `}
         >
             {/* Header */}
-            <div className="flex flex-col gap-4">
-                <h3 className={`text-2xl font-bold ${mostPopular ? "text-green-600" : "text-gray-900"}`}>{title}</h3>
-                <p className="text-gray-600">{description}</p>
+            <div className="flex flex-col gap-4 text-center">
+                <h3 className={`text-2xl font-bold ${mostPopular ? "text-green-400" : "text-white"}`}>{title}</h3>
+                <p className="text-gray-400">{description}</p>
             </div>
 
             {/* Features */}
             <div className="mt-6 space-y-6 flex-1">
                 {features.map((item, index) => (
-                    <div key={index} className="flex items-center gap-4">
-                        <div className="text-green-600 text-xl">{item.icon}</div>
+                    <motion.div
+                        key={index}
+                        className="flex items-center gap-4"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1, duration: 0.4 }}
+                    >
+                        <div className="text-green-400 text-xl">{item.icon}</div>
                         <div>
-                            <strong className="text-gray-900">{item.feature}</strong>
-                            <p className="text-gray-600 text-sm">{item.description}</p>
+                            <strong className="text-white">{item.feature}</strong>
+                            <p className="text-gray-400 text-sm">{item.description}</p>
                         </div>
-                    </div>
+                    </motion.div>
                 ))}
             </div>
 
             {/* CTA */}
-            <div className="mt-8">
-                <p className="text-gray-500 text-center text-sm">Interested in this plan? Contact us for more details and pricing.</p>
+            <motion.div
+                className="mt-8 text-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+            >
+                <p className="text-gray-500 text-sm">Interested in this plan? Contact us for more details.</p>
                 <Link
                     href={"/consultation"}
-                    className="mt-4 block py-3 text-center text-white bg-green-600 hover:bg-green-700 rounded-lg font-medium transition duration-300 w-full"
+                    className="mt-4 block py-3 text-center text-black bg-green-400 hover:bg-green-500 rounded-lg font-medium transition duration-300 w-full"
                 >
                     Learn More
                 </Link>
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
     );
 };
 

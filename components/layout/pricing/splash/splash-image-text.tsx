@@ -1,15 +1,35 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
 
 const SplashImageText = () => {
     return (
-        <div className="flex z-50 flex-col w-full justify-center items-center">
-            <h5 className="text-white text-6xl font-bold text-center md:text-8xl">Studio Commerce</h5>
-            <button className="hover:text-gray-500 duration-300 ease-in-out transition-colors py-2 flex items-center justify-center bg-white text-black rounded-full w-[70%] mt-24 md:w-[40%] lg:w-[20%]">
+        <div className="flex flex-col items-center justify-center w-full z-50 text-center space-y-8">
+            <motion.h5
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="text-white text-6xl md:text-7xl font-bold"
+            >
+                Studio Commerce
+            </motion.h5>
+
+            <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white text-black rounded-full w-[70%] md:w-[40%] lg:w-[20%] py-3 font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+            >
                 Get Studio Commerce
-            </button>
-            <button className="hover:text-gray-500 duration-300 ease-in-out transition-colors py-2 flex items-center justify-center bg-black border-white border-[1px] text-white rounded-full w-[70%] mt-4 md:w-[40%] lg:w-[20%]">
+            </motion.button>
+
+            <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-transparent text-white border border-white rounded-full w-[70%] md:w-[40%] lg:w-[20%] py-3 font-semibold hover:bg-white hover:text-black transition-all duration-300"
+            >
                 See All Plans
-            </button>
+            </motion.button>
         </div>
     );
 };

@@ -78,7 +78,7 @@ const ContactFormOverlay = () => {
     };
 
     return (
-        <section id="contact-form-overlay" className="flex flex-col items-center px-4 py-20 relative w-full">
+        <section id="contact-form-overlay" className="flex flex-col items-center text-white px-4 py-20 relative w-full">
             {isOpen && <ConfirmationModal confirmEstimate={confirmEstimate} isOpen={isOpen} closeModal={() => setIsOpen(false)} />}
             {estimateSuccess && (
                 <SuccessModal
@@ -153,7 +153,7 @@ const ContactFormOverlay = () => {
                         control={control}
                         errors={errors}
                         options={ReferralSources}
-                        textColor="dark"
+                        textColor="light"
                     />
                     <Textarea inputName="comment" inputLabel="Comment" placeholder="Comment" control={control} />
                     <AuthorizationCheckbox inputName="authorization" control={control} />
