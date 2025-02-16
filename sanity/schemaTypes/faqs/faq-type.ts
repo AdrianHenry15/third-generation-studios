@@ -1,11 +1,11 @@
-import { LockIcon } from "@sanity/icons";
+import { BoltIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
 export const faqType = defineType({
     name: "faq",
     title: "Faqs",
     type: "document",
-    icon: LockIcon,
+    icon: BoltIcon,
     fields: [
         defineField({
             name: "question",
