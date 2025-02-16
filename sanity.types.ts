@@ -39,11 +39,73 @@ export type SanityImageDimensions = {
     aspectRatio?: number;
 };
 
+export type SanityFileAsset = {
+    _id: string;
+    _type: "sanity.fileAsset";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    originalFilename?: string;
+    label?: string;
+    title?: string;
+    description?: string;
+    altText?: string;
+    sha1hash?: string;
+    extension?: string;
+    mimeType?: string;
+    size?: number;
+    assetId?: string;
+    uploadId?: string;
+    path?: string;
+    url?: string;
+    source?: SanityAssetSourceData;
+};
+
 export type Geopoint = {
     _type: "geopoint";
     lat?: number;
     lng?: number;
     alt?: number;
+};
+
+export type Faq = {
+    _id: string;
+    _type: "faq";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    question?: string;
+    slug?: Slug;
+    answer?: string;
+    faqCategories?: Array<{
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        _key: string;
+        [internalGroqTypeReferenceTo]?: "faqCategory";
+    }>;
+};
+
+export type FaqCategory = {
+    _id: string;
+    _type: "faqCategory";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    title?: string;
+    slug?: Slug;
+    description?: string;
+};
+
+export type BlogCategory = {
+    _id: string;
+    _type: "blogCategory";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    title?: string;
+    slug?: Slug;
+    description?: string;
 };
 
 export type Promotion = {
@@ -60,88 +122,6 @@ export type Promotion = {
     endDate?: string;
     icon?: "sparkle" | "star" | "discount" | "gift";
     status?: "upcoming" | "active" | "expired";
-};
-
-export type Blog = {
-    _id: string;
-    _type: "blog";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    title?: string;
-    slug?: Slug;
-    publishedAt?: string;
-    mainImage?: {
-        asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        _type: "image";
-    };
-    excerpt?: string;
-    body?: Array<
-        | {
-              children?: Array<{
-                  marks?: Array<string>;
-                  text?: string;
-                  _type: "span";
-                  _key: string;
-              }>;
-              style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-              listItem?: "bullet" | "number";
-              markDefs?: Array<{
-                  href?: string;
-                  _type: "link";
-                  _key: string;
-              }>;
-              level?: number;
-              _type: "block";
-              _key: string;
-          }
-        | {
-              asset?: {
-                  _ref: string;
-                  _type: "reference";
-                  _weak?: boolean;
-                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-              };
-              hotspot?: SanityImageHotspot;
-              crop?: SanityImageCrop;
-              _type: "image";
-              _key: string;
-          }
-    >;
-    author?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "author";
-    };
-};
-
-export type Author = {
-    _id: string;
-    _type: "author";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    name?: string;
-    image?: {
-        asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        _type: "image";
-    };
-    bio?: string;
 };
 
 export type Newsletter = {
@@ -189,6 +169,154 @@ export type Newsletter = {
     status?: "draft" | "published" | "archived";
 };
 
+export type Post = {
+    _id: string;
+    _type: "post";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    title?: string;
+    slug?: Slug;
+    author?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "author";
+    };
+    mainImage?: {
+        asset?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+    };
+    blogCategories?: Array<{
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        _key: string;
+        [internalGroqTypeReferenceTo]?: "blogCategory";
+    }>;
+    publishedAt?: string;
+    body?: Array<
+        | {
+              children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+              }>;
+              style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+              listItem?: "bullet";
+              markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+          }
+        | {
+              asset?: {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+              _key: string;
+          }
+    >;
+};
+
+export type Author = {
+    _id: string;
+    _type: "author";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    name?: string;
+    slug?: Slug;
+    image?: {
+        asset?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+    };
+    bio?: Array<{
+        children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+        }>;
+        style?: "normal";
+        listItem?: never;
+        markDefs?: Array<{
+            href?: string;
+            _type: "link";
+            _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+    }>;
+};
+
+export type Slug = {
+    _type: "slug";
+    current?: string;
+    source?: string;
+};
+
+export type BlockContent = Array<
+    | {
+          children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+          }>;
+          style?: "normal" | "h1" | "h2" | "h3" | "h4" | "blockquote";
+          listItem?: "bullet";
+          markDefs?: Array<{
+              href?: string;
+              _type: "link";
+              _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+      }
+    | {
+          asset?: {
+              _ref: string;
+              _type: "reference";
+              _weak?: boolean;
+              [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          };
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          _type: "image";
+          _key: string;
+      }
+>;
+
 export type SanityImageCrop = {
     _type: "sanity.imageCrop";
     top?: number;
@@ -228,6 +356,13 @@ export type SanityImageAsset = {
     source?: SanityAssetSourceData;
 };
 
+export type SanityAssetSourceData = {
+    _type: "sanity.assetSourceData";
+    name?: string;
+    id?: string;
+    url?: string;
+};
+
 export type SanityImageMetadata = {
     _type: "sanity.imageMetadata";
     location?: Geopoint;
@@ -239,161 +374,34 @@ export type SanityImageMetadata = {
     isOpaque?: boolean;
 };
 
-export type Application = {
-    _id: string;
-    _type: "application";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    job?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "job";
-    };
-    resume?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "resume";
-    };
-    slug?: Slug;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    phone?: string;
-    publishedAt?: string;
-};
-
-export type Resume = {
-    _id: string;
-    _type: "resume";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    resumeFile?: {
-        asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-        };
-        _type: "file";
-    };
-    slug?: Slug;
-};
-
-export type SanityFileAsset = {
-    _id: string;
-    _type: "sanity.fileAsset";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    originalFilename?: string;
-    label?: string;
-    title?: string;
-    description?: string;
-    altText?: string;
-    sha1hash?: string;
-    extension?: string;
-    mimeType?: string;
-    size?: number;
-    assetId?: string;
-    uploadId?: string;
-    path?: string;
-    url?: string;
-    source?: SanityAssetSourceData;
-};
-
-export type SanityAssetSourceData = {
-    _type: "sanity.assetSourceData";
-    name?: string;
-    id?: string;
-    url?: string;
-};
-
-export type Job = {
-    _id: string;
-    _type: "job";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    title?: string;
-    slug?: Slug;
-    location?: string;
-    description?: string;
-    publishedAt?: string;
-};
-
-export type Slug = {
-    _type: "slug";
-    current?: string;
-    source?: string;
-};
-
 export type AllSanitySchemaTypes =
     | SanityImagePaletteSwatch
     | SanityImagePalette
     | SanityImageDimensions
+    | SanityFileAsset
     | Geopoint
+    | Faq
+    | FaqCategory
+    | BlogCategory
     | Promotion
-    | Blog
-    | Author
     | Newsletter
+    | Post
+    | Author
+    | Slug
+    | BlockContent
     | SanityImageCrop
     | SanityImageHotspot
     | SanityImageAsset
-    | SanityImageMetadata
-    | Application
-    | Resume
-    | SanityFileAsset
     | SanityAssetSourceData
-    | Job
-    | Slug;
+    | SanityImageMetadata;
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ./sanity/lib/applications/getAllApplications.ts
-// Variable: ALL_APPLICATIONS_QUERY
-// Query: *[_type == "application"]{        _id,        firstName,        lastName,        email,        phone,        publishedAt,        job->{            title        },        resumeFile{            asset->{                _ref            }        }    }
-export type ALL_APPLICATIONS_QUERYResult = Array<{
-    _id: string;
-    firstName: string | null;
-    lastName: string | null;
-    email: string | null;
-    phone: string | null;
-    publishedAt: string | null;
-    job: {
-        title: string | null;
-    } | null;
-    resumeFile: null;
-}>;
-
-// Source: ./sanity/lib/applications/getApplicationBySlug.ts
-// Variable: APPLICATION_BY_SLUG_QUERY
-// Query: *[_type == "application" && slug.current == $slug][0]{        _id,        firstName,        lastName,        email,        phone,        publishedAt,        job->{            title        },        resumeFile{            asset->{                _ref            }        }    }
-export type APPLICATION_BY_SLUG_QUERYResult = {
-    _id: string;
-    firstName: string | null;
-    lastName: string | null;
-    email: string | null;
-    phone: string | null;
-    publishedAt: string | null;
-    job: {
-        title: string | null;
-    } | null;
-    resumeFile: null;
-} | null;
-
 // Source: ./sanity/lib/authors/getAllAuthors.ts
 // Variable: ALL_AUTHORS
-// Query: *[_type == "author"] | order(name asc)
+// Query: *[_type == "author"] | order(name asc) {            _id,            name,            image        }
 export type ALL_AUTHORSResult = Array<{
     _id: string;
-    _type: "author";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    name?: string;
-    image?: {
+    name: string | null;
+    image: {
         asset?: {
             _ref: string;
             _type: "reference";
@@ -403,8 +411,7 @@ export type ALL_AUTHORSResult = Array<{
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         _type: "image";
-    };
-    bio?: string;
+    } | null;
 }>;
 
 // Source: ./sanity/lib/authors/getAuthorBySlug.ts
@@ -417,6 +424,7 @@ export type AUTHOR_BY_ID_QUERYResult = {
     _updatedAt: string;
     _rev: string;
     name?: string;
+    slug?: Slug;
     image?: {
         asset?: {
             _ref: string;
@@ -428,13 +436,30 @@ export type AUTHOR_BY_ID_QUERYResult = {
         crop?: SanityImageCrop;
         _type: "image";
     };
-    bio?: string;
+    bio?: Array<{
+        children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+        }>;
+        style?: "normal";
+        listItem?: never;
+        markDefs?: Array<{
+            href?: string;
+            _type: "link";
+            _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+    }>;
 } | null;
 
-// Source: ./sanity/lib/blogs/getAllBlogs.ts
-// Variable: ALL_BLOGS
-// Query: *[_type == "blog"] | order(publishedAt desc) {            _id,            title,            slug,            publishedAt,            mainImage {                asset->{                    _id,                    url                }            },            excerpt,            author->{                _id,                name,                image {                    asset->{                        _id,                        url                    }                },            bio            }        }
-export type ALL_BLOGSResult = Array<{
+// Source: ./sanity/lib/posts/getAllPosts.ts
+// Variable: ALL_POSTS
+// Query: *[_type == "post"] | order(publishedAt desc) {            _id,            title,            slug,            publishedAt,            mainImage {                asset->{                    _id,                    url                },                alt            },            author->{                _id,                name            },            categories[]->{                _id,                title            },            body        }
+export type ALL_POSTSResult = Array<{
     _id: string;
     title: string | null;
     slug: Slug | null;
@@ -444,98 +469,54 @@ export type ALL_BLOGSResult = Array<{
             _id: string;
             url: string | null;
         } | null;
+        alt: string | null;
     } | null;
-    excerpt: string | null;
     author: {
         _id: string;
         name: string | null;
-        image: {
-            asset: {
-                _id: string;
-                url: string | null;
-            } | null;
-        } | null;
-        bio: string | null;
     } | null;
+    categories: null;
+    body: Array<
+        | {
+              children?: Array<{
+                  marks?: Array<string>;
+                  text?: string;
+                  _type: "span";
+                  _key: string;
+              }>;
+              style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "normal";
+              listItem?: "bullet";
+              markDefs?: Array<{
+                  href?: string;
+                  _type: "link";
+                  _key: string;
+              }>;
+              level?: number;
+              _type: "block";
+              _key: string;
+          }
+        | {
+              asset?: {
+                  _ref: string;
+                  _type: "reference";
+                  _weak?: boolean;
+                  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+              };
+              hotspot?: SanityImageHotspot;
+              crop?: SanityImageCrop;
+              alt?: string;
+              _type: "image";
+              _key: string;
+          }
+    > | null;
 }>;
-
-// Source: ./sanity/lib/job-openings/getAllJobOpenings.ts
-// Variable: ALL_JOB_OPENINGS_QUERY
-// Query: *[_type == "job"] | order(name asc)
-export type ALL_JOB_OPENINGS_QUERYResult = Array<{
-    _id: string;
-    _type: "job";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    title?: string;
-    slug?: Slug;
-    location?: string;
-    description?: string;
-    publishedAt?: string;
-}>;
-
-// Source: ./sanity/lib/job-openings/getJobOpeningBySlug.ts
-// Variable: JOB_BY_ID_QUERY
-// Query: *[_type == "job" && slug.current == $slug] | order(name asc) [0]
-export type JOB_BY_ID_QUERYResult = {
-    _id: string;
-    _type: "job";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    title?: string;
-    slug?: Slug;
-    location?: string;
-    description?: string;
-    publishedAt?: string;
-} | null;
-
-// Source: ./sanity/lib/resumes/getAllResumes.ts
-// Variable: ALL_RESUMES_QUERY
-// Query: *[_type == "resume"]{    _id,    user-> { name },    "resumeFile": resumeFile.asset-> { url },    uploadedAt  } | order(uploadedAt desc)
-export type ALL_RESUMES_QUERYResult = Array<{
-    _id: string;
-    user: null;
-    resumeFile: {
-        url: string | null;
-    } | null;
-    uploadedAt: null;
-}>;
-
-// Source: ./sanity/lib/resumes/getResumeBySlug.ts
-// Variable: RESUME_BY_ID_QUERY
-// Query: *[_type == "resume" && slug.current == $slug] | order(name asc) [0]
-export type RESUME_BY_ID_QUERYResult = {
-    _id: string;
-    _type: "resume";
-    _createdAt: string;
-    _updatedAt: string;
-    _rev: string;
-    resumeFile?: {
-        asset?: {
-            _ref: string;
-            _type: "reference";
-            _weak?: boolean;
-            [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-        };
-        _type: "file";
-    };
-    slug?: Slug;
-} | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
     interface SanityQueries {
-        '*[_type == "application"]{\n        _id,\n        firstName,\n        lastName,\n        email,\n        phone,\n        publishedAt,\n        job->{\n            title\n        },\n        resumeFile{\n            asset->{\n                _ref\n            }\n        }\n    }': ALL_APPLICATIONS_QUERYResult;
-        '*[_type == "application" && slug.current == $slug][0]{\n        _id,\n        firstName,\n        lastName,\n        email,\n        phone,\n        publishedAt,\n        job->{\n            title\n        },\n        resumeFile{\n            asset->{\n                _ref\n            }\n        }\n    }': APPLICATION_BY_SLUG_QUERYResult;
-        '*[_type == "author"] | order(name asc)\n': ALL_AUTHORSResult;
+        '\n        *[_type == "author"] | order(name asc) {\n            _id,\n            name,\n            image\n        }\n    ': ALL_AUTHORSResult;
         '*[_type == "author" && slug.current == $slug] | order(name asc) [0]\n': AUTHOR_BY_ID_QUERYResult;
-        '\n        *[_type == "blog"] | order(publishedAt desc) {\n            _id,\n            title,\n            slug,\n            publishedAt,\n            mainImage {\n                asset->{\n                    _id,\n                    url\n                }\n            },\n            excerpt,\n            author->{\n                _id,\n                name,\n                image {\n                    asset->{\n                        _id,\n                        url\n                    }\n                },\n            bio\n            }\n        }\n    ': ALL_BLOGSResult;
-        '*[_type == "job"] | order(name asc)\n': ALL_JOB_OPENINGS_QUERYResult;
-        '*[_type == "job" && slug.current == $slug] | order(name asc) [0]\n': JOB_BY_ID_QUERYResult;
-        '*[_type == "resume"]{\n    _id,\n    user-> { name },\n    "resumeFile": resumeFile.asset-> { url },\n    uploadedAt\n  } | order(uploadedAt desc)': ALL_RESUMES_QUERYResult;
-        '*[_type == "resume" && slug.current == $slug] | order(name asc) [0]\n': RESUME_BY_ID_QUERYResult;
+        '\n        *[_type == "post"] | order(publishedAt desc) {\n            _id,\n            title,\n            slug,\n            publishedAt,\n            mainImage {\n                asset->{\n                    _id,\n                    url\n                },\n                alt\n            },\n            author->{\n                _id,\n                name\n            },\n            categories[]->{\n                _id,\n                title\n            },\n            body\n        }\n    ': ALL_POSTSResult;
     }
 }

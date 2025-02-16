@@ -1,7 +1,6 @@
-// import { getAllBlogs } from "@/sanity/lib/blogs/getAllBlogs";
 import { getAllPosts } from "@/sanity/lib/posts/getAllPosts";
-import BlogCard from "./components/blog-card";
 import { Metadata } from "next";
+import PostCard from "./components/post-card";
 
 export const metadata: Metadata = {
     title: "Third Generation Studios Blog | Web Development & Music Production Insights",
@@ -22,22 +21,23 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-    const blogs = await getAllPosts();
+    const posts = await getAllPosts();
+    console.log(posts);
 
-    if (!blogs) {
+    if (!posts) {
         return;
     }
 
-    if (blogs.length < 1) {
-        return <div className="py-48 flex h-screen bg-black text-white items-center justify-center">No blogs posted.</div>;
+    if (posts.length < 1) {
+        return <div className="py-48 flex h-screen bg-black text-white items-center justify-center">No posts posted.</div>;
     }
 
     return (
-        <div className="mx-auto p-6 h-full lg:h-screen w-full bg-gradient-to-b from-blue-500 bg-white">
+        <div className="mx-auto p-6 h-full lg:h-screen w-full bg-gradient-to-b from-blue-500 via-green-500 to-purple-500 bg-white">
             <h1 className="text-3xl font-bold text-center mb-6">Latest Blog Posts</h1>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {blogs.map((blog: any) => (
-                    <BlogCard key={blog._id} blog={blog} />
+                {posts.map((post: any) => (
+                    <PostCard key={post._id} post={post} />
                 ))}
             </div>
         </div>
