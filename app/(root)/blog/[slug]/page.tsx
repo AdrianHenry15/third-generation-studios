@@ -1,28 +1,22 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { getBlogBySlug } from "@/sanity/lib/blogs/getBlogBySlug";
-import { imageUrl } from "@/sanity/lib/image-url";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import UserDefaultImage from "@/public/assets/icons/user (1).png";
-import BackButton from "@/app/(root)/components/back-button";
+import { imageUrl } from "@/sanity/lib/image-url";
+import { getPostBySlug } from "@/sanity/lib/posts/getPostBySlug";
+import BackButton from "@/components/back-button";
 
 export default async function BlogPageBySlug({ params }: { params: Promise<{ slug: string }> }) {
     const slug = (await params).slug;
     if (!slug) return notFound();
 
-    const blog = await getBlogBySlug(slug);
+    const blog = await getPostBySlug(slug);
     if (!blog) return notFound();
 
     const portableTextComponents: PortableTextComponents = {
         types: {
             image: ({ value }) => (
-                <Image
-                    src={imageUrl(value.asset).url()}
-                    alt="Blog Image"
-                    width={800}
-                    height={500}
-                    className="w-full rounded-lg my-4"
-                />
+                <Image src={imageUrl(value.asset).url()} alt="Blog Image" width={800} height={500} className="w-full rounded-lg my-4" />
             ),
         },
         block: {
@@ -31,9 +25,7 @@ export default async function BlogPageBySlug({ params }: { params: Promise<{ slu
             h3: ({ children }) => <h3 className="text-xl font-semibold my-2">{children}</h3>,
             normal: ({ children }) => <p className="text-gray-700 leading-relaxed">{children}</p>,
             blockquote: ({ children }) => (
-                <blockquote className="border-l-4 border-blue-500 pl-4 italic my-4 text-gray-600">
-                    {children}
-                </blockquote>
+                <blockquote className="border-l-4 border-blue-500 pl-4 italic my-4 text-gray-600">{children}</blockquote>
             ),
         },
         list: {
@@ -44,21 +36,14 @@ export default async function BlogPageBySlug({ params }: { params: Promise<{ slu
             strong: ({ children }) => <strong className="font-bold">{children}</strong>,
             em: ({ children }) => <em className="italic">{children}</em>,
             link: ({ value, children }) => (
-                <a
-                    href={value?.href}
-                    className="text-blue-500 underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
+                <a href={value?.href} className="text-blue-500 underline" target="_blank" rel="noopener noreferrer">
                     {children}
                 </a>
             ),
         },
     };
 
-    const authorImageUrl = blog.author?.image
-        ? imageUrl(blog.author.image).url()
-        : UserDefaultImage;
+    const authorImageUrl = blog.author?.image ? imageUrl(blog.author.image).url() : UserDefaultImage;
     const authorName = blog.author?.name || "Unknown Author";
     const publishedDate = blog.publishedAt
         ? new Intl.DateTimeFormat("en-US", {
@@ -74,13 +59,7 @@ export default async function BlogPageBySlug({ params }: { params: Promise<{ slu
 
             <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
             <div className="flex items-center gap-3 text-gray-600 text-sm">
-                <Image
-                    src={authorImageUrl}
-                    alt={authorName}
-                    width={40}
-                    height={40}
-                    className="rounded-full w-6 h-6 object-cover"
-                />
+                <Image src={authorImageUrl} alt={authorName} width={40} height={40} className="rounded-full w-6 h-6 object-cover" />
                 <p>
                     By <span className="font-semibold">{authorName}</span> • {publishedDate}
                 </p>

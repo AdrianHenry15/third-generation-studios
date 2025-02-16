@@ -1,4 +1,4 @@
-import { IFeatureProps } from "@/components/layout/plans/available-plans/plan";
+import { IFeatureProps } from "@/components/layout/pricing/available-plans/plan";
 // Icons
 import {
     MdAccountBalance,

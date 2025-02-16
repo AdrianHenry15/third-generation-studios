@@ -36,7 +36,7 @@ const HeroSection = () => {
                 Third Generation Studios
             </motion.h1>
             <motion.p
-                className="text-xl z-10 max-w-2xl leading-relaxed text-gray-500"
+                className="text-xl z-10 max-w-2xl leading-relaxed font-bold text-zinc-600"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 1 }}

@@ -6,8 +6,8 @@ export const NavMenuTypeItems: NavMenuType[] = [
         link: "/websites",
     },
     {
-        title: "Available Plans",
-        link: "/plans",
+        title: "Pricing",
+        link: "/pricing",
     },
     {
         title: "Blog",

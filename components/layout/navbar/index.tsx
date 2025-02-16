@@ -9,8 +9,9 @@ import Logo from "@/public/logos/glowCircle-trans.png";
 import { NavMenuTypeItems } from "@/lib/constants";
 import { NavMenuType } from "@/lib/types";
 import Button from "@/components/button";
-import MobileMenu from "./mobile-menu";
 import ReusableModal from "@/components/modals/resuable-modal";
+import MobileMenu from "./mobile-menu";
+import UserIcon from "./user-icon";
 
 interface INavbarProps {
     className?: string;
@@ -84,8 +85,11 @@ export default function Navbar(props: INavbarProps) {
                     {/* NAV BUTTONS */}
                     <ul className="hidden items-center xl:flex">
                         <Button onClick={() => router.push("/contact-us")} className="bg-white text-black" name="Contact Us" />
-                        <Button onClick={() => router.push("/estimate")} className="mx-4 bg-gray-900 text-white" name="Free Estimate" />
+                        <Button onClick={() => router.push("/consultation")} className="mx-4 bg-gray-900 text-white" name="Consultation" />
                     </ul>
+                    <div className="absolute right-4 flex items-center top-6">
+                        <UserIcon />
+                    </div>
                 </div>
             </nav>
         </>
