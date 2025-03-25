@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from "@headlessui/react";
 import Button from "@/components/button";
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ export default function ReusableModal({ isOpen, onClose, title, description, onC
     return (
         <Transition appear show={isOpen} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={onClose}>
-                <Transition.Child
+                <TransitionChild
                     as={Fragment}
                     enter="ease-out duration-300"
                     enterFrom="opacity-0"
@@ -27,11 +27,11 @@ export default function ReusableModal({ isOpen, onClose, title, description, onC
                     leaveTo="opacity-0"
                 >
                     <div className="fixed inset-0 bg-black bg-opacity-25" />
-                </Transition.Child>
+                </TransitionChild>
 
                 <div className="fixed inset-0 overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4 text-center">
-                        <Transition.Child
+                        <TransitionChild
                             as={Fragment}
                             enter="ease-out duration-300"
                             enterFrom="opacity-0 scale-95"
@@ -40,10 +40,10 @@ export default function ReusableModal({ isOpen, onClose, title, description, onC
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                            <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                                <DialogTitle as="h3" className="text-lg font-medium leading-6 text-gray-900">
                                     {title}
-                                </Dialog.Title>
+                                </DialogTitle>
                                 <div className="mt-2">
                                     <p className="text-sm text-gray-500">{description}</p>
                                 </div>
@@ -51,11 +51,11 @@ export default function ReusableModal({ isOpen, onClose, title, description, onC
                                 <div className="mt-4 flex justify-end space-x-4">
                                     <Button name="Cancel" onClick={onClose} />
                                     <Link target="_blank" href={"https://thirdgenerationstudios.printful.me/"}>
-                                        <Button name="Open Tab" onClick={onConfirm} altColor />
+                                        <Button name="Open Tab" onClick={onConfirm} />
                                     </Link>
                                 </div>
-                            </Dialog.Panel>
-                        </Transition.Child>
+                            </DialogPanel>
+                        </TransitionChild>
                     </div>
                 </div>
             </Dialog>
