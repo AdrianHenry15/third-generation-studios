@@ -1,6 +1,11 @@
-import { LicenseDataType } from "@/lib/types";
 import React from "react";
 
+type LicenseDataType = {
+    title: string;
+    price: string;
+    fileType: string;
+    description: string;
+};
 interface ILicenseCardProps {
     license: LicenseDataType;
     selected: boolean;
