@@ -1,5 +1,5 @@
 import { defineQuery } from "next-sanity";
-import { sanityFetch } from "../live";
+import { sanityFetch } from "../../live";
 
 export const getAllPosts = async () => {
     const ALL_POSTS = defineQuery(`
@@ -19,7 +19,7 @@ export const getAllPosts = async () => {
                 _id,
                 name
             },
-            categories[]->{
+            blogCategories[]->{
                 _id,
                 title
             },

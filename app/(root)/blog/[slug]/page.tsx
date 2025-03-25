@@ -3,8 +3,8 @@ import Image from "next/image";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import UserDefaultImage from "@/public/user-default-image.png";
 import { imageUrl } from "@/sanity/lib/image-url";
-import { getPostBySlug } from "@/sanity/lib/posts/getPostBySlug";
 import BackButton from "@/components/back-button";
+import { getPostBySlug } from "@/sanity/lib/blog/posts/getPostBySlug";
 
 export default async function PostPageBySlug({ params }: { params: Promise<{ slug: string }> }) {
     const slug = (await params).slug;

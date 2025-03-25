@@ -21,10 +21,10 @@ export const NavMenuTypeItems: NavMenuType[] = [
         title: "About",
         link: "/About",
     },
-    {
-        title: "Faqs",
-        link: "/faqs",
-    },
+    // {
+    //     title: "Faqs",
+    //     link: "/faqs",
+    // },
 ];
 export const NavMenuTypeAltItems: NavMenuType[] = [
     {

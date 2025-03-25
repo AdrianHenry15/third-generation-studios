@@ -1,9 +1,8 @@
 import { defineQuery } from "next-sanity";
-import { sanityFetch } from "../live";
+import { sanityFetch } from "../../live";
 
 export const getauthorBySlug = async (slug: string) => {
-    const AUTHOR_BY_ID_QUERY =
-        defineQuery(`*[_type == "author" && slug.current == $slug] | order(name asc) [0]
+    const AUTHOR_BY_ID_QUERY = defineQuery(`*[_type == "author" && slug.current == $slug] | order(name asc) [0]
 `);
 
     try {

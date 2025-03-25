@@ -89,7 +89,7 @@ const MobileMenu = () => {
                                     setIsOpen={() => setIsOpen(false)}
                                     icon={<IoAlbumsOutline size={25} />}
                                 />
-                                <LinkItem link="/faqs" title="Faqs" setIsOpen={() => setIsOpen(false)} icon={<FaQuoteRight size={25} />} />
+                                {/* <LinkItem link="/faqs" title="Faqs" setIsOpen={() => setIsOpen(false)} icon={<FaQuoteRight size={25} />} /> */}
                             </nav>
 
                             {/* Footer Buttons */}

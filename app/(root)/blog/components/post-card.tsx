@@ -23,7 +23,7 @@ const PostCard = (props: IPostCardProps) => {
 
     return (
         <Link key={post._id} href={`/blog/${post.slug!.current || ""}`}>
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer hover:shadow-xl transition transform hover:scale-105">
+            <div className="bg-white shadow-lg relative h-[475px] lg:h-[425px] rounded-lg overflow-hidden cursor-pointer hover:shadow-xl transition transform hover:scale-105">
                 {/* Post image */}
                 {post.mainImage?.asset && (
                     <Image
@@ -57,7 +57,7 @@ const PostCard = (props: IPostCardProps) => {
                     </div>
 
                     {/* Read more link */}
-                    <p className="mt-2 font-semibold bg-gradient-to-r from-pink-500 via-blue-500 to-yellow-500 text-transparent bg-clip-text">
+                    <p className="absolute bottom-4 left-4 font-semibold bg-gradient-to-r from-pink-500 via-blue-500 to-yellow-500 text-transparent bg-clip-text">
                         Read More →
                     </p>
                 </div>

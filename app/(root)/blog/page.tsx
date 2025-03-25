@@ -1,6 +1,7 @@
-import { getAllPosts } from "@/sanity/lib/posts/getAllPosts";
 import { Metadata } from "next";
 import PostCard from "./components/post-card";
+import { getAllPosts } from "@/sanity/lib/blog/posts/getAllPosts";
+import { Post } from "@/sanity.types";
 
 export const metadata: Metadata = {
     title: "Third Generation Studios Blog | Web Development & Music Production Insights",
@@ -21,24 +22,45 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogPage() {
-    const posts = await getAllPosts();
+    const posts: Post[] = await getAllPosts();
 
-    if (!posts) {
-        return;
-    }
+    if (!posts) return;
 
-    if (posts.length < 1) {
-        return <div className="py-48 flex h-screen bg-black text-white items-center justify-center">No posts posted.</div>;
-    }
+    const webDevPosts = posts.filter((post: any) => post.blogCategories![0].title === "Web Development");
+    const musicPosts = posts.filter((post: any) => post.blogCategories![0].title === "Music Production");
 
     return (
-        <div className="mx-auto p-6 h-full lg:h-screen w-full bg-gradient-to-b from-blue-500 via-green-500 to-purple-500 bg-white">
-            <h1 className="text-3xl font-bold text-center mb-6">Latest Blog Posts</h1>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {posts.map((post: any) => (
-                    <PostCard key={post._id} post={post} />
-                ))}
-            </div>
+        <div className="mx-auto p-6 h-full w-full bg-gradient-to-b from-blue-500 via-green-500 to-purple-500 bg-white">
+            <h1 className="text-3xl font-bold text-center mb-6 text-white">Latest Blog Posts</h1>
+
+            {/* Web Development Section */}
+            {webDevPosts.length > 0 && (
+                <section className="mb-12">
+                    <h2 className="text-2xl font-semibold text-center text-white mb-4">Web Development</h2>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {webDevPosts.map((post: any) => (
+                            <PostCard key={post._id} post={post} />
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* Music Production Section */}
+            {musicPosts.length > 0 && (
+                <section>
+                    <h2 className="text-2xl font-semibold text-center text-white mb-4">Music Production</h2>
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {musicPosts.map((post: any) => (
+                            <PostCard key={post._id} post={post} />
+                        ))}
+                    </div>
+                </section>
+            )}
+
+            {/* No Posts Message */}
+            {webDevPosts.length < 1 && musicPosts.length < 1 && (
+                <div className="py-48 flex h-screen bg-black text-white items-center justify-center">No posts posted.</div>
+            )}
         </div>
     );
 }

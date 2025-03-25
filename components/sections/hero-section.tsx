@@ -21,7 +21,7 @@ const HeroSection = () => {
                     />
                     {/* Background Animation */}
                     <motion.div
-                        className="w-full h-full bg-gradient-to-br from-gray-900 via-black to-gray-800 opacity-50"
+                        className="w-full h-full bg-gradient-to-b from-gray-900 to-black"
                         animate={{ opacity: [0.6, 0.8, 0.6] }}
                         transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
                     />
@@ -36,7 +36,7 @@ const HeroSection = () => {
                 Third Generation Studios
             </motion.h1>
             <motion.p
-                className="text-xl z-10 max-w-2xl leading-relaxed font-bold text-zinc-600"
+                className="text-xl z-10 max-w-2xl leading-relaxed font-bold text-white"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5, duration: 1 }}
