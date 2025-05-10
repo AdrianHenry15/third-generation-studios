@@ -22,55 +22,57 @@ const AuthorizationCheckbox = ({
         if (error) {
             timer = setTimeout(() => {
                 setError(false);
-            }, 5000); // Display error for 5 seconds
+            }, 5000);
         }
         return () => clearTimeout(timer);
     }, [error]);
+
     return (
         <Controller
             rules={validationRules}
             name={inputName}
             control={control}
             defaultValue={true}
-            render={({ field }) => (
+            render={({ field: { onChange, value, name, ref } }) => (
                 <div className="flex flex-col">
-                    <div className="flex items-start" onClick={() => setError(true)}>
-                        <div className=" flex cursor-not-allowed">
+                    <div className="flex items-start gap-2">
+                        <div className="flex h-5 items-center mt-1">
                             <input
-                                className="mr-2 pointer-events-none"
+                                id={inputName}
                                 type="checkbox"
-                                {...field}
-                                defaultChecked
+                                className="h-4 w-4 rounded border-gray-600 bg-gray-700 text-purple-600 focus:ring-purple-500 focus:ring-offset-gray-800"
+                                name={name}
+                                checked={value}
+                                ref={ref}
                                 onChange={(e) => {
-                                    field.onChange(e.target.checked);
-                                    console.log("Checkbox value:", e.target.checked);
+                                    onChange(e.target.checked);
+                                    if (!e.target.checked) setError(true);
                                 }}
                             />
                         </div>
-                        <label className="text-xs text-zinc-400">
-                            By clicking here, you authorize Brite Exterior Services, to reach out to
-                            you by call, email, or text in accordance with our
+                        <label htmlFor={inputName} className="text-sm text-gray-400 leading-tight">
+                            By submitting this form, you agree to our
                             <Link
-                                target="_blank"
-                                className="text-blue-500 ml-1 hover:underline underline-offset-2"
                                 href="/privacy-policy"
+                                target="_blank"
+                                className="text-green-400 hover:text-green-300 mx-1 transition-colors"
                             >
                                 Privacy Policy
                             </Link>
-                            . You can reply "STOP" to opt out at any time.
+                            and consent to be contacted regarding your inquiry.
                         </label>
                     </div>
-                    {/* ERROR */}
-                    <aside
-                        className={`text-red-600 text-xs mt-2 ml-6 ${
+                    
+                    <div 
+                        className={`text-red-400 text-xs mt-2 ml-6 transition-opacity duration-300 ${
                             error ? "opacity-100" : "opacity-0"
                         }`}
                     >
-                        You must be authorized to proceed
-                    </aside>
+                        You must accept the terms to proceed
+                    </div>
                 </div>
             )}
-        ></Controller>
+        />
     );
 };
 

@@ -1,169 +1,214 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@mui/material";
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { usePathname } from "next/navigation";
 
-import Logo from "@/public/logos/glowCircle-trans.png";
+import Logo from "@/public/logos/tgs-logo.png";
 
-import ConfirmationModal from "../modals/confirmation-modal";
 import SuccessModal from "../modals/success-modal";
 import { Loader } from "../loader";
 import Dropdown from "./components/dropdown";
 import Input from "./components/input";
 import sendEmail from "@/lib/email-service";
-import { ReferralSources } from "@/lib/constants";
 import Textarea from "../inputs/textarea";
 import AuthorizationCheckbox from "./components/authorization-checkbox";
 
+// Available plan options
+const PLAN_OPTIONS = [
+  "Studio Basic", 
+  "Studio Plus", 
+  "Studio Pro", 
+  "Studio Commerce"
+];
+
 type FormValues = {
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
-    comment: string;
-    referralSource: string;
+  name: string;
+  email: string;
+  plan: string;
+  productDescription: string;
+  authorization: boolean;
 };
 
 const ContactFormOverlay = () => {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [estimateSuccess, setEstimateSuccess] = useState(false);
-    const [estimateFail, setEstimateFail] = useState(false);
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
 
-    const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string;
-    const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string;
-    const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_KEY as string;
-    const PRIVATE_KEY = process.env.NEXT_PRIVATE_EMAILJS_KEY as string;
+  const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string;
+  const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string;
+  const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_KEY as string;
+  const PRIVATE_KEY = process.env.NEXT_PRIVATE_EMAILJS_KEY as string;
 
-    const {
-        handleSubmit,
-        getValues,
-        control,
-        formState: { errors },
-    } = useForm<FormValues>();
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<FormValues>({
+    defaultValues: {
+      name: "",
+      email: "",
+      plan: "",
+      productDescription: "",
+      authorization: true
+    }
+  });
 
-    const onSubmit: SubmitHandler<FormValues> = async (data) => {
-        setLoading(true);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    setLoading(true);
 
-        setIsOpen(true); // Show confirmation modal
-
-        setLoading(false);
+    const templateParams = {
+      name: data.name,
+      email: data.email,
+      plan: data.plan,
+      productDescription: data.productDescription,
     };
 
-    const confirmEstimate = () => {
-        setLoading(true);
+    try {
 
-        const templateParams = {
-            firstName: getValues("firstName"),
-            lastName: getValues("lastName"),
-            phone: getValues("phone"),
-            email: getValues("email"),
-            comment: getValues("comment"),
-            referralSource: getValues("referralSource"),
-        };
+        const { success, error } = await sendEmail(
+            SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY
+        );
+      
+        if (success) {
+        setSuccessModal(true);
+        reset();
+      } else {
+        console.log(error)
+        setErrorModal(true);
+      }
+    } catch (error) {
+      setErrorModal(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        sendEmail(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY, PRIVATE_KEY)
-            .then(({ success }) => {
-                setEstimateSuccess(success);
-                setEstimateFail(!success);
-                setIsOpen(false); // Close confirmation modal
-            })
-            .catch(() => setEstimateFail(true))
-            .finally(() => setLoading(false));
-    };
+  return (
+    <section id="contact-form-overlay" className="flex flex-col items-center justify-center min-h-screen w-full px-4 py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      {loading && <Loader />}
+      
+      {/* Success Modal */}
+      {successModal && (
+        <SuccessModal
+          title="Request Submitted Successfully!"
+          description="Thank you for your submission. We'll get back to you shortly."
+          isOpen={successModal}
+          closeModal={() => setSuccessModal(false)}
+          status="success"
+          buttonText="Got it, thanks!"
+        />
+      )}
+      
+      {/* Error Modal */}
+      {errorModal && (
+        <SuccessModal
+          title="Submission Failed"
+          description="There was an error processing your request. Please try again."
+          isOpen={errorModal}
+          closeModal={() => setErrorModal(false)}
+          status="error"
+          buttonText="Try Again"
+        />
+      )}
 
-    return (
-        <section id="contact-form-overlay" className="flex flex-col items-center text-white px-4 py-20 relative w-full">
-            {isOpen && <ConfirmationModal confirmEstimate={confirmEstimate} isOpen={isOpen} closeModal={() => setIsOpen(false)} />}
-            {estimateSuccess && (
-                <SuccessModal
-                    title="Estimate Request Successful"
-                    description="Your Estimate Request has been successfully submitted."
-                    isOpen={estimateSuccess}
-                    closeModal={() => setEstimateSuccess(false)}
-                />
-            )}
-            {estimateFail && (
-                <SuccessModal
-                    title="Estimate Request Failed"
-                    description="Your Estimate Request submission failed. Please try again."
-                    isOpen={estimateFail}
-                    closeModal={() => setEstimateFail(false)}
-                />
-            )}
-            {loading && <Loader />}
-            <h1 className="text-3xl mb-10 font-light animate-bounce">
-                {pathname === "/contact-us" ? "Contact Us" : "Get Your Free Consultation!"}
-            </h1>
-            <div className="flex flex-col w-full p-6 rounded-2xl shadow-blue-600 shadow-lg border-2 md:w-[850px]">
-                <div className="flex justify-center">
-                    <Image loading="eager" width={100} src={Logo} alt="tgs-logo" />
-                </div>
-                <form className="self-center w-full md:w-2/3" onSubmit={handleSubmit(onSubmit)}>
-                    <h5 className="font-semibold text-lg text-black mb-2 underline">Contact Info</h5>
-                    <Input
-                        inputName="firstName"
-                        inputLabel="First Name"
-                        placeholder="First Name*"
-                        control={control}
-                        errors={errors}
-                        validationRules={{ required: "First Name is required" }}
-                    />
-                    <Input
-                        inputName="lastName"
-                        inputLabel="Last Name"
-                        placeholder="Last Name*"
-                        control={control}
-                        errors={errors}
-                        validationRules={{ required: "Last Name is required" }}
-                    />
-                    <Input
-                        inputName="phone"
-                        inputLabel="Phone Number"
-                        placeholder="Phone Number*"
-                        control={control}
-                        errors={errors}
-                        validationRules={{ required: "Phone number is required" }}
-                    />
-                    <Input
-                        inputName="email"
-                        inputLabel="Email"
-                        placeholder="Email*"
-                        control={control}
-                        errors={errors}
-                        validationRules={{ required: "Email is required" }}
-                    />
-                    <Input
-                        inputName="address"
-                        inputLabel="Address"
-                        placeholder="Address*"
-                        control={control}
-                        errors={errors}
-                        validationRules={{ required: "Address is required" }}
-                    />
-
-                    <Dropdown
-                        inputName="referralSource"
-                        inputLabel="How Did You Hear About Us?"
-                        control={control}
-                        errors={errors}
-                        options={ReferralSources}
-                        textColor="light"
-                    />
-                    <Textarea inputName="comment" inputLabel="Comment" placeholder="Comment" control={control} />
-                    <AuthorizationCheckbox inputName="authorization" control={control} />
-                    <Button type="submit" variant="contained" color="primary" className="bg-blue-500" fullWidth sx={{ mt: 2 }}>
-                        Submit
-                    </Button>
-                </form>
+      <div className="w-full max-w-md lg:max-w-lg">
+        <div className="relative overflow-hidden bg-gray-900/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-500/20 p-8">
+          {/* Decorative elements */}
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-green-500/20 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl"></div>
+          
+          {/* Logo and heading */}
+          <div className="flex flex-col items-center mb-8 relative z-10">
+            <div className="bg-white/10 p-4 rounded-full mb-4 backdrop-blur-sm">
+              <Image 
+                loading="eager" 
+                width={60} 
+                height={60} 
+                src={Logo} 
+                alt="Studio Logo" 
+                className="drop-shadow-glow"
+              />
             </div>
-        </section>
-    );
+            <h1 className="text-3xl font-light text-white text-center mb-2">
+              {pathname === "/contact-us" ? "Contact Us" : "Start Your Studio Journey"}
+            </h1>
+            <div className="h-1 w-16 bg-gradient-to-r from-green-400 to-green-600 rounded-full"></div>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 relative z-10">
+            {/* Name Field */}
+            <Input
+              inputName="name"
+              inputLabel="Name"
+              placeholder="Your full name"
+              control={control}
+              errors={errors}
+              validationRules={{ required: "Name is required" }}
+            />
+            
+            {/* Email Field */}
+            <Input
+              inputName="email"
+              inputLabel="Email"
+              placeholder="Your email address"
+              control={control}
+              errors={errors}
+              validationRules={{ 
+                required: "Email is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address"
+                }
+              }}
+            />
+            
+            {/* Plan Selection */}
+            <Dropdown
+              inputName="plan"
+              inputLabel="Choose Your Plan"
+              control={control}
+              errors={errors}
+              options={PLAN_OPTIONS}
+              textColor="light"
+            />
+            
+            {/* Product Description */}
+            <Textarea 
+              inputName="productDescription" 
+              inputLabel="Product Description" 
+              placeholder="Briefly describe your product or service"
+              control={control}
+            />
+            
+            {/* Authorization Checkbox */}
+            <AuthorizationCheckbox 
+              inputName="authorization" 
+              control={control}
+              validationRules={{ required: "Authorization is required" }}
+            />
+            
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-3 px-6 text-white font-medium rounded-lg
+                         bg-gradient-to-r from-green-300 to-green-500 hover:from-green-700 hover:to-green-600
+                         transform transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50
+                         shadow-lg shadow-green-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? "Submitting..." : "Submit Request"}
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default ContactFormOverlay;
