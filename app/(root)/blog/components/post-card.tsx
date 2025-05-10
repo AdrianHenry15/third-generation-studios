@@ -1,69 +1,89 @@
 "use client";
 
-import { imageUrl } from "@/sanity/lib/image-url";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { imageUrl } from "@/sanity/lib/image-url";
 import { Post } from "@/sanity.types";
-import { PortableText } from "@portabletext/react"; // ✅ Import PortableText
 
 interface IPostCardProps {
-    post: Post;
+  post: Post;
+  index: number;
 }
 
-const PostCard = (props: IPostCardProps) => {
-    const { post } = props;
+const PostCard = ({ post, index }: IPostCardProps) => {
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { delay: index * 0.1, duration: 0.5, ease: "easeOut" },
+    },
+    hover: {
+      y: -10,
+      boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2)",
+      transition: { type: "spring", stiffness: 400, damping: 17 },
+    },
+  };
 
-    // Format the published date
-    const publishedDate = new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    }).format(new Date(post.publishedAt!));
+  const publishedDate = post.publishedAt
+    ? new Intl.DateTimeFormat("en-US", { year: "numeric", month: "long", day: "numeric" }).format(
+        new Date(post.publishedAt)
+      )
+    : "Unknown date";
 
-    return (
-        <Link key={post._id} href={`/blog/${post.slug!.current || ""}`}>
-            <div className="bg-white shadow-lg relative h-[475px] lg:h-[425px] rounded-lg overflow-hidden cursor-pointer hover:shadow-xl transition transform hover:scale-105">
-                {/* Post image */}
-                {post.mainImage?.asset && (
-                    <Image
-                        src={imageUrl(post.mainImage.asset).url()}
-                        alt={post.title || "Post Image"}
-                        width={400}
-                        height={250}
-                        className="w-full h-48 object-cover"
-                    />
-                )}
-                <div className="p-4">
-                    {/* Post title */}
-                    <h2 className="text-xl font-semibold">{post.title}</h2>
+  // Extract a 150-character preview from the first block of post.body
+//   const excerpt = post.body?.[0]?.children?.[0]?.text?.substring(0, 150) + "..." || "No content available";
 
-                    {/* Published date */}
-                    <p className="text-sm text-gray-600 mt-2">{publishedDate}</p>
-
-                    {/* Blog Categories */}
-                    {post.blogCategories && post.blogCategories.length > 0 && (
-                        <div className="flex flex-wrap gap-2 text-gray-600 text-sm mt-2">
-                            {post.blogCategories.map((category: any) => (
-                                <span key={category._id} className="px-3 py-1 text-xs font-semibold bg-blue-100 text-blue-600 rounded-full">
-                                    {category.title}
-                                </span>
-                            ))}
-                        </div>
-                    )}
-                    {/* Truncated excerpt using Portable Text */}
-                    <div className="text-gray-700 mt-2 line-clamp-3">
-                        <PortableText value={post.body || []} />
-                    </div>
-
-                    {/* Read more link */}
-                    <p className="absolute bottom-4 left-4 font-semibold bg-gradient-to-r from-pink-500 via-blue-500 to-yellow-500 text-transparent bg-clip-text">
-                        Read More →
-                    </p>
-                </div>
-            </div>
-        </Link>
-    );
+  return (
+    <motion.div
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover="hover"
+      className="h-full"
+    >
+      <Link href={`/blog/${post.slug?.current || ""}`} className="block h-full">
+        <div className="bg-gray-800 rounded-xl overflow-hidden h-full flex flex-col shadow-md border border-gray-700">
+          <div className="relative">
+            {post.mainImage?.asset ? (
+              <Image
+                src={imageUrl(post.mainImage.asset).url()}
+                alt={post.title || "Post Image"}
+                width={600}
+                height={340}
+                className="w-full h-48 object-cover rounded-t-xl"
+              />
+            ) : (
+              <div className="w-full h-48 bg-gray-700 flex items-center justify-center">
+                <span className="text-green-500 text-lg font-medium">Third Generation Studios</span>
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+          </div>
+          <div className="p-5 flex flex-col flex-grow">
+            <p className="text-xs text-green-100 font-medium">{publishedDate}</p>
+            <h2 className="text-xl font-bold text-white mt-2 line-clamp-2">{post.title}</h2>
+            {/* <p className="text-sm text-green-300 line-clamp-3 mt-3">{excerpt}</p> */}
+            <motion.span
+              className="mt-4 inline-flex items-center text-green-500 font-medium"
+              whileHover={{ x: 5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              Read More
+              <svg className="ml-1 w-4 h-4 fill-green-500" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                />
+              </svg>
+            </motion.span>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
 };
 
 export default PostCard;

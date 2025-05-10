@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 // TODO:Add Emailjs, Clerkjs, Square promotions using their websites as references
 export default function WebsitesPage() {
     return (
-        <div className="bg-black">
+        <div className="bg-black overflow-x-hidden">
             <WebsiteSplash />
             <div className="flex flex-col px-4 py-14 lg:px-10">
                 <WebsiteRow title="Your Vision, Our Code, Transforming Ideas into Stunning Websites" items={ClientWebsites} />

@@ -1,66 +1,85 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay } from "swiper/modules";
 import Link from "next/link";
+import { motion, useInView } from "framer-motion";
 
 import { ClientWebsites } from "@/lib/websites";
-
-import Logo from "@/public/logos/glowCircle-trans.png";
+import Logo from "@/public/logos/tgs-logo.png";
 
 import "swiper/css";
 
-const WebsiteSplash = () => {
-    return (
-        <div className="w-full self-center text-white md:h-screen">
-            <div className="w-full md:h-full">
-                <Swiper
-                    modules={[A11y, Autoplay]}
-                    centeredSlides={true}
-                    className="w-full h-full"
-                    navigation
-                    slidesPerView={1}
-                    autoplay={{ delay: 5000 }}
-                >
-                    {ClientWebsites.map((website) => (
-                        <SwiperSlide key={website.id}>
-                            <div className="hidden absolute w-full bg-gradient-to-r from-black h-screen z-30 md:flex"></div>
-                            <div className="flex justify-center relative items-center self-center w-full md:h-full">
-                                <Image
-                                    className="object-cover w-full h-[200px] md:w-full md:h-full"
-                                    src={website.img}
-                                    alt={website.title}
-                                />
-                                <Image src={Logo} alt="logo" className="left-0 bottom-0 w-[50px] absolute md:hidden" />
-                            </div>
+export default function WebsiteSplash() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, amount: 0.3 });
 
-                            <div className="w-full z-50 top-[45%] p-4 left-10 md:absolute md:top-[35%] md:p-8">
-                                <span>
-                                    <Image src={Logo} alt="logo" className="w-24 py-2 hidden md:flex" />
-                                </span>
-                                <h1 className="text-white text-[30px] md:text-5xl">{website.title}</h1>
-                                <div className="my-4">
-                                    <Link
-                                        target="_blank"
-                                        href={website.link}
-                                        className="border bg-gray-300 text-black border-gray-300 py-2 px-5"
-                                    >
-                                        Go To Website
-                                    </Link>
-                                    <Link href={"/contact-us"} className="border text-white border-gray-300 py-2 px-5 ml-4">
-                                        Make Inquiry
-                                    </Link>
-                                </div>
-                                <p className="text-gray-400 text-sm">{website.release_date}</p>
-                            </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
+  const textVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
+  return (
+    <div className="w-full text-white relative">
+      <Swiper
+        modules={[A11y, Autoplay]}
+        centeredSlides
+        slidesPerView={1}
+        autoplay={{ delay: 5000 }}
+        className="w-full"
+      >
+        {ClientWebsites.map((site) => (
+          <SwiperSlide key={site.id}>
+            {/* Background image */}
+            <div className="relative w-full h-[60vh] md:h-screen">
+              <Image
+                src={site.img}
+                alt={site.title}
+                fill
+                className="object-cover"
+              />
+
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/70 via-black/50 to-transparent z-10"></div>
+
+              {/* Text Content */}
+              <motion.div
+                ref={ref}
+                variants={textVariants}
+                initial="visible"
+                className="absolute bottom-6 md:top-1/2 md:left-12 left-1/2 transform md:-translate-y-1/2 -translate-x-1/2 px-4 text-center md:text-left max-w-xl z-20"
+              >
+                <div className="flex justify-center md:justify-start mb-2">
+                  <Image src={Logo} alt="logo" className="w-12 h-12 md:w-16 md:h-16" />
+                </div>
+                <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-white mb-2">
+                  {site.title}
+                </h2>
+                <p className="text-gray-300 text-sm sm:text-base md:text-lg mb-4">
+                  Published on {site.release_date}
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-3">
+                  <Link
+                    href={site.link}
+                    target="_blank"
+                    className="px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-medium rounded-md bg-green-600 hover:bg-green-700 transition-shadow shadow-md"
+                  >
+                    Visit Site
+                  </Link>
+                  <Link
+                    href="/contact-us"
+                    className="bg-transparent text-white border border-white rounded-full px-8 py-3 font-semibold hover:bg-white hover:text-black transition"
+                  >
+                    Inquire Now
+                  </Link>
+                </div>
+              </motion.div>
             </div>
-        </div>
-    );
-};
-
-export default WebsiteSplash;
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+}
