@@ -14,7 +14,7 @@ export default function BackButton(props: IBackButtonProps) {
     return (
         <Link
             href={link}
-            className="mt-6 py-2 w-min whitespace-nowrap flex items-center text-gray-700 rounded-md hover:text-blue-600 transition"
+            className="mt-6 py-2 w-min whitespace-nowrap flex items-center text-gray-200 rounded-md hover:text-green-600 transition"
         >
             <FaChevronLeft size={12} className="mr-4" />
             <p>{title}</p>
