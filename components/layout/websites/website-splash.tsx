@@ -64,13 +64,13 @@ export default function WebsiteSplash() {
                   <Link
                     href={site.link}
                     target="_blank"
-                    className="px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base font-medium rounded-md bg-green-600 hover:bg-green-700 transition-shadow shadow-md"
+                    className="px-3 py-1.5 md:px-8 md:py-3 text-sm sm:text-base font-medium rounded-full bg-green-600 hover:bg-green-700 transition-shadow shadow-md"
                   >
                     Visit Site
                   </Link>
                   <Link
                     href="/contact-us"
-                    className="bg-transparent text-white border border-white rounded-full px-8 py-3 font-semibold hover:bg-white hover:text-black transition"
+                    className="bg-transparent text-white border border-white rounded-full px-3 py-1.5 md:px-8 md:py-3 font-semibold hover:bg-white hover:text-black transition"
                   >
                     Inquire Now
                   </Link>
