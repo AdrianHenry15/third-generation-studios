@@ -109,7 +109,7 @@ export default function HeroSection() {
                   </div>
                   <div className="ml-4 text-xs text-gray-400">ThirdGenerationStudios.jsx</div>
                 </div>
-                <pre className="text-sm text-gray-300 overflow-x-auto">
+                <pre className="text-xs sm:text-sm text-gray-300 overflow-x-hidden">
                   <code>
                     {`import { Future } from 'tech-of-tomorrow';
 import { Vision } from 'your-ideas';
