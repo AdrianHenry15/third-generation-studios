@@ -33,7 +33,7 @@ export default function Navbar() {
   return (
     <motion.header
       style={{ backgroundColor }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass py-2" : "py-4"}`}
+      className={`fixed top-0 left-0 glass right-0 z-50 transition-all duration-300 ${scrolled ? "glass py-2" : "py-4"}`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <motion.div
