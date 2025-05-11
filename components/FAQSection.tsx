@@ -83,7 +83,7 @@ export default function FaqSection() {
             {faqs.map((faq, index) => (
               <motion.div key={index} variants={itemVariants}>
                 <AccordionItem value={`item-${index}`} className="border-gray-800">
-                  <AccordionTrigger className="text-left text-lg hover:text-blue-400 transition-colors">
+                  <AccordionTrigger className="text-left text-lg hover:text-green-400 transition-colors">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-400">{faq.answer}</AccordionContent>
