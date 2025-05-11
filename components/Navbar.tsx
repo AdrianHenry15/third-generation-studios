@@ -45,7 +45,6 @@ export default function Navbar() {
           <Link href="/">
         <div className="flex items-center">
           <Image src="/logos/tgs-logo.png" alt="Logo" width={40} height={40} className="mr-2" />
-          <Image src="/logos/tgs-text-logo.png" alt="Logo" width={120} height={40} className="w-40 md:block" />
         </div>
           </Link>
         </motion.div>
