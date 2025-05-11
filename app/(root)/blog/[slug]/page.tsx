@@ -65,7 +65,7 @@ export default async function PostPageBySlug({ params }: { params: Promise<{ slu
         : "Unknown Date";
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
+        <div className="w-full min-h-screen mt-8 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
             <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8">
                 <BackButton title="Back to Blog" link="/blog" />
 
