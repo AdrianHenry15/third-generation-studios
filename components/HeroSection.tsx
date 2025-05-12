@@ -41,13 +41,13 @@ export default function HeroSection() {
     return (
         <section className="pt-32 pb-20 overflow-hidden">
             <div className="container mx-auto px-4">
-                <div className="flex flex-col md:flex-row items-center">
+                <div className="flex flex-col lg:flex-row items-center">
                     <motion.div
                         ref={ref}
                         variants={containerVariants}
                         initial="hidden"
                         animate={isInView ? "visible" : "hidden"}
-                        className="w-full md:w-1/2 mb-12 md:mb-0"
+                        className="w-full lg:w-1/2 mb-12 lg:mb-0"
                     >
                         <motion.h1 variants={itemVariants} className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
                             Build the Future with <br /> <span className="gradient-text">Third Generation Studios</span>
@@ -92,7 +92,7 @@ export default function HeroSection() {
                         variants={codeAnimation}
                         initial="hidden"
                         animate={isInView ? "visible" : "hidden"}
-                        className="w-full md:w-1/2 flex justify-center"
+                        className="w-full lg:w-1/2 flex justify-center"
                     >
                         <div className="relative w-full max-w-md">
                             <div className="absolute inset-0 bg-blue-500 rounded-lg opacity-20 blur-3xl"></div>
