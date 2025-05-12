@@ -23,7 +23,7 @@ export default function TitleSection({ title }: ITitleSectionProps) {
 
         <Link
           href="/consultation"
-          className="inline-block bg-green-600 text-white text-lg font-medium px-8 py-3 rounded-full shadow-lg hover:bg-green-700 hover:shadow-xl transition-transform transform hover:-translate-y-1"
+          className="inline-block bg-green-600 text-white text-lg font-medium px-6 py-1.5 md:px-8 md:py-3 rounded-full shadow-lg hover:bg-green-700 hover:shadow-xl transition-transform transform hover:-translate-y-1"
         >
           Schedule a Consultation
         </Link>

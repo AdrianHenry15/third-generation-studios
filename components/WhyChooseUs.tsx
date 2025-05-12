@@ -62,7 +62,7 @@ export default function WhyChooseUs() {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Why Choose <span className="gradient-text">ThirdGenerationStudios</span>
+            Why Choose <br/> <span className="gradient-text">Third Generation Studios</span>
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             We're not just developers, we're innovators committed to your success.
@@ -84,7 +84,7 @@ export default function WhyChooseUs() {
                 scale: 1.05,
                 boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
               }}
-              className="glass p-6 rounded-lg border border-gray-800 hover:border-blue-500/50 transition-all duration-300"
+              className="glass p-6 rounded-2xl border border-gray-800 hover:border-blue-500/50 transition-all duration-300"
             >
               <div className="bg-gray-800/50 p-3 rounded-full w-16 h-16 flex items-center justify-center mb-4">
                 {reason.icon}

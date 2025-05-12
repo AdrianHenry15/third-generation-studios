@@ -93,7 +93,7 @@ export default function Testimonials() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.5 }}
-                className="glass p-8 md:p-12 rounded-lg border border-gray-800"
+                className="glass p-8 md:p-12 rounded-2xl border border-gray-800"
               >
                 <div className="flex mb-6">
                   {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
