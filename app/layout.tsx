@@ -1,19 +1,8 @@
-// These styles apply to every route in the application
 import "./globals.css";
 
 import { Metadata } from "next";
 import { Nunito } from "next/font/google";
-import { Toaster } from "react-hot-toast";
-import { Suspense } from "react";
-// import { Analytics } from "@vercel/analytics/react";
-// import { SpeedInsights } from "@vercel/speed-insights/next";
-
-import { Loader } from "@/components/loader";
-import { ClerkLoading, ClerkProvider } from "@clerk/nextjs";
-import DisableDraftMode from "@/components/disable-draft-mode";
-import { VisualEditing } from "next-sanity";
-import { draftMode } from "next/headers";
-import { SanityLive } from "@/sanity/lib/live";
+import { ThemeProvider } from "next-themes";
 
 const nunito = Nunito({
     variable: "--font-nunito",
@@ -39,31 +28,17 @@ export const metadata: Metadata = {
     },
 };
 
-export default async function MainLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <ClerkProvider dynamic>
-            <html lang="en">
-                <link rel="icon" href="/logos/glowCircle-trans.png" sizes="96x96" />
-                <body className={nunito.variable}>
-                    {(await draftMode()).isEnabled && (
-                        <>
-                            <DisableDraftMode />
-                            <VisualEditing />
-                        </>
-                    )}
-                    <Toaster />
-                    <div className="flex flex-col">
-                        <Suspense fallback={<Loader />}>
-                            <ClerkLoading>
-                                <Loader />
-                            </ClerkLoading>
-                            {children}
-                        </Suspense>
-                    </div>
-                    {/* Higher order component for live settings when product is published */}
-                    <SanityLive />
-                </body>
-            </html>
-        </ClerkProvider>
+        <html lang="en" suppressHydrationWarning>
+            <head>
+                <link rel="icon" href="/logos/tgs-logo.png" />
+            </head>
+            <body className={nunito.className}>
+                <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+                    {children}
+                </ThemeProvider>
+            </body>
+        </html>
     );
 }

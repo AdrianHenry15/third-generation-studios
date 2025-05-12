@@ -1,25 +1,50 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 
-interface IInputProps {
+interface TextareaProps {
     inputName: string;
     inputLabel: string;
     placeholder: string;
     control: any;
+    validationRules?: any;
 }
 
-const Textarea = ({ inputName, control, placeholder }: IInputProps) => {
+const Textarea: React.FC<TextareaProps> = ({
+    inputName,
+    inputLabel,
+    placeholder,
+    control,
+    validationRules,
+}) => {
     return (
-        <Controller
-            name={inputName}
-            control={control}
-            defaultValue={""}
-            render={({ field }) => (
-                <div>
-                    <textarea className="border-2 border-gray-400 my-2 p-2 w-full h-40" placeholder={placeholder} {...field} />
-                </div>
-            )}
-        ></Controller>
+        <div className="relative">
+            <label 
+                htmlFor={inputName}
+                className="block text-sm font-medium text-gray-300 mb-1 ml-1"
+            >
+                {inputLabel}
+            </label>
+            <Controller
+                name={inputName}
+                control={control}
+                rules={validationRules}
+                defaultValue=""
+                render={({ field: { onChange, value, name, ref } }) => (
+                    <textarea
+                        name={name}
+                        value={value || ""}
+                        onChange={onChange}
+                        ref={ref}
+                        id={inputName}
+                        placeholder={placeholder}
+                        rows={4}
+                        className="w-full bg-gray-800/50 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500
+                                   focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent
+                                   transition-all duration-300 resize-none"
+                    />
+                )}
+            />
+        </div>
     );
 };
 

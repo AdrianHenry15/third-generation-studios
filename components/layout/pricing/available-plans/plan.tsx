@@ -1,75 +1,58 @@
 "use client";
-
-import Link from "next/link";
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
-export interface IFeatureProps {
+interface Feature {
     icon: React.ReactNode;
     feature: string;
     description: string;
 }
-
-interface IPlanProps {
+interface PlanProps {
     title: string;
-    description: string;
-    features: IFeatureProps[];
-    mostPopular?: boolean;
+    desc: string;
+    features: Feature[];
+    popular?: boolean;
+    featured?: boolean;
+    className?: string;
 }
 
-const Plan = ({ title, description, features, mostPopular }: IPlanProps) => {
+export default function Plan({ title, desc, features, popular, featured, className }: PlanProps) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            className={`flex max-w-2xl flex-col p-6 md:p-7 xl:p-8 rounded-3xl bg-gray-900 border-2 relative ${popular ? "border-green-400 bg-gradient-to-br from-gray-900 to-black" : "border-gray-700"} ${featured ? "scale-105 shadow-3xl z-20 -translate-y-4 border-4 border-green-400" : ""} shadow-2xl hover:scale-[1.03] transition-transform duration-300 ${className || ""}`}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            whileHover={{ scale: 1.05, boxShadow: "0px 10px 30px rgba(0, 255, 135, 0.3)" }}
-            className={`flex flex-col p-6 rounded-xl shadow-lg z-50 border-2 transition-transform m-4 md:m-6
-                ${mostPopular ? "border-green-500 bg-gradient-to-r from-black to-gray-900" : "border-gray-700 bg-gray-900"}
-            `}
+            transition={{ duration: 0.6 }}
         >
-            {/* Header */}
-            <div className="flex flex-col gap-4 text-center">
-                <h3 className={`text-2xl font-bold ${mostPopular ? "text-green-400" : "text-white"}`}>{title}</h3>
-                <p className="text-gray-400">{description}</p>
+            {featured && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-green-400 text-black text-xs font-bold px-4 py-1 rounded-full shadow-lg z-30">
+                    Most Popular
+                </div>
+            )}
+            <div className="text-center mb-4">
+                <h3 className={`text-2xl font-bold mb-1 ${popular ? "text-green-400" : "text-white"}`}>{title}</h3>
+                <p className="text-gray-400 text-base">{desc}</p>
             </div>
-
-            {/* Features */}
-            <div className="mt-6 space-y-6 flex-1">
-                {features.map((item, index) => (
-                    <motion.div
-                        key={index}
-                        className="flex items-center gap-4"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1, duration: 0.4 }}
-                    >
-                        <div className="text-green-400 text-xl">{item.icon}</div>
+            <div className="flex-1 space-y-2 mb-4">
+                {features.map((f, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                        <div className={`${popular ? "text-green-400" : "text-purple-400"} mt-1 text-lg`}>{f.icon}</div>
                         <div>
-                            <strong className="text-white">{item.feature}</strong>
-                            <p className="text-gray-400 text-sm">{item.description}</p>
+                            <h4 className="text-white font-semibold text-base">{f.feature}</h4>
+                            <p className="text-gray-500 text-xs">{f.description}</p>
                         </div>
-                    </motion.div>
+                    </div>
                 ))}
             </div>
-
-            {/* CTA */}
-            <motion.div
-                className="mt-8 text-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+            <Link
+                href="/consultation"
+                className={`mt-6 block py-3 px-6 text-center font-semibold ${
+                    popular ? "bg-green-400 text-black hover:bg-green-500" : "bg-purple-600 text-white hover:bg-purple-700"
+                } rounded-full transition shadow-md`}
             >
-                <p className="text-gray-500 text-sm">Interested in this plan? Contact us for more details.</p>
-                <Link
-                    href={"/consultation"}
-                    className="mt-4 block py-3 text-center text-black bg-green-400 hover:bg-green-500 rounded-lg font-medium transition duration-300 w-full"
-                >
-                    Learn More
-                </Link>
-            </motion.div>
+                Get Started
+            </Link>
         </motion.div>
     );
-};
-
-export default Plan;
+}

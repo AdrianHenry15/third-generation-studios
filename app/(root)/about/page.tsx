@@ -1,6 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const AboutPage = () => {
@@ -35,10 +37,10 @@ const AboutPage = () => {
             </motion.p>
 
             {/* Sections Container */}
-            <div className="mt-32 max-w-6xl w-full px-4 space-y-36 relative z-10">
+            <div className="mt-32 text-center max-w-6xl w-full px-4 space-y-36 relative z-10">
                 {/* Web Development Section */}
                 <motion.div
-                    initial={{ opacity: 0, x: -100 }}
+                    initial={{ opacity: 0, x: 100 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1 }}
@@ -61,7 +63,7 @@ const AboutPage = () => {
                 </motion.div>
 
                 {/* Music Production Section */}
-                <motion.div
+                {/* <motion.div
                     initial={{ opacity: 0, x: 100 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -82,7 +84,7 @@ const AboutPage = () => {
                             <span className="text-gray-100 font-semibold">elevate stories</span>.
                         </p>
                     </div>
-                </motion.div>
+                </motion.div> */}
             </div>
 
             {/* Call to Action */}
@@ -101,11 +103,11 @@ const AboutPage = () => {
                     <span className="text-gray-100 font-semibold">original soundtrack</span> that leaves an unforgettable impact, we’re here
                     to bring your vision to life. Let's create something truly special together.
                 </p>
-                <Link
-                    href="/contact-us"
-                    className="mt-6 inline-block bg-white text-black px-8 py-3 rounded-lg font-medium text-lg hover:bg-gray-300 transition"
-                >
-                    Get in Touch
+                <Link href="/contact-us">
+                <Button className="bg-green-600 mt-4 text-white hover:bg-green-700 hover:glow text-lg px-8 py-6">
+                  Get in Touch
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
                 </Link>
             </motion.div>
         </div>
