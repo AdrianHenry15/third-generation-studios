@@ -64,7 +64,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="#features" className="text-gray-400 hover:text-green-400 transition-colors">
+                <Link href="/websites" className="text-gray-400 hover:text-green-400 transition-colors">
                   Showcase
                 </Link>
               </li>
