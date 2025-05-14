@@ -30,11 +30,11 @@ export default function HeroSection() {
   }
 
   const codeAnimation = {
-    hidden: { opacity: 0, scale: 0.8 },
+    hidden: { opacity: 0.5, scale: 0.8 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 1, delay: 0.5, ease: "easeOut" },
+      transition: { duration: 0.8, ease: "easeOut" },
     },
   }
 
@@ -63,7 +63,7 @@ export default function HeroSection() {
 
             <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
                 <Link href="/contact-us">
-                <Button className="bg-green-600 text-white hover:bg-green-700 hover:glow text-lg px-8 py-6">
+                <Button className="bg-gradient-to-r px-8 py-6 from-green-600 to-green-800 text-white rounded-xl hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:from-green-500 hover:to-green-700 transition-all duration-300">
                   Let's Talk
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -71,7 +71,7 @@ export default function HeroSection() {
                 <Link href="/websites">
                 <Button
                   variant={"outline"}
-                  className="border-green-500 text-green-400 hover:text-green-300 hover:border-green-400 text-lg px-8 py-6"
+                  className="border-green-500 text-green-400 hover:text-green-300 hover:border-green-400 text-lg px-8 py-6 hover:bg-transparent"
                 >
                   See MVP Demo
                   <Zap className="ml-2 h-5 w-5" />
