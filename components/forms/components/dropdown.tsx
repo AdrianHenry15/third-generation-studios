@@ -47,7 +47,6 @@ const Dropdown: React.FC<DropdownProps> = ({
                                        focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                                        transition-all duration-300"
                         >
-                            <option value="">Select your plan</option>
                             {options.map((option, index) => (
                                 <option key={index} value={option}>
                                     {option}

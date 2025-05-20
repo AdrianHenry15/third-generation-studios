@@ -6,7 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { usePathname } from "next/navigation";
 
 import Logo from "@/public/logos/tgs-logo.png";
-
+import { toast } from 'react-hot-toast';
 import SuccessModal from "../modals/success-modal";
 import { Loader } from "../loader";
 import Dropdown from "./components/dropdown";
@@ -38,11 +38,6 @@ const ContactFormOverlay = () => {
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
 
-  const SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID as string;
-  const TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID as string;
-  const PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_KEY as string;
-  const PRIVATE_KEY = process.env.NEXT_PRIVATE_EMAILJS_KEY as string;
-
   const {
     handleSubmit,
     control,
@@ -62,31 +57,30 @@ const ContactFormOverlay = () => {
     setLoading(true);
 
     const templateParams = {
-      name: data.name,
-      email: data.email,
-      plan: data.plan,
-      productDescription: data.productDescription,
+        name: data.name,
+        email: data.email,
+        plan: data.plan,
+        productDescription: data.productDescription,
     };
 
     try {
-
-        const { success, error } = await sendEmail(
-            SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY
-        );
-      
-        if (success) {
-        setSuccessModal(true);
-        reset();
-      } else {
-        console.log(error)
-        setErrorModal(true);
-      }
+        const response = await sendEmail(templateParams);
+        if (response.success) {
+            toast.success("Your estimate has been submitted successfully!");
+            setSuccessModal(true);
+            reset();
+        } else {
+            toast.error("There was an error submitting your estimate. Please try again.");
+            setErrorModal(true);
+            reset();
+        }
     } catch (error) {
-      setErrorModal(true);
+        console.error(error);
+        setErrorModal(true);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+};
 
   return (
     <section id="contact-form-overlay" className="flex flex-col items-center justify-center min-h-screen w-full px-4 py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
@@ -116,7 +110,7 @@ const ContactFormOverlay = () => {
         />
       )}
 
-      <div className="w-full max-w-md lg:max-w-lg">
+      <div className="w-full py-12 max-w-md lg:max-w-lg">
         <div className="relative overflow-hidden bg-gray-900/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-500/20 p-8">
           {/* Decorative elements */}
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-green-500/20 rounded-full blur-3xl"></div>
