@@ -18,4 +18,17 @@ export type WebsiteType = {
     backdrop_path: any;
 };
 
+export interface EmailResponse {
+    success: boolean;
+    data?: any;
+    error?: any;
+  }
+  
+export interface EmailTemplateParams {
+    name: string;
+    email: string;
+    plan: string;
+    productDescription: string;
+  }
+
 export type AvailablePlansType = "Studio Basic" | "Studio Plus" | "Studio Pro" | "Studio Commerce";
