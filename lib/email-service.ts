@@ -1,35 +1,24 @@
-// emailService.ts
-import emailjs, { EmailJSResponseStatus } from "@emailjs/browser";
-import toast from "react-hot-toast";
+"use server"
+import { EmailResponse, EmailTemplateParams } from "../lib/types";
 
-type TemplateParams = {
-    [key: string]: string | number | boolean;
-};
-
-interface EmailResponse {
-    success: boolean;
-    response?: EmailJSResponseStatus;
-    error?: any;
-}
-
-const sendEmail = async (
-    serviceId: string,
-    templateId: string,
-    templateParams: TemplateParams,
-    publicKey: string
-): Promise<EmailResponse> => {
+const sendEmail = async (params: EmailTemplateParams): Promise<EmailResponse> => {
     try {
-        const response = await emailjs.send(
-            serviceId, 
-            templateId, 
-            templateParams, 
-            publicKey
-        );
+        console.log(params);
+        const response = await fetch("/api/send", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(params),
+        });
         
-        toast.success("Your estimate has been submitted successfully!");
-        return { success: true, response };
+        const data: EmailResponse = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(data.error || 'Failed to send email');
+        }
+        return data;
     } catch (error) {
-        toast.error("There was an error submitting your estimate. Please try again.");
         return { success: false, error };
     }
 };
