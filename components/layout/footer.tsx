@@ -3,8 +3,7 @@
 import { motion } from "framer-motion";
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
-import { FaTwitter } from "react-icons/fa";
-import { FaGithub, FaLinkedin } from "react-icons/fa6";
+import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 
 export default function Footer() {
     const containerVariants = {
@@ -41,18 +40,30 @@ export default function Footer() {
                             We convert your digital vision into reality with MVP-ready custom solutions using cutting-edge technologies.
                         </p>
                         <div className="flex space-x-4">
-                            <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
+                            <Link
+                                target="_blank"
+                                href="https://github.com/third-generation-studios"
+                                className="text-gray-400 hover:text-green-500 transition-colors"
+                            >
                                 <FaGithub className="h-5 w-5" />
                                 <span className="sr-only">GitHub</span>
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
-                                <FaTwitter className="h-5 w-5" />
-                                <span className="sr-only">Twitter</span>
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
+                            </Link>
+                            <Link
+                                target="_blank"
+                                href="https://www.instagram.com/adrhenners/"
+                                className="text-gray-400 hover:text-green-500 transition-colors"
+                            >
+                                <FaInstagram className="h-5 w-5" />
+                                <span className="sr-only">Instagram</span>
+                            </Link>
+                            <Link
+                                target="_blank"
+                                href="https://www.linkedin.com/in/adrian-henry-199595207/"
+                                className="text-gray-400 hover:text-green-500 transition-colors"
+                            >
                                 <FaLinkedin className="h-5 w-5" />
                                 <span className="sr-only">LinkedIn</span>
-                            </a>
+                            </Link>
                         </div>
                     </motion.div>
 
@@ -92,12 +103,12 @@ export default function Footer() {
                         <ul className="space-y-4">
                             <li className="flex items-start">
                                 <Mail className="h-5 w-5 text-purple-500 mr-3 mt-0.5" />
-                                <a
+                                <Link
                                     href="mailto:ahenry@thirdgenerationstudios.com"
                                     className="text-gray-400 hover:text-green-400 transition-colors"
                                 >
                                     ahenry@thirdgenerationstudios.com
-                                </a>
+                                </Link>
                             </li>
                             <li className="flex items-start">
                                 <Phone className="h-5 w-5 text-purple-500 mr-3 mt-0.5" />

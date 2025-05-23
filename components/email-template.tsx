@@ -1,5 +1,4 @@
 import { Body, Container, Head, Heading, Html, Preview, Section, Text } from "@react-email/components";
-import * as React from "react";
 
 interface EmailTemplateProps {
     name: string;
@@ -16,38 +15,33 @@ export const EmailTemplate = ({ name, email, plan, productDescription }: EmailTe
             <Body style={main}>
                 <Container style={container}>
                     {/* Header Bar */}
-                    <div style={headerBar}>
-                        <img
-                            src="/logos/tgs-logo.png"
-                            alt="Third Generation Studios Logo"
-                            width={32}
-                            height={32}
-                            style={{ verticalAlign: "middle", marginRight: 12, borderRadius: 6 }}
-                        />
-                        <span style={{ fontWeight: 700, fontSize: 20, color: "#fff", letterSpacing: 1 }}>Third Generation Studios</span>
-                    </div>
+                    <div style={{ ...headerBar, minHeight: 42, fontSize: 16, justifyContent: "center" }}></div>
                     <Heading style={heading}>New Contact Submission</Heading>
                     <Section style={section}>
-                        <div style={row}>
-                            <span style={fieldLabel}>Name:</span>
-                            <span style={fieldValue}>{name}</span>
+                        <div style={{ ...row, justifyContent: "center" }}>
+                            <span style={{ ...fieldLabel, minWidth: 140, textAlign: "right", display: "inline-block" }}>Name:</span>
+                            <span style={{ ...fieldValue, textAlign: "left", marginLeft: 16 }}>{name}</span>
                         </div>
-                        <div style={row}>
-                            <span style={fieldLabel}>Email:</span>
-                            <span style={fieldValue}>{email}</span>
+                        <div style={{ ...row, justifyContent: "center" }}>
+                            <span style={{ ...fieldLabel, minWidth: 140, textAlign: "right", display: "inline-block" }}>Email:</span>
+                            <span style={{ ...fieldValue, textAlign: "left", marginLeft: 16 }}>{email}</span>
                         </div>
-                        <div style={row}>
-                            <span style={fieldLabel}>Selected Plan:</span>
-                            <span style={fieldValue}>{plan}</span>
+                        <div style={{ ...row, justifyContent: "center" }}>
+                            <span style={{ ...fieldLabel, minWidth: 140, textAlign: "right", display: "inline-block" }}>
+                                Selected Plan:
+                            </span>
+                            <span style={{ ...fieldValue, textAlign: "left", marginLeft: 16 }}>{plan}</span>
                         </div>
-                        <div style={row}>
-                            <span style={fieldLabel}>Product Description:</span>
-                            <span style={fieldValue}>{productDescription}</span>
+                        <div style={{ ...row, justifyContent: "center" }}>
+                            <span style={{ ...fieldLabel, minWidth: 140, textAlign: "right", display: "inline-block" }}>
+                                Product Description:
+                            </span>
+                            <span style={{ ...fieldValue, textAlign: "left", marginLeft: 16 }}>{productDescription}</span>
                         </div>
                     </Section>
-                    <div style={divider}></div>
+                    {/* {/* <div style={divider}></div> */}
                     <Text style={footer}>
-                        This is an automated message from your contact form.
+                        This is an automated message from the Third Generation Studios contact form.
                         <br />
                         <span style={{ color: "#10b981", fontWeight: 600 }}>thirdgenerationstudios.com</span>
                     </Text>

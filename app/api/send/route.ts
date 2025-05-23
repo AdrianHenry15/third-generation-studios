@@ -15,13 +15,13 @@ export async function POST(request: Request) {
 
         const formatSentenceCase = (str: string) =>
             str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
-        const formattedProductDescription = formatSentenceCase(productDescription);
+        const formattedPlan = formatSentenceCase(plan);
 
         const { data, error } = await resend.emails.send({
-            from: `${formattedProductDescription} Client <ahenry@thirdgenerationstudios.com>`,
+            from: `${formattedPlan} Client <ahenry@thirdgenerationstudios.com>`,
             to: [email],
             subject: "Third Generation Studios - Form Submission",
-            react: EmailTemplate({ name, email, plan, productDescription: formattedProductDescription }),
+            react: EmailTemplate({ name, email, plan: formattedPlan, productDescription }),
         });
 
         if (error) {
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
 
         return Response.json({ success: true, data }, { status: 200 });
     } catch (error) {
+        console.error("API /api/send error:", error);
         return Response.json({ success: false, error: "Internal server error" }, { status: 500 });
     }
 }
