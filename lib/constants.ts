@@ -33,7 +33,7 @@ export const NavMenuTypeAltItems: NavMenuType[] = [
     },
     {
         title: "Schedule Your Free Consultation",
-        link: "/consultation",
+        link: "/contact-us",
     },
 ];
 

@@ -2,8 +2,10 @@ import "./globals.css";
 
 import { Metadata } from "next";
 import { Nunito } from "next/font/google";
-import { ThemeProvider } from 'next-themes'
-
+import { ThemeProvider } from "next-themes";
+import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
+import Loading from "./loader";
 
 const nunito = Nunito({
     variable: "--font-nunito",
@@ -29,18 +31,20 @@ export const metadata: Metadata = {
     },
 };
 
-export default function RootLayout({
-    children,
-  }: {
-    children: React.ReactNode
-  }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-      <html lang="en" suppressHydrationWarning>
-        <body className={nunito.className}>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            {children}
-          </ThemeProvider>
-        </body>
-      </html>
-    )
-  }
+        <html lang="en" suppressHydrationWarning>
+            <head>
+                <link rel="icon" href="/logos/tgs-logo.png" />
+            </head>
+            <body className={nunito.className}>
+                <Suspense fallback={<Loading />}>
+                    <Toaster position="top-center" />
+                    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+                        {children}
+                    </ThemeProvider>
+                </Suspense>
+            </body>
+        </html>
+    );
+}
