@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, DialogTitle, Transition, TransitionChild } from "@headlessui/react";
 import { motion } from "framer-motion";
 import { XCircle } from "lucide-react";
 
@@ -45,7 +45,7 @@ export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpen
 
                 {/* Modal panel */}
                 <div className="fixed inset-0 flex items-center justify-center p-4">
-                    <Transition.Child
+                    <TransitionChild
                         as={motion.div}
                         variants={panelVariants}
                         initial="hidden"
@@ -56,13 +56,13 @@ export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpen
                         <button className="absolute top-4 right-4 text-gray-400 hover:text-gray-600" onClick={closeModal}>
                             <XCircle size={24} />
                         </button>
-                        <Dialog.Title className="text-xl font-semibold text-gray-900 mb-4">Open {title}</Dialog.Title>
-                        <p className="text-gray-600 mb-6">You’re about to leave ThirdGenerationStudios and visit an external site.</p>
+                        <DialogTitle className="text-xl font-semibold text-gray-900 mb-4">Open {title}</DialogTitle>
+                        <p className="text-gray-600 mb-6">You’re about to leave Third Generation Studios and visit an external site.</p>
                         <div className="flex justify-end space-x-4">
                             <Button name="Cancel" onClick={closeModal} className="px-4 py-2" />
                             <Button name="Proceed" onClick={openLink} className="bg-green-600 text-white px-4 py-2" />
                         </div>
-                    </Transition.Child>
+                    </TransitionChild>
                 </div>
             </Dialog>
         </Transition>

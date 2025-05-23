@@ -1,77 +1,94 @@
-"use client"
+"use client";
 
-import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+
+const Clients = [
+    { name: "Eckert Golf", url: "https://eckertgolf.com" },
+    { name: "Brite", url: "https://brite.com" },
+    { name: "Molly's Specialty Sweets", url: "https://mollyspecialtysweets.com" },
+    { name: "Intentional Living", url: "https://intentionalliving.health" },
+];
 
 export default function LogoStrip() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: false, amount: 0.3 })
+    const router = useRouter();
 
-  const logos = [
-    { name: "Eckert Golf", initial: "EG" },
-    { name: "Brite", initial: "B" },
-    { name: "Molly's Specialty Sweets", initial: "M" },
-    { name: "Intentional Living", initial: "IL" },
-    { name: "Alexandria", initial: "A" },
-  ]
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: false, amount: 0.3 });
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  }
+    const clients = ["Eckert Golf", "Brite", "Molly's Specialty Sweets", "Intentional Living"];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
-  }
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.15,
+                delayChildren: 0.2,
+            },
+        },
+    };
 
-  return (
-    <section className="py-16 bg-black/50">
-      <div className="container mx-auto px-4">
-        <motion.h3
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          className="text-center text-xl text-gray-400 mb-10"
-        >
-          Trusted by innovative clients
-        </motion.h3>
+    const itemVariants = {
+        hidden: { opacity: 0, y: 25 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: {
+                duration: 0.6,
+                ease: [0.25, 0.1, 0.25, 1], // custom cubic bezier for smoother motion
+            },
+        },
+    };
 
-        <motion.div
-          ref={ref}
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="flex flex-wrap justify-center gap-8 md:gap-16"
-        >
-          {logos.map((logo, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={{
-                scale: 1.1,
-                filter: "brightness(1.2)",
-                boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)",
-              }}
-              className="flex items-center justify-center h-16 w-32 glass rounded-lg transition-all duration-300"
-            >
-              <div className="flex items-center justify-center">
-                <span className="text-2xl font-bold text-blue-500 mr-2">{logo.initial}</span>
-                <span className="text-sm text-gray-300">{logo.name}</span>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
-    </section>
-  )
+    return (
+        <section className="py-24 bg-gradient-to-b from-black/60 to-black/40 backdrop-blur-md relative">
+            <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"></div>
+            <div className="container mx-auto px-4 relative z-10">
+                <motion.h3
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center text-xl font-light tracking-wider text-blue-300/80 mb-12 uppercase"
+                >
+                    Trusted by innovative clients
+                </motion.h3>
+
+                <motion.div
+                    ref={ref}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                    className="flex flex-wrap justify-center gap-10 md:gap-20 max-w-6xl mx-auto"
+                >
+                    {Clients.map((client, index) => (
+                        <Link target="_blank" href={client.url} key={index}>
+                            <motion.div
+                                whileTap={{ scale: 0.95 }}
+                                whileFocus={{ scale: 0.95 }}
+                                variants={itemVariants}
+                                whileHover={{
+                                    scale: 1.05,
+                                    filter: "brightness(1.3)",
+                                    boxShadow: "0 0 20px rgba(59, 130, 246, 0.6)",
+                                    transition: { duration: 0.3, ease: "easeOut" },
+                                }}
+                                className="flex items-center justify-center h-20 w-48 backdrop-blur-md bg-gradient-to-br from-white/10 to-white/5 border border-white/10 rounded-xl p-4 transition-all duration-300 shadow-lg hover:border-blue-500/50"
+                            >
+                                <div className="flex items-center justify-center">
+                                    <span className="text-base font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-purple-300 text-center">
+                                        {client.name}
+                                    </span>
+                                </div>
+                            </motion.div>
+                        </Link>
+                    ))}
+                </motion.div>
+            </div>
+        </section>
+    );
 }
