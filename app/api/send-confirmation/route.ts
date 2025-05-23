@@ -1,6 +1,7 @@
 import EmailTemplate from "@/components/forms/email-templates/email-template";
 import { Resend } from "resend";
 import { EmailTemplateParams } from "../../../lib/types";
+import ConfirmationEmailTemplate from "@/components/forms/email-templates/confirmation-email-template";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -18,10 +19,10 @@ export async function POST(request: Request) {
         const formattedPlan = formatSentenceCase(plan);
 
         const { data, error } = await resend.emails.send({
-            from: `${formattedPlan} Client <ahenry@thirdgenerationstudios.com>`,
-            to: ["ahenry@thirdgenerationstudios.com"],
-            subject: "Third Generation Studios - Form Submission",
-            react: EmailTemplate({ name, email, plan: formattedPlan, productDescription }),
+            from: `Third Generation Studios <ahenry@thirdgenerationstudios.com>`,
+            to: [email],
+            subject: "Third Generation Studios - Confirmation of Form Submission",
+            react: ConfirmationEmailTemplate({ name, email, plan: formattedPlan, productDescription }),
         });
 
         if (error) {

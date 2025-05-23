@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 import { Loader } from "../loader";
 import Dropdown from "./components/dropdown";
 import Input from "./components/input";
-import sendEmail from "@/lib/email-service";
+import sendEmail, { sendConfirmationEmail } from "@/lib/email-service";
 import Textarea from "../inputs/textarea";
 import AuthorizationCheckbox from "./components/authorization-checkbox";
 import StatusModal from "../modals/status-modal";
@@ -62,6 +62,8 @@ const ContactFormOverlay = () => {
             const response = await sendEmail(templateParams);
             console.log("sendEmail response:", response);
             if (response.success) {
+                // Send confirmation email to the user
+                await sendConfirmationEmail(templateParams);
                 toast.success("Your estimate has been submitted successfully!");
                 setSuccessModal(true);
                 reset();
