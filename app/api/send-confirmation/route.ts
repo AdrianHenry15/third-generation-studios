@@ -1,4 +1,3 @@
-import EmailTemplate from "@/components/forms/email-templates/email-template";
 import { Resend } from "resend";
 import { EmailTemplateParams } from "../../../lib/types";
 import ConfirmationEmailTemplate from "@/components/forms/email-templates/confirmation-email-template";
