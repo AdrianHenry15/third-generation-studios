@@ -46,7 +46,7 @@ export default function Plan({ title, desc, features, popular, featured, classNa
                 ))}
             </div>
             <Link
-                href="/consultation"
+                href="/contact-us"
                 className={`mt-6 block py-3 px-6 text-center font-semibold ${
                     popular ? "bg-green-400 text-black hover:bg-green-500" : "bg-purple-600 text-white hover:bg-purple-700"
                 } rounded-full transition shadow-md`}
