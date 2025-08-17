@@ -58,7 +58,7 @@ export default function Footer() {
                             </Link>
                             <Link
                                 target="_blank"
-                                href="https://www.linkedin.com/in/adrian-henry-199595207/"
+                                href="https://www.linkedin.com/company/third-generation-studios"
                                 className="text-gray-400 hover:text-green-500 transition-colors"
                             >
                                 <FaLinkedin className="h-5 w-5" />
@@ -101,7 +101,8 @@ export default function Footer() {
                     <motion.div variants={itemVariants}>
                         <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
                         <ul className="space-y-4">
-                            <li className="flex items-start">
+                            <li className="flex flex-col">
+                                <div className="flex">
                                 <Mail className="h-5 w-5 text-purple-500 mr-3 mt-0.5" />
                                 <Link
                                     href="mailto:ahenry@thirdgenerationstudios.com"
@@ -109,6 +110,16 @@ export default function Footer() {
                                 >
                                     ahenry@thirdgenerationstudios.com
                                 </Link>
+                                </div>
+                                <div className="flex">
+                                <Mail className="h-5 w-5 text-purple-500 mr-3 mt-0.5" />
+                                <Link
+                                    href="mailto:sahil@thirdgenerationstudios.com"
+                                    className="text-gray-400 hover:text-green-400 transition-colors"
+                                >
+                                    sahil@thirdgenerationstudios.com
+                                </Link>
+                                </div>
                             </li>
                             <li className="flex items-start">
                                 <Phone className="h-5 w-5 text-purple-500 mr-3 mt-0.5" />
