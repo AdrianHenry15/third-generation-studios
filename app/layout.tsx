@@ -12,6 +12,7 @@ const nunito = Nunito({
     subsets: ["latin"],
 });
 export const metadata: Metadata = {
+    metadataBase: new URL("https://thirdgenerationstudios.com"),
     title: "Third Generation Studios",
     description:
         "Expert web development and music production services. Elevate your digital presence and sound with Third Generation Studios.",
@@ -22,6 +23,26 @@ export const metadata: Metadata = {
         url: "https://thirdgenerationstudios.com", // Make sure this is the homepage URL
         siteName: "Third Generation Studios",
         type: "website",
+        locale: "en-US"
+    },
+    robots:{
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+        googleBot:"index, follow"
+    },
+    alternates:{
+        types:{
+            "application/rss+xml": "https://thirdgenerationstudios.com/rss.xml"
+        }
+    },
+    applicationName: "Third Generations Studios",
+    appleWebApp:{
+        title: "Third Generations Studios",
+        statusBarStyle: "default",
+        capable: true,
     },
     twitter: {
         card: "summary_large_image",
