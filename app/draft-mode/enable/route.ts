@@ -4,11 +4,12 @@
  */
 
 import { client } from '@/sanity/lib/client';
+// @ts-expect-error: Module may not have types, but we know it exists at runtime
 import { validatePreviewUrl } from '@sanity/preview-url-secret';
 import { draftMode } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-const token = process.env.SANITY_API_READ_TOKEN;
+const token = process.env.SANITY_API_READ_TOKEN ?? '';
 
 export async function GET(request: Request) {
   const { isValid, redirectTo = '/' } = await validatePreviewUrl(

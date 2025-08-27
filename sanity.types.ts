@@ -512,11 +512,12 @@ export type ALL_POSTSResult = Array<{
 }>;
 
 // Query TypeMap
-import "@sanity/client";
-declare module "@sanity/client" {
-    interface SanityQueries {
-        '\n        *[_type == "author"] | order(name asc) {\n            _id,\n            name,\n            image\n        }\n    ': ALL_AUTHORSResult;
-        '*[_type == "author" && slug.current == $slug] | order(name asc) [0]\n': AUTHOR_BY_ID_QUERYResult;
-        '\n        *[_type == "post"] | order(publishedAt desc) {\n            _id,\n            title,\n            slug,\n            publishedAt,\n            mainImage {\n                asset->{\n                    _id,\n                    url\n                },\n                alt\n            },\n            author->{\n                _id,\n                name\n            },\n            categories[]->{\n                _id,\n                title\n            },\n            body\n        }\n    ': ALL_POSTSResult;
-    }
-}
+// import type { SanityClient } from "@sanity/client";
+
+// declare module "@sanity/client" {
+//     interface SanityQueries {
+//         "*[_type == 'author'] | order(name asc) { _id, name, image }": ALL_AUTHORSResult;
+//         "*[_type == 'author' && slug.current == $slug] | order(name asc) [0]": AUTHOR_BY_ID_QUERYResult;
+//         "*[_type == 'post'] | order(publishedAt desc) { _id, title, slug, publishedAt, mainImage { asset->{ _id, url }, alt }, author->{ _id, name }, categories[]->{ _id, title }, body }": ALL_POSTSResult;
+//     }
+// }
