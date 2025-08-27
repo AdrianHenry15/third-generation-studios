@@ -7,6 +7,14 @@ export const metadata: Metadata = {
     title: "Third Generation Studios Blog | Web Development & Music Production Insights",
     description:
         "Stay informed with the latest tips, news, and updates from Third Generation Studios. Learn about web development, music production, and creative industry trends.",
+    keywords: [
+        "blog",
+        "react",
+        "nextjs",
+        "web development",
+        "articles",
+        "third generation studios",
+        ],    
     openGraph: {
         title: "Third Generation Studios Blog",
         description:
