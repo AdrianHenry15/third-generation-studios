@@ -1,10 +1,49 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import Image from "next/image";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import UserDefaultImage from "@/public/user-default-image.png";
 import { imageUrl } from "@/sanity/lib/image-url";
 import BackButton from "@/components/back-button";
 import { getPostBySlug } from "@/sanity/lib/blog/posts/getPostBySlug";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const slug = (await params).slug;
+    if (!slug) return {};
+
+    const post = await getPostBySlug(slug);
+    if (!post) return {};
+
+    const title = post.title ? `${post.title} | TGS Blog` : "Blog Post | TGS Blog";
+    const authorName = post.author?.name || "Unknown Author";
+    const description = `${post.title} by ${authorName} on the Third Generation Studios blog.`;
+
+    const ogImages = [] as Array<{ url: string; width?: number; height?: number; alt?: string }>;
+    if (post.mainImageUrl) {
+        ogImages.push({ url: post.mainImageUrl, width: 1200, height: 630, alt: post.title || "Blog image" });
+    }
+
+    return {
+        title,
+        description,
+        openGraph: {
+            type: "article",
+            url: `https://thirdgenerationstudios.com/blog/${slug}`,
+            title,
+            description,
+            images: ogImages,
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description,
+            images: ogImages,
+        },
+        alternates: {
+            canonical: `https://thirdgenerationstudios.com/blog/${slug}`,
+        },
+    };
+}
 
 export default async function PostPageBySlug({ params }: { params: Promise<{ slug: string }> }) {
     const slug = (await params).slug;
@@ -65,7 +104,7 @@ export default async function PostPageBySlug({ params }: { params: Promise<{ slu
         : "Unknown Date";
 
     return (
-        <div className="w-full min-h-screen mt-8 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white">
+        <div className="w-full min-h-screen py-12 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
             <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8">
                 <BackButton title="Back to Blog" link="/blog" />
 
