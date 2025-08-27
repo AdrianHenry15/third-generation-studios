@@ -6,6 +6,12 @@ export const metadata: Metadata = {
     title: "Privacy Policy | Third Generation Studios",
     description:
         "Read Third Generation Studios' privacy policy to learn how we collect, use, and protect your personal information when using our web, MVP, and media engineering services.",
+    keywords: [
+        "privacy",
+        "policy",
+        "third generation studios policy",
+        "third geenration studios privacy"
+    ],    
     openGraph: {
         title: "Privacy Policy | Third Generation Studios",
         description:
