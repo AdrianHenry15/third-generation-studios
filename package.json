@@ -1,4 +1,9 @@
 {
+    "engines": {
+        "node": "22.x"
+    },
+    "name": "third-generation-studios",
+    "version": "1.0.0",
     "scripts": {
         "dev": "next dev",
         "build": "next build",
