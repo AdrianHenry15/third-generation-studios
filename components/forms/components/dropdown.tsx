@@ -32,15 +32,17 @@ const Dropdown: React.FC<DropdownProps> = ({
             <Controller
                 name={inputName}
                 control={control}
-                rules={{ required: `${inputLabel} is required` }}
-                render={({ field: { onChange, value, name, ref } }) => (
+                rules={{
+                    validate: (value) => value !== "" || `Please select a ${inputLabel.toLowerCase()}`,
+                }}
+                render={({ field: { onChange: fieldOnChange, value, name, ref } }) => (
                     <div className="relative">
                         <select
                             name={name}
                             value={value || ""}
                             ref={ref}
                             onChange={(e) => {
-                                onChange(e);
+                                fieldOnChange(e);
                                 if (onChange) onChange(e.target.value);
                             }}
                             className="w-full appearance-none bg-gray-800/50 border border-gray-700 rounded-lg px-4 py-3 text-white

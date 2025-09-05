@@ -16,7 +16,7 @@ import AuthorizationCheckbox from "./components/authorization-checkbox";
 import StatusModal from "../modals/status-modal";
 
 // Available plan options
-const PLAN_OPTIONS = ["Studio Basic", "Studio Plus", "Studio Pro", "Studio Commerce"];
+const PLAN_OPTIONS = ["", "Studio Basic", "Studio Plus", "Studio Pro", "Studio Commerce"];
 
 type FormValues = {
     name: string;
@@ -60,7 +60,6 @@ const ContactFormOverlay = () => {
 
         try {
             const response = await sendEmail(templateParams);
-            console.log("sendEmail response:", response);
             if (response.success) {
                 // Send confirmation email to the user
                 await sendConfirmationEmail(templateParams);
