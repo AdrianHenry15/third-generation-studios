@@ -15,7 +15,7 @@ export default function TitleSection({ title }: ITitleSectionProps) {
 
                 <div className="flex justify-center mb-8">
                     <div className="w-16 h-16 md:w-20 md:h-20 animate-pulse">
-                        <Image src={logoImage} alt="TGS Logo" layout="responsive" />
+                        <Image src={logoImage} alt="TGS-Logo" />
                     </div>
                 </div>
 
