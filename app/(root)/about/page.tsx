@@ -96,18 +96,18 @@ const AboutPage = () => {
                 className="mt-32 text-center relative z-10"
             >
                 <h3 className="text-3xl font-semibold bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
-                    Let’s Build Something Incredible
+                    Let&rsquo;s Build Something Incredible
                 </h3>
                 <p className="text-gray-400 mt-3">
-                    Whether it's a <span className="text-gray-100 font-semibold">website</span> built for speed and interactivity, or an{" "}
-                    <span className="text-gray-100 font-semibold">original soundtrack</span> that leaves an unforgettable impact, we’re here
-                    to bring your vision to life. Let's create something truly special together.
+                    Whether it&apos;s a <span className="text-gray-100 font-semibold">website</span> built for speed and interactivity, or
+                    an <span className="text-gray-100 font-semibold">original soundtrack</span> that leaves an unforgettable impact,
+                    we&rsquo;re here to bring your vision to life. Let&apos;s create something truly special together.
                 </p>
                 <Link href="/contact-us">
-                <Button className="bg-green-600 mt-4 text-white hover:bg-green-700 hover:glow text-lg px-8 py-6">
-                  Get in Touch
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                    <Button className="bg-green-600 mt-4 text-white hover:bg-green-700 hover:glow text-lg px-8 py-6">
+                        Get in Touch
+                        <ArrowRight className="ml-2 h-5 w-5" />
+                    </Button>
                 </Link>
             </motion.div>
         </div>

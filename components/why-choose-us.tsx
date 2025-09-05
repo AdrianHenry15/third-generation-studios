@@ -63,7 +63,7 @@ export default function WhyChooseUs() {
                         Why Choose <br /> <span className="gradient-text">Third Generation Studios</span>
                     </h2>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                        We're not just developers, we're innovators committed to your success.
+                        We&apos;re not just developers, we&apos;re innovators committed to your success.
                     </p>
                 </motion.div>
 

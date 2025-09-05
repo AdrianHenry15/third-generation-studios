@@ -37,7 +37,7 @@ const FAQSidebarNav = (props: IFAQSidebarNavProps) => {
         return () => {
             window.removeEventListener("scroll", handleScroll);
         };
-    }, []);
+    }, [navBarHeight]);
 
     const handleScrollToSection = (event: React.MouseEvent, link: string) => {
         event.preventDefault();
@@ -75,10 +75,7 @@ const FAQSidebarNav = (props: IFAQSidebarNavProps) => {
                     if (linkHash === item.link) {
                         return (
                             // <div className="flex items-center justify-between w-full" key={index}>
-                            <h5
-                                key={index}
-                                className="text-blue-600 underline underline-offset-2 px-8 py-4"
-                            >
+                            <h5 key={index} className="text-blue-600 underline underline-offset-2 px-8 py-4">
                                 {item.title}
                             </h5>
                             // </div>
@@ -87,15 +84,9 @@ const FAQSidebarNav = (props: IFAQSidebarNavProps) => {
                         return (
                             <div key={index}>
                                 {dropdownOpen && (
-                                    <div
-                                        className="py-4 px-8 text-blue-600 text-sm md:hidden"
-                                        key={index}
-                                    >
+                                    <div className="py-4 px-8 text-blue-600 text-sm md:hidden" key={index}>
                                         {dropdownOpen && (
-                                            <Link
-                                                onClick={(e) => handleScrollToSection(e, item.link)}
-                                                href={item.link}
-                                            >
+                                            <Link onClick={(e) => handleScrollToSection(e, item.link)} href={item.link}>
                                                 {item.title}
                                             </Link>
                                         )}
@@ -118,9 +109,7 @@ const FAQSidebarNav = (props: IFAQSidebarNavProps) => {
                         href={item.link}
                         onClick={(e) => handleScrollToSection(e, item.link)}
                         className={`pb-10 text-blue-600 hover:text-blue-950 ease-in-out duration-300 ${
-                            linkHash === item.link
-                                ? "underline underline-offset-4 text-blue-950"
-                                : ""
+                            linkHash === item.link ? "underline underline-offset-4 text-blue-950" : ""
                         }`}
                     >
                         <h5>{item.title}</h5>

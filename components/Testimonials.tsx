@@ -24,7 +24,7 @@ export default function Testimonials() {
             rating: 5,
         },
         {
-            quote: "The team at Third Generation Studios doesn't just build products, they build solutions. Their client-centric approach ensured our vision was realized perfectly.",
+            quote: "The team at Third Generation Studios doesn&apos;t just build products, they build solutions. Their client-centric approach ensured our vision was realized perfectly.",
             author: "Alex Rodriguez",
             position: "Founder, NextWave Solutions",
             rating: 5,
@@ -71,7 +71,7 @@ export default function Testimonials() {
                         Client <span className="gradient-text">Success Stories</span>
                     </h2>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                        Don't just take our word for it. Here's what our clients have to say.
+                        Don&apos;t just take our word for it. Here&apos;s what our clients have to say.
                     </p>
                 </motion.div>
 
@@ -98,7 +98,7 @@ export default function Testimonials() {
                                     ))}
                                 </div>
                                 <blockquote className="text-xl md:text-2xl mb-6 italic text-gray-300">
-                                    "{testimonials[currentIndex].quote}"
+                                    &quot;{testimonials[currentIndex].quote}&quot;
                                 </blockquote>
                                 <div className="flex items-center">
                                     <div className="bg-blue-500 h-12 w-12 rounded-full flex items-center justify-center text-xl font-bold">

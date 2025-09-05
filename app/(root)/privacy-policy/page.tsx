@@ -31,10 +31,11 @@ const PrivacyPolicyPage = () => {
                     <p>04/25/2024</p>
                 </div>
                 <p>
-                    Third Generation Studios ("we," "us," or "our") is committed to protecting the privacy of our clients and users ("you"
-                    or "your"). This Privacy Policy explains how we collect, use, disclose, and protect your information when you engage
-                    with us through our website, digital products, communications, and our engineering services for music, sound, TV, and
-                    movie commercials. By using our services, you consent to the practices described in this Privacy Policy.
+                    Third Generation Studios (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;) is committed to protecting the privacy of
+                    our clients and users (&quot;you&quot; or &quot;your&quot;). This Privacy Policy explains how we collect, use, disclose,
+                    and protect your information when you engage with us through our website, digital products, communications, and our
+                    engineering services for music, sound, TV, and movie commercials. By using our services, you consent to the practices
+                    described in this Privacy Policy.
                 </p>
             </section>
             {/* TECHNOLOGY STACK */}
@@ -82,7 +83,7 @@ const PrivacyPolicyPage = () => {
                         <li>
                             <strong>Device Information:</strong>
                             <p>
-                                - Information about the device you use to communicate with us, such as your device's operating system,
+                                - Information about the device you use to communicate with us, such as your device&apos;s operating system,
                                 browser type, and IP address.
                             </p>
                         </li>
@@ -213,7 +214,7 @@ const PrivacyPolicyPage = () => {
             </section>
             {/* CHILDRENS PRIVACY */}
             <section className="" id="childrens-privacy">
-                <h5 className="font-bold my-4 text-xl">6. Children's Privacy</h5>
+                <h5 className="font-bold my-4 text-xl">6. Children&apos;s Privacy</h5>
                 <p>
                     Our services are not intended for individuals under the age of 13, and we do not knowingly collect personal information
                     from children under 13. If we become aware that we have collected such information, we will take steps to delete it.
