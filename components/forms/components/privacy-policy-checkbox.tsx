@@ -4,17 +4,13 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 
-interface IAuthorizationCheckboxProps {
+interface IPrivacyPolicyCheckboxProps {
     inputName: string;
     control: any;
     validationRules?: any;
 }
 
-const AuthorizationCheckbox = ({
-    inputName,
-    control,
-    validationRules,
-}: IAuthorizationCheckboxProps) => {
+const PrivacyPolicyCheckbox = ({ inputName, control, validationRules }: IPrivacyPolicyCheckboxProps) => {
     const [error, setError] = useState(false);
 
     useEffect(() => {
@@ -62,11 +58,9 @@ const AuthorizationCheckbox = ({
                             and consent to be contacted regarding your inquiry.
                         </label>
                     </div>
-                    
-                    <div 
-                        className={`text-red-400 text-xs mt-2 ml-6 transition-opacity duration-300 ${
-                            error ? "opacity-100" : "opacity-0"
-                        }`}
+
+                    <div
+                        className={`text-red-400 text-xs mt-2 ml-6 transition-opacity duration-300 ${error ? "opacity-100" : "opacity-0"}`}
                     >
                         You must accept the terms to proceed
                     </div>
@@ -76,4 +70,4 @@ const AuthorizationCheckbox = ({
     );
 };
 
-export default AuthorizationCheckbox;
+export default PrivacyPolicyCheckbox;
