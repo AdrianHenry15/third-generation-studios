@@ -10,10 +10,15 @@ import { toast } from "react-hot-toast";
 import { Loader } from "../loader";
 import Dropdown from "./components/dropdown";
 import Input from "./components/input";
-import sendEmail, { sendConfirmationEmail } from "@/lib/email-service";
+import sendEmail, { sendConfirmationEmail, subscribeToNewsletter } from "@/lib/email-service";
 import Textarea from "../inputs/textarea";
-import AuthorizationCheckbox from "./components/authorization-checkbox";
+import PrivacyPolicyCheckbox from "./components/privacy-policy-checkbox";
 import StatusModal from "../modals/status-modal";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { verifyHCaptchaClient } from "@/lib/verify-hcaptcha";
+import NewsletterSubscriptionCheckbox from "./components/newsletter-subscription-checkbox";
+
+const HCAPTCHA_SITEKEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY as string;
 
 // Available plan options
 const PLAN_OPTIONS = ["", "Studio Basic", "Studio Plus", "Studio Pro", "Studio Commerce"];
@@ -23,7 +28,8 @@ type FormValues = {
     email: string;
     plan: string;
     productDescription: string;
-    authorization: boolean;
+    privacyPolicyAuth: boolean;
+    subscribeNewsletter: boolean;
 };
 
 const ContactFormOverlay = () => {
@@ -32,6 +38,8 @@ const ContactFormOverlay = () => {
     const [loading, setLoading] = useState(false);
     const [successModal, setSuccessModal] = useState(false);
     const [errorModal, setErrorModal] = useState(false);
+    const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+    const [captchaError, setCaptchaError] = useState<string | null>(null);
 
     const {
         handleSubmit,
@@ -44,12 +52,26 @@ const ContactFormOverlay = () => {
             email: "",
             plan: "",
             productDescription: "",
-            authorization: true,
+            privacyPolicyAuth: true,
+            subscribeNewsletter: true, // Default checked
         },
     });
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        if (!captchaToken) {
+            setCaptchaError("Please complete the hCaptcha challenge.");
+            return;
+        }
+        setCaptchaError(null);
         setLoading(true);
+
+        // Verify hCaptcha token with backend
+        const verifyData = await verifyHCaptchaClient(captchaToken);
+        if (!verifyData.success) {
+            setCaptchaError("hCaptcha verification failed. Please try again.");
+            setLoading(false);
+            return;
+        }
 
         const templateParams = {
             name: data.name,
@@ -59,6 +81,9 @@ const ContactFormOverlay = () => {
         };
 
         try {
+            if (data.subscribeNewsletter) {
+                await subscribeToNewsletter({ email: data.email, name: data.name });
+            }
             const response = await sendEmail(templateParams);
             if (response.success) {
                 // Send confirmation email to the user
@@ -80,10 +105,7 @@ const ContactFormOverlay = () => {
     };
 
     return (
-        <section
-            id="contact-form-overlay"
-            className="flex flex-col items-center justify-center min-h-screen w-full px-4 py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-black"
-        >
+        <section id="contact-form-overlay" className="flex flex-col items-center justify-center min-h-screen w-full px-4">
             {loading && <Loader />}
 
             {/* Success Modal */}
@@ -174,11 +196,25 @@ const ContactFormOverlay = () => {
                         />
 
                         {/* Authorization Checkbox */}
-                        <AuthorizationCheckbox
-                            inputName="authorization"
+                        <PrivacyPolicyCheckbox
+                            inputName="privacyPolicyAuth"
                             control={control}
                             validationRules={{ required: "Authorization is required" }}
                         />
+
+                        {/* Newsletter Subscription Checkbox */}
+                        <NewsletterSubscriptionCheckbox inputName="subscribeNewsletter" control={control} />
+
+                        {/* hCaptcha */}
+                        <div className="flex flex-col items-center mb-2">
+                            <HCaptcha
+                                sitekey={HCAPTCHA_SITEKEY as string}
+                                onVerify={setCaptchaToken}
+                                onExpire={() => setCaptchaToken(null)}
+                                theme="dark"
+                            />
+                            {captchaError && <span className="text-red-500 text-sm mt-2">{captchaError}</span>}
+                        </div>
 
                         {/* Submit Button */}
                         <button

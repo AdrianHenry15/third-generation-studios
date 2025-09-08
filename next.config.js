@@ -20,6 +20,10 @@ const nextConfig = {
         SANITY_API_TOKEN: process.env.SANITY_API_TOKEN,
         SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
         RESEND_API_KEY: process.env.RESEND_API_KEY,
+        HCAPTCHA_SECRET: process.env.HCAPTCHA_SECRET,
+        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+        STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+        RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
     },
     productionBrowserSourceMaps: false,
 
