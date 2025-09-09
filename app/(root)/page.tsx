@@ -10,6 +10,7 @@ import FaqSection from "@/components/faq-section";
 import CtaSection from "@/components/cta-section";
 import Testimonials from "@/components/testimonials";
 
+// Main Home Page Component
 export default function Home() {
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
