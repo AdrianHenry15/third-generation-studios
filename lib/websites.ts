@@ -2,7 +2,7 @@ import { WebsiteType } from "./types";
 
 // WEBSITES IMAGES
 import Mollys from "@/public/websites/mollys.jpg";
-import Alexandria from "@/public/websites/palexnadria-demo.jpg";
+import Alexandria from "@/public/websites/alexandria.png";
 import Brite from "@/public/websites/brite.png";
 import TaharkaDemo from "@/public/websites/taharkabros1.webp";
 import TaharkaShopify from "@/public/websites/taharkabros2.jpg";
