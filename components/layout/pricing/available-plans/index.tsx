@@ -154,7 +154,7 @@ export default function AvailablePlans() {
                             <div className="flex items-center gap-3 mb-2">
                                 <span className={`text-2xl font-bold ${plan.popular ? "text-green-400" : "text-white"}`}>{plan.title}</span>
                                 {plan.popular && (
-                                    <span className="ml-2 px-3 py-1 rounded-full bg-green-400 text-black text-xs font-bold">
+                                    <span className="ml-2 px-3 whitespace-nowrap py-1 rounded-full bg-green-400 text-black text-xs font-bold">
                                         Most Popular
                                     </span>
                                 )}
