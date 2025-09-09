@@ -32,7 +32,7 @@ export default function Footer() {
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
-                    className="grid grid-cols-1 md:grid-cols-4 gap-8"
+                    className="grid grid-cols-1 lg:grid-cols-4 gap-8"
                 >
                     <motion.div variants={itemVariants} className="col-span-1 md:col-span-2">
                         <h3 className="text-2xl font-bold gradient-text mb-4">Third Generation Studios</h3>
@@ -50,7 +50,7 @@ export default function Footer() {
                             </Link>
                             <Link
                                 target="_blank"
-                                href="https://www.instagram.com/adrhenners/"
+                                href="https://www.instagram.com/websitesblow/"
                                 className="text-gray-400 hover:text-green-500 transition-colors"
                             >
                                 <FaInstagram className="h-5 w-5" />

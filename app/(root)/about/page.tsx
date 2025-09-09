@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const AboutPage = () => {
     return (
-        <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center px-6 py-20 relative">
+        <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center px-6 pb-20 pt-32 relative">
             {/* Background Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-900 to-black opacity-90 pointer-events-none"></div>
 
@@ -63,7 +63,7 @@ const AboutPage = () => {
                 </motion.div>
 
                 {/* Music Production Section */}
-                {/* <motion.div
+                <motion.div
                     initial={{ opacity: 0, x: 100 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
@@ -84,7 +84,7 @@ const AboutPage = () => {
                             <span className="text-gray-100 font-semibold">elevate stories</span>.
                         </p>
                     </div>
-                </motion.div> */}
+                </motion.div>
             </div>
 
             {/* Call to Action */}
