@@ -12,23 +12,23 @@ export type WebsiteType = {
     id: string;
     img: any;
     title: string;
-    overview: string;
+    description: string;
     release_date: string;
     link: string; // Add link property
-    backdrop_path: any;
+    tech_stack: string[];
 };
 
 export interface EmailResponse {
     success: boolean;
     data?: any;
     error?: any;
-  }
-  
+}
+
 export interface EmailTemplateParams {
     name: string;
     email: string;
     plan: string;
     productDescription: string;
-  }
+}
 
 export type AvailablePlansType = "Studio Basic" | "Studio Plus" | "Studio Pro" | "Studio Commerce";

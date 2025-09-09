@@ -7,109 +7,116 @@ import Link from "next/link";
 
 const AboutPage = () => {
     return (
-        <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center px-6 py-20 relative">
-            {/* Background Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-zinc-900 to-black opacity-90 pointer-events-none"></div>
+        <div className="relative min-h-screen bg-gradient-to-br from-black via-zinc-900 to-gray-950 overflow-x-hidden">
+            {/* Hero Section */}
+            <section className="relative flex flex-col items-center justify-center min-h-[60vh] px-6 pt-24 pb-16 text-center">
+                <motion.div initial={{ opacity: 0, y: -40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="z-10">
+                    <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-green-400 via-white to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
+                        Third Generation Studios
+                    </h1>
+                    <p className="mt-6 text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-medium">
+                        Where <span className="text-white font-bold">Technology</span> meets{" "}
+                        <span className="text-green-400 font-bold">Music</span> and{" "}
+                        <span className="text-blue-400 font-bold">Creativity</span>.
+                    </p>
+                </motion.div>
+                <div className="absolute inset-0 pointer-events-none">
+                    <div className="w-96 h-96 bg-gradient-radial from-green-500/20 to-transparent rounded-full blur-3xl absolute -top-32 left-1/2 -translate-x-1/2" />
+                    <div className="w-80 h-80 bg-gradient-radial from-blue-500/20 to-transparent rounded-full blur-3xl absolute top-40 right-1/2 translate-x-1/3" />
+                </div>
+            </section>
 
-            {/* Header Section */}
-            <motion.h1
-                initial={{ opacity: 0, y: -50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, ease: "easeOut" }}
-                className="text-5xl md:text-7xl font-extrabold text-center relative z-10"
-            >
-                Third Generation Studios
-            </motion.h1>
-
-            <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.3 }}
-                className="text-lg text-gray-300 text-center max-w-3xl leading-relaxed mt-6 relative z-10"
-            >
-                Founded by <span className="text-gray-100 font-semibold">Adrian Henry</span>, a 28-year-old creator with a passion for both
-                technology and music, Third Generation Studios was born in
-                <span className="text-gray-100 font-semibold"> 2020</span>, during a time of uncertainty but boundless innovation. What
-                started as a solo venture quickly evolved into a collective, bringing together a talented team of web developers, designers,
-                and composers—all working in sync to create{" "}
-                <span className="text-gray-100 font-semibold">high-performance web experiences</span> and
-                <span className="text-gray-100 font-semibold"> immersive soundtracks</span> for film, TV, and games.
-            </motion.p>
-
-            {/* Sections Container */}
-            <div className="mt-32 text-center max-w-6xl w-full px-4 space-y-36 relative z-10">
-                {/* Web Development Section */}
+            {/* About Section */}
+            <section className="relative z-10 max-w-5xl mx-auto px-4 md:px-8 py-12 md:py-20">
                 <motion.div
-                    initial={{ opacity: 0, x: 100 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 40 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1 }}
-                    className="relative flex flex-col md:flex-row items-center gap-12"
+                    className="bg-zinc-900/80 rounded-3xl shadow-2xl p-8 md:p-16 flex flex-col md:flex-row gap-12 items-center md:items-start"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent to-zinc-900 opacity-50 rounded-xl blur-3xl"></div>
-                    <div className="w-full md:w-1/2 text-center md:text-left">
-                        <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
-                            Website Development
+                    <div className="flex-1 text-center md:text-left">
+                        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent mb-4">
+                            Our Story
                         </h2>
-                        <p className="text-gray-400 leading-relaxed mt-4">
-                            With a dedicated team of developers, we create{" "}
-                            <span className="text-gray-100 font-semibold">high-performance</span> websites that are{" "}
-                            <span className="text-gray-100 font-semibold"> fast, interactive, and unique</span>. Every pixel is crafted to
-                            blend <span className="text-gray-100 font-semibold">design, speed, and function</span>—built for the modern web.
-                            Having multiple developers on board allows us to work efficiently, reducing turnaround time while ensuring a
-                            level of polish that sets our work apart.
+                        <p className="text-gray-300 text-lg leading-relaxed">
+                            Founded by <span className="text-white font-semibold">Adrian Henry</span> in{" "}
+                            <span className="text-green-300 font-semibold">2020</span>, Third Generation Studios is a collective of
+                            passionate creators, developers, and composers. We blend cutting-edge{" "}
+                            <span className="text-blue-300 font-semibold">web technology</span> with{" "}
+                            <span className="text-green-300 font-semibold">immersive music</span> to deliver unforgettable digital
+                            experiences for film, TV, games, and the modern web.
                         </p>
+                        <p className="text-gray-400 mt-4">
+                            Our team thrives on collaboration, innovation, and a relentless pursuit of excellence. Every project is a canvas
+                            for creativity, technical mastery, and storytelling.
+                        </p>
+                    </div>
+                    <div className="flex-1 flex flex-col gap-8 w-full">
+                        <motion.div
+                            initial={{ opacity: 0, x: 60 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl p-6 shadow-lg border border-zinc-700"
+                        >
+                            <h3 className="text-2xl font-semibold bg-gradient-to-r from-gray-200 to-white bg-clip-text text-transparent mb-2">
+                                Website Development
+                            </h3>
+                            <p className="text-gray-400">
+                                We build <span className="text-white font-semibold">high-performance</span>, visually stunning websites that
+                                are <span className="text-green-300 font-semibold">fast</span>,{" "}
+                                <span className="text-blue-300 font-semibold">interactive</span>, and{" "}
+                                <span className="text-white font-semibold">unique</span>. Our agile team ensures rapid delivery and
+                                pixel-perfect quality for every client.
+                            </p>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, x: 60 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl p-6 shadow-lg border border-zinc-700"
+                        >
+                            <h3 className="text-2xl font-semibold bg-gradient-to-r from-gray-200 to-white bg-clip-text text-transparent mb-2">
+                                Music Production
+                            </h3>
+                            <p className="text-gray-400">
+                                From <span className="text-white font-semibold">cinematic scores</span> to{" "}
+                                <span className="text-green-300 font-semibold">game-changing soundtracks</span>, we craft original
+                                compositions that <span className="text-blue-300 font-semibold">amplify emotion</span> and{" "}
+                                <span className="text-white font-semibold">elevate stories</span> across all media.
+                            </p>
+                        </motion.div>
                     </div>
                 </motion.div>
-
-                {/* Music Production Section */}
-                {/* <motion.div
-                    initial={{ opacity: 0, x: 100 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1 }}
-                    className="relative flex flex-col md:flex-row-reverse items-center gap-12"
-                >
-                    <div className="absolute inset-0 bg-gradient-to-l from-transparent to-zinc-900 opacity-50 rounded-xl blur-3xl"></div>
-                    <div className="w-full md:w-1/2 text-center md:text-left">
-                        <h2 className="text-4xl font-bold bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
-                            Music Production
-                        </h2>
-                        <p className="text-gray-400 leading-relaxed mt-4">
-                            Music is at the heart of everything we do. Whether it's{" "}
-                            <span className="text-gray-100 font-semibold">cinematic scores</span> that captivate an audience,{" "}
-                            <span className="text-gray-100 font-semibold">game-changing soundtracks</span> that set the tone, or original
-                            compositions for film and TV, we craft immersive experiences that{" "}
-                            <span className="text-gray-100 font-semibold">amplify emotion</span> and{" "}
-                            <span className="text-gray-100 font-semibold">elevate stories</span>.
-                        </p>
-                    </div>
-                </motion.div> */}
-            </div>
+            </section>
 
             {/* Call to Action */}
-            <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.3 }}
-                className="mt-32 text-center relative z-10"
-            >
-                <h3 className="text-3xl font-semibold bg-gradient-to-r from-gray-300 to-white bg-clip-text text-transparent">
-                    Let&rsquo;s Build Something Incredible
-                </h3>
-                <p className="text-gray-400 mt-3">
-                    Whether it&apos;s a <span className="text-gray-100 font-semibold">website</span> built for speed and interactivity, or
-                    an <span className="text-gray-100 font-semibold">original soundtrack</span> that leaves an unforgettable impact,
-                    we&rsquo;re here to bring your vision to life. Let&apos;s create something truly special together.
-                </p>
-                <Link href="/contact-us">
-                    <Button className="bg-green-600 mt-4 text-white hover:bg-green-700 hover:glow text-lg px-8 py-6">
-                        Get in Touch
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                    </Button>
-                </Link>
-            </motion.div>
+            <section className="relative z-20 flex flex-col items-center justify-center py-20 px-4">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="bg-gradient-to-r from-green-600/80 via-blue-700/80 to-zinc-900/90 rounded-2xl shadow-xl p-10 md:p-16 text-center max-w-2xl w-full"
+                >
+                    <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-green-300 bg-clip-text text-transparent mb-4">
+                        Let’s Build Something Incredible
+                    </h3>
+                    <p className="text-gray-200 text-lg mb-8">
+                        Whether you need a <span className="text-white font-semibold">website</span> that stands out or an{" "}
+                        <span className="text-green-200 font-semibold">original soundtrack</span> that moves your audience, we’re ready to
+                        bring your vision to life.
+                    </p>
+                    <Link href="/contact-us">
+                        <Button className="bg-green-600 hover:bg-green-700 text-white text-lg px-8 py-6 shadow-lg transition-all duration-200 hover:scale-105">
+                            Get in Touch
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                        </Button>
+                    </Link>
+                </motion.div>
+            </section>
         </div>
     );
 };

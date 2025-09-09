@@ -8,7 +8,7 @@ import FeaturesSection from "@/components/features-section";
 import WhyChooseUs from "@/components/why-choose-us";
 import FaqSection from "@/components/faq-section";
 import CtaSection from "@/components/cta-section";
-import Testimonials from "@/components/Testimonials";
+import Testimonials from "@/components/testimonials";
 
 export default function Home() {
     const ref = useRef(null);
