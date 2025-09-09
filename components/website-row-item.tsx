@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { WebsiteType } from "@/lib/types";
 import OpenLinkModal from "@/components/modals/open-link-modal";
 import Logo from "@/public/logos/tgs-logo.png";
+import Link from "next/link";
 
 interface IWebsiteRowItemProps {
     currentWebsite: WebsiteType;
@@ -14,21 +15,44 @@ interface IWebsiteRowItemProps {
 
 export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalData, setModalData] = useState<{ title: string; link: string } | null>(null);
 
-    const cardVariants = {
-        hover: { scale: 1.02, boxShadow: "0 8px 20px rgba(0,0,0,0.3)" },
+    const getTechStackLink = (tech: string): string | undefined => {
+        switch (tech.toLowerCase()) {
+            case "next.js":
+                return "https://nextjs.org/";
+            case "typescript":
+                return "https://www.typescriptlang.org/";
+            case "tailwindcss":
+                return "https://tailwindcss.com/";
+            case "vercel":
+                return "https://vercel.com/";
+            case "supabase":
+                return "https://supabase.com/";
+            case "resend":
+                return "https://resend.com/";
+            case "stripe":
+                return "https://stripe.com/";
+            case "clerkjs":
+            case "clerk":
+                return "https://clerk.com/";
+            case "sanity.io":
+            case "sanity":
+                return "https://www.sanity.io/";
+            case "shopify":
+                return "https://www.shopify.com/";
+            case "liquid":
+                return "https://shopify.dev/docs/api/liquid";
+            case "javascript":
+                return "https://developer.mozilla.org/docs/Web/JavaScript";
+            default:
+                return undefined;
+        }
     };
 
     return (
         <>
-            <motion.div
-                className="relative flex flex-col w-full max-w-xs min-w-[18rem] h-[28rem] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl overflow-hidden cursor-pointer shadow-lg group transition-all duration-300"
-                variants={cardVariants}
-                whileHover="hover"
-                initial="rest"
-                animate="rest"
-                onClick={() => setIsModalOpen(true)}
-            >
+            <div className="relative flex flex-col w-full max-w-xs min-w-[18rem] h-[28rem] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl overflow-hidden shadow-lg group transition-all duration-300">
                 {/* Image */}
                 <div className="relative w-full h-48 sm:h-56 md:h-56 lg:h-56 flex-shrink-0">
                     <Image src={currentWebsite.img} alt={currentWebsite.title} fill className="object-cover" />
@@ -49,37 +73,45 @@ export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps)
                     {/* Tech stack badges */}
                     {currentWebsite && currentWebsite.tech_stack.length > 0 && (
                         <div className="flex flex-wrap gap-2 mb-3">
-                            {currentWebsite.tech_stack.map((tech: string, idx: number) => (
-                                <span
-                                    key={idx}
-                                    className="bg-gray-700 text-gray-200 text-xs px-2 py-1 rounded-full border border-gray-600 shadow-sm"
-                                >
-                                    {tech}
-                                </span>
-                            ))}
+                            {currentWebsite.tech_stack.map((tech: string, idx: number) => {
+                                const techLink = getTechStackLink(tech);
+                                return (
+                                    <button
+                                        key={idx}
+                                        className="bg-gray-700 text-gray-200 text-xs px-2 py-1 rounded-full border border-gray-600 shadow-sm transition-all duration-150 hover:bg-blue-600 hover:text-white hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (techLink) {
+                                                setModalData({ title: tech, link: techLink });
+                                                setIsModalOpen(true);
+                                            }
+                                        }}
+                                        type="button"
+                                    >
+                                        {tech}
+                                    </button>
+                                );
+                            })}
                         </div>
                     )}
-                    {/* Visit Site button (shows on hover) */}
+                    {/* Visit Site button */}
                     <button
-                        className="mt-auto w-full py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                        className="mt-auto w-full py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold shadow-md transition-all duration-150 hover:bg-blue-700 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                         onClick={(e) => {
                             e.stopPropagation();
-                            window.open(currentWebsite.link, "_blank");
+                            setModalData({ title: currentWebsite.title, link: currentWebsite.link });
+                            setIsModalOpen(true);
                         }}
+                        type="button"
                     >
                         Visit Site
                     </button>
                 </div>
-            </motion.div>
+            </div>
 
             {/* Modal */}
-            {isModalOpen && (
-                <OpenLinkModal
-                    isOpen={true}
-                    closeModal={() => setIsModalOpen(false)}
-                    title={currentWebsite.title}
-                    link={currentWebsite.link}
-                />
+            {isModalOpen && modalData && (
+                <OpenLinkModal isOpen={true} closeModal={() => setIsModalOpen(false)} title={modalData.title} link={modalData.link} />
             )}
         </>
     );

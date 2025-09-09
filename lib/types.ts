@@ -8,6 +8,21 @@ export type FaqType = {
     answer: string;
 };
 
+export type TechStackName =
+    | "Next.js"
+    | "JavaScript"
+    | "TypeScript"
+    | "TailwindCSS"
+    | "Vercel"
+    | "Clerkjs"
+    | "Shopify"
+    | "Liquid"
+    | "Stripe"
+    | "Emailjs"
+    | "Sanity.io"
+    | "Supabase"
+    | "Resend";
+
 export type WebsiteType = {
     id: string;
     img: any;
@@ -15,7 +30,7 @@ export type WebsiteType = {
     description: string;
     release_date: string;
     link: string; // Add link property
-    tech_stack: string[];
+    tech_stack: TechStackName[];
 };
 
 export interface EmailResponse {

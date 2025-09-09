@@ -8,8 +8,6 @@ import TaharkaDemo from "@/public/websites/taharkabros1.webp";
 import TaharkaShopify from "@/public/websites/taharkabros2.jpg";
 import EGSImg from "@/public/websites/egs-screenshot.png";
 
-// AUDIO FILES
-
 export const DemoWebsites: WebsiteType[] = [];
 
 export const ClientWebsites: WebsiteType[] = [
