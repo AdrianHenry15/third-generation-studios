@@ -3,9 +3,24 @@
 import { motion } from "framer-motion";
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
+import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 
 export default function Footer() {
+    const QuickLinks = [
+        { name: "Home", href: "/" },
+        { name: "Websites", href: "/websites" },
+        { name: "Music", href: "/music" },
+        { name: "Pricing", href: "/pricing" },
+        { name: "Blog", href: "/blog" },
+        { name: "About Us", href: "/about" },
+    ];
+
+    const Socials = [
+        { name: "GitHub", href: "https://github.com/third-generation-studios" },
+        { name: "Instagram", href: "https://www.instagram.com/websitesblow/" },
+        { name: "LinkedIn", href: "https://www.linkedin.com/in/adrian-henry-199595207/" },
+        { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61555913473339" },
+    ];
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -39,63 +54,48 @@ export default function Footer() {
                         <p className="text-gray-400 mb-6 max-w-md">
                             We convert your digital vision into reality with MVP-ready custom solutions using cutting-edge technologies.
                         </p>
+                        {/* Socials */}
                         <div className="flex space-x-4">
-                            <Link
-                                target="_blank"
-                                href="https://github.com/third-generation-studios"
-                                className="text-gray-400 hover:text-green-500 transition-colors"
-                            >
-                                <FaGithub className="h-5 w-5" />
-                                <span className="sr-only">GitHub</span>
-                            </Link>
-                            <Link
-                                target="_blank"
-                                href="https://www.instagram.com/websitesblow/"
-                                className="text-gray-400 hover:text-green-500 transition-colors"
-                            >
-                                <FaInstagram className="h-5 w-5" />
-                                <span className="sr-only">Instagram</span>
-                            </Link>
-                            <Link
-                                target="_blank"
-                                href="https://www.linkedin.com/in/adrian-henry-199595207/"
-                                className="text-gray-400 hover:text-green-500 transition-colors"
-                            >
-                                <FaLinkedin className="h-5 w-5" />
-                                <span className="sr-only">LinkedIn</span>
-                            </Link>
+                            {Socials.map((social) => (
+                                <Link
+                                    key={social.name}
+                                    target="_blank"
+                                    href={social.href}
+                                    className="text-gray-400 hover:text-green-500 transition-colors flex"
+                                >
+                                    {social.name === "GitHub" && <FaGithub className="h-5 w-5" />}
+                                    {social.name === "Instagram" && <FaInstagram className="h-5 w-5" />}
+                                    {social.name === "LinkedIn" && <FaLinkedin className="h-5 w-5" />}
+                                    {social.name === "Facebook" && <FaFacebook className="h-5 w-5" />}
+                                    <span className="sr-only">{social.name}</span>
+                                </Link>
+                            ))}
                         </div>
                     </motion.div>
 
+                    {/* Quick Links */}
                     <motion.div variants={itemVariants}>
                         <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-                        <ul className="space-y-2">
-                            <li>
-                                <Link href="/" className="text-gray-400 hover:text-green-400 transition-colors">
-                                    Home
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/websites" className="text-gray-400 hover:text-green-400 transition-colors">
-                                    Showcase
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/pricing" className="text-gray-400 hover:text-green-400 transition-colors">
-                                    Pricing
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/blog" className="text-gray-400 hover:text-green-400 transition-colors">
-                                    Blog
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/about" className="text-gray-400 hover:text-green-400 transition-colors">
-                                    About Us
-                                </Link>
-                            </li>
-                        </ul>
+                        <div className="grid grid-cols-2 gap-4">
+                            <ul className="space-y-2">
+                                {QuickLinks.slice(0, 3).map((link) => (
+                                    <li key={link.href}>
+                                        <Link href={link.href} className="text-gray-400 hover:text-green-400 transition-colors">
+                                            {link.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                            <ul className="space-y-2">
+                                {QuickLinks.slice(3, 6).map((link) => (
+                                    <li key={link.href}>
+                                        <Link href={link.href} className="text-gray-400 hover:text-green-400 transition-colors">
+                                            {link.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </motion.div>
 
                     <motion.div variants={itemVariants}>

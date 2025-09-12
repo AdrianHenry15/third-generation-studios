@@ -36,7 +36,8 @@ export default function Navbar() {
     }, [isOpen]);
 
     const navItems = [
-        { name: "Showcase", href: "/websites" },
+        { name: "Websites", href: "/websites" },
+        { name: "Music", href: "/music" },
         { name: "Pricing", href: "/pricing" },
         { name: "Blog", href: "/blog" },
         { name: "About", href: "/about" },

@@ -2,8 +2,12 @@ import { NavMenuType } from "./types";
 
 export const NavMenuTypeItems: NavMenuType[] = [
     {
-        title: "Showcase",
+        title: "Websites",
         link: "/websites",
+    },
+    {
+        title: "Music",
+        link: "/music",
     },
     {
         title: "Pricing",
@@ -21,10 +25,6 @@ export const NavMenuTypeItems: NavMenuType[] = [
         title: "About",
         link: "/About",
     },
-    // {
-    //     title: "Faqs",
-    //     link: "/faqs",
-    // },
 ];
 export const NavMenuTypeAltItems: NavMenuType[] = [
     {

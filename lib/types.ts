@@ -1,13 +1,3 @@
-export type NavMenuType = {
-    title: string;
-    link: string;
-};
-
-export type FaqType = {
-    question: string;
-    answer: string;
-};
-
 export type TechStackName =
     | "Next.js"
     | "JavaScript"
@@ -22,6 +12,18 @@ export type TechStackName =
     | "Sanity.io"
     | "Supabase"
     | "Resend";
+
+export type AvailablePlansType = "Studio Basic" | "Studio Plus" | "Studio Pro" | "Studio Commerce";
+
+export type NavMenuType = {
+    title: string;
+    link: string;
+};
+
+export type FaqType = {
+    question: string;
+    answer: string;
+};
 
 export type WebsiteType = {
     id: string;
@@ -46,4 +48,15 @@ export interface EmailTemplateParams {
     productDescription: string;
 }
 
-export type AvailablePlansType = "Studio Basic" | "Studio Plus" | "Studio Pro" | "Studio Commerce";
+export type TrackType = {
+    id: number;
+    title: string;
+    artist: string;
+    album: string;
+    albumArt: string;
+    source: string;
+    duration: string;
+    year: number | string;
+    genre: string;
+    locked: boolean;
+};
