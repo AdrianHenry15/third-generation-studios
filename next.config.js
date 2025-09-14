@@ -25,7 +25,6 @@ const nextConfig = {
         RESEND_API_KEY: process.env.RESEND_API_KEY,
         HCAPTCHA_SECRET: process.env.HCAPTCHA_SECRET,
         RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
-        SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
         SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
     },
     productionBrowserSourceMaps: false,

@@ -6,7 +6,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "No code provided" }, { status: 400 });
     }
 
-    const clientId = process.env.SPOTIFY_CLIENT_ID;
+    const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
     const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
     const redirectUri = process.env.NEXT_PUBLIC_SPOTIFY_REDIRECT_URI || "http://localhost:3000/api/spotify/callback";
     const basic = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");

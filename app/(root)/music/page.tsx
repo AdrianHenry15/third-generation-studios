@@ -1,9 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import TrackCard from "@/components/layout/music/track-card";
+import { useSearchParams } from "next/navigation";
 import TrackFilter from "@/components/layout/music/track-filter";
-import { fetchSpotifyTracks, fetchGenre } from "@/lib/spotify";
+import {
+    fetchSpotifyTracks,
+    fetchSpotifyGenre,
+    setSpotifyUserToken,
+    setSpotifyAuthModalHandler,
+    redirectToSpotifyLogin,
+} from "@/lib/spotify";
+import TrackCard from "@/components/layout/music/track-card";
+import SpotifyAuthModal from "@/components/layout/music/modals/spotify-auth-modal";
+import { ITrackProps, ISpotifyTrackProps, AlbumTypes } from "@/lib/types";
+import { dummyMusic } from "@/lib/constants";
 
 const filterOptions = [
     { value: "default", label: "Default" },
@@ -14,62 +24,40 @@ const filterOptions = [
     { value: "spotify", label: "Spotify" },
 ];
 
-const dummyMusic = [
-    {
-        id: 1,
-        title: "Midnight Drive",
-        artist: "Anjin Iso",
-        album: "Neon Nights",
-        albumArt: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=facearea&w=400&q=80",
-        source: "Supabase",
-        duration: "3:42",
-        year: 2023,
-        genre: "Synthwave",
-        locked: true, // free to play
-    },
-    {
-        id: 2,
-        title: "Electric Dreams",
-        artist: "Anjin Iso",
-        album: "Electric Avenue",
-        albumArt: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=facearea&w=400&q=80",
-        source: "Supabase",
-        duration: "4:10",
-        year: 2022,
-        genre: "Electronic",
-        locked: false, // requires unlock
-    },
-    {
-        id: 3,
-        title: "Sunset Boulevard",
-        artist: "Jafarri",
-        album: "Golden Hour",
-        albumArt: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=facearea&w=400&q=80",
-        source: "Supabase",
-        duration: "3:55",
-        year: 2021,
-        genre: "Chillhop",
-        locked: false,
-    },
-    {
-        id: 4,
-        title: "Starlit City",
-        artist: "Belle Morie",
-        album: "City Lights",
-        albumArt: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=facearea&w=400&q=80",
-        source: "Supabase",
-        duration: "4:22",
-        year: 2023,
-        genre: "Pop",
-        locked: true,
-    },
-];
-
 export default function MusicPage() {
-    const [unlocked, setUnlocked] = useState<number[]>([]);
+    const searchParams = useSearchParams();
+    const [unlocked, setUnlocked] = useState<string[]>([]);
     const [filter, setFilter] = useState<string>("default");
-    const [spotifyTracks, setSpotifyTracks] = useState<any[]>([]);
+    const [spotifyTracks, setSpotifyTracks] = useState<ISpotifyTrackProps[]>([]);
     const [trackGenres, setTrackGenres] = useState<{ [trackId: string]: string }>({});
+
+    // Spotify Auth Modal State
+    const [showSpotifyAuth, setShowSpotifyAuth] = useState(false);
+    const [authTrackTitle, setAuthTrackTitle] = useState<string>();
+
+    // Set up modal handler for spotify service
+    useEffect(() => {
+        setSpotifyAuthModalHandler((show: boolean, trackTitle?: string) => {
+            setShowSpotifyAuth(show);
+            setAuthTrackTitle(trackTitle);
+        });
+    }, []);
+
+    // Handle Spotify authentication
+    const handleSpotifyAuth = () => {
+        setShowSpotifyAuth(false);
+        redirectToSpotifyLogin();
+    };
+
+    // Handle Spotify token from OAuth callback
+    useEffect(() => {
+        const spotifyToken = searchParams.get("spotify_token");
+        if (spotifyToken) {
+            setSpotifyUserToken(spotifyToken);
+            // Remove token from URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         fetchSpotifyTracks("Anjin Iso")
@@ -85,7 +73,7 @@ export default function MusicPage() {
                 const artist = track.artists?.[0];
                 if (artist && artist.id) {
                     if (!genreCache[artist.id]) {
-                        const genres = await fetchGenre(artist.id);
+                        const genres = await fetchSpotifyGenre(artist.id);
                         genreCache[artist.id] = genres[0] || "-";
                     }
                     updates[track.id] = genreCache[artist.id];
@@ -99,56 +87,82 @@ export default function MusicPage() {
     }, [spotifyTracks]);
 
     // Map Spotify tracks to TrackCard format and filter for Anjin Iso only
-    const mappedSpotifyTracks = spotifyTracks
-        .filter((track: any) => track.artists?.some((a: any) => a.name === "Anjin Iso"))
-        .map((track: any, idx: number) => ({
-            id: 1000 + idx,
+    const mappedSpotifyTracks: ITrackProps[] = spotifyTracks
+        .filter((track: ISpotifyTrackProps) => track.artists?.some((a) => a.name === "Anjin Iso"))
+        .map((track: ISpotifyTrackProps, idx: number) => ({
+            id: `spotify-${track.id}`,
             title: track.name,
-            artist: track.artists?.map((a: any) => a.name).join(", ") || "",
-            album: track.album?.name || "",
-            albumArt: track.album?.images?.[0]?.url || "",
-            source: "Spotify",
-            duration: `${Math.floor((track.duration_ms || 0) / 60000)}:${(((track.duration_ms || 0) % 60000) / 1000).toFixed(0).padStart(2, "0")}`,
-            year: track.album?.release_date?.slice(0, 4) || "",
+            artists: track.artists.map((artist) => ({
+                id: artist.id,
+                name: artist.name,
+            })),
+            credits: { composer: "", producer: "" },
+            url: track.preview_url || "",
+            album: {
+                id: track.album.id,
+                type:
+                    track.album.album_type === "single"
+                        ? ("Single" as AlbumTypes)
+                        : track.album.album_type === "album"
+                          ? ("Album" as AlbumTypes)
+                          : ("EP" as AlbumTypes),
+                total_tracks: track.album.total_tracks,
+                href: track.album.href,
+                images: track.album.images.map((img, imgIdx) => ({
+                    id: `${track.album.id}-${imgIdx}`,
+                    url: img.url,
+                    name: `${track.album.name} Cover`,
+                })),
+                name: track.album.name,
+                release_date: track.album.release_date,
+                artists: track.album.artists.map((artist) => ({
+                    id: artist.id,
+                    name: artist.name,
+                })),
+            },
+            type: "Spotify" as const,
+            duration: track.duration_ms,
+            track_number: track.track_number,
+            release_date: track.album.release_date.slice(0, 4),
             genre: trackGenres[track.id] || "-",
             locked: false,
+            plays: 0,
+            is_liked: false,
+            spotify_id: track.id,
         }));
 
     // Combine dummyMusic and filtered Spotify tracks
-    let allTracks = [...dummyMusic, ...mappedSpotifyTracks];
+    let allTracks: ITrackProps[] = [...dummyMusic, ...mappedSpotifyTracks];
 
     // Filter to only show tracks by Anjin Iso
-    allTracks = allTracks.filter((track) => track.artist === "Anjin Iso");
+    allTracks = allTracks.filter((track) => track.artists && track.artists[0]?.name === "Anjin Iso");
 
     let filteredTracks = [...allTracks];
     if (filter === "artist") {
-        filteredTracks.sort((a, b) => a.artist.localeCompare(b.artist));
+        filteredTracks.sort((a, b) => {
+            const aArtist = a.artists?.[0]?.name || "";
+            const bArtist = b.artists?.[0]?.name || "";
+            return aArtist.localeCompare(bArtist);
+        });
     } else if (filter === "genre") {
         filteredTracks.sort((a, b) => a.genre.localeCompare(b.genre));
     } else if (filter === "shortest") {
-        filteredTracks.sort((a, b) => {
-            const aSec = parseInt(a.duration.split(":")[0]) * 60 + parseInt(a.duration.split(":")[1]);
-            const bSec = parseInt(b.duration.split(":")[0]) * 60 + parseInt(b.duration.split(":")[1]);
-            return aSec - bSec;
-        });
+        filteredTracks.sort((a, b) => a.duration - b.duration);
     } else if (filter === "longest") {
-        filteredTracks.sort((a, b) => {
-            const aSec = parseInt(a.duration.split(":")[0]) * 60 + parseInt(a.duration.split(":")[1]);
-            const bSec = parseInt(b.duration.split(":")[0]) * 60 + parseInt(b.duration.split(":")[1]);
-            return bSec - aSec;
-        });
+        filteredTracks.sort((a, b) => b.duration - a.duration);
     } else if (filter === "spotify") {
-        filteredTracks = filteredTracks.filter((t) => t.source === "Spotify");
+        filteredTracks = filteredTracks.filter((t) => t.type === "Spotify");
     } else if (filter === "supabase") {
-        filteredTracks = filteredTracks.filter((t) => t.source === "Supabase");
+        filteredTracks = filteredTracks.filter((t) => t.type === "Unreleased");
     }
 
+    // Fix: sort by locked status after filtering
     const sortedTracks = [...filteredTracks].sort((a, b) => {
         if (a.locked === b.locked) return 0;
         return a.locked ? 1 : -1;
     });
 
-    const handleUnlock = (trackId: number) => {
+    const handleUnlock = (trackId: string) => {
         setUnlocked((prev) => (prev.includes(trackId) ? prev : [...prev, trackId]));
     };
 
@@ -164,10 +178,24 @@ export default function MusicPage() {
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     {sortedTracks.map((track) => (
-                        <TrackCard key={track.id} {...track} onUnlock={handleUnlock} />
+                        <TrackCard
+                            key={track.id}
+                            {...track}
+                            onUnlock={(trackId) => {
+                                if (!unlocked.includes(trackId)) handleUnlock(trackId);
+                            }}
+                        />
                     ))}
                 </div>
             </div>
+
+            {/* Spotify Authentication Modal */}
+            <SpotifyAuthModal
+                isOpen={showSpotifyAuth}
+                onClose={() => setShowSpotifyAuth(false)}
+                onConfirm={handleSpotifyAuth}
+                trackTitle={authTrackTitle}
+            />
         </main>
     );
 }

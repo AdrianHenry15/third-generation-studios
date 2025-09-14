@@ -50,7 +50,7 @@ export default function HeroSection() {
     };
 
     return (
-        <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        <section className="relative pt-24 pb-20 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
