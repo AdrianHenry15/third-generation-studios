@@ -9,7 +9,7 @@ import {
     setSpotifyUserToken,
     setSpotifyAuthModalHandler,
     redirectToSpotifyLogin,
-} from "@/lib/spotify";
+} from "@/lib/spotify/spotify-access";
 import TrackCard from "@/components/layout/music/track-card";
 import SpotifyAuthModal from "@/components/layout/music/modals/spotify-auth-modal";
 import { ITrackProps, ISpotifyTrackProps, AlbumTypes } from "@/lib/types";

@@ -152,3 +152,12 @@ export interface ISpotifyTrackProps {
     type: "track";
     uri: string;
 }
+export interface IMusicLinkProps {
+    spotify?: string;
+    apple?: string;
+    youtube?: string;
+    soundcloud?: string;
+    amazon?: string;
+    tidal?: string;
+    deezer?: string;
+}

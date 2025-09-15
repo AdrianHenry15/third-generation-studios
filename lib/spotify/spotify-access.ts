@@ -68,7 +68,12 @@ export async function playSpotifyTrack(trackId: string, previewUrl?: string) {
         }
 
         if (!previewUrl) {
-            throw new Error("No preview available for this Spotify track");
+            // Instead of throwing error, return a special response indicating no preview
+            return {
+                url: null,
+                type: "no-preview" as const,
+                message: "No preview available for this track",
+            };
         }
 
         // Return the preview URL to be handled by audio context
@@ -110,28 +115,27 @@ export function getCurrentPlayingTrack() {
 export async function playTrack(track: any) {
     try {
         // Check if track is Spotify and user needs authentication
-        if (track.type === "Spotify") {
-            const isAuthenticated = await isSpotifyUserAuthenticated();
-            if (!isAuthenticated) {
-                // Show modal instead of confirm dialog
-                if (showSpotifyAuthModal) {
-                    showSpotifyAuthModal(true, track.title);
-                    return { success: false, reason: "authentication_required" };
-                } else {
-                    // Fallback to confirm dialog if modal handler not set
-                    const userConfirmed = confirm(
-                        "You need to sign in to your Spotify account to play Spotify tracks. Would you like to sign in now?",
-                    );
-
-                    if (userConfirmed) {
-                        redirectToSpotifyLogin();
-                        return { success: false, reason: "authentication_required" };
-                    } else {
-                        throw new Error("Spotify authentication required to play this track");
-                    }
-                }
-            }
-        }
+        // if (track.type === "Spotify") {
+        //     const isAuthenticated = await isSpotifyUserAuthenticated();
+        //     if (!isAuthenticated) {
+        //         // Show modal instead of confirm dialog
+        //         if (showSpotifyAuthModal) {
+        //             showSpotifyAuthModal(true, track.title);
+        //             return { success: false, reason: "authentication_required" };
+        //         } else {
+        //             // Fallback to confirm dialog if modal handler not set
+        //             const userConfirmed = confirm(
+        //                 "You need to sign in to your Spotify account to play Spotify tracks. Would you like to sign in now?",
+        //             );
+        //             if (userConfirmed) {
+        //                 redirectToSpotifyLogin();
+        //                 return { success: false, reason: "authentication_required" };
+        //             } else {
+        //                 throw new Error("Spotify authentication required to play this track");
+        //             }
+        //         }
+        //     }
+        // }
 
         // Stop current track if playing
         if (currentAudio) {
@@ -146,7 +150,16 @@ export async function playTrack(track: any) {
                 throw new Error("Spotify track ID missing");
             }
             const spotifyData = await playSpotifyTrack(track.spotify_id, track.url);
-            audioUrl = spotifyData.url;
+            // Handle no preview case
+            if (spotifyData.type === "no-preview") {
+                return {
+                    success: false,
+                    reason: "no-preview",
+                    message: "This Spotify track doesn't have a preview available",
+                };
+            }
+
+            audioUrl = spotifyData.url!;
         } else {
             // For non-Spotify tracks, use the URL directly (Supabase)
             audioUrl = track.url;

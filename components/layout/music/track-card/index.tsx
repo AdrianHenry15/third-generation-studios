@@ -4,22 +4,41 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { ITrackProps } from "@/lib/types";
 import { Heart, Info } from "lucide-react";
-import CopyrightModal from "./modals/copyright-modal";
-import RemixDisclaimerModal from "./modals/remix-disclaimer-modal";
-import { playTrack, pauseTrack, resumeTrack, getCurrentPlayingTrack } from "@/lib/spotify";
+import CopyrightModal from "../modals/copyright-modal";
+import RemixDisclaimerModal from "../modals/remix-disclaimer-modal";
+import { playTrack, pauseTrack, resumeTrack, getCurrentPlayingTrack } from "@/lib/spotify/spotify-player";
+import ExternalLinkButton from "../external-link-button";
+import PlayPauseButton from "./play-pause-button";
 
 interface ITrackCardProps extends ITrackProps {
     onUnlock?: (trackId: string) => void;
+    accessToken?: string; // Add accessToken prop for Spotify SDK
 }
 
 const TrackCard = (props: ITrackCardProps) => {
-    const { id, title, artists, album, type, duration, release_date, locked, plays, is_liked, copyright, onUnlock, spotify_id } = props;
+    const {
+        id,
+        title,
+        artists,
+        album,
+        type,
+        duration,
+        release_date,
+        locked,
+        plays,
+        is_liked,
+        copyright,
+        onUnlock,
+        spotify_id,
+        accessToken,
+    } = props;
 
     // Local state
     const [like, setlike] = useState(is_liked);
     const [loading, setLoading] = useState(false);
     const [isCurrentTrack, setIsCurrentTrack] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [noPreviewAvailable, setNoPreviewAvailable] = useState(false);
 
     // Check if this is the currently playing track
     useEffect(() => {
@@ -43,20 +62,62 @@ const TrackCard = (props: ITrackCardProps) => {
             if (isCurrentTrack) {
                 // Same track - toggle play/pause
                 if (isPlaying) {
-                    pauseTrack();
+                    const result = await pauseTrack();
+                    if (!result.success) {
+                        console.error("Failed to pause track:", result.status);
+                        alert("Failed to pause track");
+                    }
                 } else {
-                    resumeTrack();
+                    const result = await resumeTrack();
+                    if (!result.success) {
+                        console.error("Failed to resume track:", result.status);
+                        alert("Failed to resume track");
+                    }
                 }
             } else {
                 // Different track - play new track
-                await playTrack({
-                    ...props,
-                    is_liked: like,
-                });
+                const result = await playTrack(
+                    {
+                        id,
+                        title,
+                        artists,
+                        album,
+                        type,
+                        duration,
+                        release_date,
+                        locked,
+                        plays,
+                        is_liked: like,
+                        copyright,
+                        spotify_id,
+                        url: props.url, // Make sure to pass the URL
+                    },
+                    accessToken,
+                );
+
+                // Handle different result cases
+                if (!result.success) {
+                    if (result.reason === "no-preview") {
+                        setNoPreviewAvailable(true);
+                        console.log("No preview available for this Spotify track");
+                        // Don't show alert here, just update state
+                        return;
+                    } else {
+                        alert(`Failed to play track: ${result.message || "Unknown error"}`);
+                        return;
+                    }
+                }
+
+                // Success - log player type for debugging
+                console.log(`Playing track "${title}" with ${result.playerType} player`);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(`Error with ${type} track:`, error);
-            alert(`Error playing track: ${error}`);
+            if (error.message?.includes("No preview available")) {
+                setNoPreviewAvailable(true);
+            } else {
+                alert(`Error playing track: ${error.message || error}`);
+            }
         } finally {
             setLoading(false);
         }
@@ -158,17 +219,31 @@ const TrackCard = (props: ITrackCardProps) => {
                     </div>
                 </div>
                 {/* Play/Pause Button */}
-                <button
-                    disabled={locked || loading}
-                    className={`mt-4 w-full py-2 rounded-lg text-white font-semibold shadow transition ${
-                        !locked
-                            ? "bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-400 hover:to-purple-400"
-                            : "bg-gray-700 cursor-not-allowed"
-                    }`}
-                    onClick={onPlayPauseClick}
-                >
-                    {!locked ? (loading ? "Loading..." : isCurrentTrack && isPlaying ? "Pause" : "Play") : "Locked"}
-                </button>
+                <PlayPauseButton
+                    isPlaying={isPlaying}
+                    isCurrentTrack={isCurrentTrack}
+                    loading={loading}
+                    locked={locked}
+                    onPlayPauseClick={onPlayPauseClick}
+                />
+
+                {/* External Links */}
+                {type === "Spotify" && spotify_id && (
+                    <ExternalLinkButton spotify_id={spotify_id} noPreviewAvailable={noPreviewAvailable} linkType="spotify" />
+                )}
+
+                {type === "Spotify" && (
+                    <ExternalLinkButton
+                        albumName={album.name}
+                        linkType="digital-stores"
+                        link={`https://album.link/tgs-${album.name.toLowerCase()}`}
+                    />
+                )}
+
+                {/* Show message for no preview */}
+                {noPreviewAvailable && (
+                    <p className="mt-2 text-xs text-gray-400 text-center">Preview not available - use links above for full track</p>
+                )}
             </div>
 
             {/* Remix Disclaimer Modal */}

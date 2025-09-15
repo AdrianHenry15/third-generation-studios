@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from "react";
 import { ITrackProps } from "@/lib/types";
-import { fetchSpotifyTrackById } from "@/lib/spotify";
+import { fetchSpotifyTrackById } from "@/lib/spotify/spotify-access";
 
 type AudioPlayerContextType = {
     currentTrack: ITrackProps | null;
