@@ -1,15 +1,41 @@
 import React from "react";
+import { useAudioPlayer } from "@/contexts/audio-player-context";
+import { ITrackProps } from "@/lib/types";
 
 interface IPlayPauseButtonProps {
-    isPlaying: boolean;
-    isCurrentTrack: boolean;
-    loading: boolean;
+    track: ITrackProps;
+    playlist?: ITrackProps[];
     locked: boolean;
-    onPlayPauseClick: () => void;
 }
 
 const PlayPauseButton = (props: IPlayPauseButtonProps) => {
-    const { isPlaying, isCurrentTrack, loading, locked, onPlayPauseClick } = props;
+    const { track, playlist, locked } = props;
+
+    const { currentTrackId, isPlaying: contextIsPlaying, playTrack, pauseTrack, resume, isLoading: contextIsLoading } = useAudioPlayer();
+
+    const isCurrentTrack = currentTrackId === track.id;
+    const isPlaying = isCurrentTrack && contextIsPlaying;
+    const loading = isCurrentTrack && contextIsLoading;
+
+    const handlePlayPause = async () => {
+        if (locked) return;
+
+        try {
+            if (isCurrentTrack) {
+                // Same track - toggle play/pause
+                if (isPlaying) {
+                    pauseTrack();
+                } else {
+                    resume();
+                }
+            } else {
+                // Different track - play new track
+                await playTrack(track, playlist);
+            }
+        } catch (error: any) {
+            console.error(`Error with ${track.type} track:`, error);
+        }
+    };
 
     return (
         <button
@@ -19,9 +45,9 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
                     ? "bg-gradient-to-r from-green-500 to-purple-500 hover:from-green-400 hover:to-purple-400"
                     : "bg-gray-700 cursor-not-allowed"
             }`}
-            onClick={onPlayPauseClick}
+            onClick={handlePlayPause}
         >
-            {!locked ? (loading ? "Loading..." : isCurrentTrack && isPlaying ? "⏸️ Pause" : "▶️ Play") : "🔒 Locked"}
+            {!locked ? (loading ? "Loading..." : isCurrentTrack && isPlaying ? "Pause" : "Play") : "Locked"}
         </button>
     );
 };

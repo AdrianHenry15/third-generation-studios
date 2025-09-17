@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useRef } from "react";
 import { ITrackProps } from "@/lib/types";
-import { fetchSpotifyTrackById } from "@/lib/spotify/spotify-access";
 
 type AudioPlayerContextType = {
     currentTrack: ITrackProps | null;
@@ -11,10 +10,12 @@ type AudioPlayerContextType = {
     showPlayer: boolean;
 
     // playback controls
-    playTrack: (track: ITrackProps) => Promise<void>;
+    playTrack: (track: ITrackProps, playlist?: ITrackProps[]) => Promise<void>;
     pauseTrack: () => void;
     resume: () => void;
     closePlayer: () => void;
+    playNextTrack: () => void;
+    playPreviousTrack: () => void;
 
     // transport & volume
     currentTime: number;
@@ -29,6 +30,12 @@ type AudioPlayerContextType = {
     // state flags
     isLoading: boolean;
     canPlay: boolean;
+
+    // playlist info
+    playlist: ITrackProps[];
+    currentTrackIndex: number;
+    hasNextTrack: boolean;
+    hasPreviousTrack: boolean;
 };
 
 const AudioPlayerContext = createContext<AudioPlayerContextType | undefined>(undefined);
@@ -43,6 +50,8 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
     const [currentTrack, setCurrentTrack] = useState<ITrackProps | null>(null);
     const [showPlayer, setShowPlayer] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [playlist, setPlaylist] = useState<ITrackProps[]>([]);
+    const [currentTrackIndex, setCurrentTrackIndex] = useState(-1);
 
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -101,9 +110,26 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
         audio.muted = muted;
     }, [volume, muted]);
 
-    const playTrack = async (track: ITrackProps) => {
+    const hasNextTrack = currentTrackIndex < playlist.length - 1;
+    const hasPreviousTrack = currentTrackIndex > 0;
+
+    const playTrack = async (track: ITrackProps, newPlaylist?: ITrackProps[]) => {
         const audio = audioRef.current;
         if (!audio) return;
+
+        // Update playlist if provided, otherwise use current track as single-item playlist
+        if (newPlaylist) {
+            setPlaylist(newPlaylist);
+            const index = newPlaylist.findIndex((t) => t.id === track.id);
+            setCurrentTrackIndex(index >= 0 ? index : 0);
+        } else if (playlist.length === 0 || !playlist.find((t) => t.id === track.id)) {
+            setPlaylist([track]);
+            setCurrentTrackIndex(0);
+        } else {
+            // Track exists in current playlist, update index
+            const index = playlist.findIndex((t) => t.id === track.id);
+            setCurrentTrackIndex(index >= 0 ? index : 0);
+        }
 
         setCurrentTrack(track);
         setShowPlayer(true);
@@ -114,23 +140,11 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
         setDuration(0);
 
         try {
-            let src: string | undefined;
-            if (track.source === "Spotify") {
-                if (!track.spotify_id) {
-                    throw new Error("Missing spotify_id for Spotify track");
-                }
-                const sp = await fetchSpotifyTrackById(track.spotify_id);
-                if (!sp.previewUrl) {
-                    throw new Error("No Spotify preview available");
-                }
-                src = sp.previewUrl;
-                setDuration(sp.duration || 30);
-            } else {
-                src = track.source;
-                setDuration(track.duration);
+            if (!track.url) {
+                throw new Error("No audio URL available for this track");
             }
 
-            audio.src = src!;
+            audio.src = track.url;
             audio.currentTime = 0;
 
             await audio
@@ -151,6 +165,22 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
             setIsPlaying(false);
             setIsLoading(false);
             setCanPlay(false);
+        }
+    };
+
+    const playNextTrack = () => {
+        if (!hasNextTrack || playlist.length === 0) return;
+        const nextTrack = playlist[currentTrackIndex + 1];
+        if (nextTrack) {
+            void playTrack(nextTrack);
+        }
+    };
+
+    const playPreviousTrack = () => {
+        if (!hasPreviousTrack || playlist.length === 0) return;
+        const previousTrack = playlist[currentTrackIndex - 1];
+        if (previousTrack) {
+            void playTrack(previousTrack);
         }
     };
 
@@ -184,6 +214,8 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
         }
         setShowPlayer(false);
         setCurrentTrack(null);
+        setPlaylist([]);
+        setCurrentTrackIndex(-1);
         setIsPlaying(false);
         setCurrentTime(0);
         setDuration(0);
@@ -216,6 +248,8 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
                 pauseTrack,
                 resume,
                 closePlayer,
+                playNextTrack,
+                playPreviousTrack,
 
                 currentTime,
                 duration,
@@ -228,6 +262,11 @@ export function AudioPlayerProvider({ children }: { children: ReactNode }) {
 
                 isLoading,
                 canPlay,
+
+                playlist,
+                currentTrackIndex,
+                hasNextTrack,
+                hasPreviousTrack,
             }}
         >
             {children}

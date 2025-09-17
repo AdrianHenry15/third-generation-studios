@@ -1,128 +1,41 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect } from "react";
-import { ITrackProps } from "@/lib/types";
+import React, { useState } from "react";
+import { IAlbumImageProps, ITrackProps } from "@/lib/types";
 import { Heart, Info } from "lucide-react";
 import CopyrightModal from "../modals/copyright-modal";
 import RemixDisclaimerModal from "../modals/remix-disclaimer-modal";
-import { playTrack, pauseTrack, resumeTrack, getCurrentPlayingTrack } from "@/lib/spotify/spotify-player";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
 
-interface ITrackCardProps extends ITrackProps {
+interface ITrackCardProps {
+    track: ITrackProps;
+    album_images?: IAlbumImageProps[]; // make optional: prefer album.images
     onUnlock?: (trackId: string) => void;
-    accessToken?: string; // Add accessToken prop for Spotify SDK
+    playlist?: ITrackProps[]; // Optional playlist for when playing from a collection
 }
 
 const TrackCard = (props: ITrackCardProps) => {
-    const {
-        id,
-        title,
-        artists,
-        album,
-        type,
-        duration,
-        release_date,
-        locked,
-        plays,
-        is_liked,
-        copyright,
-        onUnlock,
-        spotify_id,
-        accessToken,
-    } = props;
+    // Destructure once for clarity
+    const { track, album_images, playlist, onUnlock } = props;
+    const { id, title, artists, album, type, duration, release_date, locked, plays, is_liked, copyright, spotify_id } =
+        track;
+
+    // Prefer images attached to the album object; fallback to the album_images prop, then a placeholder
+    const imagesSource: IAlbumImageProps[] = (album && (album as any).images) || album_images || [];
+    const AlbumCover =
+        imagesSource.find((img) => img.id === album.id || (typeof img.id === "string" && img.id.startsWith(String(album.id))))?.url ||
+        imagesSource[0]?.url ||
+        "/placeholder-album.png";
+
+    // Audio player context
 
     // Local state
     const [like, setlike] = useState(is_liked);
-    const [loading, setLoading] = useState(false);
-    const [isCurrentTrack, setIsCurrentTrack] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
     const [noPreviewAvailable, setNoPreviewAvailable] = useState(false);
 
     // Check if this is the currently playing track
-    useEffect(() => {
-        const checkCurrentTrack = () => {
-            const current = getCurrentPlayingTrack();
-            setIsCurrentTrack(current.trackId === id);
-            setIsPlaying(current.isPlaying && current.trackId === id);
-        };
-
-        checkCurrentTrack();
-        const interval = setInterval(checkCurrentTrack, 1000); // Check every second
-        return () => clearInterval(interval);
-    }, [id]);
-
-    const onPlayPauseClick = async () => {
-        if (locked) return;
-
-        setLoading(true);
-
-        try {
-            if (isCurrentTrack) {
-                // Same track - toggle play/pause
-                if (isPlaying) {
-                    const result = await pauseTrack();
-                    if (!result.success) {
-                        console.error("Failed to pause track:", result.status);
-                        alert("Failed to pause track");
-                    }
-                } else {
-                    const result = await resumeTrack();
-                    if (!result.success) {
-                        console.error("Failed to resume track:", result.status);
-                        alert("Failed to resume track");
-                    }
-                }
-            } else {
-                // Different track - play new track
-                const result = await playTrack(
-                    {
-                        id,
-                        title,
-                        artists,
-                        album,
-                        type,
-                        duration,
-                        release_date,
-                        locked,
-                        plays,
-                        is_liked: like,
-                        copyright,
-                        spotify_id,
-                        url: props.url, // Make sure to pass the URL
-                    },
-                    accessToken,
-                );
-
-                // Handle different result cases
-                if (!result.success) {
-                    if (result.reason === "no-preview") {
-                        setNoPreviewAvailable(true);
-                        console.log("No preview available for this Spotify track");
-                        // Don't show alert here, just update state
-                        return;
-                    } else {
-                        alert(`Failed to play track: ${result.message || "Unknown error"}`);
-                        return;
-                    }
-                }
-
-                // Success - log player type for debugging
-                console.log(`Playing track "${title}" with ${result.playerType} player`);
-            }
-        } catch (error: any) {
-            console.error(`Error with ${type} track:`, error);
-            if (error.message?.includes("No preview available")) {
-                setNoPreviewAvailable(true);
-            } else {
-                alert(`Error playing track: ${error.message || error}`);
-            }
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const handlelikeToggle = () => {
         setlike((prev) => !prev);
         // You can add your API call or logic here
@@ -147,7 +60,7 @@ const TrackCard = (props: ITrackCardProps) => {
             {/* Image Overlay */}
             <div className="relative h-48 w-full">
                 <Image
-                    src={album.images[0]?.url || "/placeholder-album.png"}
+                    src={AlbumCover}
                     alt={title}
                     fill
                     className={`object-cover group-hover:brightness-90 transition ${locked ? "blur-sm" : ""}`}
@@ -182,7 +95,7 @@ const TrackCard = (props: ITrackCardProps) => {
 
                 <span
                     className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold ${
-                        type === "Spotify" ? "bg-green-500/90 text-white" : "bg-white/50 text-black"
+                        type === "Released" ? "bg-green-500/90 text-white" : "bg-white/50 text-black"
                     }`}
                 >
                     {type}
@@ -206,7 +119,7 @@ const TrackCard = (props: ITrackCardProps) => {
                 <div>
                     <h2 className="text-xl font-bold text-white mb-1 truncate">{title}</h2>
                     <p className="text-gray-400 text-sm mb-1 truncate">
-                        {artists && artists.length > 0 ? artists.map((artist) => artist.name).join(", ") : ""}
+                        {artists && artists.length > 0 ? artists.map((artist) => artist.stage_name).join(", ") : ""}
                     </p>
                     <p className="text-gray-300 text-xs mb-2 truncate font-medium">{album.name}</p>
                     <div className="flex items-center text-xs text-gray-400 space-x-3 mb-2">
@@ -219,20 +132,14 @@ const TrackCard = (props: ITrackCardProps) => {
                     </div>
                 </div>
                 {/* Play/Pause Button */}
-                <PlayPauseButton
-                    isPlaying={isPlaying}
-                    isCurrentTrack={isCurrentTrack}
-                    loading={loading}
-                    locked={locked}
-                    onPlayPauseClick={onPlayPauseClick}
-                />
+                <PlayPauseButton track={track} playlist={playlist} locked={locked} />
 
                 {/* External Links */}
-                {type === "Spotify" && spotify_id && (
+                {type === "Released" && spotify_id && (
                     <ExternalLinkButton spotify_id={spotify_id} noPreviewAvailable={noPreviewAvailable} linkType="spotify" />
                 )}
 
-                {type === "Spotify" && (
+                {type === "Released" && (
                     <ExternalLinkButton
                         albumName={album.name}
                         linkType="digital-stores"

@@ -1,18 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import TrackFilter from "@/components/layout/music/track-filter";
-import {
-    fetchSpotifyTracks,
-    fetchSpotifyGenre,
-    setSpotifyUserToken,
-    setSpotifyAuthModalHandler,
-    redirectToSpotifyLogin,
-} from "@/lib/spotify/spotify-access";
+import { fetchSpotifyTracks, setSpotifyUserToken } from "@/lib/spotify/spotify-access";
 import TrackCard from "@/components/layout/music/track-card";
-import SpotifyAuthModal from "@/components/layout/music/modals/spotify-auth-modal";
-import { ITrackProps, ISpotifyTrackProps, AlbumTypes } from "@/lib/types";
+import { ITrackProps, ISpotifyTrackProps, AlbumType } from "@/lib/types";
 import { dummyMusic } from "@/lib/constants";
 
 const filterOptions = [
@@ -21,7 +14,8 @@ const filterOptions = [
     { value: "genre", label: "Genre" },
     { value: "shortest", label: "Shortest" },
     { value: "longest", label: "Longest" },
-    { value: "spotify", label: "Spotify" },
+    { value: "released", label: "Released" },
+    { value: "unreleased", label: "Unreleased" },
 ];
 
 export default function MusicPage() {
@@ -29,142 +23,175 @@ export default function MusicPage() {
     const [unlocked, setUnlocked] = useState<string[]>([]);
     const [filter, setFilter] = useState<string>("default");
     const [spotifyTracks, setSpotifyTracks] = useState<ISpotifyTrackProps[]>([]);
-    const [trackGenres, setTrackGenres] = useState<{ [trackId: string]: string }>({});
-
-    // Spotify Auth Modal State
-    const [showSpotifyAuth, setShowSpotifyAuth] = useState(false);
-    const [authTrackTitle, setAuthTrackTitle] = useState<string>();
-
-    // Set up modal handler for spotify service
-    useEffect(() => {
-        setSpotifyAuthModalHandler((show: boolean, trackTitle?: string) => {
-            setShowSpotifyAuth(show);
-            setAuthTrackTitle(trackTitle);
-        });
-    }, []);
-
-    // Handle Spotify authentication
-    const handleSpotifyAuth = () => {
-        setShowSpotifyAuth(false);
-        redirectToSpotifyLogin();
-    };
+    const [supabaseTracks, setSupabaseTracks] = useState<ITrackProps[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     // Handle Spotify token from OAuth callback
     useEffect(() => {
         const spotifyToken = searchParams.get("spotify_token");
         if (spotifyToken) {
             setSpotifyUserToken(spotifyToken);
-            // Remove token from URL
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     }, [searchParams]);
 
+    // Fetch tracks from all sources
     useEffect(() => {
-        fetchSpotifyTracks("Anjin Iso")
-            .then(setSpotifyTracks)
-            .catch(() => {});
+        const fetchAllTracks = async () => {
+            setIsLoading(true);
+            try {
+                // Fetch Spotify tracks
+                const spotify = await fetchSpotifyTracks("Anjin Iso").catch(() => []);
+                setSpotifyTracks(spotify);
+
+                // TODO: Fetch Supabase tracks
+                // const supabase = await fetchSupabaseTracks().catch(() => []);
+                // setSupabaseTracks(supabase);
+            } catch (error) {
+                console.error("Error fetching tracks:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchAllTracks();
     }, []);
 
-    useEffect(() => {
-        async function fetchAllGenres() {
-            const genreCache: { [artistId: string]: string } = {};
-            const updates: { [trackId: string]: string } = {};
-            for (const track of spotifyTracks) {
-                const artist = track.artists?.[0];
-                if (artist && artist.id) {
-                    if (!genreCache[artist.id]) {
-                        const genres = await fetchSpotifyGenre(artist.id);
-                        genreCache[artist.id] = genres[0] || "-";
-                    }
-                    updates[track.id] = genreCache[artist.id];
-                } else {
-                    updates[track.id] = "-";
-                }
-            }
-            setTrackGenres(updates);
-        }
-        if (spotifyTracks.length > 0) fetchAllGenres();
-    }, [spotifyTracks]);
+    // Convert a single Spotify track into a full ITrackProps object
+    const convertSpotifyTrack = (track: ISpotifyTrackProps): ITrackProps => {
+        const firstArtistId = track.artists?.[0]?.id || "";
+        const albumId = track.album.id;
 
-    // Map Spotify tracks to TrackCard format and filter for Anjin Iso only
-    const mappedSpotifyTracks: ITrackProps[] = spotifyTracks
-        .filter((track: ISpotifyTrackProps) => track.artists?.some((a) => a.name === "Anjin Iso"))
-        .map((track: ISpotifyTrackProps, idx: number) => ({
+        const artists = track.artists.map((artist) => ({
+            id: artist.id,
+            stage_name: artist.name,
+            bio: "",
+            profile_image_url: "",
+            verified: false,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+        }));
+
+        const credits = track.artists.map((artist, idx) => ({
+            id: `spotify-credit-${track.id}-${idx}`,
+            track_id: `spotify-${track.id}`,
+            artist_id: artist.id,
+            role: "main-artist" as const,
+            created_at: new Date().toISOString(),
+        }));
+
+        const albumImages = track.album.images.map((img, imgIdx) => ({
+            id: `${albumId}-${imgIdx}`,
+            album_id: albumId,
+            url: img.url,
+            name: `${track.album.name} Cover`,
+            created_at: new Date().toISOString(),
+        }));
+
+        const albumObj = {
+            id: albumId,
+            artist_id: track.album.artists?.[0]?.id || "",
+            name: track.album.name,
+            type:
+                track.album.album_type === "Single"
+                    ? ("Single" as AlbumType)
+                    : track.album.album_type === "Album"
+                      ? ("Album" as AlbumType)
+                      : ("EP" as AlbumType),
+            release_date: track.album.release_date,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            images: albumImages,
+        };
+
+        const releaseYear = track.album.release_date?.slice(0, 4) || "";
+
+        const result: ITrackProps = {
             id: `spotify-${track.id}`,
+            album_id: albumId,
+            artist_id: firstArtistId,
             title: track.name,
-            artists: track.artists.map((artist) => ({
-                id: artist.id,
-                name: artist.name,
-            })),
-            credits: { composer: "", producer: "" },
+            artists,
+            credits,
             url: track.preview_url || "",
-            album: {
-                id: track.album.id,
-                type:
-                    track.album.album_type === "single"
-                        ? ("Single" as AlbumTypes)
-                        : track.album.album_type === "album"
-                          ? ("Album" as AlbumTypes)
-                          : ("EP" as AlbumTypes),
-                total_tracks: track.album.total_tracks,
-                href: track.album.href,
-                images: track.album.images.map((img, imgIdx) => ({
-                    id: `${track.album.id}-${imgIdx}`,
-                    url: img.url,
-                    name: `${track.album.name} Cover`,
-                })),
-                name: track.album.name,
-                release_date: track.album.release_date,
-                artists: track.album.artists.map((artist) => ({
-                    id: artist.id,
-                    name: artist.name,
-                })),
-            },
-            type: "Spotify" as const,
+            album: albumObj,
+            type: "Released",
             duration: track.duration_ms,
-            track_number: track.track_number,
-            release_date: track.album.release_date.slice(0, 4),
-            genre: trackGenres[track.id] || "-",
+            release_date: releaseYear,
+            genre: "Unknown",
             locked: false,
             plays: 0,
             is_liked: false,
             spotify_id: track.id,
-        }));
+            // optional fields left undefined (copyright, lyrics)
+            track_number: track.track_number,
+        } as unknown as ITrackProps; // small cast only for extra fields mismatch (track_number may not be in ITrackProps in some definitions)
 
-    // Combine dummyMusic and filtered Spotify tracks
-    let allTracks: ITrackProps[] = [...dummyMusic, ...mappedSpotifyTracks];
+        return result;
+    };
 
-    // Filter to only show tracks by Anjin Iso
-    allTracks = allTracks.filter((track) => track.artists && track.artists[0]?.name === "Anjin Iso");
+    // Memoize mapped Spotify tracks so conversion only runs when spotifyTracks changes
+    const mappedSpotifyTracks = useMemo(() => {
+        if (!spotifyTracks || spotifyTracks.length === 0) return [] as ITrackProps[];
+        return spotifyTracks.filter((t) => t.artists?.some((a) => a.name === "Anjin Iso")).map(convertSpotifyTrack);
+    }, [spotifyTracks]);
 
-    let filteredTracks = [...allTracks];
-    if (filter === "artist") {
-        filteredTracks.sort((a, b) => {
-            const aArtist = a.artists?.[0]?.name || "";
-            const bArtist = b.artists?.[0]?.name || "";
-            return aArtist.localeCompare(bArtist);
+    // Combine all track sources
+    const getAllTracks = (): ITrackProps[] => {
+        const dummyTracks = dummyMusic.filter((track) => track.artists && track.artists[0]?.stage_name === "Anjin Iso");
+        const filteredSupabaseTracks = supabaseTracks.filter((track) => track.artists && track.artists[0]?.stage_name === "Anjin Iso");
+
+        return [...dummyTracks, ...mappedSpotifyTracks, ...filteredSupabaseTracks];
+    };
+
+    // Apply filters to tracks
+    const getFilteredTracks = (tracks: ITrackProps[]): ITrackProps[] => {
+        let filtered = [...tracks];
+
+        if (filter === "artist") {
+            filtered.sort((a, b) => {
+                const aArtist = a.artists?.[0]?.stage_name || "";
+                const bArtist = b.artists?.[0]?.stage_name || "";
+                return aArtist.localeCompare(bArtist);
+            });
+        } else if (filter === "genre") {
+            filtered.sort((a, b) => a.genre.localeCompare(b.genre));
+        } else if (filter === "shortest") {
+            filtered.sort((a, b) => a.duration - b.duration);
+        } else if (filter === "longest") {
+            filtered.sort((a, b) => b.duration - a.duration);
+        } else if (filter === "released") {
+            filtered = filtered.filter((t) => t.type === "Released");
+        } else if (filter === "unreleased") {
+            filtered = filtered.filter((t) => t.type === "Unreleased" || t.type === "Released");
+        }
+
+        // Sort by locked status
+        return filtered.sort((a, b) => {
+            if (a.locked === b.locked) return 0;
+            return a.locked ? 1 : -1;
         });
-    } else if (filter === "genre") {
-        filteredTracks.sort((a, b) => a.genre.localeCompare(b.genre));
-    } else if (filter === "shortest") {
-        filteredTracks.sort((a, b) => a.duration - b.duration);
-    } else if (filter === "longest") {
-        filteredTracks.sort((a, b) => b.duration - a.duration);
-    } else if (filter === "spotify") {
-        filteredTracks = filteredTracks.filter((t) => t.type === "Spotify");
-    } else if (filter === "supabase") {
-        filteredTracks = filteredTracks.filter((t) => t.type === "Unreleased");
-    }
+    };
 
-    // Fix: sort by locked status after filtering
-    const sortedTracks = [...filteredTracks].sort((a, b) => {
-        if (a.locked === b.locked) return 0;
-        return a.locked ? 1 : -1;
-    });
+    const allTracks = getAllTracks();
+    const sortedTracks = getFilteredTracks(allTracks);
 
     const handleUnlock = (trackId: string) => {
         setUnlocked((prev) => (prev.includes(trackId) ? prev : [...prev, trackId]));
     };
+
+    if (isLoading) {
+        return (
+            <main className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 py-12 px-4">
+                <div className="max-w-6xl mx-auto mt-24">
+                    <div className="text-center">
+                        <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4">Loading Music...</h1>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+                    </div>
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 py-12 px-4">
@@ -180,7 +207,8 @@ export default function MusicPage() {
                     {sortedTracks.map((track) => (
                         <TrackCard
                             key={track.id}
-                            {...track}
+                            track={track}
+                            album_images={track.album?.images || []}
                             onUnlock={(trackId) => {
                                 if (!unlocked.includes(trackId)) handleUnlock(trackId);
                             }}
@@ -188,14 +216,6 @@ export default function MusicPage() {
                     ))}
                 </div>
             </div>
-
-            {/* Spotify Authentication Modal */}
-            <SpotifyAuthModal
-                isOpen={showSpotifyAuth}
-                onClose={() => setShowSpotifyAuth(false)}
-                onConfirm={handleSpotifyAuth}
-                trackTitle={authTrackTitle}
-            />
         </main>
     );
 }
