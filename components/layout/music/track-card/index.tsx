@@ -3,10 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { IAlbumImageProps, ITrackProps } from "@/lib/types";
-import { useSupabaseMusic } from "@/contexts/supabase-music-context";
-import { Heart, Info } from "lucide-react";
 import CopyrightModal from "../modals/copyright-modal";
-import RemixDisclaimerModal from "../modals/remix-disclaimer-modal";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
@@ -29,8 +26,6 @@ const TrackCard = (props: ITrackCardProps) => {
 
     // Modal state for copyright info
     const [showCopyright, setShowCopyright] = useState(false);
-    // Local state
-    const [like, setlike] = useState(is_liked);
 
     // Prefer images attached to the album object; fallback to the album_images prop, then a placeholder
     const imagesSource: IAlbumImageProps[] = (album && (album as any).images) || album_images || [];
@@ -38,12 +33,6 @@ const TrackCard = (props: ITrackCardProps) => {
         imagesSource.find((img) => img.id === album.id || (typeof img.id === "string" && img.id.startsWith(String(album.id))))?.url ||
         imagesSource[0]?.url ||
         "/placeholder-album.png";
-
-    // Check if this is the currently playing track
-    const handlelikeToggle = () => {
-        setlike((prev) => !prev);
-        // You can add your API call or logic here
-    };
 
     return (
         <div
@@ -60,7 +49,7 @@ const TrackCard = (props: ITrackCardProps) => {
                     sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 {/* Like Heart Icon - Top Left */}
-                <LikeButton like={like} handlelikeToggle={handlelikeToggle} />
+                <LikeButton trackId={id} />
 
                 {/* Remix Info Icon - Top Left (next to heart) */}
                 {type === "Remix" && <RemixDisclaimer />}
@@ -73,8 +62,6 @@ const TrackCard = (props: ITrackCardProps) => {
             <div className="p-5 flex-1 flex flex-col justify-between">
                 {/* Track Info */}
                 <TrackInfo track={track} />
-                {/* Play/Pause Button */}
-                <PlayPauseButton track={track} playlist={playlist} locked={locked} />
 
                 {/* Show error directly under Play/Pause if no URL to play from (based on DB) */}
                 {!track.url && (
@@ -82,6 +69,8 @@ const TrackCard = (props: ITrackCardProps) => {
                         Preview not available to play here — use links below for full track
                     </p>
                 )}
+                {/* Play/Pause Button */}
+                <PlayPauseButton track={track} playlist={playlist} locked={locked} />
 
                 {/* External Links */}
                 {type === "Released" && spotify_id && <ExternalLinkButton spotify_id={spotify_id} linkType="spotify" />}

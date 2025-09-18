@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/buttons/button";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";

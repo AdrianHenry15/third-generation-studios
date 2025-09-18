@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/buttons/button";
 
 export default function Testimonials() {
     const ref = useRef(null);

@@ -3,7 +3,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/buttons/button";
 import { ArrowRight, Code, Zap, Sparkles, Globe, Rocket } from "lucide-react";
 import Link from "next/link";
 

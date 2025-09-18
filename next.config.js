@@ -26,6 +26,7 @@ const nextConfig = {
         HCAPTCHA_SECRET: process.env.HCAPTCHA_SECRET,
         RESEND_AUDIENCE_ID: process.env.RESEND_AUDIENCE_ID,
         SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
+        ADMIN_EMAIL: process.env.ADMIN_EMAIL,
     },
     productionBrowserSourceMaps: false,
 

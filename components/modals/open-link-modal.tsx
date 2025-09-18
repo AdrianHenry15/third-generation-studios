@@ -5,7 +5,7 @@ import { Dialog, DialogTitle, Transition, TransitionChild } from "@headlessui/re
 import { motion } from "framer-motion";
 import { XCircle } from "lucide-react";
 
-import Button from "../ui/alt-button";
+import Button from "../ui/buttons/alt-button";
 
 interface IOpenWebsiteModalProps {
     isOpen: boolean;
@@ -20,11 +20,6 @@ export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpen
         visible: { opacity: 1, transition: { duration: 0.3 } },
     };
 
-    const panelVariants = {
-        hidden: { opacity: 0, scale: 0.95, y: -20 },
-        visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-    };
-
     const openLink = () => {
         window.open(link, "_blank");
         closeModal();
@@ -34,7 +29,7 @@ export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpen
         <Transition show={isOpen} as={Fragment} appear>
             <Dialog as="div" className="relative z-50" onClose={closeModal}>
                 {/* Overlay */}
-                <Transition.Child
+                <TransitionChild
                     as={motion.div}
                     variants={overlayVariants}
                     initial="hidden"
@@ -47,7 +42,6 @@ export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpen
                 <div className="fixed inset-0 flex items-center justify-center p-4">
                     <TransitionChild
                         as={motion.div}
-                        variants={panelVariants}
                         initial="hidden"
                         animate="visible"
                         exit="hidden"

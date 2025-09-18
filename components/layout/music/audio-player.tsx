@@ -3,7 +3,7 @@
 import React from "react";
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, X } from "lucide-react";
 import Image from "next/image";
-import { useAudioPlayer } from "../../../contexts/audio-player-context";
+import { useAudioPlayerStore } from "@/stores/audio-player-store";
 
 const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);
@@ -36,11 +36,11 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ onPrev, onNext, hasPrev, hasN
         isLoading,
         canPlay,
         playTrack,
-    } = useAudioPlayer();
+    } = useAudioPlayerStore();
 
     if (!showPlayer || !currentTrack) return null;
 
-    const isSpotify = currentTrack.source === "Spotify";
+    const isSpotify = currentTrack.type === "Released";
     const disableSeek = isLoading || !canPlay;
 
     return (
@@ -48,7 +48,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ onPrev, onNext, hasPrev, hasN
             {/* Album Art */}
             <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
                 <Image
-                    src={currentTrack.album.images[0].url}
+                    src={currentTrack.album?.images?.[0]?.url ?? ""}
                     alt={currentTrack.title}
                     sizes="(max-width: 768px) 48px, 64px"
                     fill
