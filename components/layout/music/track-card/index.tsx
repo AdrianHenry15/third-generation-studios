@@ -3,11 +3,17 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { IAlbumImageProps, ITrackProps } from "@/lib/types";
+import { useSupabaseMusic } from "@/contexts/supabase-music-context";
 import { Heart, Info } from "lucide-react";
 import CopyrightModal from "../modals/copyright-modal";
 import RemixDisclaimerModal from "../modals/remix-disclaimer-modal";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
+import TrackInfo from "./track-info";
+import LockButton from "./lock-button";
+import RemixDisclaimer from "./remix-disclaimer";
+import TypeLabel from "./type-label";
+import LikeButton from "./like-button";
 
 interface ITrackCardProps {
     track: ITrackProps;
@@ -19,8 +25,12 @@ interface ITrackCardProps {
 const TrackCard = (props: ITrackCardProps) => {
     // Destructure once for clarity
     const { track, album_images, playlist, onUnlock } = props;
-    const { id, title, artists, album, type, duration, release_date, locked, plays, is_liked, copyright, spotify_id } =
-        track;
+    const { id, title, album, type, locked, is_liked, copyright, spotify_id } = track;
+
+    // Modal state for copyright info
+    const [showCopyright, setShowCopyright] = useState(false);
+    // Local state
+    const [like, setlike] = useState(is_liked);
 
     // Prefer images attached to the album object; fallback to the album_images prop, then a placeholder
     const imagesSource: IAlbumImageProps[] = (album && (album as any).images) || album_images || [];
@@ -29,27 +39,10 @@ const TrackCard = (props: ITrackCardProps) => {
         imagesSource[0]?.url ||
         "/placeholder-album.png";
 
-    // Audio player context
-
-    // Local state
-    const [like, setlike] = useState(is_liked);
-    const [noPreviewAvailable, setNoPreviewAvailable] = useState(false);
-
     // Check if this is the currently playing track
     const handlelikeToggle = () => {
         setlike((prev) => !prev);
         // You can add your API call or logic here
-    };
-
-    // Modal state for copyright info
-    const [showCopyright, setShowCopyright] = useState(false);
-    const [showRemixDisclaimer, setShowRemixDisclaimer] = useState(false);
-
-    // Helper function to format duration from milliseconds to MM:SS
-    const formatDuration = (durationMs: number): string => {
-        const minutes = Math.floor(durationMs / 60000);
-        const seconds = Math.floor((durationMs % 60000) / 1000);
-        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
     };
 
     return (
@@ -67,77 +60,31 @@ const TrackCard = (props: ITrackCardProps) => {
                     sizes="(max-width: 768px) 100vw, 33vw"
                 />
                 {/* Like Heart Icon - Top Left */}
-                <button
-                    type="button"
-                    aria-label={like ? "Unlike" : "Like"}
-                    onClick={handlelikeToggle}
-                    className="absolute top-3 left-3 text-2xl drop-shadow focus:outline-none"
-                >
-                    <Heart
-                        size={20}
-                        className={`transition-colors ${like ? "text-red-500 fill-red-500" : "text-white/80"}`}
-                        fill={like ? "currentColor" : "none"}
-                        strokeWidth={2.2}
-                    />
-                </button>
+                <LikeButton like={like} handlelikeToggle={handlelikeToggle} />
 
                 {/* Remix Info Icon - Top Left (next to heart) */}
-                {type === "Remix" && (
-                    <button
-                        type="button"
-                        aria-label="Remix Information"
-                        onClick={() => setShowRemixDisclaimer(true)}
-                        className="absolute top-3 left-10 text-white/80 drop-shadow focus:outline-none hover:text-white transition-colors"
-                    >
-                        <Info size={20} />
-                    </button>
-                )}
+                {type === "Remix" && <RemixDisclaimer />}
 
-                <span
-                    className={`absolute top-3 right-3 px-3 py-1 rounded-full text-xs font-semibold ${
-                        type === "Released" ? "bg-green-500/90 text-white" : "bg-white/50 text-black"
-                    }`}
-                >
-                    {type}
-                </span>
+                <TypeLabel type={type} />
 
-                {locked && type === "Unreleased" && (
-                    <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center text-center rounded-2xl">
-                        <p className="text-white font-semibold mb-2">Locked</p>
-                        <button
-                            onClick={() => onUnlock && onUnlock(id)}
-                            className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow hover:from-purple-400 hover:to-pink-400 transition"
-                        >
-                            Unlock
-                        </button>
-                    </div>
-                )}
+                {locked && type === "Unreleased" && <LockButton onUnlock={onUnlock} trackId={id} />}
             </div>
 
             <div className="p-5 flex-1 flex flex-col justify-between">
                 {/* Track Info */}
-                <div>
-                    <h2 className="text-xl font-bold text-white mb-1 truncate">{title}</h2>
-                    <p className="text-gray-400 text-sm mb-1 truncate">
-                        {artists && artists.length > 0 ? artists.map((artist) => artist.stage_name).join(", ") : ""}
-                    </p>
-                    <p className="text-gray-300 text-xs mb-2 truncate font-medium">{album.name}</p>
-                    <div className="flex items-center text-xs text-gray-400 space-x-3 mb-2">
-                        <span>{release_date}</span>
-                        <span>•</span>
-                        <span>{formatDuration(duration)}</span>
-                    </div>
-                    <div className="flex items-center text-xs text-gray-500 space-x-2 mb-2">
-                        <span>Plays: {plays}</span>
-                    </div>
-                </div>
+                <TrackInfo track={track} />
                 {/* Play/Pause Button */}
                 <PlayPauseButton track={track} playlist={playlist} locked={locked} />
 
-                {/* External Links */}
-                {type === "Released" && spotify_id && (
-                    <ExternalLinkButton spotify_id={spotify_id} noPreviewAvailable={noPreviewAvailable} linkType="spotify" />
+                {/* Show error directly under Play/Pause if no URL to play from (based on DB) */}
+                {!track.url && (
+                    <p className="mt-2 text-xs text-red-400 text-center">
+                        Preview not available to play here — use links below for full track
+                    </p>
                 )}
+
+                {/* External Links */}
+                {type === "Released" && spotify_id && <ExternalLinkButton spotify_id={spotify_id} linkType="spotify" />}
 
                 {type === "Released" && (
                     <ExternalLinkButton
@@ -146,15 +93,7 @@ const TrackCard = (props: ITrackCardProps) => {
                         link={`https://album.link/tgs-${album.name.toLowerCase()}`}
                     />
                 )}
-
-                {/* Show message for no preview */}
-                {noPreviewAvailable && (
-                    <p className="mt-2 text-xs text-gray-400 text-center">Preview not available - use links above for full track</p>
-                )}
             </div>
-
-            {/* Remix Disclaimer Modal */}
-            {showRemixDisclaimer && <RemixDisclaimerModal setShowRemixDisclaimer={setShowRemixDisclaimer} />}
 
             {/* Copyright Modal */}
             {showCopyright && (
@@ -163,5 +102,4 @@ const TrackCard = (props: ITrackCardProps) => {
         </div>
     );
 };
-
 export default TrackCard;
