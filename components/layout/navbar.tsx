@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/buttons/button";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const pathname = usePathname();
 
     const { scrollY } = useScroll();
     const backgroundColor = useTransform(scrollY, [0, 60], ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]);
@@ -42,7 +44,9 @@ export default function Navbar() {
         { name: "Blog", href: "/blog" },
         { name: "About", href: "/about" },
     ];
-
+    if (pathname.startsWith("/solo-q")) {
+        return null; // Don't render the navbar on /solo-q routes
+    }
     return (
         <motion.header
             style={{ backgroundColor }}

@@ -103,6 +103,17 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                 return;
             }
 
+            // Validate username format (additional client-side check)
+            if (username.length < 3) {
+                setFormError("Username must be at least 3 characters long.");
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
+                setFormError("Username can only contain letters, numbers, underscores, and hyphens.");
+                return;
+            }
+
             try {
                 const formData = new FormData();
                 formData.append("username", username);
@@ -112,6 +123,7 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                 formData.append("hcaptcha_token", hcaptchaToken);
 
                 const result = await signUpAction(formData);
+
                 if (result?.error) {
                     setFormError(result.error);
                     // Reset captcha on server error
@@ -122,6 +134,13 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
 
                 // On success navigate to verification page
                 if (result?.success) {
+                    // Clear form state before navigation
+                    setUsername("");
+                    setEmail("");
+                    setPassword("");
+                    setConfirmPassword("");
+                    setToken("");
+
                     router.push("/sign-up/verify");
                     return;
                 }
@@ -184,10 +203,15 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                             placeholder="Choose a username"
                             required
                             value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ""))}
                             className="focus:ring-2 focus:ring-green-500/50 text-base sm:text-lg px-4 py-3 mt-1 rounded-lg border border-neutral-200/80 dark:border-neutral-700/80 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm transition-all hover:border-green-300 dark:hover:border-green-600"
                             aria-describedby="username-help"
+                            minLength={3}
+                            maxLength={30}
                         />
+                        <div id="username-help" className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                            3-30 characters, letters, numbers, underscores, and hyphens only
+                        </div>
                     </motion.div>
 
                     {/* Email field */}

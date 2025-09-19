@@ -144,13 +144,14 @@ export const signUpAction = async (formData: FormData) => {
             return { error: "Username is already taken" };
         }
 
-        // Attempt user signup
+        // Attempt user signup with username in user_metadata
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
             options: {
                 data: {
                     display_name: username,
+                    username: username, // Add username to metadata for trigger
                 },
                 captchaToken: hcaptchaToken,
             },
@@ -189,37 +190,74 @@ export const signUpAction = async (formData: FormData) => {
             await supabase.auth.signOut();
         }
 
-        // If user created by auth API, set auth.users.display_name via admin API
+        // If user created by auth API, ensure profile is properly set up
         if (data.user) {
-            // Ensure auth user's display_name matches the profiles.username (trigger will create profile)
-            try {
-                // Use admin API on server to set user_metadata.display_name
-                // Note: createClient() must be initialized with service_role to allow admin updates.
-                await (supabase.auth as any).admin.updateUserById(data.user.id, {
-                    user_metadata: { display_name: username },
-                });
-            } catch (adminErr) {
-                console.error("signUp: failed to set auth user display_name", {
-                    timestamp: new Date().toISOString(),
-                    userId: data.user.id,
-                    username,
-                    maskedEmail: maskEmail(email),
-                    error: serializeError(adminErr),
-                });
-                // Continue — don't surface this internal failure to the user
-            }
+            // Small delay to allow trigger to execute
+            await new Promise((resolve) => setTimeout(resolve, 200));
 
-            // Create default subscription for new users (non-fatal)
+            // Verify profile was created by trigger and update username if needed
             try {
-                await createDefaultSubscription(data.user.id, supabase);
-            } catch (subscriptionError) {
-                // Improved subscription failure logging
-                console.error("Subscription creation failed for new user", {
+                const { data: profile, error: profileError } = await supabase
+                    .from("profiles")
+                    .select("id, username")
+                    .eq("id", data.user.id)
+                    .maybeSingle();
+
+                if (profileError) {
+                    console.error("Profile check failed after signup", {
+                        timestamp: new Date().toISOString(),
+                        userId: data.user.id,
+                        username: maskValue(username),
+                        error: serializeError(profileError),
+                    });
+                } else if (!profile) {
+                    // Trigger didn't execute - create profile manually
+                    console.warn("Profile trigger failed, creating manually", {
+                        timestamp: new Date().toISOString(),
+                        userId: data.user.id,
+                        username: maskValue(username),
+                    });
+
+                    const { error: insertError } = await supabase.from("profiles").insert({
+                        id: data.user.id,
+                        username: username,
+                        display_name: username,
+                        email: email,
+                    });
+
+                    if (insertError) {
+                        console.error("Manual profile creation failed", {
+                            timestamp: new Date().toISOString(),
+                            userId: data.user.id,
+                            username: maskValue(username),
+                            error: serializeError(insertError),
+                        });
+                    }
+                } else if (profile.username !== username) {
+                    // Profile exists but username is missing/incorrect - update it
+                    const { error: updateError } = await supabase
+                        .from("profiles")
+                        .update({ username: username, display_name: username })
+                        .eq("id", data.user.id);
+
+                    if (updateError) {
+                        console.error("Profile username update failed", {
+                            timestamp: new Date().toISOString(),
+                            userId: data.user.id,
+                            currentUsername: maskValue(profile.username),
+                            targetUsername: maskValue(username),
+                            error: serializeError(updateError),
+                        });
+                    }
+                }
+            } catch (profileSetupError) {
+                console.error("Profile setup process failed", {
                     timestamp: new Date().toISOString(),
                     userId: data.user.id,
-                    error: serializeError(subscriptionError),
+                    username: maskValue(username),
+                    error: serializeError(profileSetupError),
                 });
-                // Don't fail the signup for subscription errors
+                // Don't fail the signup for profile setup errors
             }
         }
 
@@ -309,7 +347,7 @@ export const signInAction = async (formData: FormData) => {
     try {
         const supabase = await createClient();
 
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
             options: {
@@ -320,6 +358,50 @@ export const signInAction = async (formData: FormData) => {
         if (error) {
             const mapped = mapSupabaseAuthError(error.message);
             return { error: mapped.message, errorCode: mapped.code };
+        }
+
+        // Check if user has a profile after successful authentication
+        if (data.user) {
+            const { data: profile, error: profileError } = await supabase
+                .from("profiles")
+                .select("id, username")
+                .eq("id", data.user.id)
+                .maybeSingle();
+
+            if (profileError) {
+                console.error("Error checking user profile:", {
+                    timestamp: new Date().toISOString(),
+                    userId: data.user.id,
+                    email: maskEmail(email),
+                    error: serializeError(profileError),
+                });
+
+                // Sign out the user since we can't verify their profile
+                await supabase.auth.signOut();
+                return {
+                    error: "Account verification failed. Please try again.",
+                    errorCode: "profile_check_failed",
+                };
+            }
+
+            // If no profile exists, this indicates a data integrity issue
+            if (!profile) {
+                console.error("User authenticated but no profile found:", {
+                    timestamp: new Date().toISOString(),
+                    userId: data.user.id,
+                    email: maskEmail(email),
+                    userCreatedAt: data.user.created_at,
+                });
+
+                // Sign out the user
+                await supabase.auth.signOut();
+
+                return {
+                    error: "Account setup incomplete. Please contact support or try signing up again.",
+                    errorCode: "missing_profile",
+                    supportAction: "contact_support",
+                };
+            }
         }
 
         return {

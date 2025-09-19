@@ -10,9 +10,8 @@ export type InviteStatusType = "pending" | "accepted" | "revoked" | "expired";
 
 // Artist Types
 export interface IArtistProps {
-    id: string;
+    id: string; // ref to auth users table
     stage_name: string;
-    bio: string;
     profile_image_url: string;
     verified: boolean;
     patreon_url?: string;

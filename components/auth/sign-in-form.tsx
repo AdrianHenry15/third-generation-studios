@@ -149,10 +149,10 @@ const SignInForm = memo(({ searchParams }: { searchParams: Message }) => {
                     hcaptchaRef.current?.resetCaptcha();
                 } else if ((result as any)?.success) {
                     // Handle successful sign-in with client-side navigation
-                    const redirectTo = urlSearchParams.get("redirect_url") || "/dashboard";
+                    const redirectTo = urlSearchParams.get("redirect_url") || "/solo-q";
 
-                    // Only decode if it's not the default dashboard route
-                    const finalRedirectTo = redirectTo === "/dashboard" ? redirectTo : decodeURIComponent(redirectTo);
+                    // Only decode if it's not the default solo-q route
+                    const finalRedirectTo = redirectTo === "/solo-q" ? redirectTo : decodeURIComponent(redirectTo);
 
                     router.push(finalRedirectTo);
                     router.refresh();

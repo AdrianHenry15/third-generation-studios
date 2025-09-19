@@ -1,12 +1,12 @@
-import { ITrackProps } from "./types";
+import { ITrackProps } from "../types";
 
 export async function playSupabaseTrack(track: ITrackProps) {
     try {
         // TODO: Implement Supabase audio file retrieval
         // This will fetch the actual audio file from Supabase storage
-        
+
         console.log("Playing Supabase track:", track.title);
-        
+
         // For now, return a placeholder
         return {
             url: track.url || "", // Supabase storage URL

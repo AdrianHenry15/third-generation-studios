@@ -22,7 +22,7 @@ interface ITrackCardProps {
 const TrackCard = (props: ITrackCardProps) => {
     // Destructure once for clarity
     const { track, album_images, playlist, onUnlock } = props;
-    const { id, title, album, type, locked, is_liked, copyright, spotify_id } = track;
+    const { id, title, album, type, locked, copyright, spotify_id } = track;
 
     // Modal state for copyright info
     const [showCopyright, setShowCopyright] = useState(false);

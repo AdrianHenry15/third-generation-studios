@@ -38,11 +38,11 @@ export const TrackLikesProvider: React.FC<{ children: ReactNode }> = ({ children
         try {
             if (current) {
                 // remove like
-                const { error } = await supabase.from("likes").delete().eq("user_id", activeUser.id).eq("track_id", trackId);
+                const { error } = await supabase.from("track-likes").delete().eq("user_id", activeUser.id).eq("track_id", trackId);
                 if (error) throw error;
             } else {
                 // add like
-                const { error } = await supabase.from("likes").insert({ user_id: activeUser.id, track_id: trackId });
+                const { error } = await supabase.from("track-likes").insert({ user_id: activeUser.id, track_id: trackId });
                 if (error) throw error;
             }
         } catch (e) {
@@ -69,7 +69,7 @@ export const useTrackLike = (trackId: string) => {
         queryFn: async () => {
             if (!user) return false;
             const { data, error } = await supabase
-                .from("likes")
+                .from("track-likes")
                 .select("id")
                 .eq("user_id", user.id)
                 .eq("track_id", trackId)
@@ -99,10 +99,10 @@ export const useTrackLike = (trackId: string) => {
         qc.setQueryData(localKey, !current);
         try {
             if (current) {
-                const { error } = await supabase.from("likes").delete().eq("user_id", activeUser.id).eq("track_id", trackId);
+                const { error } = await supabase.from("track-likes").delete().eq("user_id", activeUser.id).eq("track_id", trackId);
                 if (error) throw error;
             } else {
-                const { error } = await supabase.from("likes").insert({ user_id: activeUser.id, track_id: trackId });
+                const { error } = await supabase.from("track-likes").insert({ user_id: activeUser.id, track_id: trackId });
                 if (error) throw error;
             }
         } catch (e) {

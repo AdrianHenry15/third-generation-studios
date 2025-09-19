@@ -1,7 +1,7 @@
-export * from "./soloq/analytics-types";
-export * from "./soloq/billing-types";
-export * from "./soloq/public-types";
-export * from "./soloq/music-types";
+export * from "./solo-q-types/analytics-types";
+export * from "./solo-q-types/billing-types";
+export * from "./solo-q-types/public-types";
+export * from "./solo-q-types/music-types";
 
 // General Web Types
 export type TechStackName =

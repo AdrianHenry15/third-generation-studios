@@ -3,9 +3,12 @@
 import { motion } from "framer-motion";
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import path from "path";
 import { FaFacebook, FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
 
 export default function Footer() {
+    const pathname = usePathname();
     const QuickLinks = [
         { name: "Home", href: "/" },
         { name: "Websites", href: "/websites" },
@@ -39,6 +42,10 @@ export default function Footer() {
             transition: { duration: 0.5 },
         },
     };
+
+    if (pathname.startsWith("/solo-q")) {
+        return null; // Don't render the footer on /solo-q routes
+    }
 
     return (
         <footer className="bg-gray-950 border-t border-gray-800">
