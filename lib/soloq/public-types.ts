@@ -1,7 +1,7 @@
 export type ProfileRole = "listener" | "admin" | "artist";
 export interface IProfileProps {
     id: string;
-    display_name: string;
+    username: string;
     avatar_url: string;
     bio: string;
     role: ProfileRole;

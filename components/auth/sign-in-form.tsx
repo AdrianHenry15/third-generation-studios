@@ -191,7 +191,7 @@ const SignInForm = memo(({ searchParams }: { searchParams: Message }) => {
     }, [email]);
 
     return (
-        <section className="flex items-center justify-center w-full py-8 px-4" aria-label="Sign in form">
+        <section className="flex items-center justify-center w-full pb-8 pt-24 px-4" aria-label="Sign in form">
             <motion.form
                 variants={formVariants}
                 initial="hidden"

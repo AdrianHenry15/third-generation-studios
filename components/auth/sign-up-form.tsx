@@ -11,6 +11,7 @@ import { Eye, EyeOff } from "lucide-react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { SubmitButton } from "../submit-button";
 import { useHCaptchaStore } from "@/stores/hcaptcha-store";
+import { useRouter } from "next/navigation";
 
 // Animation variants moved outside component to prevent recreation
 const formVariants = {
@@ -32,6 +33,7 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{
 
 // Memoized SignUpForm component for build optimization
 const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
+    const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
@@ -115,8 +117,14 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                     // Reset captcha on server error
                     setToken("");
                     hcaptchaRef.current?.resetCaptcha();
+                    return;
                 }
-                // Server action now handles redirect via Next.js redirect()
+
+                // On success navigate to verification page
+                if (result?.success) {
+                    router.push("/sign-up/verify");
+                    return;
+                }
             } catch (err: any) {
                 setFormError(err.message || "Failed to sign up. Please try again.");
                 // Reset captcha on error
@@ -124,11 +132,11 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                 hcaptchaRef.current?.resetCaptcha();
             }
         },
-        [username, email, password, confirmPassword, validatePassword, hcaptchaToken, setToken],
+        [username, email, password, confirmPassword, validatePassword, hcaptchaToken, setToken, router],
     );
 
     return (
-        <section className="flex items-center justify-center w-full py-8 px-4" aria-label="Sign up form">
+        <section className="flex items-center justify-center w-full pb-8 pt-24 px-4" aria-label="Sign up form">
             <motion.form
                 variants={formVariants}
                 initial="hidden"
