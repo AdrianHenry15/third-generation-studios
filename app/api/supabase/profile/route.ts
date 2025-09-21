@@ -12,7 +12,7 @@ export async function GET() {
             error: authError,
         } = await supabase.auth.getUser();
 
-        console.log("API: User check:", { userId: user?.id, authError });
+        // console.log("API: User check:", { userId: user?.id, authError });
 
         if (authError || !user) {
             console.log("API: Unauthorized access");
@@ -22,7 +22,7 @@ export async function GET() {
         // Fetch user profile
         const { data: profile, error } = await supabase.from("profiles").select("*").eq("id", user.id).single();
 
-        console.log("API: Profile query result:", { profile, error });
+        // console.log("API: Profile query result:", { profile, error });
 
         if (error) {
             console.error("API: Error fetching profile:", error);

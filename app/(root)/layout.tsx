@@ -1,15 +1,34 @@
-import Footer from "@/components/layout/footer";
-import Navbar from "@/components/layout/navbar";
-import AudioPlayer from "@/components/layout/music/audio-player";
-import { AppProviders } from "@/contexts/app-provider";
+"use client";
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+import { ReactNode, useState } from "react";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { SupabaseAuthProvider } from "@/contexts/supabase-auth-context";
+
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
+import AudioPlayer from "@/components/layout/music/audio-player";
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+    const [queryClient] = useState(
+        () =>
+            new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        staleTime: 1000 * 60,
+                        refetchOnWindowFocus: false,
+                    },
+                },
+            }),
+    );
+
     return (
-        <AppProviders>
-            <Navbar />
-            {children}
-            <Footer />
-            <AudioPlayer />
-        </AppProviders>
+        <QueryClientProvider client={queryClient}>
+            <SupabaseAuthProvider>
+                <Navbar />
+                {children}
+                <Footer />
+                <AudioPlayer />
+            </SupabaseAuthProvider>
+        </QueryClientProvider>
     );
 }

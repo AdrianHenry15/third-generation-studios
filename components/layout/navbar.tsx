@@ -7,15 +7,21 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import UserIcon from "../user-icon";
+import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const toggleRef = useRef<HTMLDivElement | null>(null);
     const pathname = usePathname();
 
     const { scrollY } = useScroll();
     const backgroundColor = useTransform(scrollY, [0, 60], ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]);
+
+    // Use auth context instead of local Supabase calls
+    const { user } = useSupabaseAuth();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -29,13 +35,19 @@ export default function Navbar() {
     useEffect(() => {
         if (!isOpen) return;
         function handleClickOutside(event: MouseEvent) {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
+            const target = event.target as Node;
+            if (menuRef.current?.contains(target)) return;
+            if (toggleRef.current?.contains(target)) return;
+            setIsOpen(false);
         }
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isOpen]);
+
+    // Close menu on route change
+    useEffect(() => {
+        if (isOpen) setIsOpen(false);
+    }, [pathname]);
 
     const navItems = [
         { name: "Websites", href: "/websites" },
@@ -93,8 +105,14 @@ export default function Navbar() {
                     </motion.div>
                 </div>
 
-                <div className="md:hidden">
-                    <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+                <div className="md:hidden" ref={toggleRef}>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setIsOpen((prev) => !prev)}
+                        aria-label="Toggle menu"
+                        aria-expanded={isOpen}
+                    >
                         {isOpen ? <X /> : <Menu />}
                     </Button>
                 </div>
@@ -110,6 +128,8 @@ export default function Navbar() {
                     className="md:hidden glass w-full rounded-b-2xl"
                 >
                     <div className="px-4 py-4 flex flex-col space-y-4">
+                        {user && isOpen && <UserIcon />}
+
                         {navItems.map((item) => (
                             <a
                                 key={item.name}
@@ -125,6 +145,7 @@ export default function Navbar() {
                                 Get in Touch
                             </Button>
                         </Link>
+                        {/* {user && !isOpen && <UserIcon />} */}
                     </div>
                 </motion.div>
             )}
