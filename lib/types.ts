@@ -52,3 +52,6 @@ export type EmailTemplateParamsType = {
     plan: string;
     product_description: string;
 };
+
+// For infinite queries
+export type PagedResult<T> = { data: T[]; nextCursor?: string };

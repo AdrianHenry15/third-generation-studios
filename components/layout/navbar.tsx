@@ -9,6 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserIcon from "../user-icon";
 import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
+import MobileNavDropdownMenu from "./mobile-nav-dropdown-menu";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -103,9 +104,16 @@ export default function Navbar() {
                             </Button>
                         </Link>
                     </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                    >
+                        <UserIcon />
+                    </motion.div>
                 </div>
 
-                <div className="md:hidden" ref={toggleRef}>
+                <div className="md:hidden flex items-center" ref={toggleRef}>
                     <Button
                         variant="ghost"
                         size="icon"
@@ -115,40 +123,12 @@ export default function Navbar() {
                     >
                         {isOpen ? <X /> : <Menu />}
                     </Button>
+                    <UserIcon />
                 </div>
             </div>
 
             {/* Mobile menu */}
-            {isOpen && (
-                <motion.div
-                    ref={menuRef}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="md:hidden glass w-full rounded-b-2xl"
-                >
-                    <div className="px-4 py-4 flex flex-col space-y-4">
-                        {user && isOpen && <UserIcon />}
-
-                        {navItems.map((item) => (
-                            <a
-                                key={item.name}
-                                href={item.href}
-                                className="text-gray-300 hover:text-white py-2"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {item.name}
-                            </a>
-                        ))}
-                        <Link href="/contact-us" onClick={() => setIsOpen(false)}>
-                            <Button className="bg-gradient-to-r from-green-600 to-green-800 text-white rounded-xl hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:from-green-500 hover:to-green-700 transition-all duration-300">
-                                Get in Touch
-                            </Button>
-                        </Link>
-                        {/* {user && !isOpen && <UserIcon />} */}
-                    </div>
-                </motion.div>
-            )}
+            {isOpen && <MobileNavDropdownMenu setIsOpen={setIsOpen} menuRef={menuRef} navItems={navItems} isUserIcon={false} />}
         </motion.header>
     );
 }

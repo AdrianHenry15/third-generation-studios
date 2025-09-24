@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchCurrentUserData, updateUsername, updateEmail, canUpdateUsername, canUpdateEmail } from "@/lib/queries/profiles";
-import type { IProfileProps } from "@/lib/solo-q-types/public-types";
-import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
+import { useProfileByIdQuery, useProfileUpdate } from "@/hooks/public/use-profiles";
+import type { IProfileProps } from "@/lib/solo-q-types/public-types";
+import toast from "react-hot-toast";
+
+// Placeholder for canUpdateUsername/canUpdateEmail logic
+const canUpdateUsername = async (id: string) => ({ canUpdate: true, daysRemaining: 0 });
+// const canUpdateEmail = async (id: string) => ({ canUpdate: true, daysRemaining: 0 });
 
 // Lazy load components for better performance
 const EditableSection = dynamic(() => import("./editable-section"), {
@@ -35,9 +39,7 @@ const GeneralSettingsTab = () => {
     const { theme, setTheme } = useTheme();
     const queryClient = useQueryClient();
     const [showUsernameConfirm, setShowUsernameConfirm] = useState(false);
-    const [showEmailConfirm, setShowEmailConfirm] = useState(false);
     const [pendingUsername, setPendingUsername] = useState("");
-    const [pendingEmail, setPendingEmail] = useState("");
     const [pendingSetEditing, setPendingSetEditing] = useState<((value: boolean) => void) | null>(null);
     const [usernameUpdateStatus, setUsernameUpdateStatus] = useState<{
         canUpdate: boolean;
@@ -46,71 +48,37 @@ const GeneralSettingsTab = () => {
         canUpdate: true,
         daysRemaining: 0,
     });
-    const [emailUpdateStatus, setEmailUpdateStatus] = useState<{
-        canUpdate: boolean;
-        daysRemaining: number;
-    }>({
-        canUpdate: true,
-        daysRemaining: 0,
-    });
 
-    // Fetch user data with TanStack Query
-    const { data } = useQuery<{ authUser: any; profile: IProfileProps | null }>({
-        queryKey: ["dashboardUserData"],
-        queryFn: fetchCurrentUserData,
-        staleTime: 1000 * 60 * 5, // 5 minutes
-    });
+    // Get current user id from auth (replace with your actual auth user id logic)
+    const [userId, setUserId] = useState<string | null>(null);
+    useEffect(() => {
+        // Replace this with your actual logic to get the current user id
+        // Example: setUserId("your-user-id");
+    }, []);
 
-    const authUser = data?.authUser;
-    const profile = data?.profile;
+    // Fetch profile using the new hook
+    const { data: profile } = useProfileByIdQuery<IProfileProps>(userId ?? "");
 
-    // Check if user can update username/email
+    // Update profile mutation
+    const profileUpdateMutation = useProfileUpdate<IProfileProps>();
+
+    // Check if user can update username
     useEffect(() => {
         if (profile?.id) {
-            // Check username update status
             canUpdateUsername(profile.id).then((status) => {
                 setUsernameUpdateStatus(status);
             });
-
-            // Check email update status
-            canUpdateEmail(profile.id).then((status) => {
-                setEmailUpdateStatus(status);
-            });
         }
-    }, [profile?.id, data]);
+    }, [profile?.id]);
 
-    // Username mutation
-    const updateUsernameMutation = useMutation({
-        mutationFn: async (newUsername: string) => {
+    // Username mutation (use new mutation hook)
+    const updateUsernameMutation = {
+        isPending: profileUpdateMutation.isPending,
+        mutate: (newUsername: string) => {
             if (!profile?.id) throw new Error("No user id");
-            return await updateUsername(profile.id, newUsername);
+            profileUpdateMutation.mutate({ id: profile.id, values: { username: newUsername } });
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["dashboardUserData"] });
-            toast.success("Username updated!");
-            pendingSetEditing && pendingSetEditing(false);
-        },
-        onError: (error) => {
-            console.error("Username update error:", error);
-            toast.error("Failed to update username.");
-        },
-    });
-
-    // Email mutation
-    const updateEmailMutation = useMutation({
-        mutationFn: updateEmail,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["dashboardUserData"] });
-            toast.success(
-                "A verification email has been sent to your new address. Please check your inbox and confirm to complete the update.",
-            );
-            pendingSetEditing && pendingSetEditing(false);
-        },
-        onError: (error) => {
-            console.error("Email update error:", error);
-            toast.error("Failed to update email.");
-        },
-    });
+    };
 
     // Memoize username save handler
     const handleUsernameSave = useCallback(
@@ -135,32 +103,64 @@ const GeneralSettingsTab = () => {
         [profile?.username, usernameUpdateStatus],
     );
 
-    // Memoize email save handler
-    const handleEmailSave = useCallback(
-        (newEmail: string, setEditing: (value: boolean) => void) => {
-            if (!newEmail || newEmail === authUser?.email) {
-                setEditing(false);
-                return;
-            }
-
-            if (!emailUpdateStatus.canUpdate) {
-                toast.error(
-                    `You can only change your email once every 30 days. Please try again in ${emailUpdateStatus.daysRemaining} days.`,
-                );
-                setEditing(false);
-                return;
-            }
-
-            setPendingEmail(newEmail);
-            setPendingSetEditing(() => setEditing);
-            setShowEmailConfirm(true);
-        },
-        [authUser?.email, emailUpdateStatus],
-    );
-
     // Handle username confirmation
     const handleUsernameConfirm = useCallback(() => {
         updateUsernameMutation.mutate(pendingUsername);
+        setShowUsernameConfirm(false);
+    }, [updateUsernameMutation, pendingUsername]);
+
+    // Memoize confirmation cancel handler
+    const handleUsernameCancel = useCallback(() => {
+        setShowUsernameConfirm(false);
+        pendingSetEditing && pendingSetEditing(false);
+    }, [pendingSetEditing]);
+
+    // Memoize computed values
+    const usernameValue = useMemo(() => (profile?.username ? profile.username : "-"), [profile?.username]);
+
+    const usernameStatusMessage = useMemo(
+        () => (!usernameUpdateStatus.canUpdate ? `You can update again in ${usernameUpdateStatus.daysRemaining} days` : undefined),
+        [usernameUpdateStatus],
+    );
+
+    return (
+        <main className="flex flex-col w-full justify-between items-start p-4 my-1">
+            <h1 className="text-xl w-full font-bold border-b border-neutral-200 dark:border-neutral-300 pb-2 mb-4">General</h1>
+
+            {/* Username section */}
+            <section className="w-full">
+                <EditableSection
+                    label="Username"
+                    value={usernameValue}
+                    onSave={handleUsernameSave}
+                    isPending={updateUsernameMutation.isPending}
+                    isDisabled={!usernameUpdateStatus.canUpdate}
+                    statusMessage={usernameStatusMessage}
+                />
+            </section>
+
+            <hr className="w-full border-t border-neutral-200 dark:border-neutral-700 my-4" />
+
+            {/* Theme selector */}
+            <section className="w-full">
+                <ThemeSelector theme={theme as string} setTheme={setTheme} />
+            </section>
+
+            {/* Confirmation Modal */}
+            {showUsernameConfirm && (
+                <ConfirmModal
+                    title="You can only change your username once every 30 days. Continue?"
+                    confirmText="Update Username"
+                    cancelText="Cancel"
+                    onConfirm={handleUsernameConfirm}
+                    onCancel={handleUsernameCancel}
+                />
+            )}
+        </main>
+    );
+};
+
+export default memo(GeneralSettingsTab);
         setShowUsernameConfirm(false);
     }, [updateUsernameMutation, pendingUsername]);
 
