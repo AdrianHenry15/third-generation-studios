@@ -83,21 +83,6 @@ const mapSupabaseAuthError = (rawMessage: string) => {
     return { code: "unknown" as const, message: rawMessage };
 };
 
-// Add helpers for logging and masking sensitive values
-const maskEmail = (email?: string | null) => {
-    // e.g. j***@e***.com
-    if (!email) return "";
-    const [local, domain] = email.split("@");
-    const mask = (s: string) => (s.length <= 2 ? s[0] + "*" : s[0] + "*".repeat(Math.max(1, s.length - 2)) + s.slice(-1));
-    return `${mask(local)}@${domain ? domain.split(".")[0].replace(/./g, "*") + domain.slice(domain.indexOf(".")) : ""}`;
-};
-
-const maskValue = (v?: string | null) => {
-    if (!v) return "";
-    if (v.length <= 2) return v[0] + "*";
-    return v[0] + "*".repeat(Math.max(1, v.length - 2)) + v.slice(-1);
-};
-
 const serializeError = (err: any) => {
     try {
         // capture non-enumerable props as well
@@ -168,8 +153,8 @@ export const signUpAction = async (formData: FormData) => {
                 hint: (error as any).hint ?? null,
                 // Mask sensitive values before logging
                 context: {
-                    email: maskEmail(email),
-                    username: maskValue(username),
+                    email: email,
+                    username: username,
                     hcaptcha_provided: Boolean(hcaptchaToken),
                 },
                 // full error serialized for deeper inspection
@@ -207,7 +192,7 @@ export const signUpAction = async (formData: FormData) => {
                     console.error("Profile check failed after signup", {
                         timestamp: new Date().toISOString(),
                         userId: data.user.id,
-                        username: maskValue(username),
+                        username: username,
                         error: serializeError(profileError),
                     });
                 } else if (!profile) {
@@ -215,7 +200,7 @@ export const signUpAction = async (formData: FormData) => {
                     console.warn("Profile trigger failed, creating manually", {
                         timestamp: new Date().toISOString(),
                         userId: data.user.id,
-                        username: maskValue(username),
+                        username: username,
                     });
 
                     const { error: insertError } = await supabase.from("profiles").insert({
@@ -229,7 +214,7 @@ export const signUpAction = async (formData: FormData) => {
                         console.error("Manual profile creation failed", {
                             timestamp: new Date().toISOString(),
                             userId: data.user.id,
-                            username: maskValue(username),
+                            username: username,
                             error: serializeError(insertError),
                         });
                     }
@@ -244,8 +229,8 @@ export const signUpAction = async (formData: FormData) => {
                         console.error("Profile username update failed", {
                             timestamp: new Date().toISOString(),
                             userId: data.user.id,
-                            currentUsername: maskValue(profile.username),
-                            targetUsername: maskValue(username),
+                            currentUsername: profile.username,
+                            targetUsername: username,
                             error: serializeError(updateError),
                         });
                     }
@@ -254,7 +239,7 @@ export const signUpAction = async (formData: FormData) => {
                 console.error("Profile setup process failed", {
                     timestamp: new Date().toISOString(),
                     userId: data.user.id,
-                    username: maskValue(username),
+                    username: username,
                     error: serializeError(profileSetupError),
                 });
                 // Don't fail the signup for profile setup errors
@@ -334,6 +319,12 @@ export const checkEmailExistsAction = async (formData: FormData) => {
     }
 };
 
+const maskValue = (v?: string | null) => {
+    if (!v) return "";
+    if (v.length <= 2) return v[0] + "*";
+    return v[0] + "*".repeat(Math.max(1, v.length - 2)) + v.slice(-1);
+};
+
 export const signInAction = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -341,6 +332,11 @@ export const signInAction = async (formData: FormData) => {
 
     // Early validation
     if (!email || !password) {
+        console.log("❌ Sign-in validation failed: missing credentials", {
+            timestamp: new Date().toISOString(),
+            hasEmail: Boolean(email),
+            hasPassword: Boolean(password),
+        });
         return { error: "Email and password are required" };
     }
 
@@ -350,66 +346,58 @@ export const signInAction = async (formData: FormData) => {
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
-            options: {
-                captchaToken: hcaptchaToken,
-            },
+            options: { captchaToken: hcaptchaToken },
         });
 
         if (error) {
-            const mapped = mapSupabaseAuthError(error.message);
-            return { error: mapped.message, errorCode: mapped.code };
+            console.error("❌ Supabase auth error", {
+                timestamp: new Date().toISOString(),
+                email: maskValue(email),
+                errorMessage: error.message,
+                errorCode: (error as any).code ?? null,
+                errorStatus: (error as any).status ?? null,
+                fullError: serializeError(error),
+            });
+
+            const mappedError = mapSupabaseAuthError(error.message);
+            return {
+                error: mappedError.message,
+                errorCode: mappedError.code,
+            };
+        }
+        // Verify the session was properly set
+        const { data: sessionCheck, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError) {
+            console.error("❌ Session verification failed", {
+                timestamp: new Date().toISOString(),
+                error: serializeError(sessionError),
+            });
+            return { error: "Session creation failed. Please try again." };
         }
 
-        // Check if user has a profile after successful authentication
-        if (data.user) {
-            const { data: profile, error: profileError } = await supabase
-                .from("profiles")
-                .select("id, username")
-                .eq("id", data.user.id)
-                .maybeSingle();
-
-            if (profileError) {
-                console.error("Error checking user profile:", {
-                    timestamp: new Date().toISOString(),
-                    userId: data.user.id,
-                    email: maskEmail(email),
-                    error: serializeError(profileError),
-                });
-
-                // Sign out the user since we can't verify their profile
-                await supabase.auth.signOut();
-                return {
-                    error: "Account verification failed. Please try again.",
-                    errorCode: "profile_check_failed",
-                };
-            }
-
-            // If no profile exists, this indicates a data integrity issue
-            if (!profile) {
-                console.error("User authenticated but no profile found:", {
-                    timestamp: new Date().toISOString(),
-                    userId: data.user.id,
-                    email: maskEmail(email),
-                    userCreatedAt: data.user.created_at,
-                });
-
-                // Sign out the user
-                await supabase.auth.signOut();
-
-                return {
-                    error: "Account setup incomplete. Please contact support or try signing up again.",
-                    errorCode: "missing_profile",
-                    supportAction: "contact_support",
-                };
-            }
+        if (!sessionCheck.session) {
+            console.error("⚠️ No session found after successful sign-in", {
+                timestamp: new Date().toISOString(),
+                email: maskValue(email),
+            });
+            return { error: "Session creation failed. Please try again." };
         }
 
+        // Return success - the session cookie is now set
         return {
             success: true,
-            message: "Sign in successful",
+            user: {
+                id: data.user?.id,
+                email: data.user?.email,
+            },
         };
     } catch (error) {
-        console.error("signInAction error:", error);
+        console.error("💥 Unexpected sign-in error", {
+            timestamp: new Date().toISOString(),
+            email: maskValue(email),
+            error: serializeError(error),
+        });
         return { error: "An unexpected error occurred. Please try again." };
     }
 };

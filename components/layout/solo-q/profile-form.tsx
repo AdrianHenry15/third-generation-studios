@@ -3,16 +3,18 @@
 import { useEffect, useState } from "react";
 import { IProfileProps } from "@/lib/solo-q-types/public-types";
 import { useRouter } from "next/navigation";
-import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { supabase } from "@/lib/supabase/client";
 import Image from "next/image";
+import { useAuthStore } from "@/stores/auth-store";
+import { useProfileByIdQuery, useProfileUpdate } from "@/hooks/public/use-profiles";
 
 interface ProfileFormProps {
     profile: IProfileProps;
 }
 
 export default function ProfileForm({ profile }: ProfileFormProps) {
-    const { user, updateProfile } = useSupabaseAuth();
+    const { user } = useAuthStore();
+    const { mutate: updateProfile, isPending: isUpdatingProfile } = useProfileUpdate();
     const [formData, setFormData] = useState({
         username: profile.username || "",
         bio: profile.bio || "",
@@ -138,24 +140,36 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                 }
             }
 
-            // Update profile with new data
+            // Update profile with new data using the proper hook signature
             const profileData = {
                 username: formData.username,
                 bio: formData.bio,
                 avatar_url: avatarUrl,
             };
 
-            await updateProfile(profileData);
+            updateProfile(
+                {
+                    id: profile.id,
+                    values: profileData,
+                },
+                {
+                    onSuccess: () => {
+                        // Update local state
+                        setFormData((prev) => ({ ...prev, avatar_url: avatarUrl }));
 
-            // Update local state
-            setFormData((prev) => ({ ...prev, avatar_url: avatarUrl }));
+                        // Clear file selection and preview
+                        setSelectedFile(null);
+                        setPreviewUrl(null);
 
-            // Clear file selection and preview
-            setSelectedFile(null);
-            setPreviewUrl(null);
-
-            setMessage({ type: "success", text: "Profile updated successfully!" });
-            router.refresh();
+                        setMessage({ type: "success", text: "Profile updated successfully!" });
+                        router.refresh();
+                    },
+                    onError: (error: any) => {
+                        console.error("Error updating profile:", error);
+                        setMessage({ type: "error", text: "Failed to update profile" });
+                    },
+                },
+            );
         } catch (error: any) {
             console.error("Error updating profile:", error);
             setMessage({ type: "error", text: "Failed to update profile" });
@@ -311,10 +325,10 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                 <div className="flex justify-end">
                     <button
                         type="submit"
-                        disabled={isLoading || isUploadingAvatar}
+                        disabled={isLoading || isUploadingAvatar || isUpdatingProfile}
                         className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed rounded-lg font-medium transition-colors"
                     >
-                        {isUploadingAvatar ? "Uploading..." : isLoading ? "Saving..." : "Save Changes"}
+                        {isUploadingAvatar ? "Uploading..." : isLoading || isUpdatingProfile ? "Saving..." : "Save Changes"}
                     </button>
                 </div>
             </form>

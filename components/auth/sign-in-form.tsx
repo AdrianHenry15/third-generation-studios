@@ -13,6 +13,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { SubmitButton } from "../submit-button";
 import { useHCaptchaStore } from "@/stores/hcaptcha-store";
+import { useAuthStore } from "@/stores/auth-store";
 
 // Animation variants moved outside component to prevent recreation
 const formVariants = {
@@ -87,7 +88,7 @@ const SignInForm = memo(({ searchParams }: { searchParams: Message }) => {
             e.preventDefault();
             setFormError(null);
             setShowEmailNotFound(false);
-            setCaptchaError(null); // Clear captcha errors on new submission
+            setCaptchaError(null);
 
             // Client-side validation
             if (!validatePassword(password)) {
@@ -120,45 +121,63 @@ const SignInForm = memo(({ searchParams }: { searchParams: Message }) => {
                 return;
             }
 
-            // Now try to sign in
+            // Now try to sign in using client-side Supabase auth
             try {
-                const formData = new FormData();
-                formData.append("email", email);
-                formData.append("password", password);
-                formData.append("hcaptcha_token", hcaptchaToken);
+                console.log("🔐 Starting client-side sign-in");
 
-                const result = await signInAction(formData);
-                if ((result as any)?.error) {
-                    const code = (result as any)?.errorCode;
-                    if (code === "invalid_credentials") {
-                        setFormError("Incorrect password. Please try again.");
-                    } else if (code === "email_not_confirmed") {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password,
+                    options: {
+                        captchaToken: hcaptchaToken,
+                    },
+                });
+
+                if (error) {
+                    console.error("❌ Sign-in error:", error);
+
+                    // Map Supabase errors to user-friendly messages
+                    if (error.message.includes("Invalid login credentials")) {
+                        setFormError("Incorrect email or password. Please try again.");
+                    } else if (error.message.includes("Email not confirmed")) {
                         setFormError("Your email is not confirmed. Please check your inbox for the confirmation link or resend it below.");
-                    } else if (code === "captcha_required") {
-                        setFormError("Please complete the captcha verification.");
-                    } else if (code === "rate_limited") {
+                    } else if (error.message.includes("Too many requests")) {
                         setFormError("Too many attempts. Please wait a bit and try again.");
-                    } else if (code === "user_not_found") {
-                        setFormError("Email does not exist in our database");
-                        setShowEmailNotFound(true);
+                    } else if (error.message.includes("captcha")) {
+                        setFormError("Please complete the captcha verification.");
                     } else {
-                        setFormError((result as any)?.error);
+                        setFormError(error.message || "Failed to sign in. Please try again.");
                     }
-                    // Reset captcha on server error
+
+                    // Reset captcha on error
                     setToken("");
                     hcaptchaRef.current?.resetCaptcha();
-                } else if ((result as any)?.success) {
-                    // Handle successful sign-in with client-side navigation
-                    const redirectTo = urlSearchParams.get("redirect_url") || "/solo-q";
+                    return;
+                }
 
-                    // Only decode if it's not the default solo-q route
+                if (data.user && data.session) {
+                    console.log("✅ Sign-in successful", {
+                        userId: data.user.id,
+                        email: data.user.email,
+                        hasSession: !!data.session,
+                    });
+
+                    // The useAuthListener will automatically detect this auth state change
+                    // and update the Zustand store, so we don't need to manually set anything
+
+                    // Redirect user
+                    const redirectTo = urlSearchParams.get("redirect_url") || "/solo-q";
                     const finalRedirectTo = redirectTo === "/solo-q" ? redirectTo : decodeURIComponent(redirectTo);
 
-                    router.push(finalRedirectTo);
-                    router.refresh();
+                    console.log("🔄 Redirecting to:", finalRedirectTo);
+
+                    // Small delay to ensure auth listener has updated the store
+                    setTimeout(() => {
+                        router.push(finalRedirectTo);
+                    }, 100);
                 }
             } catch (err: any) {
-                console.error("Sign-in error:", err);
+                console.error("💥 Unexpected sign-in error:", err);
                 setFormError(err.message || "Failed to sign in. Please try again.");
                 // Reset captcha on error
                 setToken("");

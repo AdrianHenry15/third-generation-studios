@@ -76,22 +76,7 @@ const UserIconMenu = (props: IUserIconMenuProps) => {
                             router.push("/sign-in");
                         })}
                     >
-                        Sign In
-                    </button>
-                    <button
-                        role="menuitem"
-                        tabIndex={0}
-                        className="w-full text-left px-3 py-2 text-sm rounded-md text-black hover:text-white hover:bg-green-400 dark:hover:bg-green-950 dark:text-white cursor-pointer transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-green-400"
-                        onClick={() => {
-                            closeMenu();
-                            router.push("/sign-up");
-                        }}
-                        onKeyDown={onActivate(() => {
-                            closeMenu();
-                            router.push("/sign-up");
-                        })}
-                    >
-                        Sign Up
+                        Sign In / Sign Up
                     </button>
                 </div>
             </div>

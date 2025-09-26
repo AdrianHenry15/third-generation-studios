@@ -8,8 +8,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserIcon from "../user-icon";
-import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import MobileNavDropdownMenu from "./mobile-nav-dropdown-menu";
+import { useAuthStore } from "@/stores/auth-store";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,7 @@ export default function Navbar() {
     const backgroundColor = useTransform(scrollY, [0, 60], ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]);
 
     // Use auth context instead of local Supabase calls
-    const { user } = useSupabaseAuth();
+    // const { user } = useAuthStore();
 
     useEffect(() => {
         const handleScroll = () => {

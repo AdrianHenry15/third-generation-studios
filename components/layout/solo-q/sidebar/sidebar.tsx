@@ -45,7 +45,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
             {/* Header */}
             <div className="p-4 border-b border-neutral-800">
                 <div className="flex items-center justify-between">
-                    {!isCollapsed && (
+                    {(!isCollapsed || window.innerWidth < 768) && (
                         <motion.h1
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -69,28 +69,26 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
             <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700 scrollbar-track-transparent">
                 {/* Main Items */}
                 <nav className="p-2">
-                    <ul className="space-y-1">
+                    <ul className="space-y-2">
                         {mainItems.map((item) => {
                             const isActive = pathname === item.href;
                             return (
                                 <li key={item.href}>
                                     <Link
                                         href={item.href}
-                                        className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 group ${
+                                        className={`flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 group ${
                                             isActive ? "bg-green-600 text-white" : "text-neutral-400 hover:text-white hover:bg-neutral-800"
                                         }`}
                                     >
                                         <item.icon size={20} className="flex-shrink-0" />
-                                        {!isCollapsed && (
-                                            <motion.span
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                className="font-medium"
-                                            >
-                                                {item.label}
-                                            </motion.span>
-                                        )}
+                                        <motion.span
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            className={`font-medium md:${isCollapsed ? "hidden" : "block"}`}
+                                        >
+                                            {item.label}
+                                        </motion.span>
                                     </Link>
                                 </li>
                             );
@@ -101,16 +99,14 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
                 {/* Library Section */}
                 <div className="p-2 mt-4">
                     <div className="flex items-center justify-between px-3 py-2">
-                        {!isCollapsed && (
-                            <motion.h2
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                className="text-sm font-semibold text-neutral-400 uppercase tracking-wider"
-                            >
-                                Your Library
-                            </motion.h2>
-                        )}
+                        <motion.h2
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className={`text-sm font-semibold text-neutral-400 uppercase tracking-wider md:${isCollapsed ? "hidden" : "block"}`}
+                        >
+                            Your Library
+                        </motion.h2>
                         <button className="p-1 rounded hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors">
                             <Plus size={16} />
                         </button>
@@ -127,16 +123,14 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
                                         }`}
                                     >
                                         <item.icon size={18} className="flex-shrink-0" />
-                                        {!isCollapsed && (
-                                            <motion.span
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                className="text-sm"
-                                            >
-                                                {item.label}
-                                            </motion.span>
-                                        )}
+                                        <motion.span
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            className={`text-sm md:${isCollapsed ? "hidden" : "block"}`}
+                                        >
+                                            {item.label}
+                                        </motion.span>
                                     </Link>
                                 </li>
                             );
@@ -159,16 +153,14 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
                                     }`}
                                 >
                                     <item.icon size={18} className="flex-shrink-0" />
-                                    {!isCollapsed && (
-                                        <motion.span
-                                            initial={{ opacity: 0 }}
-                                            animate={{ opacity: 1 }}
-                                            exit={{ opacity: 0 }}
-                                            className="text-sm"
-                                        >
-                                            {item.label}
-                                        </motion.span>
-                                    )}
+                                    <motion.span
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className={`text-sm md:${isCollapsed ? "hidden" : "block"}`}
+                                    >
+                                        {item.label}
+                                    </motion.span>
                                 </Link>
                             </li>
                         );

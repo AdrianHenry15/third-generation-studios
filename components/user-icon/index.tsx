@@ -5,17 +5,17 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { SettingsIcon, LogOut, Laptop, Moon, Sun, User } from "lucide-react";
-import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import UserIconMenu from "./user-icon-menu";
 import { User as UserType } from "@supabase/supabase-js";
+import { useAuthStore } from "@/stores/auth-store";
 
 const UserIcon = () => {
     const router = useRouter();
     const { theme, setTheme } = useTheme();
 
     // Use auth context instead of local queries
-    const { user, loading, signOut } = useSupabaseAuth();
+    const { user, loading, signOut } = useAuthStore();
     const { data: profile, isLoading: ProfileLoading } = useProfileByIdQuery(user?.id ?? "");
 
     const isLoading = loading || ProfileLoading;

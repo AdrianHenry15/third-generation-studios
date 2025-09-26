@@ -1,7 +1,7 @@
 import React from "react";
 import { ITrackProps } from "@/lib/types";
-import { useSupabaseAuth } from "@/contexts/supabase-auth-context";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
+import { useAuthStore } from "@/stores/auth-store";
 
 interface IPlayPauseButtonProps {
     track: ITrackProps;
@@ -22,7 +22,7 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
         isLoading: contextIsLoading,
     } = useAudioPlayerStore();
 
-    const { user, loading: authLoading } = useSupabaseAuth();
+    const { user, loading: authLoading } = useAuthStore();
 
     const isCurrentTrack = currentTrackId === track.id;
     const isPlaying = isCurrentTrack && contextIsPlaying;
