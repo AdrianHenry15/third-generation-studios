@@ -4,15 +4,13 @@ import { useState, memo, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { SettingsIcon, LogOut, Laptop, Moon, Sun, User } from "lucide-react";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import UserIconMenu from "./user-icon-menu";
-import { User as UserType } from "@supabase/supabase-js";
 import { useAuthStore } from "@/stores/auth-store";
 
 const UserIcon = () => {
     const router = useRouter();
-    const { theme, setTheme } = useTheme();
+    const { setTheme } = useTheme();
 
     // Use auth context instead of local queries
     const { user, loading, signOut } = useAuthStore();
@@ -50,17 +48,6 @@ const UserIcon = () => {
     const closeMenu = () => setMenuOpen(false);
     const toggleMenu = () => setMenuOpen((s) => !s);
 
-    const handleSignOut = async () => {
-        closeMenu();
-        try {
-            await signOut();
-            router.push("/sign-in");
-            router.refresh();
-        } catch {
-            router.push("/sign-in");
-        }
-    };
-
     if (isLoading) {
         return (
             <div className="w-full flex justify-end flex-1 relative">
@@ -90,7 +77,7 @@ const UserIcon = () => {
                 />
             </button>
 
-            {menuOpen && <UserIconMenu closeMenu={closeMenu} handleSignOut={handleSignOut} setTheme={setTheme} user={user} />}
+            {menuOpen && <UserIconMenu closeMenu={closeMenu} />}
         </div>
     );
 };

@@ -1,19 +1,23 @@
+import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
+import { IProfileProps } from "@/lib/types";
+import { useAuthStore } from "@/stores/auth-store";
 import { User as UserType } from "@supabase/supabase-js";
 import { Laptop, LogOut, Moon, Sun, User } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef } from "react";
 
 interface IUserIconMenuProps {
     closeMenu: () => void;
-    handleSignOut: () => void;
-    setTheme: (theme: string) => void;
-    user?: UserType | null;
 }
 
 const UserIconMenu = (props: IUserIconMenuProps) => {
-    const { closeMenu, handleSignOut, setTheme, user } = props;
+    const { closeMenu } = props;
     const router = useRouter();
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const { setTheme } = useTheme();
+    const { user, signOut } = useAuthStore();
+    const { data: profile } = useProfileByIdQuery(user?.id ?? "");
 
     // keep a stable ref to the latest closeMenu so the document listener can call it
     const closeMenuRef = useRef(closeMenu);
@@ -51,6 +55,17 @@ const UserIconMenu = (props: IUserIconMenuProps) => {
             e.preventDefault();
         }
         fn();
+    };
+
+    const handleSignOut = async () => {
+        closeMenu();
+        try {
+            await signOut();
+            router.push("/sign-in");
+            router.refresh();
+        } catch {
+            router.push("/sign-in");
+        }
     };
 
     // If the user is not signed in, show only Sign In / Sign Up and return early
@@ -105,8 +120,8 @@ const UserIconMenu = (props: IUserIconMenuProps) => {
                     {initials || <User />}
                 </div>
                 <div className="flex flex-col text-sm">
-                    <span className="font-medium text-neutral-900 dark:text-neutral-100">{displayName}</span>
-                    <span className="text-xs text-neutral-500 dark:text-neutral-400">{user.email}</span>
+                    <span className="font-medium text-neutral-900 dark:text-neutral-100">{profile?.username}</span>
+                    <span className="text-[10px] text-neutral-500 dark:text-neutral-400">{user.email}</span>
                 </div>
             </div>
 

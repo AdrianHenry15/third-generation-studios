@@ -81,7 +81,7 @@ export interface ITrackProps {
     album: IAlbumProps;
     type: TrackType;
     duration: number;
-    release_date: number | string;
+    release_date: string; // Changed from number | string to just string
     genre: string;
     locked: boolean;
     plays: number;

@@ -32,11 +32,7 @@ const FAQSidebarNav = (props: IFAQSidebarNavProps) => {
         };
 
         window.addEventListener("scroll", handleScroll);
-
-        // Clean up the event listener
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
+        return () => window.removeEventListener("scroll", handleScroll);
     }, [navBarHeight]);
 
     const handleScrollToSection = (event: React.MouseEvent, link: string) => {
@@ -44,13 +40,11 @@ const FAQSidebarNav = (props: IFAQSidebarNavProps) => {
         setLinkHash(link);
         setDropdownOpen(false);
 
-        // Find the element by ID and apply offset scroll
-        const targetElement = document.getElementById(link.substring(1)); // Remove # from the link
+        const targetElement = document.getElementById(link.substring(1));
         const offsetTop = targetElement?.getBoundingClientRect().top ?? 0;
 
-        // Scroll with offset to account for sticky nav
         window.scrollTo({
-            top: window.scrollY + offsetTop - navBarHeight, // Offset by navbar height
+            top: window.scrollY + offsetTop - navBarHeight,
             behavior: "smooth",
         });
     };
@@ -59,57 +53,50 @@ const FAQSidebarNav = (props: IFAQSidebarNavProps) => {
         return (
             <nav
                 className={`${
-                    sticky ? "fixed top-[144px] left-0 w-full bg-white" : ""
-                } flex flex-col items-start w-full justify-between border-y-[1px] shadow-md border-zinc-200 p-4 z-50 transition-transform duration-500 ease-in-out md:hidden`}
+                    sticky ? "fixed top-[144px] left-0 w-full bg-white shadow-lg" : ""
+                } flex flex-col items-start w-full justify-between border-y border-zinc-200 p-4 z-50 transition-all duration-300 ease-in-out md:hidden`}
             >
-                <div className="relative flex w-full h-full">
-                    <div className="absolute top-5 right-5">
-                        {dropdownOpen ? (
-                            <FaChevronUp onClick={() => setDropdownOpen(false)} size={15} />
-                        ) : (
-                            <FaChevronDown onClick={() => setDropdownOpen(true)} size={15} />
-                        )}
-                    </div>
-                </div>
-                {props.items.map((item, index) => {
-                    if (linkHash === item.link) {
-                        return (
-                            // <div className="flex items-center justify-between w-full" key={index}>
-                            <h5 key={index} className="text-blue-600 underline underline-offset-2 px-8 py-4">
+                <button
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                    className="flex items-center justify-between w-full py-3 px-2 text-left focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg"
+                    aria-expanded={dropdownOpen}
+                >
+                    <h5 className="text-blue-600 font-medium">
+                        {props.items.find((item) => item.link === linkHash)?.title || "Select Section"}
+                    </h5>
+                    <div className="text-blue-600">{dropdownOpen ? <FaChevronUp size={16} /> : <FaChevronDown size={16} />}</div>
+                </button>
+
+                {dropdownOpen && (
+                    <div className="w-full mt-2 bg-white border border-zinc-200 rounded-lg shadow-md max-h-60 overflow-y-auto">
+                        {props.items.map((item, index) => (
+                            <Link
+                                key={index}
+                                href={item.link}
+                                onClick={(e) => handleScrollToSection(e, item.link)}
+                                className={`block px-4 py-3 text-sm hover:bg-blue-50 transition-colors border-b border-zinc-100 last:border-b-0 ${
+                                    linkHash === item.link ? "bg-blue-50 text-blue-700 font-medium" : "text-blue-600"
+                                }`}
+                            >
                                 {item.title}
-                            </h5>
-                            // </div>
-                        );
-                    } else {
-                        return (
-                            <div key={index}>
-                                {dropdownOpen && (
-                                    <div className="py-4 px-8 text-blue-600 text-sm md:hidden" key={index}>
-                                        {dropdownOpen && (
-                                            <Link onClick={(e) => handleScrollToSection(e, item.link)} href={item.link}>
-                                                {item.title}
-                                            </Link>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    }
-                })}
+                            </Link>
+                        ))}
+                    </div>
+                )}
             </nav>
         );
     };
 
     const renderRegularNav = () => {
         return (
-            <div className="hidden flex-col text-sm pl-10 md:flex md:flex-1">
+            <div className="hidden md:flex md:flex-col text-sm pl-10 sticky top-4">
                 {props.items.map((item, index) => (
                     <Link
                         key={index}
                         href={item.link}
                         onClick={(e) => handleScrollToSection(e, item.link)}
-                        className={`pb-10 text-blue-600 hover:text-blue-950 ease-in-out duration-300 ${
-                            linkHash === item.link ? "underline underline-offset-4 text-blue-950" : ""
+                        className={`pb-6 text-blue-600 hover:text-blue-950 transition-all duration-300 ${
+                            linkHash === item.link ? "underline underline-offset-4 text-blue-950 font-medium" : ""
                         }`}
                     >
                         <h5>{item.title}</h5>
