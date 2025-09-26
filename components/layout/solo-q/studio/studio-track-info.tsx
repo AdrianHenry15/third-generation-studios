@@ -4,17 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { TrackType } from "@/lib/solo-q-types/music-types";
-
-// Define AlbumType to include "Single"
-export type AlbumType = "Single" | "EP" | "Album";
+import { TrackType, AlbumType } from "@/lib/solo-q-types/music-types";
 import { Music, X, Upload, Image } from "lucide-react";
 import React from "react";
 import { TrackUploadData, UploadMode } from "./studio-upload-form";
 
 interface IStudioTrackInfoProps {
     track: TrackUploadData;
-    albumType: UploadMode; // Add album type to determine if cover is needed
+    uploadMode: UploadMode;
+    albumType?: AlbumType; // Use the actual AlbumType from music-types
     index: number;
     handleTrackChange: (id: string, field: keyof TrackUploadData, value: string | number | TrackType) => void;
     removeTrack: (id: string) => void;
@@ -24,10 +22,10 @@ interface IStudioTrackInfoProps {
 }
 
 const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
-    const { track, tracks, albumType, index, handleTrackChange, handleFileSelect, handleTrackCoverSelect, removeTrack } = props;
+    const { track, tracks, uploadMode, albumType, index, handleTrackChange, handleFileSelect, handleTrackCoverSelect, removeTrack } = props;
 
-    // Show cover upload only when album type is "Single"
-    const showCoverUpload = albumType === "single";
+    // Show cover upload for single mode or when album type is "Single"
+    const showCoverUpload = uploadMode === "single" || albumType === "Single";
 
     return (
         <Card key={track.id}>
@@ -36,13 +34,13 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                     <div>
                         <CardTitle className="flex items-center gap-2">
                             <Music className="h-5 w-5" />
-                            {albumType === "single" ? "Track Information" : `Track ${index + 1}`}
+                            {uploadMode === "single" ? "Track Information" : `Track ${index + 1}`}
                         </CardTitle>
                         <CardDescription>
-                            {albumType === "single" ? "Details about your track" : `Details for track ${index + 1}`}
+                            {uploadMode === "single" ? "Details about your track" : `Details for track ${index + 1}`}
                         </CardDescription>
                     </div>
-                    {albumType === "album" && tracks!.length > 1 && (
+                    {uploadMode === "album" && tracks!.length > 1 && (
                         <Button type="button" variant="ghost" size="sm" onClick={() => removeTrack(track.id)}>
                             <X className="h-4 w-4" />
                         </Button>
@@ -50,10 +48,12 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                 </div>
             </CardHeader>
             <CardContent className="space-y-6">
-                {/* Cover Image Upload - Only for singles */}
-                {showCoverUpload ? (
+                {/* Cover Image Upload - Only for singles or Single album types */}
+                {showCoverUpload && (
                     <div>
-                        <Label className="text-lg font-semibold">Track Cover *</Label>
+                        <Label className="text-lg font-semibold">
+                            Track Cover {uploadMode === "single" ? "*" : "(Optional)"}
+                        </Label>
                         <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center mt-2">
                             <Image className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
                             <div className="space-y-3">
@@ -79,7 +79,7 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                             </div>
                         </div>
                     </div>
-                ) : null}
+                )}
 
                 {/* Audio File Upload - Secondary */}
                 <div>

@@ -21,11 +21,7 @@ export default function StudioUploadPage() {
     const albumInsert = useAlbumInsertWithCover();
     const trackUpload = useTrackUpload();
 
-    const validateUpload = (data: {
-        mode: UploadMode;
-        tracks: TrackUploadData[];
-        albumData?: any;
-    }): boolean => {
+    const validateUpload = (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData?: any }): boolean => {
         // Check if user is artist
         if (!profile || profile.role !== "artist") {
             setError("You must be an artist to upload tracks.");
@@ -84,11 +80,7 @@ export default function StudioUploadPage() {
         return true;
     };
 
-    const handleUpload = async (data: {
-        mode: UploadMode;
-        tracks: TrackUploadData[];
-        albumData?: any;
-    }) => {
+    const handleUpload = async (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData?: any }) => {
         if (!validateUpload(data)) return;
 
         setIsUploading(true);
@@ -124,7 +116,7 @@ export default function StudioUploadPage() {
                     },
                     audioFile: track.audioFile!,
                     // Only pass track cover for Single releases or single mode
-                    coverFile: (data.mode === "single" || data.albumData?.album_type === "Single") ? track.coverFile : undefined,
+                    coverFile: data.mode === "single" || data.albumData?.album_type === "Single" ? track.coverFile : undefined,
                 });
             }
 
