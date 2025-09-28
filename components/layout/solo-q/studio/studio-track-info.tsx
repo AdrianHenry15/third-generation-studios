@@ -4,17 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { TrackType, AlbumType } from "@/lib/solo-q-types/music-types";
+import { TrackType, AlbumType, IArtistProps } from "@/lib/solo-q-types/music-types";
 import { Music, X, Upload, Image } from "lucide-react";
 import React from "react";
 import { TrackUploadData, UploadMode } from "./studio-upload-form";
+import { trackGenres } from "@/lib/constants";
 
 interface IStudioTrackInfoProps {
     track: TrackUploadData;
     uploadMode: UploadMode;
     albumType?: AlbumType;
     index: number;
-    handleTrackChange: (id: string, field: keyof TrackUploadData, value: string | number | TrackType) => void;
+    handleTrackChange: (id: string, field: keyof TrackUploadData, value: string | number | TrackType | any) => void;
     removeTrack: (id: string) => void;
     tracks: TrackUploadData[];
     handleFileSelect: (id: string, event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -85,7 +86,7 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                     <div className="border-2 border-dashed border-muted rounded-lg p-6 text-center mt-2">
                         <Music className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
                         <div className="space-y-2">
-                            <p className="text-sm text-muted-foreground">{track.fileName || "No audio file selected"}</p>
+                            <p className="text-sm text-muted-foreground">{track.audioFileName || "No audio file selected"}</p>
                             <p className="text-xs text-muted-foreground">Supported: MP3, WAV, FLAC (max 100MB)</p>
                             <Button
                                 type="button"
@@ -118,11 +119,18 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                     </div>
                     <div>
                         <Label>Genre *</Label>
-                        <Input
-                            value={track.genre}
-                            onChange={(e) => handleTrackChange(track.id, "genre", e.target.value)}
-                            placeholder="e.g., Hip Hop, R&B, Pop"
-                        />
+                        <Select value={track.genre} onValueChange={(value: string) => handleTrackChange(track.id, "genre", value)}>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select a genre" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {trackGenres.map((genre) => (
+                                    <SelectItem key={genre} value={genre}>
+                                        {genre}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
                 </div>
 
@@ -153,19 +161,19 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                 </div>
 
                 <div>
-                    <Label>Copyright Information</Label>
+                    <Label>Copyright Information (Optional)</Label>
                     <Input
                         value={track.copyright}
                         onChange={(e) => handleTrackChange(track.id, "copyright", e.target.value)}
-                        placeholder="© 2024 Artist Name"
+                        placeholder="© 2024 Artist Name (Optional)"
                     />
                 </div>
 
                 <div>
-                    <Label>Spotify Track ID</Label>
+                    <Label>Spotify Track Link</Label>
                     <Input
-                        value={track.spotify_id}
-                        onChange={(e) => handleTrackChange(track.id, "spotify_id", e.target.value)}
+                        value={track.links?.spotify || ""}
+                        onChange={(e) => handleTrackChange(track.id, "links", { ...track.links, spotify_url: e.target.value })}
                         placeholder="Optional - for linking to Spotify"
                     />
                 </div>

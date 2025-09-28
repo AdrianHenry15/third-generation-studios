@@ -22,8 +22,14 @@ export default function StudioUploadPage() {
     const trackUpload = useTrackUpload();
 
     const validateUpload = (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData: AlbumUploadData }): boolean => {
+        // Check if user exists and has profile
+        if (!user || !profile) {
+            setError("Please log in to upload tracks.");
+            return false;
+        }
+
         // Check if user is artist
-        if (!profile || profile.role !== "artist") {
+        if (profile.role !== "artist") {
             setError("You must be an artist to upload tracks.");
             return false;
         }
@@ -51,8 +57,8 @@ export default function StudioUploadPage() {
             }
         }
 
-        // Validate album data for album mode
-        if (data.mode === "album" && !data.albumData.name.trim()) {
+        // Validate album data
+        if (!data.albumData.name.trim()) {
             setError("Album name is required.");
             return false;
         }
@@ -77,6 +83,12 @@ export default function StudioUploadPage() {
             }
         }
 
+        // For album mode with EP/Album types, require album cover
+        if (data.mode === "album" && data.albumData.type !== "Single" && !data.albumData.albumImageFile) {
+            setError("Album cover image is required for EP/Album releases.");
+            return false;
+        }
+
         return true;
     };
 
@@ -87,21 +99,21 @@ export default function StudioUploadPage() {
         setError(null);
 
         try {
-            // 1️⃣ Insert album using the useAlbumInsertWithCover hook
+            // 1️⃣ Insert album first
             const album = await albumInsert.mutateAsync({
                 albumData: {
                     name: data.albumData.name,
                     type: data.albumData.type,
                     release_date: data.albumData.release_date,
-                    artist_id: profile!.id,
+                    artist_id: profile!.id, // Use profile.id as artist_id
                 },
                 // Only pass album image for EP/Album types, not Singles
                 albumImageFile: data.albumData.type !== "Single" ? data.albumData.albumImageFile : undefined,
             });
 
-            // 2️⃣ Upload all tracks using the useTrackUpload hook
-            for (const track of data.tracks) {
-                await trackUpload.mutateAsync({
+            // 2️⃣ Upload all tracks and associate them with the created album
+            const trackUploadPromises = data.tracks.map(async (track) => {
+                return trackUpload.mutateAsync({
                     trackData: {
                         title: track.title,
                         type: track.type,
@@ -110,20 +122,26 @@ export default function StudioUploadPage() {
                         release_date: track.release_date,
                         copyright: track.copyright || "",
                         lyrics: track.lyrics || "",
-                        spotify_id: track.spotify_id || "",
-                        artist_id: album.artist_id,
-                        album_id: album.id,
+                        links: {
+                            spotify: track.links?.spotify || "",
+                        },
+                        artist_id: profile!.id, // Use profile.id as artist_id
+                        album_id: album.id, // Associate with the created album
                     },
                     audioFile: track.audioFile!,
-                    // Only pass track image for Single releases or single mode
+                    // Pass track image for Single releases or single mode
                     trackImageFile: data.mode === "single" || data.albumData.type === "Single" ? track.trackImageFile : undefined,
                 });
-            }
+            });
+
+            // Wait for all tracks to upload
+            await Promise.all(trackUploadPromises);
 
             setUploadSuccess(true);
         } catch (err) {
-            console.error(err);
-            setError("Failed to upload. Please try again.");
+            console.error("Upload error:", err);
+            const errorMessage = err instanceof Error ? err.message : "Failed to upload. Please try again.";
+            setError(errorMessage);
         } finally {
             setIsUploading(false);
         }

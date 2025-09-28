@@ -11,7 +11,7 @@ export type UploadMode = "single" | "album";
 // Extended track data that includes the actual file for upload
 export interface TrackUploadData extends Omit<ITrackProps, "url" | "album" | "artists" | "credits"> {
     audioFile?: File; // The actual file to upload
-    fileName?: string; // Display name for the file
+    audioFileName?: string; // Display name for the file
     trackImageFile?: File; // Track cover image file
     trackImageFileName?: string; // Display name for track cover image
 }
@@ -48,14 +48,14 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             release_date: "",
             copyright: "",
             lyrics: "",
-            spotify_id: "",
             album_id: "",
             artist_id: "",
             locked: false,
             plays: 0,
             is_liked: false,
-            fileName: "",
+            audioFileName: "",
             trackImageFileName: "",
+            links: { spotify: "" },
         },
     ]);
 
@@ -79,12 +79,12 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         }
     };
 
-    const handleTrackChange = (trackId: string, field: keyof TrackUploadData, value: string | number | TrackType) => {
+    const handleTrackChange = (trackId: string, field: keyof TrackUploadData, value: string | number | TrackType | any) => {
         setTracks((prev) => prev.map((track) => (track.id === trackId ? { ...track, [field]: value } : track)));
 
         // For single mode, auto-set album name to track title
         if (uploadMode === "single" && field === "title" && typeof value === "string") {
-            setAlbumData((prev) => ({ ...prev, album_name: value }));
+            setAlbumData((prev) => ({ ...prev, name: value }));
         }
     };
 
@@ -92,7 +92,9 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         const file = e.target.files?.[0];
         if (file && file.type.startsWith("audio/")) {
             // Store the actual file and display name
-            setTracks((prev) => prev.map((track) => (track.id === trackId ? { ...track, audioFile: file, fileName: file.name } : track)));
+            setTracks((prev) =>
+                prev.map((track) => (track.id === trackId ? { ...track, audioFile: file, audioFileName: file.name } : track)),
+            );
 
             // Get duration from audio file
             const audio = new Audio();
@@ -123,14 +125,14 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             release_date: "",
             copyright: "",
             lyrics: "",
-            spotify_id: "",
             album_id: "",
             artist_id: "",
             locked: false,
             plays: 0,
             is_liked: false,
-            fileName: "",
+            audioFileName: "",
             trackImageFileName: "",
+            links: { spotify: "" },
         };
         setTracks((prev) => [...prev, newTrack]);
     };

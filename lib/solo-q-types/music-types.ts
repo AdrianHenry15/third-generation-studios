@@ -88,7 +88,7 @@ export interface ITrackProps {
     is_liked: boolean;
     copyright?: string;
     lyrics?: string;
-    spotify_id?: string;
+    links?: IMusicLinkProps;
 }
 
 export interface IMusicLinkProps {
