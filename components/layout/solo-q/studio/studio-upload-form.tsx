@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/buttons/button";
 import { Plus } from "lucide-react";
-import { TrackType, AlbumType, ITrackProps } from "@/lib/solo-q-types/music-types";
+import { TrackType, AlbumType, IAlbumProps, ITrackProps } from "@/lib/solo-q-types/music-types";
 import StudioTrackInfoCard from "./studio-track-info";
 import StudioAlbumInfo from "./studio-album-info";
 
@@ -12,33 +12,30 @@ export type UploadMode = "single" | "album";
 export interface TrackUploadData extends Omit<ITrackProps, "url" | "album" | "artists" | "credits"> {
     audioFile?: File; // The actual file to upload
     fileName?: string; // Display name for the file
-    coverFile?: File; // Cover image file for the track
-    coverFileName?: string; // Display name for cover image
+    trackImageFile?: File; // Track cover image file
+    trackImageFileName?: string; // Display name for track cover image
+}
+
+// Extended album data that includes file upload fields
+export interface AlbumUploadData extends Omit<IAlbumProps, "id" | "created_at" | "updated_at" | "images"> {
+    albumImageFile?: File;
+    albumImageFileName?: string;
 }
 
 interface IStudioUploadFormProps {
-    onSubmit: (data: {
-        mode: UploadMode;
-        tracks: TrackUploadData[];
-        albumData?: {
-            album_name: string;
-            album_type: AlbumType;
-            album_release_date: string;
-            coverFile?: File; // Album cover file
-            coverFileName?: string; // Display name for album cover
-        };
-    }) => void;
+    onSubmit: (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData: AlbumUploadData }) => void;
     isUploading: boolean;
 }
 
 const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUploading }) => {
     const [uploadMode, setUploadMode] = useState<UploadMode>("single");
-    const [albumData, setAlbumData] = useState({
-        album_name: "",
-        album_type: "Single" as AlbumType,
-        album_release_date: "",
-        coverFile: undefined as File | undefined,
-        coverFileName: "",
+    const [albumData, setAlbumData] = useState<AlbumUploadData>({
+        name: "",
+        type: "Single" as AlbumType,
+        release_date: "",
+        artist_id: "", // Will be set during upload
+        albumImageFile: undefined,
+        albumImageFileName: "",
     });
 
     const [tracks, setTracks] = useState<TrackUploadData[]>([
@@ -58,6 +55,7 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             plays: 0,
             is_liked: false,
             fileName: "",
+            trackImageFileName: "",
         },
     ]);
 
@@ -69,8 +67,16 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         }
     };
 
-    const handleAlbumDataChange = (field: keyof typeof albumData, value: string | AlbumType | File | undefined) => {
+    const handleAlbumDataChange = (field: keyof AlbumUploadData, value: string | AlbumType | File | undefined) => {
         setAlbumData((prev) => ({ ...prev, [field]: value }));
+    };
+
+    const handleAlbumImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file && file.type.startsWith("image/")) {
+            handleAlbumDataChange("albumImageFile", file);
+            handleAlbumDataChange("albumImageFileName", file.name);
+        }
     };
 
     const handleTrackChange = (trackId: string, field: keyof TrackUploadData, value: string | number | TrackType) => {
@@ -98,19 +104,11 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         }
     };
 
-    const handleAlbumCoverSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file && file.type.startsWith("image/")) {
-            handleAlbumDataChange("coverFile", file);
-            handleAlbumDataChange("coverFileName", file.name);
-        }
-    };
-
-    const handleTrackCoverSelect = (trackId: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTrackImageSelect = (trackId: string, e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file && file.type.startsWith("image/")) {
             setTracks((prev) =>
-                prev.map((track) => (track.id === trackId ? { ...track, coverFile: file, coverFileName: file.name } : track)),
+                prev.map((track) => (track.id === trackId ? { ...track, trackImageFile: file, trackImageFileName: file.name } : track)),
             );
         }
     };
@@ -132,7 +130,7 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             plays: 0,
             is_liked: false,
             fileName: "",
-            coverFileName: "",
+            trackImageFileName: "",
         };
         setTracks((prev) => [...prev, newTrack]);
     };
@@ -152,9 +150,12 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                 uploadMode === "album"
                     ? albumData
                     : {
-                          album_name: tracks[0]?.title || "Untitled",
-                          album_type: "Single",
-                          album_release_date: tracks[0]?.release_date || "",
+                          name: tracks[0]?.title || "Untitled",
+                          type: "Single",
+                          release_date: tracks[0]?.release_date || "",
+                          artist_id: "", // Will be set during upload
+                          albumImageFile: tracks[0]?.trackImageFile,
+                          albumImageFileName: tracks[0]?.trackImageFileName,
                       },
         });
     };
@@ -194,7 +195,7 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                 <StudioAlbumInfo
                     albumData={albumData}
                     handleAlbumDataChange={handleAlbumDataChange}
-                    handleAlbumCoverSelect={handleAlbumCoverSelect}
+                    handleAlbumImageSelect={handleAlbumImageSelect}
                 />
             )}
 
@@ -205,11 +206,11 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                     track={track}
                     tracks={tracks}
                     uploadMode={uploadMode}
-                    albumType={albumData.album_type} // Pass the actual AlbumType
+                    albumType={albumData.type} // Pass the actual AlbumType
                     index={index}
                     handleTrackChange={handleTrackChange}
                     handleFileSelect={handleFileSelect}
-                    handleTrackCoverSelect={handleTrackCoverSelect}
+                    handleTrackImageSelect={handleTrackImageSelect}
                     removeTrack={removeTrack}
                 />
             ))}

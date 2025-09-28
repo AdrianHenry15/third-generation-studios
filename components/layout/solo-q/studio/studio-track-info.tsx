@@ -12,17 +12,17 @@ import { TrackUploadData, UploadMode } from "./studio-upload-form";
 interface IStudioTrackInfoProps {
     track: TrackUploadData;
     uploadMode: UploadMode;
-    albumType?: AlbumType; // Use the actual AlbumType from music-types
+    albumType?: AlbumType;
     index: number;
     handleTrackChange: (id: string, field: keyof TrackUploadData, value: string | number | TrackType) => void;
     removeTrack: (id: string) => void;
     tracks: TrackUploadData[];
     handleFileSelect: (id: string, event: React.ChangeEvent<HTMLInputElement>) => void;
-    handleTrackCoverSelect: (id: string, event: React.ChangeEvent<HTMLInputElement>) => void;
+    handleTrackImageSelect: (id: string, event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
-    const { track, tracks, uploadMode, albumType, index, handleTrackChange, handleFileSelect, handleTrackCoverSelect, removeTrack } = props;
+    const { track, tracks, uploadMode, albumType, index, handleTrackChange, handleFileSelect, handleTrackImageSelect, removeTrack } = props;
 
     // Show cover upload for single mode or when album type is "Single"
     const showCoverUpload = uploadMode === "single" || albumType === "Single";
@@ -51,14 +51,12 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                 {/* Cover Image Upload - Only for singles or Single album types */}
                 {showCoverUpload && (
                     <div>
-                        <Label className="text-lg font-semibold">
-                            Track Cover {uploadMode === "single" ? "*" : "(Optional)"}
-                        </Label>
+                        <Label className="text-lg font-semibold">Track Cover {uploadMode === "single" ? "*" : "(Optional)"}</Label>
                         <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center mt-2">
                             <Image className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
                             <div className="space-y-3">
                                 <p className="text-sm text-muted-foreground font-medium">
-                                    {track.coverFileName || "No cover image selected"}
+                                    {track.trackImageFileName || "No cover image selected"}
                                 </p>
                                 <p className="text-xs text-muted-foreground">Recommended: 1400x1400px, JPG or PNG</p>
                                 <Button
@@ -69,7 +67,7 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                                         const input = document.createElement("input");
                                         input.type = "file";
                                         input.accept = "image/*";
-                                        input.onchange = (e) => handleTrackCoverSelect(track.id, e as any);
+                                        input.onchange = (e) => handleTrackImageSelect(track.id, e as any);
                                         input.click();
                                     }}
                                 >

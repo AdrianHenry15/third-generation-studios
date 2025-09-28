@@ -41,25 +41,25 @@ export function useArtistAvatarUpload() {
 export function useAlbumInsertWithCover() {
     const qc = useQueryClient();
     const insertAlbum = useMusicInsert<IAlbumProps>("albums", "albums");
-    const insertImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
+    const insertAlbumImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
 
     return useMutation({
-        mutationFn: async ({ albumData, coverFile }: { albumData: Partial<IAlbumProps>; coverFile?: File }) => {
+        mutationFn: async ({ albumData, albumImageFile }: { albumData: Partial<IAlbumProps>; albumImageFile?: File }) => {
             const album = await insertAlbum.mutateAsync(albumData);
 
-            if (coverFile) {
+            if (albumImageFile) {
                 const url = await uploadFile({
                     bucket: "album-covers",
-                    file: coverFile,
+                    file: albumImageFile,
                     userId: album.artist_id,
                 });
 
                 if (!url) throw new Error("Failed to upload album cover");
 
-                await insertImage.mutateAsync({
+                await insertAlbumImage.mutateAsync({
                     album_id: album.id,
                     url,
-                    name: coverFile.name,
+                    name: albumImageFile.name,
                 });
             }
 
@@ -75,10 +75,18 @@ export function useAlbumInsertWithCover() {
 export function useTrackUpload() {
     const qc = useQueryClient();
     const insertTrack = useMusicInsert<ITrackProps>("tracks", "tracks");
-    const insertImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
+    const insertTrackImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
 
     return useMutation({
-        mutationFn: async ({ trackData, audioFile, coverFile }: { trackData: Partial<ITrackProps>; audioFile: File; coverFile?: File }) => {
+        mutationFn: async ({
+            trackData,
+            audioFile,
+            trackImageFile,
+        }: {
+            trackData: Partial<ITrackProps>;
+            audioFile: File;
+            trackImageFile?: File;
+        }) => {
             // Upload audio file
             const audioUrl = await uploadFile({
                 bucket: "track-urls",
@@ -94,20 +102,20 @@ export function useTrackUpload() {
                 url: audioUrl,
             });
 
-            // Upload cover image if provided
-            if (coverFile) {
-                const coverUrl = await uploadFile({
+            // Upload track image if provided (for singles)
+            if (trackImageFile) {
+                const imageUrl = await uploadFile({
                     bucket: "album-covers",
-                    file: coverFile,
+                    file: trackImageFile,
                     userId: trackData.artist_id,
                 });
 
-                if (coverUrl) {
-                    // Add cover image to album_images table
-                    await insertImage.mutateAsync({
+                if (imageUrl) {
+                    // Add track image to album_images table
+                    await insertTrackImage.mutateAsync({
                         album_id: track.album_id,
-                        url: coverUrl,
-                        name: coverFile.name,
+                        url: imageUrl,
+                        name: trackImageFile.name,
                     });
                 }
             }

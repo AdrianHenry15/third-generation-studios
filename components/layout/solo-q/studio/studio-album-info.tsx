@@ -6,23 +6,15 @@ import { AlbumType } from "@/lib/solo-q-types/music-types";
 import React from "react";
 import { Upload, Image } from "lucide-react";
 import { Button } from "@/components/ui/buttons/button";
+import { AlbumUploadData } from "./studio-upload-form";
 
 interface IStudioAlbumInfoProps {
-    albumData: {
-        album_name: string;
-        album_type: AlbumType;
-        album_release_date: string;
-        coverFile?: File;
-        coverFileName?: string;
-    };
-    handleAlbumDataChange: (
-        field: "album_name" | "album_release_date" | "album_type" | "coverFile" | "coverFileName",
-        value: string | AlbumType | File | undefined,
-    ) => void;
-    handleAlbumCoverSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    albumData: AlbumUploadData;
+    handleAlbumDataChange: (field: keyof AlbumUploadData, value: string | AlbumType | File | undefined) => void;
+    handleAlbumImageSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlbumDataChange, handleAlbumCoverSelect }) => {
+const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlbumDataChange, handleAlbumImageSelect }) => {
     return (
         <Card>
             <CardHeader>
@@ -37,7 +29,7 @@ const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlb
                         <Image className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
                         <div className="space-y-3">
                             <p className="text-sm text-muted-foreground font-medium">
-                                {albumData.coverFileName || "No cover image selected"}
+                                {albumData.albumImageFileName || "No cover image selected"}
                             </p>
                             <p className="text-xs text-muted-foreground">Recommended: 1400x1400px, JPG or PNG</p>
                             <Button
@@ -49,7 +41,7 @@ const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlb
                                     input.type = "file";
                                     input.accept = "image/*";
                                     input.onchange = (event) =>
-                                        handleAlbumCoverSelect(event as unknown as React.ChangeEvent<HTMLInputElement>);
+                                        handleAlbumImageSelect(event as unknown as React.ChangeEvent<HTMLInputElement>);
                                     input.click();
                                 }}
                             >
@@ -66,17 +58,14 @@ const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlb
                         <Label htmlFor="album_name">Album Name *</Label>
                         <Input
                             id="album_name"
-                            value={albumData.album_name}
-                            onChange={(e) => handleAlbumDataChange("album_name", e.target.value)}
+                            value={albumData.name}
+                            onChange={(e) => handleAlbumDataChange("name", e.target.value)}
                             placeholder="Enter album name"
                         />
                     </div>
                     <div>
                         <Label htmlFor="album_type">Album Type</Label>
-                        <Select
-                            value={albumData.album_type}
-                            onValueChange={(value: AlbumType) => handleAlbumDataChange("album_type", value)}
-                        >
+                        <Select value={albumData.type} onValueChange={(value: AlbumType) => handleAlbumDataChange("type", value)}>
                             <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>
@@ -94,8 +83,8 @@ const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlb
                     <Input
                         id="album_release_date"
                         type="date"
-                        value={albumData.album_release_date}
-                        onChange={(e) => handleAlbumDataChange("album_release_date", e.target.value)}
+                        value={albumData.release_date}
+                        onChange={(e) => handleAlbumDataChange("release_date", e.target.value)}
                     />
                 </div>
             </CardContent>
