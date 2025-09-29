@@ -14,20 +14,21 @@ const TrackInfo: React.FC<ITrackInfoProps> = ({ track }) => {
         const seconds = Math.floor((durationMs % 60000) / 1000);
         return `${minutes}:${seconds.toString().padStart(2, "0")}`;
     };
+
     return (
         <div>
             <h2 className="text-xl font-bold text-white mb-1 truncate">{title}</h2>
             <p className="text-gray-400 text-sm mb-1 truncate">
-                {artists && artists.length > 0 ? artists.map((artist) => artist.stage_name).join(", ") : ""}
+                {artists && artists.length > 0 ? artists.map((artist) => artist.stage_name).join(", ") : "Unknown Artist"}
             </p>
-            <p className="text-gray-300 text-xs mb-2 truncate font-medium">{album.name}</p>
+            <p className="text-gray-300 text-xs mb-2 truncate font-medium">{album?.name || "Unknown Album"}</p>
             <div className="flex items-center text-xs text-gray-400 space-x-3 mb-2">
-                <span>{release_date}</span>
+                <span>{release_date || "Unknown Date"}</span>
                 <span>•</span>
-                <span>{formatDuration(duration)}</span>
+                <span>{duration ? formatDuration(duration) : "0:00"}</span>
             </div>
             <div className="flex items-center text-xs text-gray-500 space-x-2 mb-2">
-                <span>Plays: {plays}</span>
+                <span>Plays: {plays || 0}</span>
             </div>
         </div>
     );

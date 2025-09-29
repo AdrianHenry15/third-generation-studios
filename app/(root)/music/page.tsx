@@ -47,7 +47,7 @@ export default function MusicPage() {
             }
 
             // Playable only filter (spotify_id or url)
-            if (showPlayableOnly && !track.spotify_id && !track.url) {
+            if (showPlayableOnly && !track.url) {
                 return false;
             }
 
@@ -83,13 +83,11 @@ export default function MusicPage() {
             return { total: 0, playable: 0, released: 0, unreleased: 0 };
         }
 
-        const playable = (tracks as ITrackProps[]).filter((track) => track.spotify_id || track.url).length;
         const released = (tracks as ITrackProps[]).filter((track) => track.type === "Released").length;
         const unreleased = tracks.length - released;
 
         return {
             total: tracks.length,
-            playable,
             released,
             unreleased,
         };

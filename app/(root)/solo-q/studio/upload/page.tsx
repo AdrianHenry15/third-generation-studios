@@ -6,12 +6,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Import the music storage hooks
 import { useAlbumInsertWithCover, useTrackUpload } from "@/hooks/storage/use-music-storage";
+import { useTrackCreditInsert, useArtistById } from "@/hooks/music/use-music";
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import StudioUploadForm, { UploadMode, TrackUploadData, AlbumUploadData } from "@/components/layout/solo-q/studio/studio-upload-form";
-import ConfirmModal from "@/components/modals/confirm-modal";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import SuccessModal from "@/components/modals/success-modal";
+import { IArtistProps } from "@/lib/solo-q-types/music-types";
 
 export default function StudioUploadPage() {
     const [isUploading, setIsUploading] = useState(false);
@@ -19,11 +20,13 @@ export default function StudioUploadPage() {
     const [error, setError] = useState<string | null>(null);
     const { user } = useAuthStore();
     const { data: profile } = useProfileByIdQuery(user?.id || "");
+    const { data: artist } = useArtistById(user?.id || "") as { data: IArtistProps | null };
     const router = useRouter();
 
     // Use the music storage hooks
     const useAlbumInsert = useAlbumInsertWithCover();
     const useTrackUploadHook = useTrackUpload();
+    const useTrackCreditInsertHook = useTrackCreditInsert();
 
     const validateUpload = (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData: AlbumUploadData }): boolean => {
         // Check if user exists and has profile
@@ -139,14 +142,23 @@ export default function StudioUploadPage() {
                     audioFile: track.audioFile!,
                     // Pass track image for Single releases or single mode
                     trackImageFile: data.mode === "single" || data.albumData.type === "Single" ? track.trackImageFile : undefined,
-                    // Pass album and track names for organized storage
-                    // albumName: data.albumData.name,
-                    // trackName: track.title,
                 });
             });
 
-            // Wait for all tracks to upload
-            await Promise.all(trackUploadPromises);
+            // Wait for all tracks to upload and get the uploaded tracks
+            const uploadedTracks = await Promise.all(trackUploadPromises);
+
+            // 3️⃣ Create track credits for each uploaded track
+            const trackCreditPromises = uploadedTracks.map(async (uploadedTrack, index) => {
+                return useTrackCreditInsertHook.mutateAsync({
+                    track_id: uploadedTrack.id,
+                    name: artist?.stage_name || "Unknown Artist", // Use artist's stage_name
+                    role: "main-artist", // Default role for the uploader
+                });
+            });
+
+            // Wait for all track credits to be created
+            await Promise.all(trackCreditPromises);
 
             setUploadSuccess(true);
         } catch (err) {

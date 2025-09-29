@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, Search, Plus, Heart, PlayCircle, Users, Settings, User, Clock, Star, Music } from "lucide-react";
+import { Menu, X, Home, Search, Plus, Heart, PlayCircle, Users, Settings, User, Clock, Star, Music, Upload } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -30,7 +30,10 @@ const userItems: SidebarItem[] = [
     { icon: Settings, label: "Settings", href: "/solo-q/settings" },
 ];
 
-const artistItems: SidebarItem[] = [{ icon: Music, label: "Upload Track", href: "/solo-q/studio/upload" }];
+const artistItems: SidebarItem[] = [
+    { icon: Music, label: "My Tracks", href: "/solo-q/studio/my-tracks" },
+    { icon: Upload, label: "Upload Track", href: "/solo-q/studio/upload" },
+];
 
 interface SidebarProps {
     isCollapsed: boolean;

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import { IAlbumImageProps, ITrackProps } from "@/lib/types";
+import { IAlbumImageProps, ITrackProps } from "@/lib/solo-q-types/music-types";
 import CopyrightModal from "../modals/copyright-modal";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
@@ -22,7 +22,7 @@ interface ITrackCardProps {
 const TrackCard = (props: ITrackCardProps) => {
     // Destructure once for clarity
     const { track, album_images, playlist, onUnlock } = props;
-    const { id, title, album, type, locked, copyright, spotify_id } = track;
+    const { id, title, album, type, locked, copyright } = track;
 
     // Modal state for copyright info
     const [showCopyright, setShowCopyright] = useState(false);
@@ -30,7 +30,7 @@ const TrackCard = (props: ITrackCardProps) => {
     // Prefer images attached to the album object; fallback to the album_images prop, then a placeholder
     const imagesSource: IAlbumImageProps[] = (album && (album as any).images) || album_images || [];
     const AlbumCover =
-        imagesSource.find((img) => img.id === album.id || (typeof img.id === "string" && img.id.startsWith(String(album.id))))?.url ||
+        imagesSource.find((img) => img.id === album?.id || (typeof img.id === "string" && img.id.startsWith(String(album?.id))))?.url ||
         imagesSource[0]?.url ||
         "/placeholder-album.png";
 
@@ -73,14 +73,8 @@ const TrackCard = (props: ITrackCardProps) => {
                 <PlayPauseButton track={track} playlist={playlist} locked={locked} />
 
                 {/* External Links */}
-                {type === "Released" && spotify_id && <ExternalLinkButton spotify_id={spotify_id} linkType="spotify" />}
-
-                {type === "Released" && (
-                    <ExternalLinkButton
-                        albumName={album.name}
-                        linkType="digital-stores"
-                        link={`https://album.link/tgs-${album.name.toLowerCase()}`}
-                    />
+                {type === "Released" && album?.name && (
+                    <ExternalLinkButton albumName={album.name} link={`https://album.link/tgs-${album.name.toLowerCase()}`} />
                 )}
             </div>
 

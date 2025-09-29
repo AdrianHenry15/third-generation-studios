@@ -66,29 +66,35 @@ export interface IAlbumProps {
 export interface ITrackCreditProps {
     id: string;
     track_id: string;
-    artist_id: string;
+    name: string;
     role: CreditRoleType;
     created_at: string;
+    updated_at: string;
 }
+
 export interface ITrackProps {
     id: string;
     album_id: string;
     artist_id: string;
     title: string;
-    artists: IArtistProps[];
-    credits: ITrackCreditProps[];
     url: string;
-    album: IAlbumProps;
-    type: TrackType;
-    duration: number;
-    release_date: string; // Changed from number | string to just string
+    duration: number; // in milliseconds for frontend, seconds in DB
+    release_date: string; // date string from DB
     genre: string;
     locked: boolean;
     plays: number;
-    is_liked: boolean;
     copyright?: string;
     lyrics?: string;
-    links?: IMusicLinkProps;
+    links?: IMusicLinkProps; // JSONB field in DB
+    created_at: string;
+    updated_at: string;
+
+    // Computed/joined fields
+    artists: IArtistProps[]; // Main artist + any featured artists
+    credits: ITrackCreditProps[]; // All credits from track_credits table
+    album: IAlbumProps; // Joined album data
+    type: TrackType; // Computed based on release_date and locked status
+    is_liked: boolean; // Would come from user-specific likes query
 }
 
 export interface IMusicLinkProps {

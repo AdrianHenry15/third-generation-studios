@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/lib/queries/query-keys";
-import { fetchTable, insertRow, updateRow, deleteRow, fetchRowById } from "@/lib/fetchers";
+import { fetchTable, insertRow, updateRow, deleteRow, fetchRowById } from "@/lib/fetchers/fetchers";
 import type { IProfileProps } from "@/lib/solo-q-types/public-types";
 
 export function useProfilesQuery() {
