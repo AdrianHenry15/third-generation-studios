@@ -9,6 +9,9 @@ import { useAlbumInsertWithCover, useTrackUpload } from "@/hooks/storage/use-mus
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import StudioUploadForm, { UploadMode, TrackUploadData, AlbumUploadData } from "@/components/layout/solo-q/studio/studio-upload-form";
+import ConfirmModal from "@/components/modals/confirm-modal";
+import { usePathname, useRouter } from "next/navigation";
+import SuccessModal from "@/components/modals/success-modal";
 
 export default function StudioUploadPage() {
     const [isUploading, setIsUploading] = useState(false);
@@ -16,10 +19,11 @@ export default function StudioUploadPage() {
     const [error, setError] = useState<string | null>(null);
     const { user } = useAuthStore();
     const { data: profile } = useProfileByIdQuery(user?.id || "");
+    const router = useRouter();
 
     // Use the music storage hooks
-    const albumInsert = useAlbumInsertWithCover();
-    const trackUpload = useTrackUpload();
+    const useAlbumInsert = useAlbumInsertWithCover();
+    const useTrackUploadHook = useTrackUpload();
 
     const validateUpload = (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData: AlbumUploadData }): boolean => {
         // Check if user exists and has profile
@@ -95,17 +99,20 @@ export default function StudioUploadPage() {
     const handleUpload = async (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData: AlbumUploadData }) => {
         if (!validateUpload(data)) return;
 
+        console.log("User ID (auth.uid()):", user?.id);
+        console.log("Profile ID:", profile?.id);
+
         setIsUploading(true);
         setError(null);
 
         try {
             // 1️⃣ Insert album first
-            const album = await albumInsert.mutateAsync({
+            const album = await useAlbumInsert.mutateAsync({
                 albumData: {
                     name: data.albumData.name,
                     type: data.albumData.type,
                     release_date: data.albumData.release_date,
-                    artist_id: profile!.id, // Use profile.id as artist_id
+                    artist_id: user?.id, // Use user.id as artist_id
                 },
                 // Only pass album image for EP/Album types, not Singles
                 albumImageFile: data.albumData.type !== "Single" ? data.albumData.albumImageFile : undefined,
@@ -113,24 +120,28 @@ export default function StudioUploadPage() {
 
             // 2️⃣ Upload all tracks and associate them with the created album
             const trackUploadPromises = data.tracks.map(async (track) => {
-                return trackUpload.mutateAsync({
+                return useTrackUploadHook.mutateAsync({
                     trackData: {
                         title: track.title,
-                        type: track.type,
                         genre: track.genre,
                         duration: track.duration,
                         release_date: track.release_date,
                         copyright: track.copyright || "",
                         lyrics: track.lyrics || "",
+                        locked: track.locked || false,
+                        plays: 0,
                         links: {
                             spotify: track.links?.spotify || "",
                         },
-                        artist_id: profile!.id, // Use profile.id as artist_id
+                        artist_id: user?.id, // Use user.id as artist_id
                         album_id: album.id, // Associate with the created album
                     },
                     audioFile: track.audioFile!,
                     // Pass track image for Single releases or single mode
                     trackImageFile: data.mode === "single" || data.albumData.type === "Single" ? track.trackImageFile : undefined,
+                    // Pass album and track names for organized storage
+                    // albumName: data.albumData.name,
+                    // trackName: track.title,
                 });
             });
 
@@ -161,6 +172,15 @@ export default function StudioUploadPage() {
                         Music uploaded successfully! It will be reviewed before going live.
                     </AlertDescription>
                 </Alert>
+            )}
+
+            {uploadSuccess && (
+                <SuccessModal
+                    title="Upload Successful"
+                    confirmText="Go to Library"
+                    onCancel={() => setUploadSuccess(false)}
+                    onConfirm={() => router.push("/solo-q/studio/library")}
+                />
             )}
 
             {error && (

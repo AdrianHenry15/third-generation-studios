@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { TrackType, AlbumType, IAlbumProps, ITrackProps } from "@/lib/solo-q-types/music-types";
 import StudioTrackInfoCard from "./studio-track-info";
 import StudioAlbumInfo from "./studio-album-info";
+import ConfirmModal from "@/components/modals/confirm-modal";
 
 export type UploadMode = "single" | "album";
 
@@ -28,6 +29,7 @@ interface IStudioUploadFormProps {
 }
 
 const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUploading }) => {
+    const [confirmation, setConfirmation] = useState(false);
     const [uploadMode, setUploadMode] = useState<UploadMode>("single");
     const [albumData, setAlbumData] = useState<AlbumUploadData>({
         name: "",
@@ -145,6 +147,11 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setConfirmation(true);
+    };
+
+    const handleConfirmation = () => {
+        setConfirmation(false);
         onSubmit({
             mode: uploadMode,
             tracks,
@@ -161,6 +168,16 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                       },
         });
     };
+
+    {
+        confirmation && (
+            <ConfirmModal
+                title="Are you sure you want to leave? Unsaved changes will be lost."
+                onCancel={() => setConfirmation(false)}
+                onConfirm={handleConfirmation}
+            />
+        );
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-8">

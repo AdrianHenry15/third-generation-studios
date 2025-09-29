@@ -72,6 +72,27 @@ export function useAlbumInsertWithCover() {
 // -------------------------
 // TRACKS
 // -------------------------
+
+// Helper function to get audio duration
+async function getAudioDuration(file: File): Promise<number> {
+    return new Promise((resolve, reject) => {
+        const audio = new Audio();
+        const url = URL.createObjectURL(file);
+
+        audio.addEventListener("loadedmetadata", () => {
+            URL.revokeObjectURL(url);
+            resolve(Math.floor(audio.duration)); // Duration in seconds
+        });
+
+        audio.addEventListener("error", () => {
+            URL.revokeObjectURL(url);
+            reject(new Error("Could not load audio file"));
+        });
+
+        audio.src = url;
+    });
+}
+
 export function useTrackUpload() {
     const qc = useQueryClient();
     const insertTrack = useMusicInsert<ITrackProps>("tracks", "tracks");
@@ -87,6 +108,14 @@ export function useTrackUpload() {
             audioFile: File;
             trackImageFile?: File;
         }) => {
+            // Validate required fields
+            if (!trackData.album_id || !trackData.artist_id || !trackData.title) {
+                throw new Error("Missing required fields: album_id, artist_id, and title are required");
+            }
+
+            // Get audio duration (you'll need to implement this helper)
+            const duration = await getAudioDuration(audioFile);
+
             // Upload audio file
             const audioUrl = await uploadFile({
                 bucket: "track-urls",
@@ -96,10 +125,13 @@ export function useTrackUpload() {
 
             if (!audioUrl) throw new Error("Failed to upload track file");
 
-            // Create track record
+            // Create track record with all required fields
             const track = await insertTrack.mutateAsync({
                 ...trackData,
                 url: audioUrl,
+                duration, // Now included
+                plays: 0, // Initialize plays counter
+                locked: trackData.locked ?? false, // Default to unlocked
             });
 
             // Upload track image if provided (for singles)
@@ -138,6 +170,81 @@ export function useDeleteStorageFile(bucket: "avatars" | "album-covers" | "track
             const ok = await deleteFile(bucket, path);
             if (!ok) throw new Error("Failed to delete file");
             return path;
+        },
+    });
+}
+
+// -------------------------
+// COMPOSITE OPERATIONS
+// -------------------------
+
+// If you want a combined operation for creating album + track
+export function useAlbumWithTrackUpload() {
+    const qc = useQueryClient();
+    const insertAlbum = useMusicInsert<IAlbumProps>("albums", "albums");
+    const insertTrack = useMusicInsert<ITrackProps>("tracks", "tracks");
+    const insertAlbumImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
+
+    return useMutation({
+        mutationFn: async ({
+            albumData,
+            trackData,
+            audioFile,
+            coverImageFile,
+        }: {
+            albumData: Partial<IAlbumProps>;
+            trackData: Partial<ITrackProps>;
+            audioFile: File;
+            coverImageFile?: File;
+        }) => {
+            // Create album first
+            const album = await insertAlbum.mutateAsync(albumData);
+
+            // Get audio duration
+            const duration = await getAudioDuration(audioFile);
+
+            // Upload audio file
+            const audioUrl = await uploadFile({
+                bucket: "track-urls",
+                file: audioFile,
+                userId: albumData.artist_id!,
+            });
+
+            if (!audioUrl) throw new Error("Failed to upload track file");
+
+            // Create track with album reference
+            const track = await insertTrack.mutateAsync({
+                ...trackData,
+                album_id: album.id,
+                artist_id: album.artist_id,
+                url: audioUrl,
+                duration,
+                plays: 0,
+                locked: trackData.locked ?? false,
+            });
+
+            // Upload cover image if provided
+            if (coverImageFile) {
+                const imageUrl = await uploadFile({
+                    bucket: "album-covers",
+                    file: coverImageFile,
+                    userId: album.artist_id,
+                });
+
+                if (imageUrl) {
+                    await insertAlbumImage.mutateAsync({
+                        album_id: album.id,
+                        url: imageUrl,
+                        name: coverImageFile.name,
+                    });
+                }
+            }
+
+            return { album, track };
+        },
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"] });
         },
     });
 }
