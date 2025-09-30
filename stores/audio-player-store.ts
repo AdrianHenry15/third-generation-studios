@@ -1,6 +1,7 @@
 "use client";
 import { create } from "zustand";
 import { ITrackProps } from "@/lib/types";
+import { supabase } from "@/lib/supabase/client";
 
 type AudioPlayerState = {
     // state
@@ -161,8 +162,22 @@ export const useAudioPlayerStore = create<AudioPlayerState>((set, get) => {
 
                 await audio
                     .play()
-                    .then(() => {
+                    .then(async () => {
                         set({ isPlaying: true, isLoading: false, canPlay: true });
+
+                        // Increment track plays after successful play start
+                        try {
+                            console.log(`Incrementing plays for track: ${track.id}`);
+                            const result = await supabase.rpc("increment_track_play", { track_id: track.id });
+                            console.log("RPC result:", result);
+                            if (result.error) {
+                                console.error("RPC error:", result.error);
+                            } else {
+                                console.log("Track plays incremented successfully");
+                            }
+                        } catch (err) {
+                            console.error("Error incrementing track plays:", err);
+                        }
                     })
                     .catch((err) => {
                         console.error("Audio play error:", err);

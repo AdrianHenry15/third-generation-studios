@@ -58,6 +58,8 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             audioFileName: "",
             trackImageFileName: "",
             links: { spotify: "" },
+            created_at: "",
+            updated_at: "",
         },
     ]);
 
@@ -135,6 +137,8 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             audioFileName: "",
             trackImageFileName: "",
             links: { spotify: "" },
+            created_at: "",
+            updated_at: "",
         };
         setTracks((prev) => [...prev, newTrack]);
     };
