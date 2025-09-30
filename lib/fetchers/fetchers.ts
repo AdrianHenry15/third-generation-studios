@@ -89,17 +89,17 @@ export async function fetchTracksWithJoins(): Promise<ITrackProps[]> {
 }
 
 // Specialized fetcher for single track with joins
-export async function fetchTrackByIdWithJoins(id: string | number): Promise<ITrackProps | null> {
+export async function fetchTrackByIdWithJoins(id: string | number): Promise<ITrackProps> {
     const { data, error } = await supabase
         .from("tracks")
         .select(
             `
             *,
-            album:albums(
+            artists!tracks_artist_id_fkey(*),
+            album:albums!tracks_album_id_fkey(
                 *,
                 images:album_images(*)
             ),
-            artist:artists(*),
             credits:track_credits(*)
         `,
         )
@@ -107,26 +107,9 @@ export async function fetchTrackByIdWithJoins(id: string | number): Promise<ITra
         .single();
 
     if (error) throw error;
+    if (!data) throw new Error("Track not found");
 
-    if (!data) return null;
-
-    // Transform the data to match ITrackProps structure
-    return {
-        ...data,
-        // The main artist from the tracks table
-        artists: data.artist ? [data.artist] : [],
-        // Credits from track_credits table
-        credits: data.credits || [],
-        // Determine track type based on release_date and locked status
-        type: !data.release_date ? "Unreleased" : data.locked ? "Unreleased" : "Released",
-        // Convert duration from seconds to milliseconds if needed
-        duration: data.duration * 1000,
-        // Format release_date as string
-        release_date: data.release_date || "",
-        // Add default values for missing properties
-        is_liked: false, // This would need to come from a user-specific likes table
-        genre: data.genre || "",
-    } as ITrackProps;
+    return data as ITrackProps;
 }
 
 // Specialized fetcher for tracks by specific artist

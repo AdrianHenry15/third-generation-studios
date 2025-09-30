@@ -81,9 +81,9 @@ const TrackCard = (props: ITrackCardProps) => {
                 <PlayPauseButton track={track} playlist={playlist} locked={locked} />
 
                 {/* Update Button */}
-                {profile!.role === "artist" && (
+                {profile && profile.role === "artist" && (
                     <button
-                        onClick={() => router.push(`/solo-q/studio/my-tracks/${id}`)}
+                        onClick={() => router.push(`/solo-q/studio/my-tracks/update/${id}`)}
                         className="mt-3 w-full bg-yellow-400 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

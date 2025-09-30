@@ -248,3 +248,64 @@ export function useAlbumWithTrackUpload() {
         },
     });
 }
+
+// Track file replacement hook
+export function useTrackFileReplace() {
+    const qc = useQueryClient();
+    const updateTrack = useMusicUpdate<ITrackProps>("tracks", "tracks");
+    const updateAlbum = useMusicUpdate<IAlbumProps>("albums", "albums");
+
+    return useMutation({
+        mutationFn: async ({
+            trackId,
+            albumId,
+            albumType,
+            artistId,
+            newFile,
+            newTitle,
+        }: {
+            trackId: string;
+            albumId: string;
+            albumType: string;
+            artistId: string;
+            newFile: File;
+            newTitle?: string;
+        }) => {
+            // Get new audio duration
+            const duration = await getAudioDuration(newFile);
+
+            // Upload new audio file
+            const newAudioUrl = await uploadFile({
+                bucket: "track-urls",
+                file: newFile,
+                userId: artistId,
+            });
+
+            if (!newAudioUrl) throw new Error("Failed to upload new track file");
+
+            // Update track with new URL and duration
+            const updatedTrack = await updateTrack.mutateAsync({
+                id: trackId,
+                values: {
+                    url: newAudioUrl,
+                    duration,
+                    ...(newTitle && { title: newTitle }),
+                },
+            });
+
+            // If album is a Single and we have a new title, update album name too
+            if (albumType === "Single" && newTitle) {
+                await updateAlbum.mutateAsync({
+                    id: albumId,
+                    values: { name: newTitle },
+                });
+            }
+
+            return updatedTrack;
+        },
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"] });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] });
+        },
+    });
+}

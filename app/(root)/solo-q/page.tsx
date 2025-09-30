@@ -44,7 +44,7 @@ export default function SoloQHomePage() {
                     <button className="text-neutral-400 hover:text-white text-sm font-medium transition-colors">Show all</button>
                 </div>
                 <div className="space-y-2">
-                    {recentlyPlayed.map((track, index) => (
+                    {recentlyPlayed.map((track) => (
                         <div
                             key={track.id}
                             className="group flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-800/50 transition-colors cursor-pointer"

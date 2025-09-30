@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useMusicUpdate } from "@/hooks/music/use-music";
-import { ITrackProps } from "@/lib/solo-q-types/music-types";
+import { useTrackUpdate } from "@/hooks/music/use-music";
+import { useTrackFileReplace } from "@/hooks/storage/use-music-storage";
+import { ITrackProps, IMusicLinkProps, TrackType } from "@/lib/solo-q-types/music-types";
+import { trackGenres } from "@/lib/constants";
 
 interface TrackUpdateFormProps {
     track: ITrackProps;
@@ -11,46 +13,230 @@ interface TrackUpdateFormProps {
 
 const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
     const router = useRouter();
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [formData, setFormData] = useState({
         title: track.title || "",
-        type: track.type || "Unreleased",
+        release_date: track.release_date ? track.release_date.split("T")[0] : "",
+        genre: track.genre || "",
         locked: track.locked || false,
-        url: track.url || "",
         copyright: track.copyright || "",
+        lyrics: track.lyrics || "",
+        type: track.type || ("Unreleased" as TrackType),
+        links: {
+            spotify: track.links?.spotify || "",
+            apple: track.links?.apple || "",
+            youtube: track.links?.youtube || "",
+            soundcloud: track.links?.soundcloud || "",
+            amazon: track.links?.amazon || "",
+            tidal: track.links?.tidal || "",
+            deezer: track.links?.deezer || "",
+        },
     });
 
-    const updateTrackMutation = useMusicUpdate("tracks", "tracks");
+    const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
+    const [genreSearchTerm, setGenreSearchTerm] = useState("");
+    const [selectedGenreIndex, setSelectedGenreIndex] = useState(-1);
+    const genreInputRef = useRef<HTMLInputElement>(null);
+
+    const updateTrackMutation = useTrackUpdate();
+    const replaceFileMutation = useTrackFileReplace();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-        setFormData((prev) => ({
-            ...prev,
-            [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
-        }));
+
+        if (name.startsWith("links.")) {
+            const linkKey = name.split(".")[1];
+            setFormData((prev) => ({
+                ...prev,
+                links: {
+                    ...prev.links,
+                    [linkKey]: value,
+                },
+            }));
+        } else {
+            setFormData((prev) => ({
+                ...prev,
+                [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+            }));
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            // Validate file type (audio files only)
+            const validTypes = ["audio/mpeg", "audio/mp3", "audio/wav", "audio/ogg", "audio/m4a"];
+            if (!validTypes.includes(file.type)) {
+                alert("Please select a valid audio file (MP3, WAV, OGG, M4A)");
+                return;
+            }
+
+            // Validate file size (e.g., max 50MB)
+            const maxSize = 50 * 1024 * 1024; // 50MB in bytes
+            if (file.size > maxSize) {
+                alert("File size must be less than 50MB");
+                return;
+            }
+
+            setSelectedFile(file);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        // Handle file replacement if a file is selected
+        if (selectedFile) {
+            try {
+                await replaceFileMutation.mutateAsync({
+                    trackId: track.id,
+                    albumId: track.album_id,
+                    albumType: track.album?.type || "Single",
+                    artistId: track.artist_id,
+                    newFile: selectedFile,
+                    newTitle: formData.title !== track.title ? formData.title : undefined
+                });
+
+                // After file replacement, update other metadata
+                const filteredLinks: IMusicLinkProps = {};
+                Object.entries(formData.links).forEach(([key, value]) => {
+                    if (value.trim()) {
+                        filteredLinks[key as keyof IMusicLinkProps] = value;
+                    }
+                });
+
+                const updateData = {
+                    title: formData.title,
+                    release_date: formData.release_date,
+                    genre: formData.genre,
+                    locked: formData.locked,
+                    copyright: formData.copyright,
+                    lyrics: formData.lyrics,
+                    type: formData.type,
+                    links: Object.keys(filteredLinks).length > 0 ? filteredLinks : undefined,
+                };
+
+                await updateTrackMutation.mutateAsync({
+                    id: track.id,
+                    values: updateData,
+                });
+
+                router.push("/solo-q/studio/my-tracks");
+                return;
+            } catch (error) {
+                console.error("Error replacing file:", error);
+                return;
+            }
+        }
+
+        // If no file replacement, just update metadata
+        const filteredLinks: IMusicLinkProps = {};
+        Object.entries(formData.links).forEach(([key, value]) => {
+            if (value.trim()) {
+                filteredLinks[key as keyof IMusicLinkProps] = value;
+            }
+        });
+
+        const updateData = {
+            ...formData,
+            links: Object.keys(filteredLinks).length > 0 ? filteredLinks : undefined,
+        };
+
         try {
             await updateTrackMutation.mutateAsync({
                 id: track.id,
-                values: formData,
+                values: updateData,
             });
 
-            // Show success message or redirect
             router.push("/solo-q/studio/my-tracks");
         } catch (error) {
             console.error("Error updating track:", error);
         }
     };
 
+    // Filter genres based on search term
+    const filteredGenres = trackGenres.filter((genre) => genre.toLowerCase().includes(genreSearchTerm.toLowerCase()));
+
+    const handleGenreInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setFormData((prev) => ({ ...prev, genre: value }));
+        setGenreSearchTerm(value);
+        setGenreDropdownOpen(true);
+        setSelectedGenreIndex(-1); // Reset selection when typing
+    };
+
+    const handleGenreSelect = (genre: string) => {
+        setFormData((prev) => ({ ...prev, genre }));
+        setGenreSearchTerm("");
+        setGenreDropdownOpen(false);
+        setSelectedGenreIndex(-1);
+    };
+
+    const handleGenreInputFocus = () => {
+        setGenreSearchTerm(formData.genre);
+        setGenreDropdownOpen(true);
+        setSelectedGenreIndex(-1);
+    };
+
+    const handleGenreInputBlur = () => {
+        // Delay closing to allow for genre selection
+        setTimeout(() => {
+            setGenreDropdownOpen(false);
+            setGenreSearchTerm("");
+            setSelectedGenreIndex(-1);
+        }, 200);
+    };
+
+    const handleGenreKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (!genreDropdownOpen) return;
+
+        switch (e.key) {
+            case "ArrowDown":
+                e.preventDefault();
+                setSelectedGenreIndex((prev) => (prev < filteredGenres.length - 1 ? prev + 1 : 0));
+                break;
+
+            case "ArrowUp":
+                e.preventDefault();
+                setSelectedGenreIndex((prev) => (prev > 0 ? prev - 1 : filteredGenres.length - 1));
+                break;
+
+            case "Enter":
+                e.preventDefault();
+                if (selectedGenreIndex >= 0 && filteredGenres[selectedGenreIndex]) {
+                    handleGenreSelect(filteredGenres[selectedGenreIndex]);
+                } else if (genreSearchTerm.trim()) {
+                    // Use custom genre if typed
+                    setFormData((prev) => ({ ...prev, genre: genreSearchTerm.trim() }));
+                    setGenreDropdownOpen(false);
+                    setGenreSearchTerm("");
+                    setSelectedGenreIndex(-1);
+                }
+                break;
+
+            case "Escape":
+                e.preventDefault();
+                setGenreDropdownOpen(false);
+                setGenreSearchTerm("");
+                setSelectedGenreIndex(-1);
+                genreInputRef.current?.blur();
+                break;
+        }
+    };
+
+    // Reset selected index when filtered genres change
+    useEffect(() => {
+        if (selectedGenreIndex >= filteredGenres.length) {
+            setSelectedGenreIndex(filteredGenres.length - 1);
+        }
+    }, [filteredGenres.length, selectedGenreIndex]);
+
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
                 <label htmlFor="title" className="block text-sm font-medium text-gray-300 mb-2">
-                    Track Title
+                    Track Title *
                 </label>
                 <input
                     type="text"
@@ -61,6 +247,131 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                 />
+            </div>
+
+            {/* Current Track Info (Read-only) */}
+            <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
+                <h3 className="text-sm font-medium text-gray-300 mb-3">Current Track Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <span className="text-gray-400">Current URL:</span>
+                        <p className="text-gray-300 truncate">{track.url || "No URL set"}</p>
+                    </div>
+                    <div>
+                        <span className="text-gray-400">Duration:</span>
+                        <p className="text-gray-300">
+                            {Math.floor(track.duration / 60)}:{String(track.duration % 60).padStart(2, "0")}
+                        </p>
+                    </div>
+                    <div>
+                        <span className="text-gray-400">Album Type:</span>
+                        <p className="text-gray-300">{track.album?.type || "Unknown"}</p>
+                    </div>
+                    <div>
+                        <span className="text-gray-400">Album Name:</span>
+                        <p className="text-gray-300">{track.album?.name || "Unknown"}</p>
+                    </div>
+                    <div>
+                        <span className="text-gray-400">Plays:</span>
+                        <p className="text-gray-300">{track.plays?.toLocaleString() || "0"}</p>
+                    </div>
+                    <div>
+                        <span className="text-gray-400">Created:</span>
+                        <p className="text-gray-300">{track.created_at ? new Date(track.created_at).toLocaleDateString() : "Unknown"}</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* File Replacement */}
+            <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Replace Track Audio (Optional)
+                </label>
+                <input
+                    type="file"
+                    id="file"
+                    accept="audio/*"
+                    onChange={handleFileChange}
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                />
+                {selectedFile && (
+                    <p className="text-sm text-green-400 mt-2">
+                        Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                    </p>
+                )}
+                <div className="text-xs text-gray-400 mt-2 space-y-1">
+                    <p>• Supported formats: MP3, WAV, OGG, M4A (Max 50MB)</p>
+                    <p>• This will replace the current audio file and update duration automatically</p>
+                    {track.album?.type === "Single" && (
+                        <p>• Since this is a Single, changing the title will also update the album name</p>
+                    )}
+                </div>
+            </div>
+
+            {/* Release Date */}
+            <div>
+                <label htmlFor="release_date" className="block text-sm font-medium text-gray-300 mb-2">
+                    Release Date
+                </label>
+                <input
+                    type="date"
+                    id="release_date"
+                    name="release_date"
+                    value={formData.release_date}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+            </div>
+
+            {/* Genre - Custom Combo Box */}
+            <div className="relative">
+                <label htmlFor="genre" className="block text-sm font-medium text-gray-300 mb-2">
+                    Genre
+                </label>
+                <input
+                    ref={genreInputRef}
+                    type="text"
+                    id="genre"
+                    value={genreDropdownOpen ? genreSearchTerm : formData.genre}
+                    onChange={handleGenreInputChange}
+                    onFocus={handleGenreInputFocus}
+                    onBlur={handleGenreInputBlur}
+                    onKeyDown={handleGenreKeyDown}
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Search genres or type custom..."
+                    autoComplete="off"
+                />
+
+                {/* Dropdown */}
+                {genreDropdownOpen && (
+                    <div className="absolute z-10 w-full mt-1 bg-gray-800 border border-gray-700 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                        {filteredGenres.length > 0 ? (
+                            filteredGenres.map((genre, index) => (
+                                <button
+                                    key={genre}
+                                    type="button"
+                                    onClick={() => handleGenreSelect(genre)}
+                                    className={`w-full text-left px-4 py-2 text-white transition-colors ${
+                                        index === selectedGenreIndex ? "bg-blue-600 hover:bg-blue-700" : "hover:bg-gray-700"
+                                    }`}
+                                >
+                                    {genre}
+                                </button>
+                            ))
+                        ) : genreSearchTerm ? (
+                            <div className="px-4 py-2 text-gray-400">Press Enter to use "{genreSearchTerm}" as custom genre</div>
+                        ) : (
+                            <div className="px-4 py-2 text-gray-400">Start typing to search genres...</div>
+                        )}
+
+                        {/* Keyboard navigation hint */}
+                        {filteredGenres.length > 0 && (
+                            <div className="px-4 py-2 text-xs text-gray-500 border-t border-gray-700">
+                                Use ↑↓ to navigate, Enter to select, Esc to close
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
 
             {/* Type */}
@@ -77,24 +388,10 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 >
                     <option value="Unreleased">Unreleased</option>
                     <option value="Released">Released</option>
+                    <option value="Work In Progress">Work In Progress</option>
+                    <option value="Demo">Demo</option>
                     <option value="Remix">Remix</option>
                 </select>
-            </div>
-
-            {/* URL */}
-            <div>
-                <label htmlFor="url" className="block text-sm font-medium text-gray-300 mb-2">
-                    Preview URL
-                </label>
-                <input
-                    type="url"
-                    id="url"
-                    name="url"
-                    value={formData.url}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://example.com/track-preview.mp3"
-                />
             </div>
 
             {/* Copyright */}
@@ -110,6 +407,44 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     rows={3}
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
+            </div>
+
+            {/* Lyrics */}
+            <div>
+                <label htmlFor="lyrics" className="block text-sm font-medium text-gray-300 mb-2">
+                    Lyrics
+                </label>
+                <textarea
+                    id="lyrics"
+                    name="lyrics"
+                    value={formData.lyrics}
+                    onChange={handleInputChange}
+                    rows={6}
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+            </div>
+
+            {/* Music Links */}
+            <div>
+                <h3 className="text-lg font-medium text-gray-300 mb-4">Music Platform Links</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {Object.entries(formData.links).map(([platform, url]) => (
+                        <div key={platform}>
+                            <label htmlFor={`links.${platform}`} className="block text-sm font-medium text-gray-400 mb-2 capitalize">
+                                {platform === "apple" ? "Apple Music" : platform}
+                            </label>
+                            <input
+                                type="url"
+                                id={`links.${platform}`}
+                                name={`links.${platform}`}
+                                value={url}
+                                onChange={handleInputChange}
+                                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                placeholder={`https://${platform}.com/...`}
+                            />
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Locked Status */}
@@ -131,10 +466,10 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
             <div className="flex gap-4 pt-6">
                 <button
                     type="submit"
-                    disabled={updateTrackMutation.isPending}
+                    disabled={updateTrackMutation.isPending || replaceFileMutation.isPending}
                     className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
                 >
-                    {updateTrackMutation.isPending ? "Updating..." : "Update Track"}
+                    {updateTrackMutation.isPending || replaceFileMutation.isPending ? "Updating..." : "Update Track"}
                 </button>
 
                 <button
@@ -147,7 +482,11 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
             </div>
 
             {/* Error Message */}
-            {updateTrackMutation.error && <div className="text-red-400 text-sm mt-2">Error updating track. Please try again.</div>}
+            {(updateTrackMutation.error || replaceFileMutation.error) && (
+                <div className="text-red-400 text-sm mt-2">
+                    Error updating track. Please try again.
+                </div>
+            )}
         </form>
     );
 };

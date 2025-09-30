@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import TrackFilter from "@/components/layout/music/track-filter";
 import TrackCard from "@/components/layout/music/track-card";
-import { useMusicQuery, useTracksWithJoinsQuery } from "@/hooks/music/use-music";
+import { useTracksWithJoinsQuery } from "@/hooks/music/use-music";
 import { ITrackProps } from "@/lib/types";
 
 const filterOptions = [

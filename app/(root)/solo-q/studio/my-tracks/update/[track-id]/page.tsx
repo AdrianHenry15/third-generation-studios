@@ -1,7 +1,5 @@
 "use client";
 
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { useTrackByIdWithJoinsQuery } from "@/hooks/music/use-music";
 import TrackUpdateForm from "@/components/layout/music/track-update-form";
 import { useParams } from "next/navigation";
@@ -44,7 +42,7 @@ export default function TrackUpdatePage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 p-6">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-violet-900 p-6 pt-24">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="mb-8">

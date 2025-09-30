@@ -10,7 +10,7 @@ import {
     fetchTrackByIdWithJoins,
     fetchTracksByArtist,
 } from "@/lib/fetchers/fetchers";
-import { ITrackCreditProps, IArtistProps } from "@/lib/solo-q-types/music-types";
+import { ITrackCreditProps, IArtistProps, ITrackProps } from "@/lib/solo-q-types/music-types";
 
 // Generic fetch hooks
 type Table = Parameters<typeof fetchTable>[0];
@@ -117,4 +117,19 @@ export function useTrackCreditsQuery(trackId?: string) {
 // Specific hook for all track credits
 export function useAllTrackCreditsQuery() {
     return useMusicQuery<ITrackCreditProps>("track_credits", "track_credits" as keyof typeof QUERY_KEYS);
+}
+
+// Specific hook for updating tracks with proper invalidation
+export function useTrackUpdate() {
+    const qc = useQueryClient();
+    return useMutation({
+        mutationFn: ({ id, values }: { id: string | number; values: Partial<ITrackProps> }) => 
+            updateRow<ITrackProps>("tracks", id, values),
+        onSuccess: (data, variables) => {
+            // Invalidate multiple related queries
+            qc.invalidateQueries({ queryKey: QUERY_KEYS.tracks });
+            qc.invalidateQueries({ queryKey: [...QUERY_KEYS.tracks, variables.id] });
+            qc.invalidateQueries({ queryKey: [...QUERY_KEYS.tracks, "artist"] });
+        },
+    });
 }

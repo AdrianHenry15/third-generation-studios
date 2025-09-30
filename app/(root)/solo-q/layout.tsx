@@ -15,7 +15,7 @@ export default function SoloQLayout({ children }: { children: React.ReactNode })
         const handleResize = () => {
             const mobile = window.innerWidth < 768;
             setIsMobile(mobile);
-            
+
             if (mobile) {
                 setIsCollapsed(true);
                 setIsMobileMenuOpen(false);
@@ -49,15 +49,13 @@ export default function SoloQLayout({ children }: { children: React.ReactNode })
                 setIsMobileMenuOpen={setIsMobileMenuOpen}
             />
 
-            <main 
+            <main
                 className="min-h-screen bg-gradient-to-br from-neutral-950 to-neutral-900 transition-all duration-300 ease-in-out"
                 style={{
-                    marginLeft: getMarginLeft()
+                    marginLeft: getMarginLeft(),
                 }}
             >
-                <div className="p-3 sm:p-4 md:p-6 pt-16 md:pt-6">
-                    {children}
-                </div>
+                <div>{children}</div>
             </main>
         </div>
     );
