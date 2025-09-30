@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import TrackFilter from "@/components/layout/music/track-filter";
 import TrackCard from "@/components/layout/music/track-card";
-import { useMusicQuery } from "@/hooks/music/use-music";
+import { useMusicQuery, useTracksWithJoinsQuery } from "@/hooks/music/use-music";
 import { ITrackProps } from "@/lib/types";
 
 const filterOptions = [
@@ -18,7 +18,8 @@ const filterOptions = [
 
 export default function MusicPage() {
     // Fetch tracks data using music hooks
-    const { data: tracks = [], isLoading, error } = useMusicQuery("tracks", "tracks");
+    // Fetch all tracks - you may need to adjust the table name and query key
+    const { data: tracks, isLoading, error } = useTracksWithJoinsQuery();
 
     const [unlocked, setUnlocked] = useState<string[]>([]);
     const [filter, setFilter] = useState<string>("default");

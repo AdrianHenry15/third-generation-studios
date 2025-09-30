@@ -12,6 +12,8 @@ import LockButton from "./lock-button";
 import RemixDisclaimer from "./remix-disclaimer";
 import TypeLabel from "./type-label";
 import LikeButton from "./like-button";
+import { useAuthStore } from "@/stores/auth-store";
+import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 
 interface ITrackCardProps {
     track: ITrackProps;
@@ -21,6 +23,8 @@ interface ITrackCardProps {
 }
 
 const TrackCard = (props: ITrackCardProps) => {
+    const { user } = useAuthStore();
+    const { data: profile } = useProfileByIdQuery(user!.id);
     // Destructure once for clarity
     const { track, album_images, playlist, onUnlock } = props;
     const { id, title, album, type, locked, copyright } = track;
@@ -77,20 +81,22 @@ const TrackCard = (props: ITrackCardProps) => {
                 <PlayPauseButton track={track} playlist={playlist} locked={locked} />
 
                 {/* Update Button */}
-                <button
-                    onClick={() => router.push(`/solo-q/studio/my-tracks/${id}`)}
-                    className="mt-3 w-full bg-yellow-400 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
-                >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                        />
-                    </svg>
-                    Update Track
-                </button>
+                {profile!.role === "artist" && (
+                    <button
+                        onClick={() => router.push(`/solo-q/studio/my-tracks/${id}`)}
+                        className="mt-3 w-full bg-yellow-400 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
+                        </svg>
+                        Update Track
+                    </button>
+                )}
 
                 {/* External Links */}
                 {type === "Released" && album?.name && (

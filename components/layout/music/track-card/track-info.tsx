@@ -26,7 +26,7 @@ const TrackInfo: React.FC<ITrackInfoProps> = ({ track }) => {
             <p className="text-gray-400 text-sm mb-1 truncate">
                 {artists && artists.length > 0 ? artists.map((artist) => artist.stage_name).join(", ") : "Unknown Artist"}
             </p>
-            <p className="text-gray-300 text-xs mb-2 truncate font-medium">{`${album.type}`}</p>
+            <p className="text-gray-300 text-xs mb-2 truncate font-medium">{`${album ? album.type : "Unknown Album"}`}</p>
             <div className="flex items-center text-xs text-gray-400 space-x-3 mb-2">
                 <span>{release_date ? formatReleaseDate(release_date) : "Unknown Date"}</span>
                 <span>•</span>
