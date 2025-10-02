@@ -6,13 +6,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 // Import the music storage hooks
 import { useAlbumInsertWithCover, useTrackUpload } from "@/hooks/storage/use-music-storage";
-import { useTrackCreditInsert, useArtistById } from "@/hooks/music/use-music";
+import { useTrackCreditInsert } from "@/hooks/music/use-tracks";
+import { useArtistById } from "@/hooks/music/use-artists";
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
-import StudioUploadForm, { UploadMode, TrackUploadData, AlbumUploadData } from "@/components/layout/solo-q/studio/studio-upload-form";
+import StudioUploadForm, { UploadMode, TrackUploadData, AlbumUploadData } from "@/components/layout/solo-queue/studio/studio-upload-form";
 import { useRouter } from "next/navigation";
 import SuccessModal from "@/components/modals/success-modal";
-import { IArtistProps } from "@/lib/solo-q-types/music-types";
+import { IArtistProps } from "@/lib/solo-queue-types/music-types";
 
 export default function StudioUploadPage() {
     const [isUploading, setIsUploading] = useState(false);
@@ -171,10 +172,10 @@ export default function StudioUploadPage() {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="container mx-auto px-4 py-8 pt-24 max-w-4xl">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold mb-2">Upload Music</h1>
-                <p className="text-muted-foreground">Share your music with the Solo-Q community</p>
+                <p className="text-muted-foreground">Share your music with the Solo-Queue community</p>
             </div>
 
             {uploadSuccess && (
@@ -191,7 +192,7 @@ export default function StudioUploadPage() {
                     title="Upload Successful"
                     confirmText="Go to Library"
                     onCancel={() => setUploadSuccess(false)}
-                    onConfirm={() => router.push("/solo-q/studio/library")}
+                    onConfirm={() => router.push("/solo-queue/studio/library")}
                 />
             )}
 

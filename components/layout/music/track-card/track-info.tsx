@@ -1,4 +1,5 @@
 import { ITrackProps } from "@/lib/types";
+import { format } from "path";
 import React from "react";
 
 interface ITrackInfoProps {
@@ -30,7 +31,7 @@ const TrackInfo: React.FC<ITrackInfoProps> = ({ track }) => {
             <div className="flex items-center text-xs text-gray-400 space-x-3 mb-2">
                 <span>{release_date ? formatReleaseDate(release_date) : "Unknown Date"}</span>
                 <span>•</span>
-                <span>{duration ? formatDuration(duration) : "0:00"}</span>
+                <span>{formatDuration(duration * 1000)}</span>
             </div>
             <div className="flex items-center text-xs text-gray-500 space-x-2 mb-2">
                 <span>Plays: {plays || 0}</span>

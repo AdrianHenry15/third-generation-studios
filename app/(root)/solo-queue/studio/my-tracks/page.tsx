@@ -1,6 +1,6 @@
 "use client";
 
-import { useTracksWithJoinsQuery } from "@/hooks/music/use-music";
+import { useTracksWithJoinsQuery } from "@/hooks/music/use-tracks";
 import TrackCard from "@/components/layout/music/track-card";
 import { useAuthStore } from "@/stores/auth-store";
 
@@ -41,7 +41,7 @@ export default function MyTracksPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 pt-24">
             <h1 className="text-3xl font-bold text-white mb-8">My Tracks</h1>
 
             {myTracks.length === 0 ? (

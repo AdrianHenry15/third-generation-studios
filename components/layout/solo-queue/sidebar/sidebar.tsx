@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, Search, Plus, Heart, PlayCircle, Users, Settings, User, Clock, Star, Music, Upload } from "lucide-react";
+import { Menu, X, Home, Search, Heart, PlayCircle, Users, Settings, User, Clock, Star, Music, Upload } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -13,26 +13,25 @@ interface SidebarItem {
 }
 
 const mainItems: SidebarItem[] = [
-    { icon: Home, label: "Home", href: "/solo-q" },
-    { icon: Search, label: "Search", href: "/solo-q/search" },
+    { icon: Home, label: "Home", href: "/solo-queue" },
+    { icon: Search, label: "Search", href: "/solo-queue/search" },
 ];
 
 const libraryItems: SidebarItem[] = [
-    { icon: Clock, label: "Recently Played", href: "/solo-q/recent" },
-    { icon: Heart, label: "Liked Songs", href: "/solo-q/liked" },
-    { icon: Star, label: "Favorites", href: "/solo-q/favorites" },
-    { icon: PlayCircle, label: "Playlists", href: "/solo-q/playlists" },
+    { icon: Clock, label: "Recently Played", href: "/solo-queue/recent" },
+    { icon: Heart, label: "Liked Songs", href: "/solo-queue/liked" },
+    { icon: Star, label: "Favorites", href: "/solo-queue/favorites" },
+    { icon: PlayCircle, label: "Playlists", href: "/solo-queue/playlists" },
 ];
 
 const userItems: SidebarItem[] = [
-    { icon: User, label: "Profile", href: "/solo-q/profile" },
-    { icon: Users, label: "Friends", href: "/solo-q/friends" },
-    { icon: Settings, label: "Settings", href: "/solo-q/settings" },
+    { icon: User, label: "Profile", href: "/solo-queue/profile" },
+    { icon: Settings, label: "Settings", href: "/solo-queue/settings" },
 ];
 
 const artistItems: SidebarItem[] = [
-    { icon: Music, label: "My Tracks", href: "/solo-q/studio/my-tracks" },
-    { icon: Upload, label: "Upload Track", href: "/solo-q/studio/upload" },
+    { icon: Music, label: "My Tracks", href: "/solo-queue/studio/my-tracks" },
+    { icon: Upload, label: "Upload Track", href: "/solo-queue/studio/upload" },
 ];
 
 interface SidebarProps {

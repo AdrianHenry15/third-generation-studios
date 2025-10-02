@@ -132,11 +132,11 @@ const UserIconMenu = (props: IUserIconMenuProps) => {
                     className="w-full text-left px-3 py-2 text-sm rounded-md text-black hover:text-white hover:bg-green-400 dark:hover:bg-green-950 dark:text-white cursor-pointer transition-colors duration-150 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-green-400"
                     onClick={() => {
                         closeMenu();
-                        router.push("/solo-q/profile");
+                        router.push("/solo-queue/profile");
                     }}
                     onKeyDown={onActivate(() => {
                         closeMenu();
-                        router.push("/solo-q/profile");
+                        router.push("/solo-queue/profile");
                     })}
                 >
                     <User className="mr-1" size={16} aria-hidden="true" /> Profile

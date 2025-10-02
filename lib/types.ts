@@ -1,7 +1,7 @@
-export * from "./solo-q-types/analytics-types";
-export * from "./solo-q-types/billing-types";
-export * from "./solo-q-types/public-types";
-export * from "./solo-q-types/music-types";
+export * from "./solo-queue-types/analytics-types";
+export * from "./solo-queue-types/billing-types";
+export * from "./solo-queue-types/public-types";
+export * from "./solo-queue-types/music-types";
 
 // General Web Types
 export type TechStackName =

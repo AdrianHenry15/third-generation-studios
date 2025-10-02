@@ -58,7 +58,7 @@ export default function Navbar() {
         { name: "About", href: "/about" },
     ];
     if (pathname.startsWith("/solo-q")) {
-        return null; // Don't render the navbar on /solo-q routes
+        return null; // Don't render the navbar on /solo-queue routes
     }
     return (
         <motion.header

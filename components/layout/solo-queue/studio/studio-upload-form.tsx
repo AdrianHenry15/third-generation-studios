@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/buttons/button";
 import { Plus } from "lucide-react";
-import { TrackType, AlbumType, IAlbumProps, ITrackProps } from "@/lib/solo-q-types/music-types";
+import { TrackType, AlbumType, IAlbumProps, ITrackProps } from "@/lib/solo-queue-types/music-types";
 import StudioTrackInfoCard from "./studio-track-info";
 import StudioAlbumInfo from "./studio-album-info";
 import ConfirmModal from "@/components/modals/confirm-modal";

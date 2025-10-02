@@ -59,7 +59,9 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ onPrev, onNext, hasPrev, hasN
             <div className="flex flex-col min-w-0 flex-1">
                 <span className="text-white font-semibold truncate">{currentTrack.title}</span>
                 <span className="text-gray-400 text-xs truncate">
-                    {currentTrack.artists && currentTrack.artists.length > 0 ? currentTrack.artists.join(", ") : ""}
+                    {currentTrack.artists && currentTrack.artists.length > 0
+                        ? currentTrack.artists.map((artist) => (typeof artist === "string" ? artist : artist.stage_name)).join(", ")
+                        : "Unknown Artist"}
                 </span>
             </div>
             {/* Controls */}

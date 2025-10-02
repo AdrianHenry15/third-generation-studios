@@ -2,9 +2,9 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useTrackUpdate } from "@/hooks/music/use-music";
+import { useTrackUpdate } from "@/hooks/music/use-tracks";
 import { useTrackFileReplace } from "@/hooks/storage/use-music-storage";
-import { ITrackProps, IMusicLinkProps, TrackType } from "@/lib/solo-q-types/music-types";
+import { ITrackProps, IMusicLinkProps, TrackType } from "@/lib/solo-queue-types/music-types";
 import { trackGenres } from "@/lib/constants";
 
 interface TrackUpdateFormProps {
@@ -94,7 +94,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     albumType: track.album?.type || "Single",
                     artistId: track.artist_id,
                     newFile: selectedFile,
-                    newTitle: formData.title !== track.title ? formData.title : undefined
+                    newTitle: formData.title !== track.title ? formData.title : undefined,
                 });
 
                 // After file replacement, update other metadata
@@ -121,7 +121,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     values: updateData,
                 });
 
-                router.push("/solo-q/studio/my-tracks");
+                router.push("/solo-queue/studio/my-tracks");
                 return;
             } catch (error) {
                 console.error("Error replacing file:", error);
@@ -148,7 +148,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 values: updateData,
             });
 
-            router.push("/solo-q/studio/my-tracks");
+            router.push("/solo-queue/studio/my-tracks");
         } catch (error) {
             console.error("Error updating track:", error);
         }
@@ -284,9 +284,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
 
             {/* File Replacement */}
             <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Replace Track Audio (Optional)
-                </label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Replace Track Audio (Optional)</label>
                 <input
                     type="file"
                     id="file"
@@ -302,9 +300,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 <div className="text-xs text-gray-400 mt-2 space-y-1">
                     <p>• Supported formats: MP3, WAV, OGG, M4A (Max 50MB)</p>
                     <p>• This will replace the current audio file and update duration automatically</p>
-                    {track.album?.type === "Single" && (
-                        <p>• Since this is a Single, changing the title will also update the album name</p>
-                    )}
+                    {track.album?.type === "Single" && <p>• Since this is a Single, changing the title will also update the album name</p>}
                 </div>
             </div>
 
@@ -483,9 +479,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
 
             {/* Error Message */}
             {(updateTrackMutation.error || replaceFileMutation.error) && (
-                <div className="text-red-400 text-sm mt-2">
-                    Error updating track. Please try again.
-                </div>
+                <div className="text-red-400 text-sm mt-2">Error updating track. Please try again.</div>
             )}
         </form>
     );

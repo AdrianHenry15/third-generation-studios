@@ -1,6 +1,6 @@
 "use client";
 
-import ProfileForm from "@/components/layout/solo-q/profile-form";
+import ProfileForm from "@/components/layout/solo-queue/profile-form";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import { useAuthStore } from "@/stores/auth-store";
 import Image from "next/image";
@@ -19,7 +19,7 @@ function LoadingScreen({ message }: { message: string }) {
 }
 
 export default function SoloQProfilePage() {
-    const { user, loading, session } = useAuthStore();
+    const { user, loading } = useAuthStore();
     const { data: profile, isLoading: profileLoading } = useProfileByIdQuery(user?.id ?? "");
 
     const router = useRouter();
@@ -70,7 +70,7 @@ export default function SoloQProfilePage() {
 
     // Success state
     return (
-        <div className="text-white max-w-4xl mx-auto p-6">
+        <div className="text-white max-w-4xl mx-auto p-6 pt-24">
             <div className="mb-8">
                 <h1 className="text-4xl font-bold mb-2">Your Profile</h1>
                 <p className="text-neutral-400 text-lg">Manage your account settings and preferences</p>

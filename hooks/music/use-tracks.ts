@@ -1,35 +1,15 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/lib/queries/query-keys";
 import {
-    fetchTable,
-    insertRow,
-    updateRow,
-    deleteRow,
-    fetchRowById,
     fetchTracksWithJoins,
     fetchTrackByIdWithJoins,
     fetchTracksByArtist,
+    insertRow,
+    fetchTable,
+    updateRow,
 } from "@/lib/fetchers/fetchers";
-import { ITrackProps } from "@/lib/solo-queue-types/music-types";
-
-// Generic fetch hooks
-type Table = Parameters<typeof fetchTable>[0];
-
-// READ
-export function useMusicQuery<T>(table: Table, key: keyof typeof QUERY_KEYS) {
-    return useQuery({
-        queryKey: QUERY_KEYS[key],
-        queryFn: () => fetchTable<T>(table),
-    });
-}
-
-export function useMusicQueryById<T>(table: Table, key: keyof typeof QUERY_KEYS, id: string | number) {
-    return useQuery({
-        queryKey: [...QUERY_KEYS[key], id],
-        queryFn: () => fetchRowById<T>(table, id),
-        enabled: !!id, // Only run query if id is provided
-    });
-}
+import { ITrackCreditProps, ITrackProps } from "@/lib/types";
+import { useMusicQuery } from "./use-music";
 
 // Specific hook for tracks with joined data (album, artists, etc.)
 export function useTracksWithJoinsQuery() {
@@ -42,9 +22,10 @@ export function useTracksWithJoinsQuery() {
 // Specific hook for single track with joins
 export function useTrackByIdWithJoinsQuery(id: string | number) {
     return useQuery({
-        queryKey: [...QUERY_KEYS.tracks, id],
+        queryKey: [...QUERY_KEYS.tracks, "with-joins", id],
         queryFn: () => fetchTrackByIdWithJoins(id),
         enabled: !!id,
+        staleTime: 1000 * 60 * 5, // 5 minutes
     });
 }
 
@@ -62,28 +43,32 @@ export function useMyTracksQuery(currentArtistId?: string) {
     return useTracksByArtistQuery(currentArtistId || "");
 }
 
-// Mutation hooks
-export function useMusicInsert<T>(table: Table, key: keyof typeof QUERY_KEYS) {
-    const qc = useQueryClient();
-    return useMutation({
-        mutationFn: (values: Partial<T>) => insertRow<T>(table, values),
-        onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS[key] }),
+// Specific hook for getting track credits
+export function useTrackCreditsQuery(trackId?: string) {
+    return useQuery({
+        queryKey: ["track_credits", trackId],
+        queryFn: () => fetchTable<ITrackCreditProps>("track_credits"),
+        select: (data) => (trackId ? data.filter((credit) => credit.track_id === trackId) : data),
+        enabled: !!trackId,
     });
 }
 
-export function useMusicUpdate<T>(table: Table, key: keyof typeof QUERY_KEYS) {
-    const qc = useQueryClient();
-    return useMutation({
-        mutationFn: ({ id, values }: { id: string | number; values: Partial<T> }) => updateRow<T>(table, id, values),
-        onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS[key] }),
-    });
+// Specific hook for all track credits
+export function useAllTrackCreditsQuery() {
+    return useMusicQuery<ITrackCreditProps>("track_credits", "track_credits" as keyof typeof QUERY_KEYS);
 }
 
-export function useMusicDelete(table: Table, key: keyof typeof QUERY_KEYS) {
+// MUTATIONS
+// Specific hook for inserting track credits
+export function useTrackCreditInsert() {
     const qc = useQueryClient();
     return useMutation({
-        mutationFn: (id: string | number) => deleteRow(table, id),
-        onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS[key] }),
+        mutationFn: (values: Partial<ITrackCreditProps>) => insertRow<ITrackCreditProps>("track_credits", values),
+        onSuccess: () => {
+            // Invalidate both track credits and tracks queries since tracks include credits
+            qc.invalidateQueries({ queryKey: QUERY_KEYS.tracks });
+            qc.invalidateQueries({ queryKey: ["track_credits"] });
+        },
     });
 }
 

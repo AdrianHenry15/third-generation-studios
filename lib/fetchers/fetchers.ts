@@ -1,5 +1,5 @@
 import { supabase } from "../supabase/client";
-import { ITrackProps } from "../solo-q-types/music-types";
+import { ITrackProps, TrackType } from "../solo-queue-types/music-types";
 
 // All tables are now in the public schema; list allowed table names.
 type Table =
@@ -57,34 +57,28 @@ export async function deleteRow(table: Table, id: string | number) {
 
 // Specialized fetcher for tracks with complete data (albums, artists, etc.)
 export async function fetchTracksWithJoins(): Promise<ITrackProps[]> {
-    const { data, error } = await supabase.from("tracks").select(`
+    const { data, error } = await supabase
+        .from("tracks")
+        .select(
+            `
             *,
-            album:albums(
+            artists!tracks_artist_id_fkey(*),
+            album:albums!tracks_album_id_fkey(
                 *,
                 images:album_images(*)
             ),
-            artist:artists(*),
             credits:track_credits(*)
-        `);
+        `,
+        )
+        .order("created_at", { ascending: false });
 
     if (error) throw error;
 
-    // Transform the data to match ITrackProps structure
-    return data.map((track: any) => ({
+    return (data || []).map((track) => ({
         ...track,
-        // The main artist from the tracks table
-        artists: track.artist ? [track.artist] : [],
-        // Credits from track_credits table
-        credits: track.credits || [],
-        // Determine track type based on release_date and locked status
-        type: !track.release_date ? "Unreleased" : track.locked ? "Unreleased" : "Released",
-        // Convert duration from seconds to milliseconds if needed
-        duration: track.duration * 1000,
-        // Format release_date as string
-        release_date: track.release_date || "",
-        // Add default values for missing properties
-        is_liked: false, // This would need to come from a user-specific likes table
-        genre: track.genre || "",
+        artists: track.artists ? [track.artists] : [], // Convert single artist to array
+        type: computeTrackType(track.release_date, track.locked),
+        is_liked: false, // This would come from a separate likes query
     })) as ITrackProps[];
 }
 
@@ -109,7 +103,12 @@ export async function fetchTrackByIdWithJoins(id: string | number): Promise<ITra
     if (error) throw error;
     if (!data) throw new Error("Track not found");
 
-    return data as ITrackProps;
+    return {
+        ...data,
+        artists: data.artists ? [data.artists] : [], // Convert single artist to array
+        type: computeTrackType(data.release_date, data.locked),
+        is_liked: false,
+    } as ITrackProps;
 }
 
 // Specialized fetcher for tracks by specific artist
@@ -119,33 +118,35 @@ export async function fetchTracksByArtist(artistId: string): Promise<ITrackProps
         .select(
             `
             *,
-            album:albums(
+            artists!tracks_artist_id_fkey(*),
+            album:albums!tracks_album_id_fkey(
                 *,
                 images:album_images(*)
             ),
-            artist:artists(*),
             credits:track_credits(*)
         `,
         )
-        .eq("artist_id", artistId);
+        .eq("artist_id", artistId)
+        .order("created_at", { ascending: false });
 
     if (error) throw error;
 
-    // Transform the data to match ITrackProps structure
-    return data.map((track: any) => ({
+    return (data || []).map((track) => ({
         ...track,
-        // The main artist from the tracks table
-        artists: track.artist ? [track.artist] : [],
-        // Credits from track_credits table
-        credits: track.credits || [],
-        // Determine track type based on release_date and locked status
-        type: !track.release_date ? "Unreleased" : track.locked ? "Unreleased" : "Released",
-        // Convert duration from seconds to milliseconds if needed
-        duration: track.duration * 1000,
-        // Format release_date as string
-        release_date: track.release_date || "",
-        // Add default values for missing properties
-        is_liked: false, // This would need to come from a user-specific likes table
-        genre: track.genre || "",
+        artists: track.artists ? [track.artists] : [],
+        type: computeTrackType(track.release_date, track.locked),
+        is_liked: false,
     })) as ITrackProps[];
+}
+
+// Helper function to compute track type
+function computeTrackType(release_date: string | null, locked: boolean): TrackType {
+    if (locked) return "Unreleased";
+    if (!release_date) return "Work In Progress";
+
+    const releaseDate = new Date(release_date);
+    const now = new Date();
+
+    if (releaseDate <= now) return "Released";
+    return "Unreleased";
 }

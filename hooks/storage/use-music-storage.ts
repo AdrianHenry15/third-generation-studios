@@ -5,7 +5,7 @@ import { uploadFile, deleteFile } from "@/lib/supabase/storage";
 import { useMusicInsert, useMusicUpdate } from "@/hooks/music/use-music";
 import { QUERY_KEYS } from "@/lib/queries/query-keys";
 
-import type { IArtistProps, IAlbumProps, IAlbumImageProps, ITrackProps } from "@/lib/solo-q-types/music-types";
+import type { IArtistProps, IAlbumProps, IAlbumImageProps, ITrackProps } from "@/lib/solo-queue-types/music-types";
 
 // -------------------------
 // ARTISTS
@@ -66,6 +66,61 @@ export function useAlbumInsertWithCover() {
             return album;
         },
         onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] }),
+    });
+}
+
+// New hook for updating existing album cover only
+export function useAlbumCoverUpdate() {
+    const qc = useQueryClient();
+    const insertAlbumImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
+    const updateAlbumImage = useMusicUpdate<IAlbumImageProps>("album_images", "album_images");
+
+    return useMutation({
+        mutationFn: async ({ albumId, artistId, albumImageFile }: { albumId: string; artistId: string; albumImageFile: File }) => {
+            console.log('Starting album cover update...', { albumId, artistId, fileName: albumImageFile.name });
+            
+            // Upload new image file
+            const url = await uploadFile({
+                bucket: "album-covers",
+                file: albumImageFile,
+                userId: artistId,
+            });
+
+            if (!url) throw new Error("Failed to upload album cover to storage");
+            
+            console.log('File uploaded successfully:', url);
+
+            // Try to update existing image first, if none exists, insert new one
+            try {
+                const result = await updateAlbumImage.mutateAsync({
+                    id: albumId,
+                    values: {
+                        url,
+                        name: albumImageFile.name,
+                    },
+                });
+                console.log('Album image updated successfully');
+                return url;
+            } catch (updateError) {
+                console.log('Update failed, trying insert...', updateError);
+                // If update fails (no existing image), insert new one
+                const result = await insertAlbumImage.mutateAsync({
+                    album_id: albumId,
+                    url,
+                    name: albumImageFile.name,
+                });
+                console.log('Album image inserted successfully');
+                return url;
+            }
+        },
+        onSuccess: (url) => {
+            console.log('Album cover update completed successfully:', url);
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"] });
+        },
+        onError: (error) => {
+            console.error('Album cover update failed:', error);
+        },
     });
 }
 

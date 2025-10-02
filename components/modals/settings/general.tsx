@@ -5,7 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
 import { useProfileByIdQuery, useProfileUpdate } from "@/hooks/public/use-profiles";
-import type { IProfileProps } from "@/lib/solo-q-types/public-types";
+import type { IProfileProps } from "@/lib/solo-queue-types/public-types";
 import toast from "react-hot-toast";
 
 // Placeholder for canUpdateUsername/canUpdateEmail logic

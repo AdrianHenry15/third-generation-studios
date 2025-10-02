@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { IAlbumImageProps, ITrackProps } from "@/lib/solo-q-types/music-types";
+import { IAlbumImageProps, ITrackProps } from "@/lib/solo-queue-types/music-types";
 import CopyrightModal from "../modals/copyright-modal";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
@@ -83,7 +83,7 @@ const TrackCard = (props: ITrackCardProps) => {
                 {/* Update Button */}
                 {profile && profile.role === "artist" && (
                     <button
-                        onClick={() => router.push(`/solo-q/studio/my-tracks/update/${id}`)}
+                        onClick={() => router.push(`/solo-queue/studio/my-tracks/update/${id}`)}
                         className="mt-3 w-full bg-yellow-400 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

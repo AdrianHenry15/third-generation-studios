@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { IProfileProps } from "@/lib/solo-q-types/public-types";
+import { IProfileProps } from "@/lib/solo-queue-types/public-types";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import Image from "next/image";
