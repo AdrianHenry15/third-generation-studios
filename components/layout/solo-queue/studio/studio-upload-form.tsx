@@ -2,19 +2,32 @@ import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/buttons/button";
 import { Plus } from "lucide-react";
-import { TrackType, AlbumType, IAlbumProps, ITrackProps } from "@/lib/solo-queue-types/music-types";
+import { TrackType, AlbumType, IAlbumProps, ITrackProps, CreditRoleType } from "@/lib/solo-queue-types/music-types";
 import StudioTrackInfoCard from "./studio-track-info";
 import StudioAlbumInfo from "./studio-album-info";
 import ConfirmModal from "@/components/modals/confirm-modal";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 export type UploadMode = "single" | "album";
 
 // Extended track data that includes the actual file for upload
-export interface TrackUploadData extends Omit<ITrackProps, "url" | "album" | "artists" | "credits"> {
+export interface TrackUploadData extends Omit<ITrackProps, "url" | "album" | "artists" | "credits" | "remix"> {
     audioFile?: File; // The actual file to upload
     audioFileName?: string; // Display name for the file
     trackImageFile?: File; // Track cover image file
     trackImageFileName?: string; // Display name for track cover image
+    is_public: boolean; // Add is_public field (required)
+    copyright?: string; // Add copyright field for non-remix tracks
+    // Remove remix_data from here since it's a separate table
+}
+
+// Update interface for remix upload data to match database schema
+export interface RemixUploadData {
+    original_song: string;
+    original_artists: string[]; // Array of artist names
+    additional_artists?: string[]; // Optional array of additional artists
+    url?: string; // URL field (matches database)
 }
 
 // Extended album data that includes file upload fields
@@ -24,13 +37,22 @@ export interface AlbumUploadData extends Omit<IAlbumProps, "id" | "created_at" |
 }
 
 interface IStudioUploadFormProps {
-    onSubmit: (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData: AlbumUploadData }) => void;
+    onSubmit: (data: {
+        mode: UploadMode;
+        tracks: TrackUploadData[];
+        albumData: AlbumUploadData;
+        remixData: { [trackId: string]: RemixUploadData };
+    }) => void;
     isUploading: boolean;
 }
 
 const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUploading }) => {
     const [confirmation, setConfirmation] = useState(false);
     const [uploadMode, setUploadMode] = useState<UploadMode>("single");
+
+    // Separate state for remix data
+    const [remixData, setRemixData] = useState<{ [trackId: string]: RemixUploadData }>({});
+
     const [albumData, setAlbumData] = useState<AlbumUploadData>({
         name: "",
         type: "Single" as AlbumType,
@@ -48,10 +70,10 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             genre: "",
             duration: 0,
             release_date: "",
-            copyright: "",
             lyrics: "",
             album_id: "",
             artist_id: "",
+            is_public: false,
             locked: false,
             plays: 0,
             is_liked: false,
@@ -127,8 +149,8 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             genre: "",
             duration: 0,
             release_date: "",
-            copyright: "",
             lyrics: "",
+            is_public: false,
             album_id: "",
             artist_id: "",
             locked: false,
@@ -149,6 +171,13 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         }
     };
 
+    const handleRemixDataChange = (trackId: string, remixInfo: RemixUploadData) => {
+        setRemixData((prev) => ({
+            ...prev,
+            [trackId]: remixInfo,
+        }));
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setConfirmation(true);
@@ -159,6 +188,7 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         onSubmit({
             mode: uploadMode,
             tracks,
+            remixData, // Pass remix data separately
             albumData:
                 uploadMode === "album"
                     ? albumData
@@ -235,6 +265,8 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                     handleFileSelect={handleFileSelect}
                     handleTrackImageSelect={handleTrackImageSelect}
                     removeTrack={removeTrack}
+                    remixData={remixData[track.id]}
+                    onRemixDataChange={(remixInfo) => handleRemixDataChange(track.id, remixInfo)}
                 />
             ))}
 

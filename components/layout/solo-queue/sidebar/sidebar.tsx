@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, Search, Heart, PlayCircle, Users, Settings, User, Clock, Star, Music, Upload } from "lucide-react";
+import { Menu, X, Home, Search, Heart, PlayCircle, Settings, User, Clock, Star, Music, Upload } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

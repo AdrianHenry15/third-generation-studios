@@ -6,6 +6,7 @@ import { useMusicInsert, useMusicUpdate } from "@/hooks/music/use-music";
 import { QUERY_KEYS } from "@/lib/queries/query-keys";
 
 import type { IArtistProps, IAlbumProps, IAlbumImageProps, ITrackProps } from "@/lib/solo-queue-types/music-types";
+import { supabase } from "@/lib/supabase/client";
 
 // -------------------------
 // ARTISTS
@@ -77,8 +78,8 @@ export function useAlbumCoverUpdate() {
 
     return useMutation({
         mutationFn: async ({ albumId, artistId, albumImageFile }: { albumId: string; artistId: string; albumImageFile: File }) => {
-            console.log('Starting album cover update...', { albumId, artistId, fileName: albumImageFile.name });
-            
+            console.log("Starting album cover update...", { albumId, artistId, fileName: albumImageFile.name });
+
             // Upload new image file
             const url = await uploadFile({
                 bucket: "album-covers",
@@ -87,39 +88,47 @@ export function useAlbumCoverUpdate() {
             });
 
             if (!url) throw new Error("Failed to upload album cover to storage");
-            
-            console.log('File uploaded successfully:', url);
 
-            // Try to update existing image first, if none exists, insert new one
+            console.log("File uploaded successfully:", url);
+
+            // First, try to find existing album image by album_id
             try {
-                const result = await updateAlbumImage.mutateAsync({
-                    id: albumId,
-                    values: {
+                // Query to find existing album image
+                const { data: existingImages } = await supabase.from("album_images").select("id").eq("album_id", albumId).limit(1);
+
+                if (existingImages && existingImages.length > 0) {
+                    // Update existing image
+                    const result = await updateAlbumImage.mutateAsync({
+                        id: existingImages[0].id,
+                        values: {
+                            url,
+                            name: albumImageFile.name,
+                        },
+                    });
+                    console.log("Album image updated successfully");
+                    return url;
+                } else {
+                    // Insert new image
+                    const result = await insertAlbumImage.mutateAsync({
+                        album_id: albumId,
                         url,
                         name: albumImageFile.name,
-                    },
-                });
-                console.log('Album image updated successfully');
-                return url;
-            } catch (updateError) {
-                console.log('Update failed, trying insert...', updateError);
-                // If update fails (no existing image), insert new one
-                const result = await insertAlbumImage.mutateAsync({
-                    album_id: albumId,
-                    url,
-                    name: albumImageFile.name,
-                });
-                console.log('Album image inserted successfully');
-                return url;
+                    });
+                    console.log("Album image inserted successfully");
+                    return url;
+                }
+            } catch (error) {
+                console.error("Database operation failed:", error);
+                throw new Error(`Failed to update album cover in database: ${error}`);
             }
         },
         onSuccess: (url) => {
-            console.log('Album cover update completed successfully:', url);
+            console.log("Album cover update completed successfully:", url);
             qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] });
             qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"] });
         },
         onError: (error) => {
-            console.error('Album cover update failed:', error);
+            console.error("Album cover update failed:", error);
         },
     });
 }

@@ -1,89 +1,101 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
-import { IAlbumImageProps, ITrackProps } from "@/lib/solo-queue-types/music-types";
-import CopyrightModal from "../modals/copyright-modal";
+import { useTrackByIdWithJoinsQuery } from "@/hooks/music/use-tracks";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
 import LockButton from "./lock-button";
-import RemixDisclaimer from "./remix-disclaimer";
 import TypeLabel from "./type-label";
 import LikeButton from "./like-button";
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
+import { IAlbumImageProps, ITrackProps } from "@/lib/types/music-types";
 
 interface ITrackCardProps {
-    track: ITrackProps;
-    album_images?: IAlbumImageProps[]; // make optional: prefer album.images
+    trackId: string;
+    playlist?: ITrackProps[];
     onUnlock?: (trackId: string) => void;
-    playlist?: ITrackProps[]; // Optional playlist for when playing from a collection
 }
 
-const TrackCard = (props: ITrackCardProps) => {
+/**
+ * TrackCard
+ * Displays a single track with image, play button, type label, and optional artist actions
+ */
+const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
     const { data: profile } = useProfileByIdQuery(user!.id);
-    // Destructure once for clarity
-    const { track, album_images, playlist, onUnlock } = props;
-    const { id, title, album, type, locked, copyright } = track;
 
-    // Modal state for copyright info
-    const [showCopyright, setShowCopyright] = useState(false);
-
-    // Router for navigation
+    const { data: track, isLoading, error } = useTrackByIdWithJoinsQuery(trackId);
     const router = useRouter();
 
-    // Prefer images attached to the album object; fallback to the album_images prop, then a placeholder
-    const imagesSource: IAlbumImageProps[] = (album && (album as any).images) || album_images || [];
-    const AlbumCover =
-        imagesSource.find((img) => img.id === album?.id || (typeof img.id === "string" && img.id.startsWith(String(album?.id))))?.url ||
-        imagesSource[0]?.url ||
-        "/placeholder-album.png";
+    // -------------------------
+    // Loading State
+    // -------------------------
+    if (isLoading) {
+        return (
+            <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden h-80 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+            </div>
+        );
+    }
 
+    // -------------------------
+    // Error State
+    // -------------------------
+    if (error || !track) {
+        return (
+            <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden h-80 flex items-center justify-center">
+                <p className="text-red-400 text-sm">Failed to load track</p>
+            </div>
+        );
+    }
+
+    // -------------------------
+    // Album Cover Selection
+    // -------------------------
+    const albumImages: IAlbumImageProps[] = track.album?.images || [];
+    const albumCover = albumImages.find((img) => img.id === track.album?.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
+
+    // -------------------------
+    // Render Track Card
+    // -------------------------
     return (
-        <div
-            key={id}
-            className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col"
-        >
-            {/* Image Overlay */}
+        <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
+            {/* Album Image */}
             <div className="relative h-48 w-full">
                 <Image
-                    src={AlbumCover}
-                    alt={title}
+                    src={albumCover}
+                    alt={track.title}
                     fill
-                    className={`object-cover group-hover:brightness-90 transition ${locked ? "blur-sm" : ""}`}
+                    className={`object-cover group-hover:brightness-90 transition ${track.locked ? "blur-sm" : ""}`}
                     sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                {/* Like Heart Icon - Top Left */}
-                <LikeButton trackId={id} />
 
-                {/* Remix Info Icon - Top Left (next to heart) */}
-                {type === "Remix" && <RemixDisclaimer />}
-
-                <TypeLabel type={type} />
-
-                {locked && type === "Unreleased" && <LockButton onUnlock={onUnlock} trackId={id} />}
+                {/* Overlays */}
+                <LikeButton trackId={track.id} />
+                <TypeLabel type={track.type} />
+                {track.locked && <LockButton onUnlock={onUnlock} trackId={track.id} />}
             </div>
 
+            {/* Track Info + Actions */}
             <div className="p-5 flex-1 flex flex-col justify-between">
-                {/* Track Info */}
                 <TrackInfo track={track} />
 
-                {/* Show error directly under Play/Pause if no URL to play from (based on DB) */}
                 {!track.url && (
                     <p className="mt-2 text-xs text-red-400 text-center">
                         Preview not available to play here — use links below for full track
                     </p>
                 )}
-                {/* Play/Pause Button */}
-                <PlayPauseButton track={track} playlist={playlist} locked={locked} />
 
-                {/* Update Button */}
-                {profile && profile.role === "artist" && (
+                <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
+
+                {/* Artist-only update button */}
+                {profile?.role === "artist" && (
                     <button
-                        onClick={() => router.push(`/solo-queue/studio/my-tracks/update/${id}`)}
+                        onClick={() => router.push(`/solo-queue/studio/my-tracks/update/${track.id}`)}
                         className="mt-3 w-full bg-yellow-400 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,17 +110,13 @@ const TrackCard = (props: ITrackCardProps) => {
                     </button>
                 )}
 
-                {/* External Links */}
-                {type === "Released" && album?.name && (
-                    <ExternalLinkButton albumName={album.name} link={`https://album.link/tgs-${album.name.toLowerCase()}`} />
+                {/* Optional External Links */}
+                {track.type === "Released" && track.album?.name && (
+                    <ExternalLinkButton albumName={track.album.name} link={`https://album.link/tgs-${track.album.name.toLowerCase()}`} />
                 )}
             </div>
-
-            {/* Copyright Modal */}
-            {showCopyright && (
-                <CopyrightModal setShowCopyright={setShowCopyright} copyright={copyright || "No copyright information available."} />
-            )}
         </div>
     );
 };
+
 export default TrackCard;

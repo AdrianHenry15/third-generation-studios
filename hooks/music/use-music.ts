@@ -9,7 +9,7 @@ import {
     fetchTracksWithJoins,
     fetchTrackByIdWithJoins,
     fetchTracksByArtist,
-} from "@/lib/fetchers/fetchers";
+} from "@/lib/fetchers/generic-fetchers.ts";
 import { ITrackProps } from "@/lib/solo-queue-types/music-types";
 
 // Generic fetch hooks

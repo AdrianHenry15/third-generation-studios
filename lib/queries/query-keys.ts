@@ -9,4 +9,8 @@ export const QUERY_KEYS = {
     invites: ["music", "invites"] as const,
     track_credits: ["music", "track_credits"] as const,
     track_likes: ["music", "track_likes"] as const,
-};
+    remixes: ["music", "remixes"] as const,
+    playlists: ["music", "playlists"] as const,
+    playlist_tracks: ["music", "playlist_tracks"] as const,
+    playlist_likes: ["music", "playlist_likes"] as const,
+} as const;

@@ -3,180 +3,194 @@
 import { useState } from "react";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useRouter } from "next/navigation";
 
-// Import the music storage hooks
+import StudioUploadForm, {
+    UploadMode,
+    TrackUploadData,
+    AlbumUploadData,
+    RemixUploadData,
+} from "@/components/layout/solo-queue/studio/studio-upload-form";
+import SuccessModal from "@/components/modals/success-modal";
+
 import { useAlbumInsertWithCover, useTrackUpload } from "@/hooks/storage/use-music-storage";
 import { useTrackCreditInsert } from "@/hooks/music/use-tracks";
+import { useRemixInsert } from "@/hooks/music/use-remixes";
 import { useArtistById } from "@/hooks/music/use-artists";
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
-import StudioUploadForm, { UploadMode, TrackUploadData, AlbumUploadData } from "@/components/layout/solo-queue/studio/studio-upload-form";
-import { useRouter } from "next/navigation";
-import SuccessModal from "@/components/modals/success-modal";
-import { IArtistProps } from "@/lib/solo-queue-types/music-types";
+
+import { CreditRoleType, IArtistProps } from "@/lib/types/music-types";
 
 export default function StudioUploadPage() {
+    // -------------------- STATE & STORE --------------------
     const [isUploading, setIsUploading] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
     const { user } = useAuthStore();
     const { data: profile } = useProfileByIdQuery(user?.id || "");
     const { data: artist } = useArtistById(user?.id || "") as { data: IArtistProps | null };
     const router = useRouter();
 
-    // Use the music storage hooks
+    // -------------------- HOOKS --------------------
     const useAlbumInsert = useAlbumInsertWithCover();
     const useTrackUploadHook = useTrackUpload();
     const useTrackCreditInsertHook = useTrackCreditInsert();
+    const useRemixInsertHook = useRemixInsert();
 
+    // -------------------- VALIDATION --------------------
     const validateUpload = (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData: AlbumUploadData }): boolean => {
-        // Check if user exists and has profile
         if (!user || !profile) {
             setError("Please log in to upload tracks.");
             return false;
         }
 
-        // Check if user is artist
         if (profile.role !== "artist") {
             setError("You must be an artist to upload tracks.");
             return false;
         }
 
-        // Check if tracks exist
         if (!data.tracks.length) {
             setError("At least one track is required.");
             return false;
         }
 
-        // Validate each track
+        // Validate tracks
         for (let i = 0; i < data.tracks.length; i++) {
-            const track = data.tracks[i];
-            if (!track.title.trim()) {
-                setError(`Track ${i + 1} title is required.`);
-                return false;
-            }
-            if (!track.audioFile) {
-                setError(`Please select an audio file for track ${i + 1}.`);
-                return false;
-            }
-            if (!track.genre.trim()) {
-                setError(`Genre is required for track ${i + 1}.`);
-                return false;
-            }
+            const t = data.tracks[i];
+            if (!t.title.trim()) return (setError(`Track ${i + 1} title is required.`), false);
+            if (!t.audioFile) return (setError(`Audio file is required for track ${i + 1}.`), false);
+            if (!t.genre.trim()) return (setError(`Genre is required for track ${i + 1}.`), false);
         }
 
-        // Validate album data
-        if (!data.albumData.name.trim()) {
-            setError("Album name is required.");
-            return false;
-        }
+        // Validate album
+        if (!data.albumData.name.trim()) return (setError("Album name is required."), false);
 
-        // For single mode, require track cover
-        if (data.mode === "single") {
-            const track = data.tracks[0];
-            if (!track.trackImageFile) {
-                setError("Cover image is required for single tracks.");
-                return false;
-            }
-        }
+        // Image validation based on mode/type
+        if (data.mode === "single" && !data.tracks[0].trackImageFile)
+            return (setError("Cover image is required for single tracks."), false);
 
-        // For album mode with Single type, require track covers
-        if (data.mode === "album" && data.albumData.type === "Single") {
-            for (let i = 0; i < data.tracks.length; i++) {
-                const track = data.tracks[i];
-                if (!track.trackImageFile) {
-                    setError(`Cover image is required for track ${i + 1} in Single releases.`);
-                    return false;
-                }
-            }
-        }
+        if (data.mode === "album" && data.albumData.type === "Single" && data.tracks.some((t) => !t.trackImageFile))
+            return (setError("Cover image is required for all tracks in Single releases."), false);
 
-        // For album mode with EP/Album types, require album cover
-        if (data.mode === "album" && data.albumData.type !== "Single" && !data.albumData.albumImageFile) {
-            setError("Album cover image is required for EP/Album releases.");
-            return false;
-        }
+        if (data.mode === "album" && data.albumData.type !== "Single" && !data.albumData.albumImageFile)
+            return (setError("Album cover image is required for EP/Album releases."), false);
 
         return true;
     };
 
-    const handleUpload = async (data: { mode: UploadMode; tracks: TrackUploadData[]; albumData: AlbumUploadData }) => {
+    // -------------------- UPLOAD HANDLER --------------------
+    const handleUpload = async (data: {
+        mode: UploadMode;
+        tracks: TrackUploadData[];
+        albumData: AlbumUploadData;
+        remixData: Record<string, RemixUploadData>;
+    }) => {
         if (!validateUpload(data)) return;
-
-        console.log("User ID (auth.uid()):", user?.id);
-        console.log("Profile ID:", profile?.id);
 
         setIsUploading(true);
         setError(null);
 
         try {
-            // 1️⃣ Insert album first
+            // ---------- 1️⃣ Insert Album ----------
             const album = await useAlbumInsert.mutateAsync({
                 albumData: {
                     name: data.albumData.name,
                     type: data.albumData.type,
                     release_date: data.albumData.release_date,
-                    artist_id: user?.id, // Use user.id as artist_id
+                    artist_id: user?.id!,
                 },
-                // Only pass album image for EP/Album types, not Singles
                 albumImageFile: data.albumData.type !== "Single" ? data.albumData.albumImageFile : undefined,
             });
 
-            // 2️⃣ Upload all tracks and associate them with the created album
-            const trackUploadPromises = data.tracks.map(async (track) => {
-                return useTrackUploadHook.mutateAsync({
-                    trackData: {
-                        title: track.title,
-                        genre: track.genre,
-                        duration: track.duration,
-                        release_date: track.release_date,
-                        copyright: track.copyright || "",
-                        lyrics: track.lyrics || "",
-                        locked: track.locked || false,
-                        plays: 0,
-                        links: {
-                            spotify: track.links?.spotify || "",
+            // ---------- 2️⃣ Upload Tracks ----------
+            interface UploadedTrack {
+                id: string;
+                title: string;
+                album_id: string;
+                artist_id: string;
+                // Add other fields if needed
+            }
+
+            const uploadedTracks: UploadedTrack[] = await Promise.all(
+                data.tracks.map((track) =>
+                    useTrackUploadHook.mutateAsync({
+                        trackData: {
+                            title: track.title,
+                            genre: track.genre,
+                            duration: track.duration,
+                            release_date: track.release_date,
+                            lyrics: track.lyrics || "",
+                            locked: track.locked || false,
+                            is_public: track.is_public || false,
+                            plays: 0,
+                            links: { spotify: track.links?.spotify || "" },
+                            artist_id: user?.id!,
+                            album_id: album.id,
                         },
-                        artist_id: user?.id, // Use user.id as artist_id
-                        album_id: album.id, // Associate with the created album
-                    },
-                    audioFile: track.audioFile!,
-                    // Pass track image for Single releases or single mode
-                    trackImageFile: data.mode === "single" || data.albumData.type === "Single" ? track.trackImageFile : undefined,
-                });
-            });
+                        audioFile: track.audioFile!,
+                        trackImageFile: data.mode === "single" || data.albumData.type === "Single" ? track.trackImageFile : undefined,
+                    }),
+                ),
+            );
 
-            // Wait for all tracks to upload and get the uploaded tracks
-            const uploadedTracks = await Promise.all(trackUploadPromises);
+            // ---------- 3️⃣ Insert Track Credits ----------
+            await Promise.all(
+                uploadedTracks.map((uploadedTrack) =>
+                    useTrackCreditInsertHook.mutateAsync({
+                        track_id: uploadedTrack.id,
+                        name: artist?.stage_name || "Unknown Artist",
+                        role: "main-artist" as CreditRoleType,
+                    }),
+                ),
+            );
 
-            // 3️⃣ Create track credits for each uploaded track
-            const trackCreditPromises = uploadedTracks.map(async (uploadedTrack, index) => {
-                return useTrackCreditInsertHook.mutateAsync({
-                    track_id: uploadedTrack.id,
-                    name: artist?.stage_name || "Unknown Artist", // Use artist's stage_name
-                    role: "main-artist", // Default role for the uploader
-                });
-            });
+            // ---------- 4️⃣ Insert Remix Data ----------
+            interface RemixData {
+                original_song: string;
+                url?: string | null;
+                original_artists: string[];
+                additional_artists?: string[] | null;
+            }
 
-            // Wait for all track credits to be created
-            await Promise.all(trackCreditPromises);
+            await Promise.all(
+                uploadedTracks
+                    .map((uploadedTrack, idx) => {
+                        const trackData = data.tracks[idx];
+                        const remixInfo = data.remixData[trackData.id] as RemixData | undefined;
 
+                        if (trackData.type === "Remix" && remixInfo?.original_artists?.length) {
+                            return useRemixInsertHook.mutateAsync({
+                                track_id: uploadedTrack.id,
+                                original_song: remixInfo.original_song,
+                                url: remixInfo.url || null,
+                                original_artists: remixInfo.original_artists,
+                                additional_artists: remixInfo.additional_artists?.length ? remixInfo.additional_artists : null,
+                            });
+                        }
+                        return null;
+                    })
+                    .filter(Boolean) as Promise<unknown>[],
+            );
+
+            // ---------- 5️⃣ Success ----------
             setUploadSuccess(true);
         } catch (err) {
             console.error("Upload error:", err);
-            const errorMessage = err instanceof Error ? err.message : "Failed to upload. Please try again.";
-            setError(errorMessage);
+            setError(err instanceof Error ? err.message : "Failed to upload. Please try again.");
         } finally {
             setIsUploading(false);
         }
     };
 
+    // -------------------- RENDER --------------------
     return (
         <div className="container mx-auto px-4 py-8 pt-24 max-w-4xl">
-            <div className="mb-8">
+            <header className="mb-8">
                 <h1 className="text-3xl font-bold mb-2">Upload Music</h1>
                 <p className="text-muted-foreground">Share your music with the Solo-Queue community</p>
-            </div>
+            </header>
 
             {uploadSuccess && (
                 <Alert className="mb-6 border-green-200 bg-green-50">

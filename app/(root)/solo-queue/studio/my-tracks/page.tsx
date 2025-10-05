@@ -4,18 +4,22 @@ import { useTracksWithJoinsQuery } from "@/hooks/music/use-tracks";
 import TrackCard from "@/components/layout/music/track-card";
 import { useAuthStore } from "@/stores/auth-store";
 
+/**
+ * MyTracksPage
+ * Displays tracks uploaded by the currently logged-in artist
+ */
 export default function MyTracksPage() {
-    // Fetch all tracks - you may need to adjust the table name and query key
-    const { data: tracks, isLoading, error } = useTracksWithJoinsQuery();
     const { user } = useAuthStore();
+    const { data: tracks, isLoading, error } = useTracksWithJoinsQuery();
 
-    if (!user) {
-        return null;
-    }
+    if (!user) return null;
 
-    // Filter tracks by artist_id
+    // Filter tracks to only include those by current user
     const myTracks = tracks?.filter((track) => track.artist_id === user.id) || [];
 
+    // -------------------------
+    // Loading State
+    // -------------------------
     if (isLoading) {
         return (
             <div className="container mx-auto px-4 py-8">
@@ -29,6 +33,9 @@ export default function MyTracksPage() {
         );
     }
 
+    // -------------------------
+    // Error State
+    // -------------------------
     if (error) {
         return (
             <div className="container mx-auto px-4 py-8">
@@ -40,27 +47,33 @@ export default function MyTracksPage() {
         );
     }
 
+    // -------------------------
+    // Empty State
+    // -------------------------
+    if (myTracks.length === 0) {
+        return (
+            <div className="container mx-auto px-4 py-8 pt-24 text-center">
+                <h1 className="text-3xl font-bold text-white mb-8">My Tracks</h1>
+                <p className="text-gray-400 text-lg">No tracks found</p>
+                <p className="text-gray-500 text-sm mt-2">Start creating music to see your tracks here</p>
+            </div>
+        );
+    }
+
+    // -------------------------
+    // Tracks Grid
+    // -------------------------
     return (
         <div className="container mx-auto px-4 py-8 pt-24">
             <h1 className="text-3xl font-bold text-white mb-8">My Tracks</h1>
-
-            {myTracks.length === 0 ? (
-                <div className="text-center py-12">
-                    <p className="text-gray-400 text-lg">No tracks found</p>
-                    <p className="text-gray-500 text-sm mt-2">Start creating music to see your tracks here</p>
-                </div>
-            ) : (
-                <>
-                    <p className="text-gray-400 mb-6">
-                        {myTracks.length} track{myTracks.length !== 1 ? "s" : ""}
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {myTracks.map((track) => (
-                            <TrackCard key={track.id} track={track} playlist={myTracks} />
-                        ))}
-                    </div>
-                </>
-            )}
+            <p className="text-gray-400 mb-6">
+                {myTracks.length} track{myTracks.length !== 1 ? "s" : ""}
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {myTracks.map((track) => (
+                    <TrackCard key={track.id} trackId={track.id} playlist={myTracks} />
+                ))}
+            </div>
         </div>
     );
 }

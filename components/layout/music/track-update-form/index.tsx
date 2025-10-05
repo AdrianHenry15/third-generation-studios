@@ -4,8 +4,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTrackUpdate } from "@/hooks/music/use-tracks";
 import { useTrackFileReplace } from "@/hooks/storage/use-music-storage";
-import { ITrackProps, IMusicLinkProps, TrackType } from "@/lib/solo-queue-types/music-types";
+import { useRemixInsert, useRemixUpdate, useRemixDelete } from "@/hooks/music/use-remixes"; // Add remix hooks
 import { trackGenres } from "@/lib/constants";
+import RemixCreditForm from "@/components/layout/solo-queue/studio/remix-credit-form";
+import { RemixUploadData } from "../../solo-queue/studio/studio-upload-form";
+import { IMusicLinkProps, ITrackProps, TrackType } from "@/lib/types/music-types";
 
 interface TrackUpdateFormProps {
     track: ITrackProps;
@@ -19,9 +22,9 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
         release_date: track.release_date ? track.release_date.split("T")[0] : "",
         genre: track.genre || "",
         locked: track.locked || false,
-        copyright: track.copyright || "",
         lyrics: track.lyrics || "",
         type: track.type || ("Unreleased" as TrackType),
+        is_public: track.is_public || false,
         links: {
             spotify: track.links?.spotify || "",
             apple: track.links?.apple || "",
@@ -33,6 +36,14 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
         },
     });
 
+    // Separate state for remix data since it's not part of tracks table
+    const [remixData, setRemixData] = useState({
+        original_song: track.remix?.original_song || "",
+        url: track.remix?.url || "",
+        original_artists: track.remix?.original_artists || [],
+        additional_artists: track.remix?.additional_artists || [],
+    });
+
     const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
     const [genreSearchTerm, setGenreSearchTerm] = useState("");
     const [selectedGenreIndex, setSelectedGenreIndex] = useState(-1);
@@ -40,6 +51,9 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
 
     const updateTrackMutation = useTrackUpdate();
     const replaceFileMutation = useTrackFileReplace();
+    const remixInsertMutation = useRemixInsert();
+    const remixUpdateMutation = useRemixUpdate();
+    const remixDeleteMutation = useRemixDelete();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
@@ -59,6 +73,22 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
             }));
         }
+    };
+
+    const handleRemixDataChange = (remixData: RemixUploadData) => {
+        setRemixData({
+            ...remixData,
+            url: remixData.url ?? "",
+            additional_artists: remixData.additional_artists ?? [],
+        });
+    };
+
+    const handleTrackChange = (trackId: string, field: string, value: any) => {
+        // For single track update, we don't need trackId since we're updating the current track
+        setFormData((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,31 +127,8 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     newTitle: formData.title !== track.title ? formData.title : undefined,
                 });
 
-                // After file replacement, update other metadata
-                const filteredLinks: IMusicLinkProps = {};
-                Object.entries(formData.links).forEach(([key, value]) => {
-                    if (value.trim()) {
-                        filteredLinks[key as keyof IMusicLinkProps] = value;
-                    }
-                });
-
-                const updateData = {
-                    title: formData.title,
-                    release_date: formData.release_date,
-                    genre: formData.genre,
-                    locked: formData.locked,
-                    copyright: formData.copyright,
-                    lyrics: formData.lyrics,
-                    type: formData.type,
-                    links: Object.keys(filteredLinks).length > 0 ? filteredLinks : undefined,
-                };
-
-                await updateTrackMutation.mutateAsync({
-                    id: track.id,
-                    values: updateData,
-                });
-
-                router.push("/solo-queue/studio/my-tracks");
+                // After file replacement, update other metadata including remix data
+                await updateTrackAndRemixData();
                 return;
             } catch (error) {
                 console.error("Error replacing file:", error);
@@ -129,7 +136,12 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
             }
         }
 
-        // If no file replacement, just update metadata
+        // If no file replacement, just update metadata and remix data
+        await updateTrackAndRemixData();
+    };
+
+    const updateTrackAndRemixData = async () => {
+        // Filter links
         const filteredLinks: IMusicLinkProps = {};
         Object.entries(formData.links).forEach(([key, value]) => {
             if (value.trim()) {
@@ -143,10 +155,38 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
         };
 
         try {
+            // Update track data
             await updateTrackMutation.mutateAsync({
                 id: track.id,
                 values: updateData,
             });
+
+            // Handle remix data
+            const isCurrentlyRemix = track.type === "Remix";
+            const willBeRemix = formData.type === "Remix";
+
+            if (!isCurrentlyRemix && willBeRemix) {
+                // Track is becoming a remix - insert new remix record
+                await remixInsertMutation.mutateAsync({
+                    track_id: track.id,
+                    original_song: remixData.original_song,
+                    url: remixData.url || null,
+                    original_artists: remixData.original_artists,
+                    additional_artists: remixData.additional_artists?.length ? remixData.additional_artists : null,
+                });
+            } else if (isCurrentlyRemix && willBeRemix) {
+                // Track remains a remix - update existing remix record
+                await remixUpdateMutation.mutateAsync({
+                    track_id: track.id,
+                    original_song: remixData.original_song,
+                    url: remixData.url || null,
+                    original_artists: remixData.original_artists,
+                    additional_artists: remixData.additional_artists?.length ? remixData.additional_artists : null,
+                });
+            } else if (isCurrentlyRemix && !willBeRemix) {
+                // Track is no longer a remix - delete remix record
+                await remixDeleteMutation.mutateAsync(track.id);
+            }
 
             router.push("/solo-queue/studio/my-tracks");
         } catch (error) {
@@ -247,39 +287,6 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                 />
-            </div>
-
-            {/* Current Track Info (Read-only) */}
-            <div className="bg-gray-900 p-4 rounded-lg border border-gray-700">
-                <h3 className="text-sm font-medium text-gray-300 mb-3">Current Track Information</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div>
-                        <span className="text-gray-400">Current URL:</span>
-                        <p className="text-gray-300 truncate">{track.url || "No URL set"}</p>
-                    </div>
-                    <div>
-                        <span className="text-gray-400">Duration:</span>
-                        <p className="text-gray-300">
-                            {Math.floor(track.duration / 60)}:{String(track.duration % 60).padStart(2, "0")}
-                        </p>
-                    </div>
-                    <div>
-                        <span className="text-gray-400">Album Type:</span>
-                        <p className="text-gray-300">{track.album?.type || "Unknown"}</p>
-                    </div>
-                    <div>
-                        <span className="text-gray-400">Album Name:</span>
-                        <p className="text-gray-300">{track.album?.name || "Unknown"}</p>
-                    </div>
-                    <div>
-                        <span className="text-gray-400">Plays:</span>
-                        <p className="text-gray-300">{track.plays?.toLocaleString() || "0"}</p>
-                    </div>
-                    <div>
-                        <span className="text-gray-400">Created:</span>
-                        <p className="text-gray-300">{track.created_at ? new Date(track.created_at).toLocaleDateString() : "Unknown"}</p>
-                    </div>
-                </div>
             </div>
 
             {/* File Replacement */}
@@ -389,21 +396,15 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     <option value="Remix">Remix</option>
                 </select>
             </div>
-
-            {/* Copyright */}
-            <div>
-                <label htmlFor="copyright" className="block text-sm font-medium text-gray-300 mb-2">
-                    Copyright Information
-                </label>
-                <textarea
-                    id="copyright"
-                    name="copyright"
-                    value={formData.copyright}
-                    onChange={handleInputChange}
-                    rows={3}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-            </div>
+            {/* Remix Credits / Copyright */}
+            <RemixCreditForm
+                track={{
+                    ...track,
+                    type: formData.type,
+                }}
+                remixData={remixData}
+                onRemixDataChange={handleRemixDataChange}
+            />
 
             {/* Lyrics */}
             <div>
@@ -424,23 +425,37 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
             <div>
                 <h3 className="text-lg font-medium text-gray-300 mb-4">Music Platform Links</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {Object.entries(formData.links).map(([platform, url]) => (
-                        <div key={platform}>
-                            <label htmlFor={`links.${platform}`} className="block text-sm font-medium text-gray-400 mb-2 capitalize">
-                                {platform === "apple" ? "Apple Music" : platform}
-                            </label>
-                            <input
-                                type="url"
-                                id={`links.${platform}`}
-                                name={`links.${platform}`}
-                                value={url}
-                                onChange={handleInputChange}
-                                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                                placeholder={`https://${platform}.com/...`}
-                            />
-                        </div>
-                    ))}
+                    <div>
+                        <label htmlFor={`links.spotify`} className="block text-sm font-medium text-gray-400 mb-2 capitalize">
+                            Spotify
+                        </label>
+                        <input
+                            type="url"
+                            id={`links.spotify`}
+                            name={`links.spotify`}
+                            value={formData.links.spotify}
+                            onChange={handleInputChange}
+                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            placeholder={`https://spotify.com/...`}
+                        />
+                    </div>
                 </div>
+            </div>
+
+            {/* Public/Private Toggle */}
+            <div className="flex items-center">
+                <input
+                    type="checkbox"
+                    id="is_public"
+                    name="is_public"
+                    checked={formData.is_public}
+                    onChange={handleInputChange}
+                    className="w-4 h-4 text-blue-600 bg-gray-800 border-gray-700 rounded focus:ring-blue-500"
+                />
+                <label htmlFor="is_public" className="ml-2 text-sm font-medium text-gray-300">
+                    Make this track public
+                </label>
+                <div className="ml-4 text-xs text-gray-400">Public tracks can be discovered and played by other users</div>
             </div>
 
             {/* Locked Status */}

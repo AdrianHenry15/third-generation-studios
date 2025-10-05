@@ -14,6 +14,7 @@ export default function TrackUpdatePage() {
     const [newAlbumCover, setNewAlbumCover] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string>("");
     const [uploadStatus, setUploadStatus] = useState<"idle" | "success" | "error">("idle");
+    const [uploadError, setUploadError] = useState<string>("");
 
     const { data: track, isLoading, error } = useTrackByIdWithJoinsQuery(trackId);
     const albumCoverUpload = useAlbumCoverUpdate();
@@ -23,6 +24,8 @@ export default function TrackUpdatePage() {
         if (track) {
             console.log("Track data:", track);
             console.log("Album data:", track.album);
+            console.log("Album ID:", track.album?.id);
+            console.log("Artist ID:", track.artist_id);
         }
     }, [track]);
 
@@ -49,27 +52,41 @@ export default function TrackUpdatePage() {
 
     // Handle album cover upload
     const handleUploadCover = async () => {
-        if (!newAlbumCover || !track?.album?.id || !track?.artist_id) return;
+        if (!newAlbumCover || !track?.album?.id || !track?.artist_id) {
+            setUploadStatus("error");
+            setUploadError("Missing required data: album ID or artist ID");
+            return;
+        }
 
         setUploadStatus("idle");
+        setUploadError("");
 
         try {
-            await albumCoverUpload.mutateAsync({
+            console.log("Starting upload with:", {
+                albumId: track.album.id,
+                artistId: track.artist_id,
+                fileName: newAlbumCover.name,
+            });
+
+            const result = await albumCoverUpload.mutateAsync({
                 albumId: track.album.id,
                 artistId: track.artist_id,
                 albumImageFile: newAlbumCover,
             });
+
+            console.log("Upload successful, result:", result);
 
             // Reset state after successful upload
             setNewAlbumCover(null);
             setPreviewUrl("");
             setUploadStatus("success");
 
-            // Clear success message after 3 seconds
-            setTimeout(() => setUploadStatus("idle"), 3000);
+            // Clear success message after 5 seconds
+            setTimeout(() => setUploadStatus("idle"), 5000);
         } catch (error) {
             console.error("Failed to upload album cover:", error);
             setUploadStatus("error");
+            setUploadError(error as string);
         }
     };
 
@@ -120,6 +137,21 @@ export default function TrackUpdatePage() {
                     )}
                 </div>
 
+                {/* Debug Panel */}
+                {/* {process.env.NODE_ENV === "development" && track && (
+                    <div className="bg-gray-800/50 rounded-lg p-4 mb-6 text-xs">
+                        <h3 className="text-white font-bold mb-2">Debug Info:</h3>
+                        <div className="text-gray-300 space-y-1">
+                            <p>Track ID: {track.id}</p>
+                            <p>Album ID: {track.album?.id || "None"}</p>
+                            <p>Artist ID: {track.artist_id || "None"}</p>
+                            <p>Current Cover: {getCurrentCover()}</p>
+                            <p>Upload Status: {uploadStatus}</p>
+                            <p>Mutation Status: {albumCoverUpload.status}</p>
+                        </div>
+                    </div>
+                )} */}
+
                 {/* Album Cover Update Section */}
                 <div className="bg-gray-900/80 rounded-2xl shadow-2xl overflow-hidden mb-6">
                     <div className="p-8">
@@ -129,14 +161,7 @@ export default function TrackUpdatePage() {
                             <div className="space-y-4">
                                 <h3 className="text-lg font-semibold text-white">Current Cover</h3>
                                 <div className="relative w-64 h-64 mx-auto bg-neutral-800 rounded-lg overflow-hidden">
-                                    <Image
-                                        src={getCurrentCover()}
-                                        alt={`${track?.title} album cover`}
-                                        fill
-                                        className="object-cover"
-                                        sizes="256px"
-                                        quality={95}
-                                    />
+                                    <Image src={getCurrentCover()} alt={`${track?.title} album cover`} className="object-cover" fill />
                                 </div>
                                 <p className="text-neutral-400 text-sm text-center">{track?.album?.name || "No album assigned"}</p>
                             </div>
@@ -197,12 +222,20 @@ export default function TrackUpdatePage() {
                                         </div>
 
                                         {/* Enhanced status messages */}
-                                        {albumCoverUpload.isError && (
+                                        {(albumCoverUpload.isError || uploadStatus === "error") && (
                                             <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3">
                                                 <p className="text-red-400 text-sm text-center font-medium">❌ Failed to upload cover</p>
                                                 <p className="text-red-300 text-xs text-center mt-1">
-                                                    {albumCoverUpload.error?.message || "Please try again"}
+                                                    {uploadError || albumCoverUpload.error?.message || "Please try again"}
                                                 </p>
+                                                {process.env.NODE_ENV === "development" && (
+                                                    <details className="mt-2">
+                                                        <summary className="text-red-400 text-xs cursor-pointer">Debug Details</summary>
+                                                        <pre className="text-red-300 text-xs mt-1 whitespace-pre-wrap">
+                                                            {JSON.stringify(albumCoverUpload.error, null, 2)}
+                                                        </pre>
+                                                    </details>
+                                                )}
                                             </div>
                                         )}
 
@@ -211,15 +244,17 @@ export default function TrackUpdatePage() {
                                                 <p className="text-green-400 text-sm text-center font-medium">
                                                     ✅ Cover uploaded successfully!
                                                 </p>
-                                                <p className="text-green-300 text-xs text-center mt-1">Your album cover has been updated</p>
+                                                <p className="text-green-300 text-xs text-center mt-1">
+                                                    Your album cover has been updated. Refresh the page to see changes.
+                                                </p>
                                             </div>
                                         )}
 
-                                        {uploadStatus === "error" && (
-                                            <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-3">
-                                                <p className="text-red-400 text-sm text-center font-medium">❌ Upload failed</p>
-                                                <p className="text-red-300 text-xs text-center mt-1">
-                                                    Please check your connection and try again
+                                        {albumCoverUpload.isPending && (
+                                            <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-3">
+                                                <p className="text-blue-400 text-sm text-center font-medium">⏳ Uploading cover...</p>
+                                                <p className="text-blue-300 text-xs text-center mt-1">
+                                                    Please wait while we process your image
                                                 </p>
                                             </div>
                                         )}
@@ -232,7 +267,7 @@ export default function TrackUpdatePage() {
 
                 {/* Track Update Form */}
                 <div className="bg-gray-900/80 rounded-2xl shadow-2xl overflow-hidden">
-                    <div className="p-8">
+                    <div className="p-8 space-y-6">
                         <TrackUpdateForm track={track} />
                     </div>
                 </div>

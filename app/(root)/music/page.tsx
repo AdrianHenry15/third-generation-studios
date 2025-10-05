@@ -34,7 +34,7 @@ export default function MusicPage() {
 
     // Memoized filtered and sorted tracks for optimal performance
     const sortedTracks = useMemo<ITrackProps[]>(() => {
-        if (!tracks || tracks.length === 0) return [] as ITrackProps[];
+        if (!Array.isArray(tracks) || tracks.length === 0) return [] as ITrackProps[];
 
         let filtered = (tracks as ITrackProps[]).filter((track) => {
             // Search filter
@@ -80,7 +80,7 @@ export default function MusicPage() {
 
     // Memoized stats calculation for performance
     const stats = useMemo(() => {
-        if (!tracks || tracks.length === 0) {
+        if (!Array.isArray(tracks) || tracks.length === 0) {
             return { total: 0, playable: 0, released: 0, unreleased: 0 };
         }
 
