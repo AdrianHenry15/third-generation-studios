@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/lib/queries/query-keys";
+import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
 import { supabase } from "@/lib/supabase/client";
 
 // -------------------------

@@ -3,9 +3,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadFile, deleteFile } from "@/lib/supabase/storage";
 import { useMusicInsert, useMusicUpdate } from "@/hooks/music/use-music";
-import { QUERY_KEYS } from "@/lib/queries/query-keys";
+import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
 
-import type { IArtistProps, IAlbumProps, IAlbumImageProps, ITrackProps } from "@/lib/solo-queue-types/music-types";
+import type { IArtistProps, IAlbumProps, IAlbumImageProps, ITrackProps } from "@/lib/types/music-types";
 import { supabase } from "@/lib/supabase/client";
 
 // -------------------------

@@ -1,16 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/lib/queries/query-keys";
-import {
-    fetchTable,
-    insertRow,
-    updateRow,
-    deleteRow,
-    fetchRowById,
-    fetchTracksWithJoins,
-    fetchTrackByIdWithJoins,
-    fetchTracksByArtist,
-} from "@/lib/fetchers/generic-fetchers.ts";
-import { ITrackProps } from "@/lib/solo-queue-types/music-types";
+import { fetchTable, insertRow, updateRow, deleteRow, fetchRowById } from "@/lib/fetchers/generic-fetchers.ts";
+import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
+import { fetchTrackByIdWithJoins, fetchTracksByArtist, fetchTracksWithJoins } from "@/lib/fetchers/track-fetchers";
+import { ITrackProps } from "@/lib/types/music-types";
 
 // Generic fetch hooks
 type Table = Parameters<typeof fetchTable>[0];
@@ -35,7 +27,7 @@ export function useMusicQueryById<T>(table: Table, key: keyof typeof QUERY_KEYS,
 export function useTracksWithJoinsQuery() {
     return useQuery({
         queryKey: QUERY_KEYS.tracks,
-        queryFn: fetchTracksWithJoins,
+        queryFn: () => fetchTracksWithJoins(),
     });
 }
 

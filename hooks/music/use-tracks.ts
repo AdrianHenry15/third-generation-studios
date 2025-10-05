@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/lib/queries/query-keys";
+import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
 import { useMusicQuery } from "./use-music";
 import { fetchTracksWithJoins } from "@/lib/fetchers/track-fetchers";
 import { ITrackCreditProps, ITrackProps } from "@/lib/types/music-types";

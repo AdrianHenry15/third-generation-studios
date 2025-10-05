@@ -1,6 +1,6 @@
-import { ITrackProps } from "@/lib/types";
-import { format } from "path";
+import { ITrackProps } from "@/lib/types/music-types";
 import React from "react";
+import AddToPlaylistButton from "./add-to-playlist-button";
 
 interface ITrackInfoProps {
     track: ITrackProps;
@@ -23,7 +23,10 @@ const TrackInfo: React.FC<ITrackInfoProps> = ({ track }) => {
 
     return (
         <div>
-            <h2 className="text-xl font-bold text-white mb-1 truncate">{title}</h2>
+            <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-white mb-1 truncate">{title}</h2>
+                <AddToPlaylistButton trackId={track.id} />
+            </div>
             <p className="text-gray-400 text-sm mb-1 truncate">
                 {artists && artists.length > 0 ? artists.map((artist) => artist.stage_name).join(", ") : "Unknown Artist"}
             </p>

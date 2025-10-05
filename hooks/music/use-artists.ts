@@ -1,6 +1,6 @@
-import { IArtistProps } from "@/lib/types";
+import { IArtistProps } from "@/lib/types/music-types";
 import { useMusicQueryById } from "./use-music";
-import { QUERY_KEYS } from "@/lib/queries/query-keys";
+import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
 
 // Specific hook for getting artist by ID
 export function useArtistById(artistId: string) {

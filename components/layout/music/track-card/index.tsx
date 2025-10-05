@@ -13,6 +13,7 @@ import LikeButton from "./like-button";
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import { IAlbumImageProps, ITrackProps } from "@/lib/types/music-types";
+import AddToPlaylistButton from "./add-to-playlist-button";
 
 interface ITrackCardProps {
     trackId: string;

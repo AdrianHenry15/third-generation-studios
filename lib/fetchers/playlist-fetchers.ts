@@ -1,22 +1,82 @@
 import { supabase } from "../supabase/client";
-import { IPlaylistProps, IPlaylistTrackProps, ITrackProps } from "../types/music-types";
+import { IAlbumImageProps, IArtistProps, IPlaylistProps, IPlaylistTrackProps, ITrackCreditProps, ITrackProps } from "../types/music-types";
 
-// Helper to shape playlist data
-function shapePlaylist(data: any): IPlaylistProps {
+// Raw data types from Supabase (what comes back from the query)
+interface RawPlaylistData {
+    id: string;
+    name: string;
+    description?: string;
+    created_by: string;
+    is_public: boolean;
+    cover_image_url?: string;
+    track_count: number;
+    total_duration: number;
+    created_at: string;
+    updated_at: string;
+    creator: IArtistProps | null;
+    tracks: RawPlaylistTrack[];
+    likes: { id: string }[]; // Just need the count
+}
+
+interface RawPlaylistTrack {
+    id: string;
+    playlist_id: string;
+    track_id: string;
+    position: number;
+    added_by: string;
+    added_at: string;
+    track: RawTrack;
+}
+
+interface RawTrack {
+    id: string;
+    album_id: string;
+    artist_id: string;
+    title: string;
+    url: string;
+    duration: number; // seconds from DB
+    release_date: string;
+    genre: string;
+    locked: boolean;
+    plays: number;
+    lyrics?: string;
+    links?: any; // JSONB
+    is_public: boolean;
+    created_at: string;
+    updated_at: string;
+    artists: IArtistProps;
+    album: {
+        id: string;
+        artist_id: string;
+        name: string;
+        type: string;
+        release_date: string;
+        created_at: string;
+        updated_at: string;
+        images: IAlbumImageProps[];
+    };
+    credits: ITrackCreditProps[];
+}
+
+// Helper to shape playlist data with proper types
+function shapePlaylist(data: RawPlaylistData): IPlaylistProps {
     return {
         ...data,
-        creator: data.creator || null,
-        tracks: (data.tracks || []).map((t: any) => ({
-            ...t,
-            track: {
-                ...t.track,
-                artists: t.track?.artists ? [t.track.artists] : [],
-                type: "Released", // could compute like in track fetchers
-                is_liked: false,
-            } as ITrackProps,
-        })) as IPlaylistTrackProps[],
-        is_liked: false, // placeholder, populate separately if needed
-        likes_count: data.likes?.length || 0,
+        creator: data.creator || undefined,
+        tracks: data.tracks.map(
+            (t: RawPlaylistTrack): IPlaylistTrackProps => ({
+                ...t,
+                track: {
+                    ...t.track,
+                    artists: [t.track.artists], // Convert single artist to array
+                    duration: t.track.duration * 1000, // Convert seconds to milliseconds
+                    type: "Released", // Use actual type logic here if needed
+                    is_liked: false,
+                } as ITrackProps,
+            }),
+        ),
+        is_liked: false,
+        likes_count: data.likes.length,
     };
 }
 
