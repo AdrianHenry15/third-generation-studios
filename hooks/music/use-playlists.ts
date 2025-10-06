@@ -75,6 +75,41 @@ export function usePlaylistUpdate() {
     });
 }
 
+/**
+ * Delete a playlist by id (optimistic update)
+ */
+export function usePlaylistDelete() {
+    const qc = useQueryClient();
+    return useMutation({
+        mutationFn: async (playlistId: string) => {
+            const { error } = await supabase.from("playlists").delete().eq("id", playlistId);
+            if (error) throw error;
+            return playlistId;
+        },
+        onMutate: async (playlistId: string) => {
+            await qc.cancelQueries({ queryKey: QUERY_KEYS.playlists });
+            const prev = qc.getQueryData<IPlaylistProps[]>(QUERY_KEYS.playlists);
+            // Optimistically remove from playlists list cache
+            if (prev) {
+                qc.setQueryData<IPlaylistProps[]>(
+                    QUERY_KEYS.playlists,
+                    prev.filter((p) => p.id !== playlistId),
+                );
+            }
+            return { prev };
+        },
+        onError: (_err, _id, ctx) => {
+            // Revert on error
+            if (ctx?.prev) qc.setQueryData(QUERY_KEYS.playlists, ctx.prev);
+        },
+        onSettled: (_data, _err, playlistId) => {
+            // Invalidate lists and the specific playlist
+            qc.invalidateQueries({ queryKey: QUERY_KEYS.playlists });
+            qc.invalidateQueries({ queryKey: [...QUERY_KEYS.playlists, playlistId] });
+        },
+    });
+}
+
 // -------------------------
 // MUTATION HOOKS - PLAYLIST TRACKS
 // -------------------------
@@ -93,10 +128,11 @@ export function useAddTrackToPlaylist() {
                 position: 0, // TODO: Calculate proper position
             });
         },
-        onSuccess: (data, variables) => {
-            // Invalidate all playlist-related queries
+        onSuccess: async (data, variables) => {
             qc.invalidateQueries({ queryKey: QUERY_KEYS.playlists });
             qc.invalidateQueries({ queryKey: [...QUERY_KEYS.playlists, variables.playlistId] });
+            // Persist cover after change
+            await syncPlaylistCover(variables.playlistId);
         },
     });
 }
@@ -107,11 +143,22 @@ export function useAddTrackToPlaylist() {
 export function useRemoveTrackFromPlaylist() {
     const qc = useQueryClient();
     return useMutation({
+        // Return the playlistId of the deleted row so we can sync the cover
         mutationFn: async ({ playlistTrackId }: { playlistTrackId: string }) => {
-            return await supabase.from("playlist_tracks").delete().eq("id", playlistTrackId);
+            const { data, error } = await supabase
+                .from("playlist_tracks")
+                .delete()
+                .eq("id", playlistTrackId)
+                .select("playlist_id")
+                .single();
+            if (error) throw error;
+            return data.playlist_id as string;
         },
-        onSuccess: () => {
+        onSuccess: async (playlistId) => {
             qc.invalidateQueries({ queryKey: QUERY_KEYS.playlists });
+            qc.invalidateQueries({ queryKey: [...QUERY_KEYS.playlists, playlistId] });
+            // Persist cover after change
+            await syncPlaylistCover(playlistId);
         },
     });
 }
@@ -128,4 +175,24 @@ export function useInvalidatePlaylists() {
     return () => {
         qc.invalidateQueries({ queryKey: QUERY_KEYS.playlists });
     };
+}
+
+// Helper: resolve playlist cover from stored field or first track album image
+function resolvePlaylistCover(pl: IPlaylistProps): string | null {
+    // Prefer stored cover in playlists table
+    if (pl.cover_image_url) return pl.cover_image_url;
+
+    // Use first track's album image (typed)
+    const first = pl.tracks?.[0];
+    const imageUrl = first?.track?.album?.images?.[0]?.url;
+
+    return imageUrl ?? null;
+}
+
+// Helper: fetch joined playlist, compute cover, and persist to playlists.cover_image_url
+async function syncPlaylistCover(playlistId: string) {
+    const pl = await fetchPlaylistByIdWithJoins(playlistId); // IPlaylistProps
+    const cover = resolvePlaylistCover(pl);
+    const values: Partial<IPlaylistProps> = { cover_image_url: cover ?? undefined };
+    await updateRow<IPlaylistProps>("playlists", playlistId, values);
 }

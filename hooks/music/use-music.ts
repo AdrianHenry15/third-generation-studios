@@ -1,8 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchTable, insertRow, updateRow, deleteRow, fetchRowById } from "@/lib/fetchers/generic-fetchers.ts";
 import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
-import { fetchTrackByIdWithJoins, fetchTracksByArtist, fetchTracksWithJoins } from "@/lib/fetchers/track-fetchers";
-import { ITrackProps } from "@/lib/types/music-types";
+import { useTracksByArtistQuery } from "./use-tracks";
+import { supabase } from "@/lib/supabase/client";
+import type { IArtistProps, IPlaylistProps, ITrackProps } from "@/lib/types/music-types";
 
 // Generic fetch hooks
 type Table = Parameters<typeof fetchTable>[0];
@@ -20,32 +21,6 @@ export function useMusicQueryById<T>(table: Table, key: keyof typeof QUERY_KEYS,
         queryKey: [...QUERY_KEYS[key], id],
         queryFn: () => fetchRowById<T>(table, id),
         enabled: !!id, // Only run query if id is provided
-    });
-}
-
-// Specific hook for tracks with joined data (album, artists, etc.)
-export function useTracksWithJoinsQuery() {
-    return useQuery({
-        queryKey: QUERY_KEYS.tracks,
-        queryFn: () => fetchTracksWithJoins(),
-    });
-}
-
-// Specific hook for single track with joins
-export function useTrackByIdWithJoinsQuery(id: string | number) {
-    return useQuery({
-        queryKey: [...QUERY_KEYS.tracks, id],
-        queryFn: () => fetchTrackByIdWithJoins(id),
-        enabled: !!id,
-    });
-}
-
-// Specific hook for tracks by artist
-export function useTracksByArtistQuery(artistId: string) {
-    return useQuery({
-        queryKey: [...QUERY_KEYS.tracks, "artist", artistId],
-        queryFn: () => fetchTracksByArtist(artistId),
-        enabled: !!artistId,
     });
 }
 
@@ -79,16 +54,78 @@ export function useMusicDelete(table: Table, key: keyof typeof QUERY_KEYS) {
     });
 }
 
-// Specific hook for updating tracks with proper invalidation
-export function useTrackUpdate() {
-    const qc = useQueryClient();
-    return useMutation({
-        mutationFn: ({ id, values }: { id: string | number; values: Partial<ITrackProps> }) => updateRow<ITrackProps>("tracks", id, values),
-        onSuccess: (data, variables) => {
-            // Invalidate multiple related queries
-            qc.invalidateQueries({ queryKey: QUERY_KEYS.tracks });
-            qc.invalidateQueries({ queryKey: [...QUERY_KEYS.tracks, variables.id] });
-            qc.invalidateQueries({ queryKey: [...QUERY_KEYS.tracks, "artist"] });
+// -----------------------------
+// Search helpers (sanitize + pattern)
+// -----------------------------
+function sanitizeForFilter(value: string) {
+    // Remove characters that break PostgREST parsing in filters
+    return value.replace(/[(),]/g, " ").trim();
+}
+function toIlikePattern(value: string) {
+    return `%${value}%`;
+}
+
+// -----------------------------
+// Search hooks (centralized)
+// -----------------------------
+export function useSearchPlaylistsQuery(q: string, enabled: boolean) {
+    return useQuery({
+        queryKey: ["search", "playlists", q],
+        queryFn: async () => {
+            const pattern = toIlikePattern(sanitizeForFilter(q));
+            const { data, error } = await supabase
+                .from("playlists")
+                .select("id,name,cover_image_url,track_count")
+                .ilike("name", pattern)
+                .order("updated_at", { ascending: false })
+                .limit(12);
+            if (error) throw error;
+            return (data ?? []) as Pick<IPlaylistProps, "id" | "name" | "cover_image_url" | "track_count">[];
         },
+        enabled,
+        staleTime: 1000 * 30,
+        retry: 1,
+    });
+}
+
+export function useSearchTracksQuery(q: string, enabled: boolean) {
+    return useQuery({
+        queryKey: ["search", "tracks", q],
+        queryFn: async () => {
+            const pattern = toIlikePattern(sanitizeForFilter(q));
+            // Important: no extra wrapping parens to avoid 400 from PostgREST
+            const orExpr = `title.ilike.${pattern},genre.ilike.${pattern}`;
+            const { data, error } = await supabase
+                .from("tracks")
+                .select("id,title,duration")
+                .or(orExpr)
+                .order("plays", { ascending: false })
+                .limit(12);
+            if (error) throw error;
+            return (data ?? []) as Pick<ITrackProps, "id" | "title" | "duration">[];
+        },
+        enabled,
+        staleTime: 1000 * 30,
+        retry: 1,
+    });
+}
+
+export function useSearchArtistsQuery(q: string, enabled: boolean) {
+    return useQuery({
+        queryKey: ["search", "artists", q],
+        queryFn: async () => {
+            const pattern = toIlikePattern(sanitizeForFilter(q));
+            const { data, error } = await supabase
+                .from("profiles")
+                .select("id,stage_name,profile_image_url,verified")
+                .ilike("stage_name", pattern)
+                .order("verified", { ascending: false })
+                .limit(12);
+            if (error) throw error;
+            return (data ?? []) as Pick<IArtistProps, "id" | "stage_name" | "profile_image_url" | "verified">[];
+        },
+        enabled,
+        staleTime: 1000 * 30,
+        retry: 1,
     });
 }
