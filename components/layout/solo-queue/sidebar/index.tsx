@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, Search, Heart, PlayCircle, Settings, User, Music, Upload } from "lucide-react";
+import { Menu, X, Home, Search, Heart, PlayCircle, User, Music, Upload } from "lucide-react";
 import SidebarSection from "./sidebar-section";
 import PlaylistSidebarSection from "./playlist-sidebar-section";
 

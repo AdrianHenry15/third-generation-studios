@@ -88,7 +88,7 @@ export default function PlaylistSidebarSection({
                         {
                             icon: Plus,
                             label: user?.id ? "Create Playlist" : "Login to Create",
-                            href: "#",
+                            href: user?.id ? "#create-playlist" : "/sign-in",
                             disabled: !user?.id,
                             onClick: handleCreateClick,
                         } as any,
@@ -99,7 +99,7 @@ export default function PlaylistSidebarSection({
                                   {
                                       icon: PlayCircle,
                                       label: "Loading playlists...",
-                                      href: "#",
+                                      href: "#playlists-loading",
                                       disabled: true,
                                   },
                               ]

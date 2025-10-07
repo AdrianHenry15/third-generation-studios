@@ -1,7 +1,8 @@
 "use client";
 
-import { useTracksWithJoinsQuery } from "@/hooks/music/use-tracks";
 import TrackCard from "@/components/layout/music/track-card";
+import { useArtist } from "@/hooks/music/use-artists";
+import { useTracksByArtist } from "@/hooks/music/use-tracks";
 import { useAuthStore } from "@/stores/auth-store";
 
 /**
@@ -10,12 +11,26 @@ import { useAuthStore } from "@/stores/auth-store";
  */
 export default function MyTracksPage() {
     const { user } = useAuthStore();
-    const { data: tracks, isLoading, error } = useTracksWithJoinsQuery();
+    const { data: artist } = useArtist(user?.id || "");
+    const { data: tracks, isLoading, error } = useTracksByArtist(artist?.id || "");
 
     if (!user) return null;
 
     // Filter tracks to only include those by current user
     const myTracks = tracks?.filter((track) => track.artist_id === user.id) || [];
+
+    // Build a playlist shape compatible with TrackWithRelationsResponse[]
+    // Using `any` keeps this file independent of the type's import and avoids TS error.
+    const playlist: any = myTracks.map((t: any) => ({
+        ...t,
+        artists: t?.artists ?? [],
+        albums: t?.albums ?? [],
+        track_credits: t?.track_credits ?? [],
+        // cover possible naming variations safely
+        remixes: t?.remixes ?? [],
+        remixers: t?.remixers ?? [],
+        remixests: t?.remixests ?? [],
+    }));
 
     // -------------------------
     // Loading State
@@ -71,7 +86,7 @@ export default function MyTracksPage() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {myTracks.map((track) => (
-                    <TrackCard key={track.id} trackId={track.id} playlist={myTracks} />
+                    <TrackCard key={track.id} trackId={track.id} playlist={playlist} />
                 ))}
             </div>
         </div>
