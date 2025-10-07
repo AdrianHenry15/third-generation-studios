@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, Search, Heart, PlayCircle, Settings, User, Clock, Star, Music, Upload } from "lucide-react";
+import { Menu, X, Home, Search, Heart, PlayCircle, Settings, User, Music, Upload } from "lucide-react";
 import SidebarSection from "./sidebar-section";
 import PlaylistSidebarSection from "./playlist-sidebar-section";
 
@@ -12,9 +12,7 @@ const mainItems = [
 ];
 
 const libraryItems = [
-    { icon: Clock, label: "Recently Played", href: "/solo-queue/recent" },
     { icon: Heart, label: "Liked Songs", href: "/solo-queue/liked" },
-    // { icon: Star, label: "Favorites", href: "/solo-queue/favorites" },
     { icon: PlayCircle, label: "Playlists", href: "/solo-queue/playlists" },
 ];
 
@@ -23,10 +21,7 @@ const artistItems = [
     { icon: Upload, label: "Upload Track", href: "/solo-queue/studio/upload" },
 ];
 
-const userItems = [
-    { icon: User, label: "Profile", href: "/solo-queue/profile" },
-    { icon: Settings, label: "Settings", href: "/solo-queue/settings" },
-];
+const userItems = [{ icon: User, label: "Profile", href: "/solo-queue/profile" }];
 
 interface ISidebarProps {
     isCollapsed: boolean;

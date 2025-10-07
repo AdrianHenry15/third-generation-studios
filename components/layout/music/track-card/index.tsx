@@ -3,7 +3,6 @@
 import Image from "next/image";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useTrackByIdWithJoinsQuery } from "@/hooks/music/use-tracks";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
@@ -11,13 +10,63 @@ import LockButton from "./lock-button";
 import TypeLabel from "./type-label";
 import LikeButton from "./like-button";
 import { useAuthStore } from "@/stores/auth-store";
-import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
-import { IAlbumImageProps, ITrackProps } from "@/lib/types/music-types";
+import { useProfile } from "@/hooks/public/use-profiles";
 import AddToPlaylistButton from "./add-to-playlist-button";
+import { useTrackWithRelations } from "@/hooks/music/use-tracks";
+import type { Tables } from "@/lib/types/supabase-types";
+
+// Type for track with relations that matches the actual hook response
+export type TrackWithRelationsResponse = {
+    album_id: string;
+    artist_id: string;
+    created_at: string;
+    duration: number;
+    genre: string | null;
+    id: string;
+    is_public: boolean | null;
+    links: any | null;
+    locked: boolean;
+    lyrics: string | null;
+    plays: number;
+    release_date: string | null;
+    title: string;
+    type: string | null;
+    updated_at: string;
+    url: string;
+    artists: {
+        stage_name: string;
+        profile_image_url: string | null;
+    };
+    albums: {
+        id: string;
+        name: string;
+        type: "Single" | "EP" | "Album";
+        album_images: Tables<"album_images">[];
+    };
+    track_credits: {
+        id?: string;
+        created_at?: string;
+        updated_at?: string;
+        track_id?: string;
+        name: string;
+        role: "composer" | "producer" | "lyricist" | "featured-artist" | "main-artist";
+    }[];
+    // ✅ Fix: make remixes flexible so it supports partial data
+    remixes: {
+        id?: string;
+        track_id?: string;
+        created_at?: string | null;
+        updated_at?: string | null;
+        url?: string | null;
+        original_song: string;
+        original_artists: any;
+        additional_artists?: any;
+    } | null;
+};
 
 interface ITrackCardProps {
     trackId: string;
-    playlist?: ITrackProps[];
+    playlist?: TrackWithRelationsResponse[];
     onUnlock?: (trackId: string) => void;
 }
 
@@ -27,14 +76,11 @@ interface ITrackCardProps {
  */
 const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
-    const { data: profile } = useProfileByIdQuery(user!.id);
+    const { data: profile } = useProfile(user?.id || "", !!user?.id);
 
-    const { data: track, isLoading, error } = useTrackByIdWithJoinsQuery(trackId);
+    const { data: track, isLoading, error } = useTrackWithRelations(trackId);
     const router = useRouter();
 
-    // -------------------------
-    // Loading State
-    // -------------------------
     if (isLoading) {
         return (
             <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden h-80 flex items-center justify-center">
@@ -43,9 +89,6 @@ const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
         );
     }
 
-    // -------------------------
-    // Error State
-    // -------------------------
     if (error || !track) {
         return (
             <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden h-80 flex items-center justify-center">
@@ -54,15 +97,9 @@ const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
         );
     }
 
-    // -------------------------
-    // Album Cover Selection
-    // -------------------------
-    const albumImages: IAlbumImageProps[] = track.album?.images || [];
-    const albumCover = albumImages.find((img) => img.id === track.album?.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
+    const albumImages = track.albums.album_images || [];
+    const albumCover = albumImages.find((img) => img.album_id === track.albums.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
 
-    // -------------------------
-    // Render Track Card
-    // -------------------------
     return (
         <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
             {/* Album Image */}
@@ -77,7 +114,7 @@ const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
 
                 {/* Overlays */}
                 <LikeButton trackId={track.id} />
-                <TypeLabel type={track.type} />
+                <TypeLabel type={track.type!} />
                 {track.locked && <LockButton onUnlock={onUnlock} trackId={track.id} />}
             </div>
 
@@ -111,9 +148,15 @@ const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
                     </button>
                 )}
 
+                {/* Add to Playlist Button for authenticated users */}
+                {user && <AddToPlaylistButton trackId={track.id} />}
+
                 {/* Optional External Links */}
-                {track.type === "Released" && track.album?.name && (
-                    <ExternalLinkButton albumName={track.album.name} link={`https://album.link/tgs-${track.album.name.toLowerCase()}`} />
+                {track.type === "Released" && track.albums.name && (
+                    <ExternalLinkButton
+                        albumName={track.albums.name}
+                        link={`https://album.link/tgs-${track.albums.name.toLowerCase().replace(/\s+/g, "-")}`}
+                    />
                 )}
             </div>
         </div>

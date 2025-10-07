@@ -3,8 +3,19 @@
 import { useEffect, useState, useMemo } from "react";
 import TrackFilter from "@/components/layout/music/track-filter";
 import TrackCard from "@/components/layout/music/track-card";
-import { useTracksWithJoinsQuery } from "@/hooks/music/use-music";
-import { ITrackProps } from "@/lib/types";
+import { useAllTracks } from "@/hooks/music/use-tracks";
+import type { Tables } from "@/lib/types/supabase-types";
+
+// Track type from Supabase
+type Track = Tables<"tracks">;
+
+// Extended track type with relations (what we get from the fetcher)
+interface TrackWithRelations extends Track {
+    artists?: Tables<"artists">;
+    album?: Tables<"albums">;
+    credits?: Tables<"track_credits">[];
+    likes?: Tables<"track_likes">[];
+}
 
 const filterOptions = [
     { value: "default", label: "Default" },
@@ -18,36 +29,38 @@ const filterOptions = [
 
 export default function MusicPage() {
     // Fetch tracks data using music hooks
-    // Fetch all tracks - you may need to adjust the table name and query key
-    const { data: tracks, isLoading, error } = useTracksWithJoinsQuery();
+    const { data: tracks, isLoading, error } = useAllTracks();
 
     const [unlocked, setUnlocked] = useState<string[]>([]);
     const [filter, setFilter] = useState<string>("default");
     const [searchTerm, setSearchTerm] = useState("");
-    // debounce search to reduce recomputes and URL updates
+
+    // Debounce search to reduce recomputes and URL updates
     const [debouncedSearch, setDebouncedSearch] = useState("");
     useEffect(() => {
         const t = setTimeout(() => setDebouncedSearch(searchTerm), 300);
         return () => clearTimeout(t);
     }, [searchTerm]);
+
     const [showPlayableOnly, setShowPlayableOnly] = useState(false);
 
     // Memoized filtered and sorted tracks for optimal performance
-    const sortedTracks = useMemo<ITrackProps[]>(() => {
-        if (!Array.isArray(tracks) || tracks.length === 0) return [] as ITrackProps[];
+    const sortedTracks = useMemo<TrackWithRelations[]>(() => {
+        if (!Array.isArray(tracks) || tracks.length === 0) return [];
 
-        let filtered = (tracks as ITrackProps[]).filter((track) => {
+        let filtered = (tracks as TrackWithRelations[]).filter((track) => {
             // Search filter
             if (debouncedSearch) {
                 const searchLower = debouncedSearch.toLowerCase();
                 const matchesSearch =
                     track.title?.toLowerCase().includes(searchLower) ||
-                    (track.artists && track.artists.some((a) => a.stage_name?.toLowerCase().includes(searchLower))) ||
-                    track.album?.name?.toLowerCase().includes(searchLower);
+                    track.artists?.stage_name?.toLowerCase().includes(searchLower) ||
+                    track.album?.name?.toLowerCase().includes(searchLower) ||
+                    track.genre?.toLowerCase().includes(searchLower);
                 if (!matchesSearch) return false;
             }
 
-            // Playable only filter (spotify_id or url)
+            // Playable only filter (has URL)
             if (showPlayableOnly && !track.url) {
                 return false;
             }
@@ -59,8 +72,8 @@ export default function MusicPage() {
         switch (filter) {
             case "artist":
                 return [...filtered].sort((a, b) => {
-                    const aName = a.artists?.[0]?.stage_name || "";
-                    const bName = b.artists?.[0]?.stage_name || "";
+                    const aName = a.artists?.stage_name || "";
+                    const bName = b.artists?.stage_name || "";
                     return aName.localeCompare(bName);
                 });
             case "genre":
@@ -74,7 +87,8 @@ export default function MusicPage() {
             case "unreleased":
                 return filtered.filter((track) => track.type !== "Released");
             default:
-                return filtered;
+                // Default sorting by plays (most popular first)
+                return [...filtered].sort((a, b) => (b.plays || 0) - (a.plays || 0));
         }
     }, [tracks, debouncedSearch, showPlayableOnly, filter]);
 
@@ -84,11 +98,14 @@ export default function MusicPage() {
             return { total: 0, playable: 0, released: 0, unreleased: 0 };
         }
 
-        const released = (tracks as ITrackProps[]).filter((track) => track.type === "Released").length;
+        const typedTracks = tracks as TrackWithRelations[];
+        const playable = typedTracks.filter((track) => track.url).length;
+        const released = typedTracks.filter((track) => track.type === "Released").length;
         const unreleased = tracks.length - released;
 
         return {
             total: tracks.length,
+            playable,
             released,
             unreleased,
         };
@@ -104,7 +121,7 @@ export default function MusicPage() {
         setShowPlayableOnly(false);
     };
 
-    if (isLoading)
+    if (isLoading) {
         return (
             <main className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 py-12 px-4">
                 <div className="max-w-6xl mx-auto mt-24 text-center">
@@ -113,6 +130,7 @@ export default function MusicPage() {
                 </div>
             </main>
         );
+    }
 
     if (error) {
         return (
@@ -122,7 +140,7 @@ export default function MusicPage() {
                     <p className="text-gray-400 mb-4">Unable to load tracks. Please try again later.</p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="px-4 py-2 rounded-md bg-gray-800 text-gray-200 border border-gray-700"
+                        className="px-4 py-2 rounded-md bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700 transition-colors"
                     >
                         Retry
                     </button>
@@ -157,7 +175,7 @@ export default function MusicPage() {
 
                         <button
                             onClick={resetFilters}
-                            className="px-3 py-2 rounded-md bg-gray-800 text-gray-200 border border-gray-700 text-sm"
+                            className="px-3 py-2 rounded-md bg-gray-800 text-gray-200 border border-gray-700 text-sm hover:bg-gray-700 transition-colors"
                             title="Reset filters"
                         >
                             Reset
@@ -170,8 +188,8 @@ export default function MusicPage() {
                         Total: {stats.total} • Playable: {stats.playable}
                     </span>
                     <span className="hidden sm:inline">|</span>
-                    <span>Unreleased: {stats.unreleased}</span>
                     <span>Released: {stats.released}</span>
+                    <span>Unreleased: {stats.unreleased}</span>
                 </p>
 
                 <p className="text-lg text-gray-400 mb-10">
@@ -182,7 +200,10 @@ export default function MusicPage() {
                     <div className="flex flex-col items-center justify-center py-20 text-center text-gray-300">
                         <div className="text-2xl font-semibold mb-2">No tracks found</div>
                         <div className="text-gray-400 mb-4">Try adjusting your search or filters.</div>
-                        <button onClick={resetFilters} className="px-4 py-2 rounded-md bg-gray-800 text-gray-200 border border-gray-700">
+                        <button
+                            onClick={resetFilters}
+                            className="px-4 py-2 rounded-md bg-gray-800 text-gray-200 border border-gray-700 hover:bg-gray-700 transition-colors"
+                        >
                             Clear filters
                         </button>
                     </div>
@@ -191,8 +212,7 @@ export default function MusicPage() {
                         {sortedTracks.map((track) => (
                             <TrackCard
                                 key={track.id}
-                                track={track}
-                                album_images={track.album?.images || []}
+                                trackId={track.id}
                                 onUnlock={(trackId) => {
                                     if (!unlocked.includes(trackId)) handleUnlock(trackId);
                                 }}

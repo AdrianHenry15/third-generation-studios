@@ -153,11 +153,7 @@ export function useSearchTracksByArtistsQuery(q: string, enabled: boolean) {
 
             const t0 = performance.now();
             // 1) Find matching artists (id only)
-            const { data: artists, error: artistErr } = await supabase
-                .from("artists")
-                .select("id")
-                .ilike("stage_name", pattern)
-                .limit(24);
+            const { data: artists, error: artistErr } = await supabase.from("artists").select("id").ilike("stage_name", pattern).limit(24);
 
             if (artistErr) {
                 dbg("tracks-by-artists:err-artists", { q, query, pattern, error: artistErr });

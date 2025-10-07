@@ -2,9 +2,10 @@
 
 import { motion, Variants } from "framer-motion";
 import { Play, Heart, MoreHorizontal } from "lucide-react";
-import { useTracksWithJoinsQuery } from "@/hooks/music/use-music";
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
+import { ITrackProps } from "@/lib/types/music-types";
+import { useTracksWithJoinsQuery } from "@/hooks/music/use-tracks";
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -142,7 +143,7 @@ export default function SoloQHomePage() {
                     </div>
                 ) : (
                     <div className="space-y-2">
-                        {recentlyPlayed.map((track) => (
+                        {recentlyPlayed.map((track: ITrackProps) => (
                             <div
                                 key={track.id}
                                 className="group flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-800/50 transition-colors cursor-pointer"

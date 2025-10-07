@@ -1,44 +1,51 @@
-import { ITrackProps } from "@/lib/types/music-types";
 import React from "react";
-import AddToPlaylistButton from "./add-to-playlist-button";
+import { TrackWithRelationsResponse } from ".";
 
 interface ITrackInfoProps {
-    track: ITrackProps;
+    track: TrackWithRelationsResponse;
 }
 
 const TrackInfo: React.FC<ITrackInfoProps> = ({ track }) => {
-    const { title, artists, album, release_date, duration, plays } = track;
+    const { title, release_date, duration, plays } = track;
 
-    // Helper function to format duration from milliseconds to MM:SS
-    const formatDuration = (durationMs: number): string => {
-        const minutes = Math.floor(durationMs / 60000);
-        const seconds = Math.floor((durationMs % 60000) / 1000);
+    const formatDuration = (durationSeconds: number | null): string => {
+        if (!durationSeconds) return "0:00";
+        const minutes = Math.floor(durationSeconds / 60);
+        const seconds = durationSeconds % 60;
         return `${minutes}:${seconds.toString().padStart(2, "0")}`;
     };
 
-    const formatReleaseDate = (dateStr: string): string => {
+    const formatReleaseDate = (dateStr: string | null): string => {
+        if (!dateStr) return "Unknown Date";
         const date = new Date(dateStr);
-        return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+        return date.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+        });
     };
 
     return (
         <div>
-            <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-white mb-1 truncate">{title}</h2>
-                <AddToPlaylistButton trackId={track.id} />
-            </div>
-            <p className="text-gray-400 text-sm mb-1 truncate">
-                {artists && artists.length > 0 ? artists.map((artist) => artist.stage_name).join(", ") : "Unknown Artist"}
-            </p>
-            <p className="text-gray-300 text-xs mb-2 truncate font-medium">{`${album ? album.type : "Unknown Album"}`}</p>
+            <h2 className="text-xl font-bold text-white mb-1 truncate">{title}</h2>
+            <p className="text-gray-400 text-sm mb-1 truncate">{track.artists?.stage_name || "Unknown Artist"}</p>
+            <p className="text-gray-300 text-xs mb-2 truncate font-medium">{track.albums?.name || "Unknown Album"}</p>
+
             <div className="flex items-center text-xs text-gray-400 space-x-3 mb-2">
-                <span>{release_date ? formatReleaseDate(release_date) : "Unknown Date"}</span>
+                <span>{formatReleaseDate(release_date)}</span>
                 <span>•</span>
-                <span>{formatDuration(duration * 1000)}</span>
+                <span>{formatDuration(duration)}</span>
             </div>
+
             <div className="flex items-center text-xs text-gray-500 space-x-2 mb-2">
                 <span>Plays: {plays || 0}</span>
             </div>
+
+            {track.genre && (
+                <div className="flex items-center text-xs text-gray-500 space-x-2">
+                    <span>Genre: {track.genre}</span>
+                </div>
+            )}
         </div>
     );
 };

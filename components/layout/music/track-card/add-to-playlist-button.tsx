@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { usePlaylistsByUserQuery, useAddTrackToPlaylist, usePlaylistInsert } from "@/hooks/music/use-playlists";
 import { useAuthStore } from "@/stores/auth-store";
+import { usePlaylistsByUser, useAddTrackToPlaylist, useCreatePlaylist, type PlaylistInsert } from "@/hooks/music/use-playlists";
 
 // -------------------------
 // TYPES & INTERFACES
@@ -31,9 +31,9 @@ const AddToPlaylistButton = ({ trackId }: IAddToPlaylistButtonProps) => {
     // HOOKS & QUERIES
     // -------------------------
 
-    const { data: userPlaylists, isLoading } = usePlaylistsByUserQuery(user?.id);
+    const { data: userPlaylists, isLoading } = usePlaylistsByUser(user?.id || "", !!user?.id);
     const addTrackToPlaylist = useAddTrackToPlaylist();
-    const createPlaylist = usePlaylistInsert();
+    const createPlaylist = useCreatePlaylist();
 
     // -------------------------
     // EFFECTS
@@ -69,10 +69,15 @@ const AddToPlaylistButton = ({ trackId }: IAddToPlaylistButtonProps) => {
         console.log("Adding track to playlist:", { playlistId, trackId, userId: user.id });
 
         try {
+            // Get the current playlist to determine the next position
+            const playlist = userPlaylists?.find((p) => p.id === playlistId);
+            const nextPosition = (playlist?.tracks?.length || 0) + 1;
+
             await addTrackToPlaylist.mutateAsync({
                 playlistId,
                 trackId,
-                userId: user.id,
+                position: nextPosition,
+                addedBy: user.id,
             });
 
             setShowDropdown(false);
@@ -86,19 +91,22 @@ const AddToPlaylistButton = ({ trackId }: IAddToPlaylistButtonProps) => {
         if (!user?.id || !newPlaylistName.trim()) return;
 
         try {
-            const newPlaylist = await createPlaylist.mutateAsync({
+            const playlistData: PlaylistInsert = {
                 name: newPlaylistName.trim(),
                 created_by: user.id,
-                description: "",
+                description: null,
                 is_public: false,
-            });
+            };
+
+            const newPlaylist = await createPlaylist.mutateAsync(playlistData);
 
             // Add the track to the newly created playlist
             if (newPlaylist?.id) {
                 await addTrackToPlaylist.mutateAsync({
                     playlistId: newPlaylist.id,
                     trackId,
-                    userId: user.id,
+                    position: 1, // First track in new playlist
+                    addedBy: user.id,
                 });
                 console.log(`Track added to new playlist "${newPlaylistName}" successfully`);
             }
@@ -113,7 +121,8 @@ const AddToPlaylistButton = ({ trackId }: IAddToPlaylistButtonProps) => {
 
     const isTrackInPlaylist = (playlistId: string) => {
         const playlist = userPlaylists?.find((p) => p.id === playlistId);
-        return playlist?.tracks?.some((t) => t.track_id === trackId) || false;
+        // Check if any track in the playlist matches our trackId
+        return playlist?.tracks?.some((playlistTrack) => playlistTrack.track_id === trackId) || false;
     };
 
     // -------------------------
@@ -121,7 +130,7 @@ const AddToPlaylistButton = ({ trackId }: IAddToPlaylistButtonProps) => {
     // -------------------------
 
     return (
-        <div className="relative inline-block z-10" ref={dropdownRef}>
+        <div className="relative inline-block z-10 mt-4" ref={dropdownRef}>
             {/* Main Button */}
             <button
                 onClick={(e) => {

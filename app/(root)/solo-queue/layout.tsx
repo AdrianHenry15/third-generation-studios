@@ -37,7 +37,7 @@ export default function SoloQLayout({ children }: { children: React.ReactNode })
     // Calculate margin left based on screen size and collapsed state
     const getMarginLeft = () => {
         if (isMobile) return 0;
-        return isCollapsed ? 72 : 280;
+        return isCollapsed ? 60 : 280;
     };
 
     return (

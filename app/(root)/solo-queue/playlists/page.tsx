@@ -1,30 +1,25 @@
 "use client";
 
 import Link from "next/link";
-import { usePlaylistsQuery } from "@/hooks/music/use-playlists";
+import { useAllPlaylists } from "@/hooks/music/use-playlists";
 import { PlayCircle, Music } from "lucide-react";
 import Image from "next/image";
 
-// Resolve a playlist cover from stored field or first track's album (typed fallbacks)
-function getPlaylistCoverUrl(pl: any): string | undefined {
-    // Prefer stored cover on the playlist
-    const direct = pl?.cover_image_url || pl?.coverImageUrl || pl?.cover_url || pl?.coverUrl;
-    if (direct) return direct;
-
-    // First track may be IPlaylistTrackProps or a denormalized track
-    const first = pl?.tracks?.[0];
-    if (!first) return undefined;
-
-    const track = first?.track ?? first;
-    return track?.album?.images?.[0]?.url;
+// Resolve cover strictly from the first track album image using new structure
+function getPlaylistCoverUrl(playlist: any): string | undefined {
+    // Access the first track's album images through the new structure
+    const firstTrack = playlist?.tracks?.[0];
+    // Handle both direct track reference and nested track object
+    const track = firstTrack?.track || firstTrack;
+    return track?.albums?.album_images?.[0]?.url || track?.album?.images?.[0]?.url;
 }
 
 export default function PlaylistsPage() {
-    const { data, isLoading, isError, refetch } = usePlaylistsQuery();
+    const { data, isLoading, isError, refetch } = useAllPlaylists();
     const playlists = data ?? [];
 
     return (
-        <div className="px-4 sm:px-6 lg:px-8 py-6">
+        <div className="px-4 sm:px-6 lg:px-8 py-6 pt-24 lg:pt-0">
             {/* Header */}
             <div className="mb-6 flex items-center justify-between">
                 <div>
@@ -85,19 +80,19 @@ export default function PlaylistsPage() {
             {/* Grid */}
             {!isLoading && !isError && playlists.length > 0 && (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-                    {playlists.map((pl) => {
-                        const coverUrl = getPlaylistCoverUrl(pl);
+                    {playlists.map((playlist) => {
+                        const coverUrl = getPlaylistCoverUrl(playlist);
                         return (
                             <Link
-                                key={pl.id}
-                                href={`/solo-queue/playlists/${pl.id}`}
+                                key={playlist.id}
+                                href={`/solo-queue/playlists/${playlist.id}`}
                                 className="group rounded-xl p-4 border border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800 transition-colors"
                             >
                                 <div className="relative aspect-square rounded-md overflow-hidden bg-gradient-to-br from-neutral-800 to-neutral-700 flex items-center justify-center">
                                     {coverUrl ? (
                                         <Image
                                             src={coverUrl}
-                                            alt={`${pl.name} cover`}
+                                            alt={`${playlist.name} cover`}
                                             fill
                                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
                                             className="object-cover"
@@ -113,9 +108,9 @@ export default function PlaylistsPage() {
                                     </div>
                                 </div>
                                 <div className="mt-3">
-                                    <h3 className="text-sm font-semibold text-white truncate">{pl.name}</h3>
+                                    <h3 className="text-sm font-semibold text-white truncate">{playlist.name}</h3>
                                     <p className="text-xs text-neutral-400 truncate">
-                                        {pl.tracks?.length ? `${pl.tracks.length} tracks` : "Playlist"}
+                                        {playlist.tracks?.length ? `${playlist.tracks.length} tracks` : "Playlist"}
                                     </p>
                                 </div>
                             </Link>

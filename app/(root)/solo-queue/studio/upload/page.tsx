@@ -204,9 +204,9 @@ export default function StudioUploadPage() {
             {uploadSuccess && (
                 <SuccessModal
                     title="Upload Successful"
-                    confirmText="Go to Library"
+                    confirmText="Go to My Tracks"
                     onCancel={() => setUploadSuccess(false)}
-                    onConfirm={() => router.push("/solo-queue/studio/library")}
+                    onConfirm={() => router.push("/solo-queue/studio/my-tracks")}
                 />
             )}
 

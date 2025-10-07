@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/buttons/button";
 import { Plus } from "lucide-react";
-import { TrackType, AlbumType, IAlbumProps, ITrackProps, CreditRoleType } from "@/lib/solo-queue-types/music-types";
 import StudioTrackInfoCard from "./studio-track-info";
 import StudioAlbumInfo from "./studio-album-info";
 import ConfirmModal from "@/components/modals/confirm-modal";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+import { AlbumType, IAlbumProps, ITrackProps, TrackType } from "@/lib/types/music-types";
+import ErrorModal from "@/components/modals/error-modal";
 
-export type UploadMode = "single" | "album";
+export type UploadMode = "single" | "album" | "singles";
 
 // Extended track data that includes the actual file for upload
 export interface TrackUploadData extends Omit<ITrackProps, "url" | "album" | "artists" | "credits" | "remix"> {
@@ -19,7 +18,8 @@ export interface TrackUploadData extends Omit<ITrackProps, "url" | "album" | "ar
     trackImageFileName?: string; // Display name for track cover image
     is_public: boolean; // Add is_public field (required)
     copyright?: string; // Add copyright field for non-remix tracks
-    // Remove remix_data from here since it's a separate table
+    // Use exact TrackType values for DB insertion
+    track_type?: TrackType;
 }
 
 // Update interface for remix upload data to match database schema
@@ -52,6 +52,9 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
 
     // Separate state for remix data
     const [remixData, setRemixData] = useState<{ [trackId: string]: RemixUploadData }>({});
+    // Validation errors
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
+    const [showErrorModal, setShowErrorModal] = useState(false);
 
     const [albumData, setAlbumData] = useState<AlbumUploadData>({
         name: "",
@@ -67,6 +70,7 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             id: "1",
             title: "",
             type: "Unreleased" as TrackType,
+            track_type: "Unreleased" as TrackType,
             genre: "",
             duration: 0,
             release_date: "",
@@ -87,10 +91,13 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
 
     const handleModeChange = (mode: UploadMode) => {
         setUploadMode(mode);
-        if (mode === "single") {
-            // For singles, set album name to track title automatically
-            setAlbumData((prev) => ({ ...prev, album_type: "Single" }));
+        if (mode === "single" || mode === "singles") {
+            // Ensure Single type is set on non-album modes
+            setAlbumData((prev) => ({ ...prev, type: "Single" as AlbumType }));
         }
+        // Clear previous validation errors when switching mode
+        setValidationErrors([]);
+        setShowErrorModal(false);
     };
 
     const handleAlbumDataChange = (field: keyof AlbumUploadData, value: string | AlbumType | File | undefined) => {
@@ -106,7 +113,17 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
     };
 
     const handleTrackChange = (trackId: string, field: keyof TrackUploadData, value: string | number | TrackType | any) => {
-        setTracks((prev) => prev.map((track) => (track.id === trackId ? { ...track, [field]: value } : track)));
+        setTracks((prev) =>
+            prev.map((track) => {
+                if (track.id !== trackId) return track;
+                // Keep 'type' (UI) and 'track_type' (DB) in sync
+                const updates: Partial<TrackUploadData> = { [field]: value } as any;
+                if (field === "type") {
+                    updates.track_type = value as TrackType;
+                }
+                return { ...track, ...updates };
+            }),
+        );
 
         // For single mode, auto-set album name to track title
         if (uploadMode === "single" && field === "title" && typeof value === "string") {
@@ -145,7 +162,8 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         const newTrack: TrackUploadData = {
             id: Date.now().toString(),
             title: "",
-            type: "Unreleased",
+            type: "Unreleased" as TrackType,
+            track_type: "Unreleased" as TrackType,
             genre: "",
             duration: 0,
             release_date: "",
@@ -178,43 +196,86 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         }));
     };
 
+    // Basic validation for required fields
+    const validateForm = (): string[] => {
+        const errs: string[] = [];
+
+        if (!tracks.length) {
+            errs.push("At least one track is required.");
+        }
+
+        tracks.forEach((t, idx) => {
+            if (!t.title?.trim()) errs.push(`Track ${idx + 1}: title is required.`);
+            if (!t.audioFile) errs.push(`Track ${idx + 1}: audio file is required.`);
+            if (!t.type && !t.track_type) errs.push(`Track ${idx + 1}: type is required.`);
+        });
+
+        if (uploadMode === "album") {
+            if (!albumData.name?.trim()) errs.push("Album name is required for Album/EP uploads.");
+            if (!albumData.type) errs.push("Album type is required for Album/EP uploads.");
+        }
+
+        return errs;
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const errs = validateForm();
+        if (errs.length) {
+            setValidationErrors(errs);
+            setShowErrorModal(true);
+            return;
+        }
+        setValidationErrors([]);
+        setShowErrorModal(false);
         setConfirmation(true);
     };
 
     const handleConfirmation = () => {
         setConfirmation(false);
+
+        // Helper for single album payload derived from a track
+        const singleAlbumFromTrack = (t: TrackUploadData): AlbumUploadData => ({
+            name: t?.title || "Untitled",
+            type: "Single",
+            release_date: t?.release_date || "",
+            artist_id: "",
+            albumImageFile: t?.trackImageFile,
+            albumImageFileName: t?.trackImageFileName,
+        });
+
+        // Normalize tracks to ensure 'type' and 'track_type' match exactly
+        const normalizedTracks: TrackUploadData[] = tracks.map((t) => {
+            const uiType = (t.type as TrackType) || (t.track_type as TrackType) || ("Unreleased" as TrackType);
+            return {
+                ...t,
+                type: uiType,
+                track_type: uiType,
+            };
+        });
+
         onSubmit({
             mode: uploadMode,
-            tracks,
-            remixData, // Pass remix data separately
+            tracks: normalizedTracks,
+            remixData,
             albumData:
                 uploadMode === "album"
                     ? albumData
-                    : {
-                          name: tracks[0]?.title || "Untitled",
-                          type: "Single",
-                          release_date: tracks[0]?.release_date || "",
-                          artist_id: "", // Will be set during upload
-                          albumImageFile: tracks[0]?.trackImageFile,
-                          albumImageFileName: tracks[0]?.trackImageFileName,
-                      },
+                    : uploadMode === "single"
+                      ? singleAlbumFromTrack(normalizedTracks[0])
+                      : {
+                            // "singles" mode: parent should create one Single per track.
+                            // Provide a placeholder albumData since it's unused in this mode.
+                            name: "Multiple Singles",
+                            type: "Single",
+                            release_date: "",
+                            artist_id: "",
+                        },
         });
     };
 
-    {
-        confirmation && (
-            <ConfirmModal
-                title="Are you sure you want to leave? Unsaved changes will be lost."
-                onCancel={() => setConfirmation(false)}
-                onConfirm={handleConfirmation}
-            />
-        );
-    }
-
     return (
-        <form onSubmit={handleSubmit} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 max-w-full overflow-x-hidden">
             {/* Upload Mode Selection */}
             <Card>
                 <CardHeader>
@@ -222,12 +283,13 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                     <CardDescription>Choose how you want to upload your music</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="flex gap-4">
+                    {/* Responsive grid: 1 col on mobile, 2 on sm, 3 on lg */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                         <Button
                             type="button"
                             variant={uploadMode === "single" ? "default" : "outline"}
                             onClick={() => handleModeChange("single")}
-                            className="flex-1"
+                            className="w-full"
                         >
                             Single Track
                         </Button>
@@ -235,13 +297,33 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                             type="button"
                             variant={uploadMode === "album" ? "default" : "outline"}
                             onClick={() => handleModeChange("album")}
-                            className="flex-1"
+                            className="w-full"
                         >
                             Album/EP
+                        </Button>
+                        <Button
+                            type="button"
+                            variant={uploadMode === "singles" ? "default" : "outline"}
+                            onClick={() => handleModeChange("singles")}
+                            className="w-full"
+                        >
+                            Multiple Singles
                         </Button>
                     </div>
                 </CardContent>
             </Card>
+
+            {/* Validation Errors */}
+            {validationErrors.length > 0 && (
+                <div className="rounded-md border border-red-300 bg-red-50 p-4 text-red-700 text-sm">
+                    <div className="font-medium mb-2">Please fix the following:</div>
+                    <ul className="list-disc ml-5">
+                        {validationErrors.map((err, i) => (
+                            <li key={i}>{err}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             {/* Album Information - Only show for album mode */}
             {uploadMode === "album" && (
@@ -270,10 +352,10 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                 />
             ))}
 
-            {/* Add Track Button - Only for album mode */}
-            {uploadMode === "album" && (
+            {/* Add Track Button - For album and multiple singles */}
+            {uploadMode !== "single" && (
                 <div className="text-center">
-                    <Button type="button" variant="outline" onClick={addTrack}>
+                    <Button type="button" variant="outline" onClick={addTrack} className="w-full sm:w-auto">
                         <Plus className="h-4 w-4 mr-2" />
                         Add Another Track
                     </Button>
@@ -282,10 +364,29 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
 
             {/* Submit Button */}
             <div className="flex justify-end">
-                <Button type="submit" size="lg" disabled={isUploading} className="min-w-32">
-                    {isUploading ? "Uploading..." : `Upload ${uploadMode === "single" ? "Track" : "Album"}`}
+                <Button type="submit" size="lg" disabled={isUploading} className="w-full sm:w-auto min-w-0 sm:min-w-32">
+                    {isUploading
+                        ? "Uploading..."
+                        : `Upload ${uploadMode === "album" ? "Album" : uploadMode === "singles" ? "Singles" : "Track"}`}
                 </Button>
             </div>
+
+            {/* Confirmation Modal */}
+            {confirmation && (
+                <ConfirmModal
+                    title="Are you sure you want to leave? Unsaved changes will be lost."
+                    onCancel={() => setConfirmation(false)}
+                    onConfirm={handleConfirmation}
+                />
+            )}
+
+            {/* Error Modal */}
+            <ErrorModal
+                open={showErrorModal}
+                title="We found some issues"
+                errors={validationErrors}
+                onClose={() => setShowErrorModal(false)}
+            />
         </form>
     );
 };

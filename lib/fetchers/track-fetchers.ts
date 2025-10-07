@@ -1,80 +1,78 @@
 import { supabase } from "../supabase/client";
-import { ITrackProps, TrackType } from "../types/music-types";
+import type { Tables, TablesInsert, TablesUpdate } from "../types/supabase-types";
+import { fetchTable, fetchRowById, insertRow, updateRow, deleteRow } from "./generic-fetchers";
 
-type TrackFilter = {
-    artistId?: string;
-    trackId?: string | number;
-};
+export type Track = Tables<"tracks">;
+export type TrackInsert = TablesInsert<"tracks">;
+export type TrackUpdate = TablesUpdate<"tracks">;
 
-/**
- * Compute track type if DB field is missing
- */
-function computeTrackType(release_date: string | null, locked: boolean): TrackType {
-    if (locked) return "Unreleased";
-    if (!release_date) return "Work In Progress";
+// Basic CRUD operations
+export const fetchAllTracks = () => fetchTable("tracks");
+export const fetchTrackById = (id: string) => fetchRowById("tracks", id);
+export const createTrack = (track: TrackInsert) => insertRow("tracks", track);
+export const updateTrack = (id: string, updates: TrackUpdate) => updateRow("tracks", id, updates);
+export const deleteTrack = (id: string) => deleteRow("tracks", id);
 
-    const releaseDate = new Date(release_date);
-    const now = new Date();
-
-    return releaseDate <= now ? "Released" : "Unreleased";
+// Track-specific fetchers
+export async function fetchTracksByArtist(artistId: string): Promise<Track[]> {
+    const { data, error } = await supabase.from("tracks").select("*").eq("artist_id", artistId);
+    if (error) throw error;
+    return data ?? [];
 }
 
-/**
- * Normalize a raw track from Supabase
- */
-function normalizeTrack(track: any): ITrackProps {
-    return {
-        ...track,
-        artists: track.artists ? [track.artists] : [],
-        type: track.type || computeTrackType(track.release_date, track.locked),
-        is_liked: false, // placeholder for likes
-    };
+export async function fetchTracksByAlbum(albumId: string): Promise<Track[]> {
+    const { data, error } = await supabase.from("tracks").select("*").eq("album_id", albumId).order("title");
+    if (error) throw error;
+    return data ?? [];
 }
 
-/**
- * Generalized fetcher for tracks with joins
- * Can filter by artistId or trackId
- */
-export async function fetchTracksWithJoins(filter?: TrackFilter): Promise<ITrackProps[]> {
-    let query = supabase
+export async function fetchPublicTracks(): Promise<Track[]> {
+    const { data, error } = await supabase.from("tracks").select("*").eq("is_public", true).eq("locked", false);
+    if (error) throw error;
+    return data ?? [];
+}
+
+export async function fetchTrackWithRelations(id: string) {
+    const { data, error } = await supabase
         .from("tracks")
         .select(
             `
-        *,
-        artists!tracks_artist_id_fkey(*),
-        album:albums!tracks_album_id_fkey(
-          *,
-          images:album_images(*)
-        ),
-        credits:track_credits(*)
-      `,
+            *,
+            artists(stage_name, profile_image_url),
+            albums(
+                id,
+                name, 
+                type,
+                album_images(*)
+            ),
+            track_credits(name, role),
+            remixes(original_song, original_artists)
+        `,
         )
-        .order("created_at", { ascending: false });
-
-    if (filter?.artistId) {
-        query = query.eq("artist_id", filter.artistId);
-    }
-    if (filter?.trackId) {
-        query = query.eq("id", filter.trackId);
-    }
-
-    const { data, error } = await query;
-
+        .eq("id", id)
+        .single();
     if (error) throw error;
-    if (!data) return [];
-
-    return (data || []).map(normalizeTrack);
+    return data;
 }
 
-/**
- * Convenience wrappers for specific use cases
- */
-export async function fetchTrackByIdWithJoins(id: string | number) {
-    const tracks = await fetchTracksWithJoins({ trackId: id });
-    if (tracks.length === 0) throw new Error("Track not found");
-    return tracks[0];
+// Track interaction functions
+export async function incrementTrackPlays(trackId: string): Promise<void> {
+    const { error } = await supabase.rpc("increment_track_play", { track_id: trackId });
+    if (error) throw error;
 }
 
-export async function fetchTracksByArtist(artistId: string) {
-    return fetchTracksWithJoins({ artistId });
+export async function likeTrack(trackId: string, userId: string) {
+    return insertRow("track_likes", { track_id: trackId, user_id: userId });
+}
+
+export async function unlikeTrack(trackId: string, userId: string): Promise<boolean> {
+    const { error } = await supabase.from("track_likes").delete().eq("track_id", trackId).eq("user_id", userId);
+    if (error) throw error;
+    return true;
+}
+
+export async function fetchUserTrackLike(trackId: string, userId: string) {
+    const { data, error } = await supabase.from("track_likes").select("*").eq("track_id", trackId).eq("user_id", userId).maybeSingle();
+    if (error) throw error;
+    return data;
 }

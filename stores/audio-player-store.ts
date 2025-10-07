@@ -1,11 +1,13 @@
 "use client";
 import { create } from "zustand";
-import { ITrackProps } from "@/lib/types";
 import { supabase } from "@/lib/supabase/client";
+import type { Tables } from "@/lib/types/supabase-types"; // use Supabase types
+
+type Track = Tables<"tracks">;
 
 type AudioPlayerState = {
     // state
-    currentTrack: ITrackProps | null;
+    currentTrack: Track | null;
     currentTrackId: string | null;
     isPlaying: boolean;
     showPlayer: boolean;
@@ -19,13 +21,13 @@ type AudioPlayerState = {
     isLoading: boolean;
     canPlay: boolean;
 
-    playlist: ITrackProps[];
+    playlist: Track[];
     currentTrackIndex: number;
     hasNextTrack: boolean;
     hasPreviousTrack: boolean;
 
     // actions
-    playTrack: (track: ITrackProps, newPlaylist?: ITrackProps[]) => Promise<void>;
+    playTrack: (track: Track, newPlaylist?: Track[]) => Promise<void>;
     pauseTrack: () => void;
     resume: () => void;
     closePlayer: () => void;

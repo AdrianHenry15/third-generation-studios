@@ -77,7 +77,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     {/* Card */}
                     <div className="rounded-2xl border border-neutral-800 bg-neutral-900/90 backdrop-blur-md shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
                         {/* Decorative top ring */}
-                        <div className="h-1 w-full rounded-t-2xl bg-gradient-to-r from-red-500 via-rose-500 to-orange-500" />
+                        <div className="h-1 w-full rounded-t-2xl bg-gradient-to-r from-red-500 via-orange-500 to-green-500" />
                         {/* Content */}
                         <div className="p-5 sm:p-6">
                             {/* Icon/header row */}
