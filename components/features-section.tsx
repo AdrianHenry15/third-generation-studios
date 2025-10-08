@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, Variants } from "framer-motion";
 import { Rocket, Code2, Cpu, Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -36,7 +36,7 @@ export default function FeaturesSection() {
         },
     ];
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -46,12 +46,15 @@ export default function FeaturesSection() {
         },
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 50 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.8, ease: "easeOut" },
+            transition: {
+                duration: 0.8,
+                ease: "easeOut" as const, // ✅ properly typed easing
+            },
         },
     };
 
@@ -86,6 +89,11 @@ export default function FeaturesSection() {
                             whileHover={{
                                 y: -10,
                                 boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
+                                transition: {
+                                    type: "spring" as const, // ✅ fix type narrowing
+                                    stiffness: 400,
+                                    damping: 17,
+                                },
                             }}
                             className="h-full rounded-xl"
                         >

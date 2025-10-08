@@ -81,7 +81,7 @@ export default function SoloQProfilePage() {
                     <div className="bg-neutral-900 rounded-lg p-6 text-center">
                         <Image
                             src={profile.avatar_url || "/user-default-image.png"}
-                            alt={profile.username}
+                            alt={profile.username ? profile.username + " avatar" : "User avatar"}
                             className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                             width={96}
                             height={96}

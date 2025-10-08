@@ -3,7 +3,12 @@
 // -----------------------------
 import { supabase } from "@/lib/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { IArtistProps, IPlaylistProps, ITrackProps } from "@/lib/types/music-types";
+import type { Database, Tables } from "@/lib/types/supabase-types";
+
+// Use proper Supabase types
+type Playlist = Database["public"]["Tables"]["playlists"]["Row"];
+type Track = Database["public"]["Tables"]["tracks"]["Row"];
+type Artist = Database["public"]["Tables"]["artists"]["Row"];
 
 const DEBUG_SEARCH = true;
 
@@ -50,7 +55,7 @@ export function useSearchPlaylistsQuery(q: string, enabled: boolean) {
                 throw error;
             }
             dbg("playlists:ok", { q, query, pattern, ms: dt, count: data?.length ?? 0 });
-            return (data ?? []) as Pick<IPlaylistProps, "id" | "name" | "cover_image_url" | "track_count">[];
+            return (data ?? []) as Pick<Playlist, "id" | "name" | "cover_image_url" | "track_count">[];
         },
         enabled,
         staleTime: 30_000,
@@ -89,7 +94,7 @@ export function useSearchTracksQuery(q: string, enabled: boolean) {
                 throw error;
             }
             dbg("tracks:ok", { q, query, pattern, orExpr, ms: dt, count: data?.length ?? 0 });
-            return (data ?? []) as Pick<ITrackProps, "id" | "title" | "duration">[];
+            return (data ?? []) as Pick<Track, "id" | "title" | "duration">[];
         },
         enabled,
         staleTime: 30_000,
@@ -127,7 +132,7 @@ export function useSearchArtistsQuery(q: string, enabled: boolean) {
                 throw error;
             }
             dbg("artists:ok", { q, query, pattern, ms: dt, count: data?.length ?? 0 });
-            return (data ?? []) as Pick<IArtistProps, "id" | "stage_name" | "profile_image_url" | "verified">[];
+            return (data ?? []) as Pick<Artist, "id" | "stage_name" | "profile_image_url" | "verified">[];
         },
         enabled,
         staleTime: 30_000,
@@ -145,7 +150,7 @@ export function useSearchTracksByArtistsQuery(q: string, enabled: boolean) {
             const query = sanitizeForFilter(q);
             if (!query) {
                 dbg("tracks-by-artists:skip-empty", { q });
-                return [] as Pick<ITrackProps, "id" | "title" | "duration" | "artist_id">[];
+                return [] as Pick<Track, "id" | "title" | "duration" | "artist_id">[];
             }
 
             const pattern = toPattern(query);
@@ -166,7 +171,7 @@ export function useSearchTracksByArtistsQuery(q: string, enabled: boolean) {
             if (artistIds.length === 0) {
                 const dt = Math.round(performance.now() - t0);
                 dbg("tracks-by-artists:ok-none", { q, ms: dt });
-                return [] as Pick<ITrackProps, "id" | "title" | "duration" | "artist_id">[];
+                return [] as Pick<Track, "id" | "title" | "duration" | "artist_id">[];
             }
 
             // 2) Fetch tracks by those artist ids
@@ -185,10 +190,16 @@ export function useSearchTracksByArtistsQuery(q: string, enabled: boolean) {
             }
 
             dbg("tracks-by-artists:ok", { q, query, pattern, ms: dt, count: tracks?.length ?? 0 });
-            return (tracks ?? []) as Pick<ITrackProps, "id" | "title" | "duration" | "artist_id">[];
+            return (tracks ?? []) as Pick<Track, "id" | "title" | "duration" | "artist_id">[];
         },
         enabled,
         staleTime: 30_000,
         retry: 1,
     });
 }
+
+// Export types for use in components
+export type SearchPlaylistResult = Pick<Playlist, "id" | "name" | "cover_image_url" | "track_count">;
+export type SearchTrackResult = Pick<Track, "id" | "title" | "duration">;
+export type SearchArtistResult = Pick<Artist, "id" | "stage_name" | "profile_image_url" | "verified">;
+export type SearchTrackByArtistResult = Pick<Track, "id" | "title" | "duration" | "artist_id">;

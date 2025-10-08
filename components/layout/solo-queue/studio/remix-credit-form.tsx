@@ -1,14 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/buttons/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus, X } from "lucide-react";
 import { RemixUploadData } from "./studio-upload-form";
-
-interface OriginalCredit {
-    id: string;
-    name: string;
-}
 
 interface RemixCreditFormProps {
     track: any;
@@ -20,13 +15,15 @@ interface RemixCreditFormProps {
 const RemixCreditForm: React.FC<RemixCreditFormProps> = ({ track, remixData, onTrackChange, onRemixDataChange }) => {
     const isRemix = track.type === "Remix";
 
-    // Convert between our UI format (with roles) and database format (just names)
-    const currentRemixData = {
-        original_song: remixData?.original_song || "",
-        url: remixData?.url || "",
-        original_artists: remixData?.original_artists || [],
-        additional_artists: remixData?.additional_artists || [],
-    };
+    // Memoize the current remix data to prevent unnecessary re-renders
+    const currentRemixData = useMemo(
+        () => ({
+            original_song: remixData?.original_song || "",
+            url: remixData?.url || "",
+            original_artists: remixData?.original_artists || [],
+        }),
+        [remixData?.original_song, remixData?.url, remixData?.original_artists],
+    );
 
     const updateRemixData = useCallback(
         (field: string, value: any) => {

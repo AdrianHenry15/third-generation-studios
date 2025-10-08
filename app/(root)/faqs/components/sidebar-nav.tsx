@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
-import { NavMenuType } from "@/lib/types";
+import { NavMenuType } from "@/lib/types/generic-types";
 
 interface IFAQSidebarNavProps {
     items: NavMenuType[];

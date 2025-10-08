@@ -4,10 +4,9 @@ interface ConfirmationEmailTemplateProps {
     name: string;
     email: string;
     plan: string;
-    productDescription: string;
 }
 
-export const ConfirmationEmailTemplate = ({ name, email, plan, productDescription }: ConfirmationEmailTemplateProps) => {
+export const ConfirmationEmailTemplate = ({ name, email, plan }: ConfirmationEmailTemplateProps) => {
     return (
         <Html>
             <Head />
@@ -40,12 +39,12 @@ export const ConfirmationEmailTemplate = ({ name, email, plan, productDescriptio
                             </span>
                             <span style={{ ...fieldValue, textAlign: "left", marginLeft: 16 }}>{plan}</span>
                         </div>
-                        <div style={{ ...row, justifyContent: "center" }}>
+                        {/* <div style={{ ...row, justifyContent: "center" }}>
                             <span style={{ ...fieldLabel, minWidth: 140, textAlign: "right", display: "inline-block" }}>
                                 Product Description:
                             </span>
                             <span style={{ ...fieldValue, textAlign: "left", marginLeft: 16 }}>{productDescription}</span>
-                        </div>
+                        </div> */}
                     </Section>
                     <div style={{ textAlign: "center", fontSize: "24px", color: "#d1d5db", margin: "16px 0" }}>…</div>
                     <Text style={footer}>

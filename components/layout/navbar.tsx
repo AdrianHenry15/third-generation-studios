@@ -9,7 +9,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserIcon from "../user-icon";
 import MobileNavDropdownMenu from "./mobile-nav-dropdown-menu";
-import { useAuthStore } from "@/stores/auth-store";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,9 +19,6 @@ export default function Navbar() {
 
     const { scrollY } = useScroll();
     const backgroundColor = useTransform(scrollY, [0, 60], ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]);
-
-    // Use auth context instead of local Supabase calls
-    // const { user } = useAuthStore();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -48,7 +44,7 @@ export default function Navbar() {
     // Close menu on route change
     useEffect(() => {
         if (isOpen) setIsOpen(false);
-    }, [pathname]);
+    }, [pathname, isOpen]);
 
     const navItems = [
         { name: "Websites", href: "/websites" },

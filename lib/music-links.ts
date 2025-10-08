@@ -1,4 +1,4 @@
-import { IMusicLinkProps } from "./types";
+import { IMusicLinkProps } from "./types/generic-types";
 
 export async function getMusicLinks(spotifyUrl: string): Promise<IMusicLinkProps> {
     try {

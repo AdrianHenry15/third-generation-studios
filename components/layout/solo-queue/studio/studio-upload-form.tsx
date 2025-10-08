@@ -5,21 +5,25 @@ import { Plus } from "lucide-react";
 import StudioTrackInfoCard from "./studio-track-info";
 import StudioAlbumInfo from "./studio-album-info";
 import ConfirmModal from "@/components/modals/confirm-modal";
-import { AlbumType, IAlbumProps, ITrackProps, TrackType } from "@/lib/types/music-types";
 import ErrorModal from "@/components/modals/error-modal";
+import type { Database, Enums } from "@/lib/types/supabase-types";
 
 export type UploadMode = "single" | "album" | "singles";
 
+// Use Supabase types
+type TrackType = Enums<"track_type">;
+type AlbumType = Enums<"album_type">;
+type Track = Database["public"]["Tables"]["tracks"]["Row"];
+type Album = Database["public"]["Tables"]["albums"]["Row"];
+
 // Extended track data that includes the actual file for upload
-export interface TrackUploadData extends Omit<ITrackProps, "url" | "album" | "artists" | "credits" | "remix"> {
+export interface TrackUploadData extends Omit<Track, "id" | "created_at" | "updated_at" | "album_id" | "artist_id"> {
+    id: string; // Temporary ID for form management
     audioFile?: File; // The actual file to upload
     audioFileName?: string; // Display name for the file
     trackImageFile?: File; // Track cover image file
     trackImageFileName?: string; // Display name for track cover image
-    is_public: boolean; // Add is_public field (required)
     copyright?: string; // Add copyright field for non-remix tracks
-    // Use exact TrackType values for DB insertion
-    track_type?: TrackType;
 }
 
 // Update interface for remix upload data to match database schema
@@ -31,7 +35,8 @@ export interface RemixUploadData {
 }
 
 // Extended album data that includes file upload fields
-export interface AlbumUploadData extends Omit<IAlbumProps, "id" | "created_at" | "updated_at" | "images"> {
+export interface AlbumUploadData extends Omit<Album, "id" | "created_at" | "updated_at" | "artist_id"> {
+    artist_id?: string; // Will be set during upload
     albumImageFile?: File;
     albumImageFileName?: string;
 }
@@ -60,7 +65,6 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         name: "",
         type: "Single" as AlbumType,
         release_date: "",
-        artist_id: "", // Will be set during upload
         albumImageFile: undefined,
         albumImageFileName: "",
     });
@@ -70,22 +74,17 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             id: "1",
             title: "",
             type: "Unreleased" as TrackType,
-            track_type: "Unreleased" as TrackType,
             genre: "",
             duration: 0,
             release_date: "",
             lyrics: "",
-            album_id: "",
-            artist_id: "",
             is_public: false,
             locked: false,
             plays: 0,
-            is_liked: false,
+            links: null,
+            url: "", // Required by database schema but will be set during upload
             audioFileName: "",
             trackImageFileName: "",
-            links: { spotify: "" },
-            created_at: "",
-            updated_at: "",
         },
     ]);
 
@@ -112,16 +111,11 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         }
     };
 
-    const handleTrackChange = (trackId: string, field: keyof TrackUploadData, value: string | number | TrackType | any) => {
+    const handleTrackChange = (trackId: string, field: keyof TrackUploadData, value: string | number | TrackType | boolean | any) => {
         setTracks((prev) =>
             prev.map((track) => {
                 if (track.id !== trackId) return track;
-                // Keep 'type' (UI) and 'track_type' (DB) in sync
-                const updates: Partial<TrackUploadData> = { [field]: value } as any;
-                if (field === "type") {
-                    updates.track_type = value as TrackType;
-                }
-                return { ...track, ...updates };
+                return { ...track, [field]: value };
             }),
         );
 
@@ -163,22 +157,17 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             id: Date.now().toString(),
             title: "",
             type: "Unreleased" as TrackType,
-            track_type: "Unreleased" as TrackType,
             genre: "",
             duration: 0,
             release_date: "",
             lyrics: "",
             is_public: false,
-            album_id: "",
-            artist_id: "",
             locked: false,
             plays: 0,
-            is_liked: false,
+            links: null,
+            url: "", // Required by database schema but will be set during upload
             audioFileName: "",
             trackImageFileName: "",
-            links: { spotify: "" },
-            created_at: "",
-            updated_at: "",
         };
         setTracks((prev) => [...prev, newTrack]);
     };
@@ -207,12 +196,26 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         tracks.forEach((t, idx) => {
             if (!t.title?.trim()) errs.push(`Track ${idx + 1}: title is required.`);
             if (!t.audioFile) errs.push(`Track ${idx + 1}: audio file is required.`);
-            if (!t.type && !t.track_type) errs.push(`Track ${idx + 1}: type is required.`);
+            if (!t.type) errs.push(`Track ${idx + 1}: type is required.`);
+            if (!t.genre?.trim()) errs.push(`Track ${idx + 1}: genre is required.`);
         });
 
         if (uploadMode === "album") {
             if (!albumData.name?.trim()) errs.push("Album name is required for Album/EP uploads.");
             if (!albumData.type) errs.push("Album type is required for Album/EP uploads.");
+        }
+
+        // Image validation based on mode/type
+        if (uploadMode === "single" && !tracks[0].trackImageFile) {
+            errs.push("Cover image is required for single tracks.");
+        }
+
+        if (uploadMode === "album" && albumData.type === "Single" && tracks.some((t) => !t.trackImageFile)) {
+            errs.push("Cover image is required for all tracks in Single releases.");
+        }
+
+        if (uploadMode === "album" && albumData.type !== "Single" && !albumData.albumImageFile) {
+            errs.push("Album cover image is required for EP/Album releases.");
         }
 
         return errs;
@@ -239,37 +242,25 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             name: t?.title || "Untitled",
             type: "Single",
             release_date: t?.release_date || "",
-            artist_id: "",
             albumImageFile: t?.trackImageFile,
             albumImageFileName: t?.trackImageFileName,
         });
 
-        // Normalize tracks to ensure 'type' and 'track_type' match exactly
-        const normalizedTracks: TrackUploadData[] = tracks.map((t) => {
-            const uiType = (t.type as TrackType) || (t.track_type as TrackType) || ("Unreleased" as TrackType);
-            return {
-                ...t,
-                type: uiType,
-                track_type: uiType,
-            };
-        });
-
         onSubmit({
             mode: uploadMode,
-            tracks: normalizedTracks,
+            tracks,
             remixData,
             albumData:
                 uploadMode === "album"
                     ? albumData
                     : uploadMode === "single"
-                      ? singleAlbumFromTrack(normalizedTracks[0])
+                      ? singleAlbumFromTrack(tracks[0])
                       : {
                             // "singles" mode: parent should create one Single per track.
                             // Provide a placeholder albumData since it's unused in this mode.
                             name: "Multiple Singles",
                             type: "Single",
                             release_date: "",
-                            artist_id: "",
                         },
         });
     };
@@ -374,7 +365,7 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             {/* Confirmation Modal */}
             {confirmation && (
                 <ConfirmModal
-                    title="Are you sure you want to leave? Unsaved changes will be lost."
+                    title="Are you sure you want to upload this music?"
                     onCancel={() => setConfirmation(false)}
                     onConfirm={handleConfirmation}
                 />

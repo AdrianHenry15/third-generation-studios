@@ -4,13 +4,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Music, X, Upload, Image } from "lucide-react";
+import { Music, X, Upload } from "lucide-react";
 import React from "react";
 import { TrackUploadData, UploadMode, RemixUploadData } from "./studio-upload-form";
 import { trackGenres } from "@/lib/constants";
 import { Switch } from "@/components/ui/switch";
 import RemixCreditForm from "./remix-credit-form";
-import { AlbumType, TrackType } from "@/lib/types/music-types";
+import type { Enums } from "@/lib/types/supabase-types";
+import Image from "next/image";
+
+// Use Supabase types
+type TrackType = Enums<"track_type">;
+type AlbumType = Enums<"album_type">;
 
 // StudioTrackInfoCard: form card for per-track metadata, uploads, and visibility.
 // Used in "single" or "album" upload modes with optional remix credit support.
@@ -34,42 +39,6 @@ interface IStudioTrackInfoProps {
     onRemixDataChange?: (remixData: RemixUploadData) => void; // Add remix data change handler
 }
 
-// Local helpers (mirror form helpers) to map UI labels <-> DB slugs
-const toDbTrackType = (ui: string | undefined): string | undefined => {
-    if (!ui) return undefined;
-    switch (ui) {
-        case "Released":
-            return "released";
-        case "Unreleased":
-            return "unreleased";
-        case "Work In Progress":
-            return "work_in_progress";
-        case "Demo":
-            return "demo";
-        case "Remix":
-            return "remix";
-        default:
-            return ui.toString().toLowerCase().replaceAll(" ", "_");
-    }
-};
-const dbToUiTrackType = (db: string | undefined): TrackType | undefined => {
-    if (!db) return undefined;
-    switch (db) {
-        case "released":
-            return "Released";
-        case "unreleased":
-            return "Unreleased";
-        case "work_in_progress":
-            return "Work In Progress";
-        case "demo":
-            return "Demo";
-        case "remix":
-            return "Remix";
-        default:
-            return (db.charAt(0).toUpperCase() + db.slice(1).replaceAll("_", " ")) as TrackType;
-    }
-};
-
 const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
     const {
         track,
@@ -88,9 +57,6 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
     // Whether to show cover upload for single mode or Single album types
     // Keeps album flow clean while ensuring singles have cover art
     const showCoverUpload = uploadMode === "single" || albumType === "Single";
-
-    // Prefer UI type, fallback to DB slug converted to UI, else default
-    const currentTypeUi = (track.type as TrackType) || (dbToUiTrackType(track.track_type) as TrackType) || ("Unreleased" as TrackType);
 
     return (
         <Card key={track.id}>
@@ -119,7 +85,11 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                     <div>
                         <Label className="text-lg font-semibold">Track Cover {uploadMode === "single" ? "*" : "(Optional)"}</Label>
                         <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center mt-2 relative">
-                            <Image className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                            <Image
+                                src={track.trackImageFile ? URL.createObjectURL(track.trackImageFile) : ""}
+                                alt="track-cover"
+                                className="h-16 w-16 mx-auto mb-4 text-muted-foreground"
+                            />
                             <div className="space-y-3">
                                 <p className="text-sm text-muted-foreground font-medium">
                                     {track.trackImageFileName || "No cover image selected"}
@@ -184,7 +154,7 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                     </div>
                     <div>
                         <Label>Genre *</Label>
-                        <Select value={track.genre} onValueChange={(value: string) => handleTrackChange(track.id, "genre", value)}>
+                        <Select value={track.genre || ""} onValueChange={(value: string) => handleTrackChange(track.id, "genre", value)}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select a genre" />
                             </SelectTrigger>
@@ -204,12 +174,8 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                     <div>
                         <Label>Track Type</Label>
                         <Select
-                            value={track.type || (track.track_type as TrackType) || "Unreleased"}
-                            onValueChange={(value: TrackType) => {
-                                // Keep UI and DB fields identical
-                                handleTrackChange(track.id, "type", value);
-                                handleTrackChange(track.id, "track_type", value);
-                            }}
+                            value={track.type || "Unreleased"}
+                            onValueChange={(value: TrackType) => handleTrackChange(track.id, "type", value)}
                         >
                             <SelectTrigger>
                                 <SelectValue />
@@ -227,7 +193,7 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                         <Label>Release Date</Label>
                         <Input
                             type="date"
-                            value={track.release_date}
+                            value={track.release_date || ""}
                             onChange={(e) => handleTrackChange(track.id, "release_date", e.target.value)}
                         />
                     </div>
@@ -245,7 +211,7 @@ const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
                 <div>
                     <Label>Lyrics (Optional)</Label>
                     <Textarea
-                        value={track.lyrics}
+                        value={track.lyrics || ""}
                         onChange={(e) => handleTrackChange(track.id, "lyrics", e.target.value)}
                         placeholder="Enter your lyrics here..."
                         rows={4}

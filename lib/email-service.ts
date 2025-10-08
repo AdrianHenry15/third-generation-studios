@@ -1,7 +1,8 @@
 "use server";
-import { EmailResponse, EmailTemplateParams } from "../lib/types";
 
-const sendEmail = async (params: EmailTemplateParams): Promise<EmailResponse> => {
+import { EmailResponseProps, EmailTemplateParamsType } from "./types/generic-types";
+
+const sendEmail = async (params: EmailTemplateParamsType): Promise<EmailResponseProps> => {
     try {
         const isServer = typeof window === "undefined";
         const baseUrl = isServer ? process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000" : "";
@@ -13,7 +14,7 @@ const sendEmail = async (params: EmailTemplateParams): Promise<EmailResponse> =>
             body: JSON.stringify(params),
         });
 
-        const data: EmailResponse = await response.json();
+        const data: EmailResponseProps = await response.json();
 
         if (!response.ok) {
             throw new Error(data.error || "Failed to send email");
@@ -24,7 +25,7 @@ const sendEmail = async (params: EmailTemplateParams): Promise<EmailResponse> =>
     }
 };
 
-const sendConfirmationEmail = async (params: EmailTemplateParams): Promise<EmailResponse> => {
+const sendConfirmationEmail = async (params: EmailTemplateParamsType): Promise<EmailResponseProps> => {
     try {
         const isServer = typeof window === "undefined";
         const baseUrl = isServer ? process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000" : "";
@@ -35,7 +36,7 @@ const sendConfirmationEmail = async (params: EmailTemplateParams): Promise<Email
             },
             body: JSON.stringify(params),
         });
-        const data: EmailResponse = await response.json();
+        const data: EmailResponseProps = await response.json();
         if (!response.ok) {
             throw new Error(data.error || "Failed to send confirmation email");
         }

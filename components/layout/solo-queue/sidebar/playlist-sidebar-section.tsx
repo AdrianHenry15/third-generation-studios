@@ -41,7 +41,10 @@ export default function PlaylistSidebarSection({
 
     // Derived data
     // Get 5 most recent playlists (sort by created_at desc)
-    const recentPlaylists = playlists.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()).slice(0, 5);
+    const recentPlaylists = playlists
+        .filter((playlist) => playlist.created_at !== null)
+        .sort((a, b) => new Date(b.created_at!).getTime() - new Date(a.created_at!).getTime())
+        .slice(0, 5);
 
     // Handlers
     const handleCreatePlaylist = () => {

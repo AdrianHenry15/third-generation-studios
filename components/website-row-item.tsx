@@ -2,12 +2,10 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
 
-import { WebsiteType } from "@/lib/types";
+import { WebsiteType } from "@/lib/types/generic-types";
 import OpenLinkModal from "@/components/modals/open-link-modal";
 import Logo from "@/public/logos/tgs-logo.png";
-import Link from "next/link";
 
 interface IWebsiteRowItemProps {
     currentWebsite: WebsiteType;

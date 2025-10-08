@@ -3,10 +3,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import React from "react";
-import { Upload, Image } from "lucide-react";
+import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/buttons/button";
 import { AlbumUploadData } from "./studio-upload-form";
 import type { Database } from "@/lib/types/supabase-types";
+import Image from "next/image";
 
 // Use Supabase generated types
 type AlbumType = Database["public"]["Enums"]["album_type"];
@@ -29,7 +30,17 @@ const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlb
                 <div>
                     <Label className="text-lg font-semibold">Album Cover</Label>
                     <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center mt-2">
-                        <Image className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                        {albumData.albumImageFile ? (
+                            <Image
+                                src={URL.createObjectURL(albumData.albumImageFile)}
+                                alt="album-cover"
+                                width={64}
+                                height={64}
+                                className="h-16 w-16 mx-auto mb-4 object-cover rounded"
+                            />
+                        ) : (
+                            <Upload className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                        )}
                         <div className="space-y-3">
                             <p className="text-sm text-muted-foreground font-medium">
                                 {albumData.albumImageFileName || "No cover image selected"}

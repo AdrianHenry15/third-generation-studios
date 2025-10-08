@@ -4,8 +4,22 @@ import { motion, Variants } from "framer-motion";
 import { Play, Heart, MoreHorizontal } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect, useCallback } from "react";
-import { ITrackProps } from "@/lib/types/music-types";
-import { useTracksWithJoinsQuery } from "@/hooks/music/use-tracks";
+import { usePublicTracks } from "@/hooks/music/use-tracks";
+import type { Database } from "@/lib/types/supabase-types";
+
+// Use proper Supabase types
+type Track = Database["public"]["Tables"]["tracks"]["Row"];
+type Album = Database["public"]["Tables"]["albums"]["Row"];
+type Artist = Database["public"]["Tables"]["artists"]["Row"];
+type AlbumImage = Database["public"]["Tables"]["album_images"]["Row"];
+
+// Extended track type with relations
+interface TrackWithRelations extends Track {
+    albums?: Album & {
+        album_images?: AlbumImage[];
+    };
+    artists?: Artist;
+}
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -27,8 +41,8 @@ const itemVariants: Variants = {
 };
 
 export default function SoloQHomePage() {
-    const { data: tracks, isLoading, error } = useTracksWithJoinsQuery();
-    const [displayedTracks, setDisplayedTracks] = useState<any[]>([]);
+    const { data: tracks, isLoading, error } = usePublicTracks();
+    const [displayedTracks, setDisplayedTracks] = useState<TrackWithRelations[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const tracksPerPage = 20;
@@ -82,16 +96,13 @@ export default function SoloQHomePage() {
     };
 
     // Get album cover image
-    const getTrackImage = (track: any) => {
-        return track.album?.images?.[0]?.url || "/placeholder-album.png";
+    const getTrackImage = (track: TrackWithRelations) => {
+        return track.albums?.album_images?.[0]?.url || "/placeholder-albums.png";
     };
 
-    // Get artist names
-    const getArtistNames = (track: any) => {
-        if (track.artists && track.artists.length > 0) {
-            return track.artists.map((artist: any) => artist.stage_name).join(", ");
-        }
-        return "Unknown Artist";
+    // Get artist name
+    const getArtistName = (track: TrackWithRelations) => {
+        return track.artists?.stage_name || "Unknown Artist";
     };
 
     return (
@@ -143,7 +154,7 @@ export default function SoloQHomePage() {
                     </div>
                 ) : (
                     <div className="space-y-2">
-                        {recentlyPlayed.map((track: ITrackProps) => (
+                        {recentlyPlayed.map((track: TrackWithRelations) => (
                             <div
                                 key={track.id}
                                 className="group flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-800/50 transition-colors cursor-pointer"
@@ -167,7 +178,7 @@ export default function SoloQHomePage() {
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-white font-medium truncate">{track.title}</p>
-                                    <p className="text-neutral-400 text-sm truncate">{getArtistNames(track)}</p>
+                                    <p className="text-neutral-400 text-sm truncate">{getArtistName(track)}</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <button className="p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:text-green-400">
@@ -223,7 +234,7 @@ export default function SoloQHomePage() {
                                         <div className="w-full aspect-square rounded-lg relative overflow-hidden bg-neutral-800">
                                             <Image
                                                 src={getTrackImage(track)}
-                                                alt={`${track.title} by ${getArtistNames(track)}`}
+                                                alt={`${track.title} by ${getArtistName(track)}`}
                                                 fill
                                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                                                 sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
@@ -232,7 +243,7 @@ export default function SoloQHomePage() {
                                                 unoptimized={false}
                                                 onError={(e) => {
                                                     const target = e.target as HTMLImageElement;
-                                                    target.src = "/placeholder-album.png";
+                                                    target.src = "/placeholder-albums.png";
                                                 }}
                                             />
                                         </div>
@@ -242,7 +253,7 @@ export default function SoloQHomePage() {
                                     </div>
                                     <div>
                                         <h3 className="text-white font-medium mb-1 truncate">{track.title}</h3>
-                                        <p className="text-neutral-400 text-sm line-clamp-2">{getArtistNames(track)}</p>
+                                        <p className="text-neutral-400 text-sm line-clamp-2">{getArtistName(track)}</p>
                                         <p className="text-neutral-500 text-xs mt-1">{formatDuration(track.duration)}</p>
                                     </div>
                                 </div>

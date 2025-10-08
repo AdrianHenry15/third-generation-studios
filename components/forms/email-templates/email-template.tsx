@@ -4,10 +4,9 @@ interface EmailTemplateProps {
     name: string;
     email: string;
     plan: string;
-    productDescription: string;
 }
 
-export const EmailTemplate = ({ name, email, plan, productDescription }: EmailTemplateProps) => {
+export const EmailTemplate = ({ name, email, plan }: EmailTemplateProps) => {
     return (
         <Html>
             <Head />
@@ -32,12 +31,12 @@ export const EmailTemplate = ({ name, email, plan, productDescription }: EmailTe
                             </span>
                             <span style={{ ...fieldValue, textAlign: "left", marginLeft: 16 }}>{plan}</span>
                         </div>
-                        <div style={{ ...row, justifyContent: "center" }}>
+                        {/* <div style={{ ...row, justifyContent: "center" }}>
                             <span style={{ ...fieldLabel, minWidth: 140, textAlign: "right", display: "inline-block" }}>
                                 Product Description:
                             </span>
                             <span style={{ ...fieldValue, textAlign: "left", marginLeft: 16 }}>{productDescription}</span>
-                        </div>
+                        </div> */}
                     </Section>
                     {/* {/* <div style={divider}></div> */}
                     <Text style={footer}>

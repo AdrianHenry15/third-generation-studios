@@ -1,8 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchPlaylistsWithJoins, fetchPlaylistByIdWithJoins, fetchPlaylistsByUser } from "@/lib/fetchers/playlist-fetchers";
-import { fetchTable, fetchRowById, insertRow, updateRow, deleteRow } from "@/lib/fetchers/generic-fetchers";
+import { insertRow, updateRow, deleteRow } from "@/lib/fetchers/generic-fetchers";
 import type { Tables, TablesInsert, TablesUpdate } from "@/lib/types/supabase-types";
-import type { IPlaylistProps } from "@/lib/types/music-types";
 import { supabase } from "@/lib/supabase/client";
 
 // Types

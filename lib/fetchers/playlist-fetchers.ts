@@ -1,7 +1,7 @@
 import { supabase } from "../supabase/client";
-import type { Database } from "../types/supabase-types";
-import { IPlaylistProps, IPlaylistTrackProps, ITrackProps } from "../types/music-types";
+import type { Database, Tables } from "../types/supabase-types";
 
+// Use proper Supabase types
 type PlaylistRow = Database["public"]["Tables"]["playlists"]["Row"];
 type PlaylistTrackRow = Database["public"]["Tables"]["playlist_tracks"]["Row"];
 type TrackRow = Database["public"]["Tables"]["tracks"]["Row"];
@@ -11,6 +11,7 @@ type AlbumImageRow = Database["public"]["Tables"]["album_images"]["Row"];
 type TrackCreditRow = Database["public"]["Tables"]["track_credits"]["Row"];
 type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
 type PlaylistLikeRow = Database["public"]["Tables"]["playlist_likes"]["Row"];
+type RemixRow = Database["public"]["Tables"]["remixes"]["Row"];
 
 // Raw data types from Supabase (what comes back from the query)
 interface RawPlaylistData extends PlaylistRow {
@@ -25,74 +26,140 @@ interface RawPlaylistTrack extends PlaylistTrackRow {
 
 interface RawTrack extends TrackRow {
     artists: ArtistRow;
-    album: AlbumRow & {
-        images: AlbumImageRow[];
+    albums: AlbumRow & {
+        album_images: AlbumImageRow[];
     };
-    credits: TrackCreditRow[];
+    track_credits: TrackCreditRow[];
+    remixes: RemixRow | null;
+}
+
+// Processed types using Supabase schema
+export interface PlaylistWithRelations extends PlaylistRow {
+    creator?: {
+        id: string;
+        username: string | null;
+        avatar_url: string | null;
+        role: Database["public"]["Enums"]["profile_role"];
+        created_at: string;
+        updated_at: string;
+    };
+    tracks: PlaylistTrackWithRelations[];
+    likes_count: number;
+    is_liked: boolean;
+}
+
+export interface PlaylistTrackWithRelations extends PlaylistTrackRow {
+    track: TrackWithRelations;
+}
+
+export interface TrackWithRelations extends TrackRow {
+    artists: {
+        id: string;
+        stage_name: string;
+        profile_image_url: string | null;
+        verified: boolean;
+        created_at: string;
+        updated_at: string;
+    };
+    albums: {
+        id: string;
+        name: string;
+        type: Database["public"]["Enums"]["album_type"];
+        release_date: string;
+        created_at: string;
+        updated_at: string;
+        album_images: AlbumImageRow[];
+    };
+    track_credits: TrackCreditRow[];
+    remixes?: {
+        id: string;
+        original_song: string;
+        original_artists: any;
+        url: string | null;
+        created_at: string | null;
+        updated_at: string | null;
+    } | null;
+    is_liked: boolean;
 }
 
 // Helper to shape playlist data with proper types
-function shapePlaylist(data: RawPlaylistData): IPlaylistProps {
+function shapePlaylist(data: RawPlaylistData): PlaylistWithRelations {
     return {
         id: data.id,
         name: data.name,
-        description: data.description || undefined,
+        description: data.description,
         created_by: data.created_by,
-        is_public: data.is_public || false,
-        cover_image_url: data.cover_image_url || undefined,
-        track_count: data.track_count || 0,
-        total_duration: data.total_duration || 0,
-        created_at: data.created_at || new Date().toISOString(),
-        updated_at: data.updated_at || new Date().toISOString(),
+        is_public: data.is_public,
+        cover_image_url: data.cover_image_url,
+        track_count: data.track_count,
+        total_duration: data.total_duration,
+        created_at: data.created_at,
+        updated_at: data.updated_at,
         creator: data.creator
             ? {
                   id: data.creator.id,
-                  stage_name: data.creator.username || "",
-                  profile_image_url: data.creator.avatar_url || "",
-                  verified: false,
+                  username: data.creator.username,
+                  avatar_url: data.creator.avatar_url,
+                  role: data.creator.role,
                   created_at: data.creator.created_at,
                   updated_at: data.creator.updated_at,
               }
             : undefined,
         tracks: data.tracks.map(
-            (t: RawPlaylistTrack): IPlaylistTrackProps => ({
+            (t: RawPlaylistTrack): PlaylistTrackWithRelations => ({
                 id: t.id,
                 playlist_id: t.playlist_id,
                 track_id: t.track_id,
                 position: t.position,
                 added_by: t.added_by,
-                added_at: t.added_at || new Date().toISOString(),
+                added_at: t.added_at,
                 track: {
                     id: t.track.id,
                     album_id: t.track.album_id,
                     artist_id: t.track.artist_id,
                     title: t.track.title,
                     url: t.track.url,
-                    duration: t.track.duration * 1000, // Convert seconds to milliseconds
-                    release_date: t.track.release_date || undefined,
-                    genre: t.track.genre || undefined,
+                    duration: t.track.duration,
+                    release_date: t.track.release_date,
+                    genre: t.track.genre,
                     locked: t.track.locked,
                     plays: t.track.plays,
-                    lyrics: t.track.lyrics || undefined,
+                    lyrics: t.track.lyrics,
                     links: t.track.links,
-                    is_public: t.track.is_public || false,
+                    is_public: t.track.is_public,
                     created_at: t.track.created_at,
                     updated_at: t.track.updated_at,
-                    type: t.track.type || "Released",
-                    artists: [t.track.artists],
-                    album: {
-                        id: t.track.album.id,
-                        artist_id: t.track.album.artist_id,
-                        name: t.track.album.name,
-                        type: t.track.album.type,
-                        release_date: t.track.album.release_date,
-                        created_at: t.track.album.created_at,
-                        updated_at: t.track.album.updated_at,
-                        images: t.track.album.images,
+                    type: t.track.type,
+                    artists: {
+                        id: t.track.artists.id,
+                        stage_name: t.track.artists.stage_name,
+                        profile_image_url: t.track.artists.profile_image_url,
+                        verified: t.track.artists.verified,
+                        created_at: t.track.artists.created_at,
+                        updated_at: t.track.artists.updated_at,
                     },
-                    credits: t.track.credits,
+                    albums: {
+                        id: t.track.albums.id,
+                        name: t.track.albums.name,
+                        type: t.track.albums.type,
+                        release_date: t.track.albums.release_date,
+                        created_at: t.track.albums.created_at,
+                        updated_at: t.track.albums.updated_at,
+                        album_images: t.track.albums.album_images,
+                    },
+                    track_credits: t.track.track_credits,
+                    remixes: t.track.remixes
+                        ? {
+                              id: t.track.remixes.id,
+                              original_song: t.track.remixes.original_song,
+                              original_artists: t.track.remixes.original_artists,
+                              url: t.track.remixes.url,
+                              created_at: t.track.remixes.created_at,
+                              updated_at: t.track.remixes.updated_at,
+                          }
+                        : null,
                     is_liked: false,
-                } as ITrackProps,
+                } as TrackWithRelations,
             }),
         ),
         is_liked: false,
@@ -101,7 +168,7 @@ function shapePlaylist(data: RawPlaylistData): IPlaylistProps {
 }
 
 // Fetch all playlists with creator, tracks, and likes
-export async function fetchPlaylistsWithJoins(): Promise<IPlaylistProps[]> {
+export async function fetchPlaylistsWithJoins(): Promise<PlaylistWithRelations[]> {
     const { data, error } = await supabase
         .from("playlists")
         .select(
@@ -113,11 +180,12 @@ export async function fetchPlaylistsWithJoins(): Promise<IPlaylistProps[]> {
         track:tracks(
           *,
           artists:artists!tracks_artist_id_fkey(*),
-          album:albums!tracks_album_id_fkey(
+          albums:albums!tracks_album_id_fkey(
             *,
-            images:album_images(*)
+            album_images:album_images(*)
           ),
-          credits:track_credits(*)
+          track_credits:track_credits(*),
+          remixes:remixes(*)
         )
       ),
       likes:playlist_likes(*)
@@ -131,7 +199,7 @@ export async function fetchPlaylistsWithJoins(): Promise<IPlaylistProps[]> {
 }
 
 // Fetch single playlist by id
-export async function fetchPlaylistByIdWithJoins(id: string): Promise<IPlaylistProps> {
+export async function fetchPlaylistByIdWithJoins(id: string): Promise<PlaylistWithRelations> {
     const { data, error } = await supabase
         .from("playlists")
         .select(
@@ -143,11 +211,12 @@ export async function fetchPlaylistByIdWithJoins(id: string): Promise<IPlaylistP
         track:tracks(
           *,
           artists:artists!tracks_artist_id_fkey(*),
-          album:albums!tracks_album_id_fkey(
+          albums:albums!tracks_album_id_fkey(
             *,
-            images:album_images(*)
+            album_images:album_images(*)
           ),
-          credits:track_credits(*)
+          track_credits:track_credits(*),
+          remixes:remixes(*)
         )
       ),
       likes:playlist_likes(*)
@@ -163,7 +232,7 @@ export async function fetchPlaylistByIdWithJoins(id: string): Promise<IPlaylistP
 }
 
 // Fetch playlists by a specific user
-export async function fetchPlaylistsByUser(userId: string): Promise<IPlaylistProps[]> {
+export async function fetchPlaylistsByUser(userId: string): Promise<PlaylistWithRelations[]> {
     const { data, error } = await supabase
         .from("playlists")
         .select(
@@ -175,11 +244,12 @@ export async function fetchPlaylistsByUser(userId: string): Promise<IPlaylistPro
         track:tracks(
           *,
           artists:artists!tracks_artist_id_fkey(*),
-          album:albums!tracks_album_id_fkey(
+          albums:albums!tracks_album_id_fkey(
             *,
-            images:album_images(*)
+            album_images:album_images(*)
           ),
-          credits:track_credits(*)
+          track_credits:track_credits(*),
+          remixes:remixes(*)
         )
       ),
       likes:playlist_likes(*)
@@ -191,4 +261,82 @@ export async function fetchPlaylistsByUser(userId: string): Promise<IPlaylistPro
     if (error) throw error;
 
     return ((data as RawPlaylistData[]) || []).map(shapePlaylist);
+}
+
+// Fetch public playlists only
+export async function fetchPublicPlaylists(): Promise<PlaylistWithRelations[]> {
+    const { data, error } = await supabase
+        .from("playlists")
+        .select(
+            `
+      *,
+      creator:profiles!playlists_created_by_fkey(*),
+      tracks:playlist_tracks(
+        *,
+        track:tracks(
+          *,
+          artists:artists!tracks_artist_id_fkey(*),
+          albums:albums!tracks_album_id_fkey(
+            *,
+            album_images:album_images(*)
+          ),
+          track_credits:track_credits(*),
+          remixes:remixes(*)
+        )
+      ),
+      likes:playlist_likes(*)
+    `,
+        )
+        .eq("is_public", true)
+        .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    return ((data as RawPlaylistData[]) || []).map(shapePlaylist);
+}
+
+// Create a new playlist
+export async function createPlaylist(playlist: Database["public"]["Tables"]["playlists"]["Insert"]): Promise<PlaylistRow> {
+    const { data, error } = await supabase.from("playlists").insert(playlist).select().single();
+
+    if (error) throw error;
+    if (!data) throw new Error("Failed to create playlist");
+
+    return data;
+}
+
+// Update an existing playlist
+export async function updatePlaylist(id: string, updates: Database["public"]["Tables"]["playlists"]["Update"]): Promise<PlaylistRow> {
+    const { data, error } = await supabase.from("playlists").update(updates).eq("id", id).select().single();
+
+    if (error) throw error;
+    if (!data) throw new Error("Failed to update playlist");
+
+    return data;
+}
+
+// Delete a playlist
+export async function deletePlaylist(id: string): Promise<void> {
+    const { error } = await supabase.from("playlists").delete().eq("id", id);
+
+    if (error) throw error;
+}
+
+// Add track to playlist
+export async function addTrackToPlaylist(
+    playlistTrack: Database["public"]["Tables"]["playlist_tracks"]["Insert"],
+): Promise<PlaylistTrackRow> {
+    const { data, error } = await supabase.from("playlist_tracks").insert(playlistTrack).select().single();
+
+    if (error) throw error;
+    if (!data) throw new Error("Failed to add track to playlist");
+
+    return data;
+}
+
+// Remove track from playlist
+export async function removeTrackFromPlaylist(playlistTrackId: string): Promise<void> {
+    const { error } = await supabase.from("playlist_tracks").delete().eq("id", playlistTrackId);
+
+    if (error) throw error;
 }

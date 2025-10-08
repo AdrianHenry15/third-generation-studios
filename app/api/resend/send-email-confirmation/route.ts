@@ -1,14 +1,14 @@
 import { Resend } from "resend";
 import ConfirmationEmailTemplate from "@/components/forms/email-templates/confirmation-email-template";
-import { EmailTemplateParams } from "@/lib/types";
+import { EmailTemplateParamsType } from "@/lib/types/generic-types";
 
 export async function POST(request: Request) {
     const resend = new Resend(process.env.RESEND_API_KEY as string);
     try {
-        const body = (await request.json()) as EmailTemplateParams;
-        const { name, email, plan, productDescription } = body;
+        const body = (await request.json()) as EmailTemplateParamsType;
+        const { name, email, plan } = body;
 
-        if (!name || !email || !plan || !productDescription) {
+        if (!name || !email || !plan) {
             return Response.json({ success: false, error: "Missing required fields" }, { status: 400 });
         }
 
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
             from: `Third Generation Studios <ahenry@thirdgenerationstudios.com>`,
             to: [email],
             subject: "Third Generation Studios - Confirmation of Form Submission",
-            react: ConfirmationEmailTemplate({ name, email, plan: formattedPlan, productDescription }),
+            react: ConfirmationEmailTemplate({ name, email, plan: formattedPlan }),
         });
 
         if (error) {

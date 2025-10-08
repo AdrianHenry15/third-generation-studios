@@ -2,7 +2,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, Variants } from "framer-motion";
 import { Button } from "@/components/ui/buttons/button";
 import { ArrowRight, Code, Zap, Sparkles, Globe, Rocket } from "lucide-react";
 import Link from "next/link";
@@ -11,7 +11,7 @@ export default function HeroSection() {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: false, amount: 0.3 });
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -21,7 +21,7 @@ export default function HeroSection() {
         },
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 30 },
         visible: {
             opacity: 1,
@@ -30,7 +30,7 @@ export default function HeroSection() {
         },
     };
 
-    const codeAnimation = {
+    const codeAnimation: Variants = {
         hidden: { opacity: 1, scale: 0.9, rotateY: -15 },
         visible: {
             opacity: 1,
@@ -44,8 +44,8 @@ export default function HeroSection() {
         y: [-10, 10, -10],
         transition: {
             duration: 6,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
+            repeat: Infinity,
+            ease: "easeInOut" as const,
         },
     };
 

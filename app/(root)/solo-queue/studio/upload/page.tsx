@@ -65,7 +65,7 @@ export default function StudioUploadPage() {
             const t = data.tracks[i];
             if (!t.title.trim()) return (setError(`Track ${i + 1} title is required.`), false);
             if (!t.audioFile) return (setError(`Audio file is required for track ${i + 1}.`), false);
-            if (!t.genre.trim()) return (setError(`Genre is required for track ${i + 1}.`), false);
+            if (!t.genre?.trim()) return (setError(`Genre is required for track ${i + 1}.`), false);
         }
 
         // Validate album
@@ -126,7 +126,7 @@ export default function StudioUploadPage() {
                             is_public: track.is_public || false,
                             type: track.type,
                             plays: 0,
-                            links: { spotify: track.links?.spotify || "" },
+                            links: { spotify: (track.links as { spotify?: string })?.spotify || "" },
                             artist_id: user?.id!,
                             album_id: album.id,
                             url: "",

@@ -15,6 +15,7 @@ import AddToPlaylistButton from "./add-to-playlist-button";
 import { useTrackWithRelations } from "@/hooks/music/use-tracks";
 import type { Tables } from "@/lib/types/supabase-types";
 import RemixCard from "./remix-card";
+import { TrackWithRelations } from "@/lib/types/music-types";
 
 // Type for track with relations that matches the actual hook response
 export type TrackWithRelationsResponse = {
@@ -67,7 +68,7 @@ export type TrackWithRelationsResponse = {
 
 interface ITrackCardProps {
     trackId: string;
-    playlist?: TrackWithRelationsResponse[];
+    playlist?: TrackWithRelations[];
     onUnlock?: (trackId: string) => void;
 }
 

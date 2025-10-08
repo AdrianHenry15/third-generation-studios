@@ -1,8 +1,3 @@
-export * from "./solo-queue-types/analytics-types";
-export * from "./solo-queue-types/billing-types";
-export * from "./solo-queue-types/public-types";
-export * from "./solo-queue-types/music-types";
-
 // General Web Types
 export type TechStackName =
     | "Next.js"
@@ -50,8 +45,17 @@ export type EmailTemplateParamsType = {
     name: string;
     email: string;
     plan: string;
-    product_description: string;
 };
 
 // For infinite queries
 export type PagedResult<T> = { data: T[]; nextCursor?: string };
+
+export interface IMusicLinkProps {
+    spotify?: string;
+    apple?: string;
+    youtube?: string;
+    soundcloud?: string;
+    amazon?: string;
+    tidal?: string;
+    deezer?: string;
+}

@@ -9,14 +9,16 @@ type ErrorModalProps = {
 };
 
 const ErrorModal: React.FC<ErrorModalProps> = ({ open, title = "There were some errors", errors, onClose }) => {
-    if (!open) return null;
-
-    // Close on Escape
+    // Close on Escape - Hook must be called before early return
     useEffect(() => {
+        if (!open) return; // Only add listener if modal is open
+
         const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
         window.addEventListener("keydown", onKey);
         return () => window.removeEventListener("keydown", onKey);
-    }, [onClose]);
+    }, [open, onClose]);
+
+    if (!open) return null;
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">

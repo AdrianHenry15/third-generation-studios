@@ -1,15 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { IProfileProps } from "@/lib/solo-queue-types/public-types";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import Image from "next/image";
 import { useAuthStore } from "@/stores/auth-store";
-import { useProfileByIdQuery, useProfileUpdate } from "@/hooks/public/use-profiles";
+import { useProfileUpdate } from "@/hooks/public/use-profiles";
+import { ProfileTableType } from "@/lib/types/public-types";
 
 interface ProfileFormProps {
-    profile: IProfileProps;
+    profile: ProfileTableType;
 }
 
 export default function ProfileForm({ profile }: ProfileFormProps) {
@@ -147,29 +147,21 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
                 avatar_url: avatarUrl,
             };
 
-            updateProfile(
-                {
-                    id: profile.id,
-                    values: profileData,
-                },
-                {
-                    onSuccess: () => {
-                        // Update local state
-                        setFormData((prev) => ({ ...prev, avatar_url: avatarUrl }));
+            updateProfile({
+                id: profile.id,
+                values: profileData,
+            });
 
-                        // Clear file selection and preview
-                        setSelectedFile(null);
-                        setPreviewUrl(null);
+            // Handle success directly since we can't pass callbacks
+            // Update local state
+            setFormData((prev) => ({ ...prev, avatar_url: avatarUrl }));
 
-                        setMessage({ type: "success", text: "Profile updated successfully!" });
-                        router.refresh();
-                    },
-                    onError: (error: any) => {
-                        console.error("Error updating profile:", error);
-                        setMessage({ type: "error", text: "Failed to update profile" });
-                    },
-                },
-            );
+            // Clear file selection and preview
+            setSelectedFile(null);
+            setPreviewUrl(null);
+
+            setMessage({ type: "success", text: "Profile updated successfully!" });
+            router.refresh();
         } catch (error: any) {
             console.error("Error updating profile:", error);
             setMessage({ type: "error", text: "Failed to update profile" });

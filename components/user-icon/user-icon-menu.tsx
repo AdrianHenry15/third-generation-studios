@@ -1,7 +1,5 @@
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
-import { IProfileProps } from "@/lib/types";
 import { useAuthStore } from "@/stores/auth-store";
-import { User as UserType } from "@supabase/supabase-js";
 import { Laptop, LogOut, Moon, Sun, User } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";

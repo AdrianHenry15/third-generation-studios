@@ -6,7 +6,7 @@ import { PlayCircle, Music, Trash2, Pencil, Check, X, Loader2 } from "lucide-rea
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useParams, useRouter } from "next/navigation";
-import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist } from "@/hooks/music/use-playlists";
+import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist, PlaylistTrack } from "@/hooks/music/use-playlists";
 import { useArtist } from "@/hooks/music/use-artists";
 
 // Resolve a playlist cover strictly from the first track's album image
@@ -336,7 +336,7 @@ export default function PlaylistPage() {
                             <div className="px-4 py-8 text-center text-neutral-400">No tracks in this playlist yet.</div>
                         ) : (
                             <ul className="divide-y divide-neutral-800">
-                                {playlistTracks.map((playlistTrack, idx) => (
+                                {playlistTracks.map((playlistTrack: PlaylistTrack, idx: number) => (
                                     <TrackRow
                                         key={playlistTrack.id}
                                         playlistTrack={playlistTrack}

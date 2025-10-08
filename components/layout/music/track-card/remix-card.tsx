@@ -13,13 +13,11 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useProfile } from "@/hooks/public/use-profiles";
 import AddToPlaylistButton from "./add-to-playlist-button";
 import { useRemixByTrackIdQuery } from "@/hooks/music/use-remixes";
-import type { TrackWithRelationsResponse } from "./index";
-import { Database } from "@/lib/types/supabase-types";
-import { TrackTypeEnum } from "@/lib/types/music-types";
+import { TrackTypeEnum, TrackWithRelations } from "@/lib/types/music-types";
 
 interface IRemixCardProps {
-    track: TrackWithRelationsResponse;
-    playlist?: TrackWithRelationsResponse[];
+    track: TrackWithRelations;
+    playlist?: TrackWithRelations[];
     onUnlock?: (trackId: string) => void;
 }
 

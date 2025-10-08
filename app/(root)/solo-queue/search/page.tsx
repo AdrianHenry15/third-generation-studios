@@ -11,7 +11,6 @@ import {
     useSearchTracksQuery,
     useSearchTracksByArtistsQuery,
 } from "@/hooks/music/use-search";
-import { ITrackProps } from "@/lib/types/music-types";
 
 // -----------------------------
 // Cover helpers

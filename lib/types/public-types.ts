@@ -1,3 +1,5 @@
+import { Database } from "./supabase-types";
+
 export type ProfileRole = "listener" | "admin" | "artist";
 export interface IProfileProps {
     id: string;
@@ -8,3 +10,5 @@ export interface IProfileProps {
     created_at: string;
     updated_at: string;
 }
+
+export type ProfileTableType = Database["public"]["Tables"]["profiles"]["Row"];

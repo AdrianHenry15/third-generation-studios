@@ -1,11 +1,11 @@
 import React from "react";
-import { ITrackProps } from "@/lib/types";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import { useAuthStore } from "@/stores/auth-store";
+import { TrackWithRelations } from "@/lib/types/music-types";
 
 interface IPlayPauseButtonProps {
-    track: ITrackProps;
-    playlist?: ITrackProps[];
+    track: TrackWithRelations;
+    playlist?: TrackWithRelations[];
     locked: boolean;
 }
 

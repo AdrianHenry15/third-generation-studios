@@ -1,4 +1,4 @@
-import { ITrackProps, NavMenuType } from "./types";
+import { NavMenuType } from "./types/generic-types";
 
 export const NavMenuTypeItems: NavMenuType[] = [
     {

@@ -4,8 +4,7 @@ import React from "react";
 import FAQContainer from "./components/container";
 import FAQSidebarNav from "./components/sidebar-nav";
 import ScrollUpBtn from "@/components/scroll-up-btn";
-import { FaqType, NavMenuType } from "@/lib/types";
-
+import { FaqType, NavMenuType } from "@/lib/types/generic-types";
 const FaqNavItems: NavMenuType[] = [];
 
 const FaqItems: FaqType[] = [];

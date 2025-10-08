@@ -1,6 +1,6 @@
-import { FaqType } from "@/lib/types";
 import React from "react";
 import FAQItem from "./item";
+import { FaqType } from "@/lib/types/generic-types";
 
 interface IFAQContainerProps {
     title: string;
