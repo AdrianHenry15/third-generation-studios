@@ -12,7 +12,7 @@ const mainItems = [
 ];
 
 const libraryItems = [
-    { icon: Heart, label: "Liked Songs", href: "/solo-queue/liked" },
+    { icon: Heart, label: "Liked Songs", href: "/solo-queue/liked-songs" },
     { icon: PlayCircle, label: "Playlists", href: "/solo-queue/playlists" },
 ];
 

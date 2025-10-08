@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, Music } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 
@@ -14,29 +14,33 @@ import StudioUploadForm, {
 import SuccessModal from "@/components/modals/success-modal";
 
 import { useAlbumInsertWithCover, useTrackUpload } from "@/hooks/storage/use-music-storage";
-import { useTrackCreditInsert } from "@/hooks/music/use-tracks";
 import { useRemixInsert } from "@/hooks/music/use-remixes";
-import { useArtistById } from "@/hooks/music/use-artists";
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
+import { useMusicQueryById } from "@/hooks/music/use-music";
+import { useMusicInsert } from "@/hooks/music/use-music";
 
-import { CreditRoleType, IArtistProps } from "@/lib/types/music-types";
+import type { Database } from "@/lib/types/supabase-types";
+import { TrackCreditTableInsert } from "@/lib/types/music-types";
+import LoadingOverlay from "@/components/layout/upload/loading-overlay";
 
 export default function StudioUploadPage() {
     // -------------------- STATE & STORE --------------------
     const [isUploading, setIsUploading] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [uploadStep, setUploadStep] = useState<string>("");
+    const [totalTracks, setTotalTracks] = useState<number>(0);
 
     const { user } = useAuthStore();
     const { data: profile } = useProfileByIdQuery(user?.id || "");
-    const { data: artist } = useArtistById(user?.id || "") as { data: IArtistProps | null };
+    const { data: artist } = useMusicQueryById("artists", "artists", user?.id || "");
     const router = useRouter();
 
     // -------------------- HOOKS --------------------
     const useAlbumInsert = useAlbumInsertWithCover();
     const useTrackUploadHook = useTrackUpload();
-    const useTrackCreditInsertHook = useTrackCreditInsert();
+    const useTrackCreditInsertHook = useMusicInsert("track_credits", "track_credits");
     const useRemixInsertHook = useRemixInsert();
 
     // -------------------- VALIDATION --------------------
@@ -91,9 +95,11 @@ export default function StudioUploadPage() {
 
         setIsUploading(true);
         setError(null);
+        setTotalTracks(data.tracks.length);
 
         try {
             // ---------- 1️⃣ Insert Album ----------
+            setUploadStep("Creating album...");
             const album = await useAlbumInsert.mutateAsync({
                 albumData: {
                     name: data.albumData.name,
@@ -105,17 +111,11 @@ export default function StudioUploadPage() {
             });
 
             // ---------- 2️⃣ Upload Tracks ----------
-            interface UploadedTrack {
-                id: string;
-                title: string;
-                album_id: string;
-                artist_id: string;
-                // Add other fields if needed
-            }
-
-            const uploadedTracks: UploadedTrack[] = await Promise.all(
-                data.tracks.map((track) =>
-                    useTrackUploadHook.mutateAsync({
+            setUploadStep(`Uploading ${data.tracks.length} track${data.tracks.length !== 1 ? "s" : ""}...`);
+            const uploadedTracks = await Promise.all(
+                data.tracks.map((track, index) => {
+                    setUploadStep(`Uploading track ${index + 1} of ${data.tracks.length}: "${track.title}"`);
+                    return useTrackUploadHook.mutateAsync({
                         trackData: {
                             title: track.title,
                             genre: track.genre,
@@ -124,58 +124,60 @@ export default function StudioUploadPage() {
                             lyrics: track.lyrics || "",
                             locked: track.locked || false,
                             is_public: track.is_public || false,
+                            type: track.type,
                             plays: 0,
                             links: { spotify: track.links?.spotify || "" },
                             artist_id: user?.id!,
                             album_id: album.id,
+                            url: "",
                         },
                         audioFile: track.audioFile!,
                         trackImageFile: data.mode === "single" || data.albumData.type === "Single" ? track.trackImageFile : undefined,
-                    }),
-                ),
+                    });
+                }),
             );
 
             // ---------- 3️⃣ Insert Track Credits ----------
+            setUploadStep("Setting up track credits...");
             await Promise.all(
                 uploadedTracks.map((uploadedTrack) =>
                     useTrackCreditInsertHook.mutateAsync({
                         track_id: uploadedTrack.id,
                         name: artist?.stage_name || "Unknown Artist",
-                        role: "main-artist" as CreditRoleType,
-                    }),
+                        role: "main-artist",
+                    } as TrackCreditTableInsert),
                 ),
             );
 
             // ---------- 4️⃣ Insert Remix Data ----------
-            interface RemixData {
-                original_song: string;
-                url?: string | null;
-                original_artists: string[];
-                additional_artists?: string[] | null;
+            const remixTracks = uploadedTracks.filter((_, idx) => data.tracks[idx].type === "Remix");
+            if (remixTracks.length > 0) {
+                setUploadStep("Processing remix information...");
+                await Promise.all(
+                    uploadedTracks
+                        .map((uploadedTrack, idx) => {
+                            const trackData = data.tracks[idx];
+                            const remixInfo = data.remixData[trackData.id];
+
+                            if (trackData.type === "Remix" && remixInfo?.original_artists?.length) {
+                                return useRemixInsertHook.mutateAsync({
+                                    track_id: uploadedTrack.id,
+                                    original_song: remixInfo.original_song,
+                                    url: remixInfo.url || null,
+                                    original_artists: remixInfo.original_artists,
+                                });
+                            }
+                            return null;
+                        })
+                        .filter(Boolean) as Promise<unknown>[],
+                );
             }
 
-            await Promise.all(
-                uploadedTracks
-                    .map((uploadedTrack, idx) => {
-                        const trackData = data.tracks[idx];
-                        const remixInfo = data.remixData[trackData.id] as RemixData | undefined;
-
-                        if (trackData.type === "Remix" && remixInfo?.original_artists?.length) {
-                            return useRemixInsertHook.mutateAsync({
-                                track_id: uploadedTrack.id,
-                                original_song: remixInfo.original_song,
-                                url: remixInfo.url || null,
-                                original_artists: remixInfo.original_artists,
-                                additional_artists: remixInfo.additional_artists?.length ? remixInfo.additional_artists : null,
-                            });
-                        }
-                        return null;
-                    })
-                    .filter(Boolean) as Promise<unknown>[],
-            );
-
             // ---------- 5️⃣ Success ----------
-            setUploadSuccess(true);
+            setUploadStep("Upload completed successfully!");
+            setTimeout(() => {
+                setUploadSuccess(true);
+            }, 1000);
         } catch (err) {
             console.error("Upload error:", err);
             setError(err instanceof Error ? err.message : "Failed to upload. Please try again.");
@@ -186,38 +188,45 @@ export default function StudioUploadPage() {
 
     // -------------------- RENDER --------------------
     return (
-        <div className="container mx-auto px-4 py-8 pt-24 max-w-4xl">
-            <header className="mb-8">
-                <h1 className="text-3xl font-bold mb-2">Upload Music</h1>
-                <p className="text-muted-foreground">Share your music with the Solo-Queue community</p>
-            </header>
+        <>
+            <div className="container mx-auto px-4 py-8 pt-24 max-w-4xl">
+                <header className="mb-8">
+                    <h1 className="text-3xl font-bold mb-2">Upload Music</h1>
+                    <p className="text-muted-foreground">Share your music with the Solo-Queue community</p>
+                </header>
 
-            {uploadSuccess && (
-                <Alert className="mb-6 border-green-200 bg-green-50">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    <AlertDescription className="text-green-800">
-                        Music uploaded successfully! It will be reviewed before going live.
-                    </AlertDescription>
-                </Alert>
-            )}
+                {uploadSuccess && (
+                    <Alert className="mb-6 border-green-200 bg-green-50">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                        <AlertDescription className="text-green-800">
+                            Music uploaded successfully! It will be reviewed before going live.
+                        </AlertDescription>
+                    </Alert>
+                )}
 
+                {error && (
+                    <Alert variant="destructive" className="mb-6">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
+                )}
+
+                <StudioUploadForm onSubmit={handleUpload} isUploading={isUploading} />
+            </div>
+
+            {/* Loading Overlay */}
+            {isUploading && <LoadingOverlay currentStep={uploadStep} totalTracks={totalTracks} />}
+
+            {/* Success Modal */}
             {uploadSuccess && (
                 <SuccessModal
-                    title="Upload Successful"
+                    title="Upload Successful! 🎵"
                     confirmText="Go to My Tracks"
+                    cancelText="Upload More"
                     onCancel={() => setUploadSuccess(false)}
                     onConfirm={() => router.push("/solo-queue/studio/my-tracks")}
                 />
             )}
-
-            {error && (
-                <Alert variant="destructive" className="mb-6">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertDescription>{error}</AlertDescription>
-                </Alert>
-            )}
-
-            <StudioUploadForm onSubmit={handleUpload} isUploading={isUploading} />
-        </div>
+        </>
     );
 }

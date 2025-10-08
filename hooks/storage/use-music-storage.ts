@@ -4,16 +4,33 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { uploadFile, deleteFile } from "@/lib/supabase/storage";
 import { useMusicInsert, useMusicUpdate } from "@/hooks/music/use-music";
 import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
-
-import type { IArtistProps, IAlbumProps, IAlbumImageProps, ITrackProps } from "@/lib/types/music-types";
 import { supabase } from "@/lib/supabase/client";
+import type { Database } from "@/lib/types/supabase-types";
+
+// Use Supabase generated types
+type Artist = Database["public"]["Tables"]["profiles"]["Row"];
+type Album = Database["public"]["Tables"]["albums"]["Row"];
+type Track = Database["public"]["Tables"]["tracks"]["Row"];
+type AlbumImage = Database["public"]["Tables"]["album_images"]["Row"];
+
+// Insert types
+type ArtistInsert = Database["public"]["Tables"]["profiles"]["Insert"];
+type AlbumInsert = Database["public"]["Tables"]["albums"]["Insert"];
+type TrackInsert = Database["public"]["Tables"]["tracks"]["Insert"];
+type AlbumImageInsert = Database["public"]["Tables"]["album_images"]["Insert"];
+
+// Update types
+type ArtistUpdate = Database["public"]["Tables"]["profiles"]["Update"];
+type AlbumUpdate = Database["public"]["Tables"]["albums"]["Update"];
+type TrackUpdate = Database["public"]["Tables"]["tracks"]["Update"];
+type AlbumImageUpdate = Database["public"]["Tables"]["album_images"]["Update"];
 
 // -------------------------
 // ARTISTS
 // -------------------------
 export function useArtistAvatarUpload() {
     const qc = useQueryClient();
-    const updateArtist = useMusicUpdate<IArtistProps>("artists", "artists");
+    const updateArtist = useMusicUpdate("profiles", "artists");
 
     return useMutation({
         mutationFn: async ({ artistId, file }: { artistId: string; file: File }) => {
@@ -27,12 +44,12 @@ export function useArtistAvatarUpload() {
 
             await updateArtist.mutateAsync({
                 id: artistId,
-                values: { profile_image_url: url },
+                values: { avatar_url: url },
             });
 
             return url;
         },
-        onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS["artists"] }),
+        onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS["artists"].all }),
     });
 }
 
@@ -41,14 +58,14 @@ export function useArtistAvatarUpload() {
 // -------------------------
 export function useAlbumInsertWithCover() {
     const qc = useQueryClient();
-    const insertAlbum = useMusicInsert<IAlbumProps>("albums", "albums");
-    const insertAlbumImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
+    const insertAlbum = useMusicInsert("albums", "albums");
+    const insertAlbumImage = useMusicInsert("album_images", "album_images");
 
     return useMutation({
-        mutationFn: async ({ albumData, albumImageFile }: { albumData: Partial<IAlbumProps>; albumImageFile?: File }) => {
+        mutationFn: async ({ albumData, albumImageFile }: { albumData: AlbumInsert; albumImageFile?: File }) => {
             const album = await insertAlbum.mutateAsync(albumData);
 
-            if (albumImageFile) {
+            if (albumImageFile && album.artist_id) {
                 const url = await uploadFile({
                     bucket: "album-covers",
                     file: albumImageFile,
@@ -66,15 +83,14 @@ export function useAlbumInsertWithCover() {
 
             return album;
         },
-        onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] }),
+        onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"].all }),
     });
 }
 
-// New hook for updating existing album cover only
 export function useAlbumCoverUpdate() {
     const qc = useQueryClient();
-    const insertAlbumImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
-    const updateAlbumImage = useMusicUpdate<IAlbumImageProps>("album_images", "album_images");
+    const insertAlbumImage = useMusicInsert("album_images", "album_images");
+    const updateAlbumImage = useMusicUpdate("album_images", "album_images");
 
     return useMutation({
         mutationFn: async ({ albumId, artistId, albumImageFile }: { albumId: string; artistId: string; albumImageFile: File }) => {
@@ -91,14 +107,15 @@ export function useAlbumCoverUpdate() {
 
             console.log("File uploaded successfully:", url);
 
-            // First, try to find existing album image by album_id
             try {
                 // Query to find existing album image
-                const { data: existingImages } = await supabase.from("album_images").select("id").eq("album_id", albumId).limit(1);
+                const { data: existingImages, error } = await supabase.from("album_images").select("id").eq("album_id", albumId).limit(1);
+
+                if (error) throw error;
 
                 if (existingImages && existingImages.length > 0) {
                     // Update existing image
-                    const result = await updateAlbumImage.mutateAsync({
+                    await updateAlbumImage.mutateAsync({
                         id: existingImages[0].id,
                         values: {
                             url,
@@ -106,17 +123,17 @@ export function useAlbumCoverUpdate() {
                         },
                     });
                     console.log("Album image updated successfully");
-                    return url;
                 } else {
                     // Insert new image
-                    const result = await insertAlbumImage.mutateAsync({
+                    await insertAlbumImage.mutateAsync({
                         album_id: albumId,
                         url,
                         name: albumImageFile.name,
                     });
                     console.log("Album image inserted successfully");
-                    return url;
                 }
+
+                return url;
             } catch (error) {
                 console.error("Database operation failed:", error);
                 throw new Error(`Failed to update album cover in database: ${error}`);
@@ -124,8 +141,8 @@ export function useAlbumCoverUpdate() {
         },
         onSuccess: (url) => {
             console.log("Album cover update completed successfully:", url);
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] });
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"] });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"].all });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"].all });
         },
         onError: (error) => {
             console.error("Album cover update failed:", error);
@@ -159,8 +176,8 @@ async function getAudioDuration(file: File): Promise<number> {
 
 export function useTrackUpload() {
     const qc = useQueryClient();
-    const insertTrack = useMusicInsert<ITrackProps>("tracks", "tracks");
-    const insertTrackImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
+    const insertTrack = useMusicInsert("tracks", "tracks");
+    const insertTrackImage = useMusicInsert("album_images", "album_images");
 
     return useMutation({
         mutationFn: async ({
@@ -168,7 +185,7 @@ export function useTrackUpload() {
             audioFile,
             trackImageFile,
         }: {
-            trackData: Partial<ITrackProps>;
+            trackData: TrackInsert;
             audioFile: File;
             trackImageFile?: File;
         }) => {
@@ -177,7 +194,7 @@ export function useTrackUpload() {
                 throw new Error("Missing required fields: album_id, artist_id, and title are required");
             }
 
-            // Get audio duration (you'll need to implement this helper)
+            // Get audio duration
             const duration = await getAudioDuration(audioFile);
 
             // Upload audio file
@@ -185,6 +202,8 @@ export function useTrackUpload() {
                 bucket: "track-urls",
                 file: audioFile,
                 userId: trackData.artist_id,
+                albumName: trackData.title, // Use title as fallback for album name
+                trackName: trackData.title,
             });
 
             if (!audioUrl) throw new Error("Failed to upload track file");
@@ -193,17 +212,17 @@ export function useTrackUpload() {
             const track = await insertTrack.mutateAsync({
                 ...trackData,
                 url: audioUrl,
-                duration, // Now included
-                plays: 0, // Initialize plays counter
-                locked: trackData.locked ?? false, // Default to unlocked
+                duration,
+                plays: trackData.plays ?? 0,
+                locked: trackData.locked ?? false,
             });
 
             // Upload track image if provided (for singles)
-            if (trackImageFile) {
+            if (trackImageFile && track.artist_id && track.album_id) {
                 const imageUrl = await uploadFile({
                     bucket: "album-covers",
                     file: trackImageFile,
-                    userId: trackData.artist_id,
+                    userId: track.artist_id,
                 });
 
                 if (imageUrl) {
@@ -219,8 +238,8 @@ export function useTrackUpload() {
             return track;
         },
         onSuccess: () => {
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"] });
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"].all });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"].all });
         },
     });
 }
@@ -231,8 +250,8 @@ export function useTrackUpload() {
 export function useDeleteStorageFile(bucket: "avatars" | "album-covers" | "track-urls") {
     return useMutation({
         mutationFn: async (path: string) => {
-            const ok = await deleteFile(bucket, path);
-            if (!ok) throw new Error("Failed to delete file");
+            const success = await deleteFile(bucket, path);
+            if (!success) throw new Error("Failed to delete file");
             return path;
         },
     });
@@ -242,12 +261,11 @@ export function useDeleteStorageFile(bucket: "avatars" | "album-covers" | "track
 // COMPOSITE OPERATIONS
 // -------------------------
 
-// If you want a combined operation for creating album + track
 export function useAlbumWithTrackUpload() {
     const qc = useQueryClient();
-    const insertAlbum = useMusicInsert<IAlbumProps>("albums", "albums");
-    const insertTrack = useMusicInsert<ITrackProps>("tracks", "tracks");
-    const insertAlbumImage = useMusicInsert<IAlbumImageProps>("album_images", "album_images");
+    const insertAlbum = useMusicInsert("albums", "albums");
+    const insertTrack = useMusicInsert("tracks", "tracks");
+    const insertAlbumImage = useMusicInsert("album_images", "album_images");
 
     return useMutation({
         mutationFn: async ({
@@ -256,11 +274,16 @@ export function useAlbumWithTrackUpload() {
             audioFile,
             coverImageFile,
         }: {
-            albumData: Partial<IAlbumProps>;
-            trackData: Partial<ITrackProps>;
+            albumData: AlbumInsert;
+            trackData: Omit<TrackInsert, "album_id" | "artist_id">; // These will be set from album
             audioFile: File;
             coverImageFile?: File;
         }) => {
+            // Validate required fields
+            if (!albumData.artist_id) {
+                throw new Error("Artist ID is required for album creation");
+            }
+
             // Create album first
             const album = await insertAlbum.mutateAsync(albumData);
 
@@ -271,7 +294,9 @@ export function useAlbumWithTrackUpload() {
             const audioUrl = await uploadFile({
                 bucket: "track-urls",
                 file: audioFile,
-                userId: albumData.artist_id!,
+                userId: album.artist_id,
+                albumName: album.name || undefined,
+                trackName: trackData.title || undefined,
             });
 
             if (!audioUrl) throw new Error("Failed to upload track file");
@@ -283,12 +308,12 @@ export function useAlbumWithTrackUpload() {
                 artist_id: album.artist_id,
                 url: audioUrl,
                 duration,
-                plays: 0,
+                plays: trackData.plays ?? 0,
                 locked: trackData.locked ?? false,
             });
 
             // Upload cover image if provided
-            if (coverImageFile) {
+            if (coverImageFile && album.artist_id) {
                 const imageUrl = await uploadFile({
                     bucket: "album-covers",
                     file: coverImageFile,
@@ -307,17 +332,16 @@ export function useAlbumWithTrackUpload() {
             return { album, track };
         },
         onSuccess: () => {
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] });
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"] });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"].all });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"].all });
         },
     });
 }
 
-// Track file replacement hook
 export function useTrackFileReplace() {
     const qc = useQueryClient();
-    const updateTrack = useMusicUpdate<ITrackProps>("tracks", "tracks");
-    const updateAlbum = useMusicUpdate<IAlbumProps>("albums", "albums");
+    const updateTrack = useMusicUpdate("tracks", "tracks");
+    const updateAlbum = useMusicUpdate("albums", "albums");
 
     return useMutation({
         mutationFn: async ({
@@ -327,6 +351,7 @@ export function useTrackFileReplace() {
             artistId,
             newFile,
             newTitle,
+            albumName,
         }: {
             trackId: string;
             albumId: string;
@@ -334,6 +359,7 @@ export function useTrackFileReplace() {
             artistId: string;
             newFile: File;
             newTitle?: string;
+            albumName?: string;
         }) => {
             // Get new audio duration
             const duration = await getAudioDuration(newFile);
@@ -343,6 +369,8 @@ export function useTrackFileReplace() {
                 bucket: "track-urls",
                 file: newFile,
                 userId: artistId,
+                albumName: albumName || undefined,
+                trackName: newTitle || undefined,
             });
 
             if (!newAudioUrl) throw new Error("Failed to upload new track file");
@@ -368,8 +396,8 @@ export function useTrackFileReplace() {
             return updatedTrack;
         },
         onSuccess: () => {
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"] });
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"] });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"].all });
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"].all });
         },
     });
 }

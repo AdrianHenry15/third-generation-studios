@@ -2,23 +2,51 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useTrackUpdate } from "@/hooks/music/use-tracks";
 import { useTrackFileReplace } from "@/hooks/storage/use-music-storage";
-import { useRemixInsert, useRemixUpdate, useRemixDelete } from "@/hooks/music/use-remixes"; // Add remix hooks
+import { useRemixInsert, useRemixUpdate, useRemixDelete } from "@/hooks/music/use-remixes";
 import { trackGenres } from "@/lib/constants";
 import RemixCreditForm from "@/components/layout/solo-queue/studio/remix-credit-form";
 import { RemixUploadData } from "../../solo-queue/studio/studio-upload-form";
-import { IMusicLinkProps, ITrackProps, TrackType } from "@/lib/types/music-types";
+import { useUpdateTrack } from "@/hooks/music/use-tracks";
+import { useUpdateAlbum } from "@/hooks/music/use-albums";
+import type { Enums } from "@/lib/types/supabase-types";
+import { TrackWithRelations } from "@/lib/types/music-types";
+
+// Use Supabase types
+type TrackType = Enums<"track_type">;
 
 interface TrackUpdateFormProps {
-    track: ITrackProps;
+    track: TrackWithRelations;
+}
+
+// Type for music links based on the Json type in Supabase
+interface MusicLinks {
+    spotify?: string;
+    apple?: string;
+    youtube?: string;
+    soundcloud?: string;
+    amazon?: string;
+    tidal?: string;
+    deezer?: string;
 }
 
 const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
     const router = useRouter();
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+    // Parse existing links from the Json type
+    const existingLinks = React.useMemo(() => {
+        if (!track.links) return {};
+        try {
+            return typeof track.links === "object" ? (track.links as MusicLinks) : {};
+        } catch {
+            return {};
+        }
+    }, [track.links]);
+
     const [formData, setFormData] = useState({
         title: track.title || "",
+        album_name: track.albums?.name || "",
         release_date: track.release_date ? track.release_date.split("T")[0] : "",
         genre: track.genre || "",
         locked: track.locked || false,
@@ -26,22 +54,30 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
         type: track.type || ("Unreleased" as TrackType),
         is_public: track.is_public || false,
         links: {
-            spotify: track.links?.spotify || "",
-            apple: track.links?.apple || "",
-            youtube: track.links?.youtube || "",
-            soundcloud: track.links?.soundcloud || "",
-            amazon: track.links?.amazon || "",
-            tidal: track.links?.tidal || "",
-            deezer: track.links?.deezer || "",
+            spotify: existingLinks.spotify || "",
+            apple: existingLinks.apple || "",
+            youtube: existingLinks.youtube || "",
+            soundcloud: existingLinks.soundcloud || "",
+            amazon: existingLinks.amazon || "",
+            tidal: existingLinks.tidal || "",
+            deezer: existingLinks.deezer || "",
         },
     });
 
     // Separate state for remix data since it's not part of tracks table
     const [remixData, setRemixData] = useState({
-        original_song: track.remix?.original_song || "",
-        url: track.remix?.url || "",
-        original_artists: track.remix?.original_artists || [],
-        additional_artists: track.remix?.additional_artists || [],
+        original_song: track.remixes?.original_song || "",
+        url: track.remixes?.url || "",
+        original_artists: (() => {
+            if (!track.remixes?.original_artists) return [];
+            try {
+                return Array.isArray(track.remixes.original_artists)
+                    ? (track.remixes.original_artists as string[])
+                    : (JSON.parse(track.remixes.original_artists as string) as string[]);
+            } catch {
+                return [];
+            }
+        })(),
     });
 
     const [genreDropdownOpen, setGenreDropdownOpen] = useState(false);
@@ -49,7 +85,8 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
     const [selectedGenreIndex, setSelectedGenreIndex] = useState(-1);
     const genreInputRef = useRef<HTMLInputElement>(null);
 
-    const updateTrackMutation = useTrackUpdate();
+    const updateTrackMutation = useUpdateTrack();
+    const updateAlbumMutation = useUpdateAlbum();
     const replaceFileMutation = useTrackFileReplace();
     const remixInsertMutation = useRemixInsert();
     const remixUpdateMutation = useRemixUpdate();
@@ -59,7 +96,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
         const { name, value, type } = e.target;
 
         if (name.startsWith("links.")) {
-            const linkKey = name.split(".")[1];
+            const linkKey = name.split(".")[1] as keyof MusicLinks;
             setFormData((prev) => ({
                 ...prev,
                 links: {
@@ -75,20 +112,12 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
         }
     };
 
-    const handleRemixDataChange = (remixData: RemixUploadData) => {
+    const handleRemixDataChange = (newRemixData: RemixUploadData) => {
         setRemixData({
-            ...remixData,
-            url: remixData.url ?? "",
-            additional_artists: remixData.additional_artists ?? [],
+            original_song: newRemixData.original_song,
+            url: newRemixData.url || "",
+            original_artists: newRemixData.original_artists || [],
         });
-    };
-
-    const handleTrackChange = (trackId: string, field: string, value: any) => {
-        // For single track update, we don't need trackId since we're updating the current track
-        setFormData((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,7 +150,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 await replaceFileMutation.mutateAsync({
                     trackId: track.id,
                     albumId: track.album_id,
-                    albumType: track.album?.type || "Single",
+                    albumType: track.albums?.type || "Single",
                     artistId: track.artist_id,
                     newFile: selectedFile,
                     newTitle: formData.title !== track.title ? formData.title : undefined,
@@ -141,24 +170,40 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
     };
 
     const updateTrackAndRemixData = async () => {
-        // Filter links
-        const filteredLinks: IMusicLinkProps = {};
+        // Filter links and convert to Json type
+        const filteredLinks: MusicLinks = {};
         Object.entries(formData.links).forEach(([key, value]) => {
             if (value.trim()) {
-                filteredLinks[key as keyof IMusicLinkProps] = value;
+                filteredLinks[key as keyof MusicLinks] = value;
             }
         });
 
         const updateData = {
-            ...formData,
-            links: Object.keys(filteredLinks).length > 0 ? filteredLinks : undefined,
+            title: formData.title,
+            release_date: formData.release_date || null,
+            genre: formData.genre || null,
+            locked: formData.locked,
+            lyrics: formData.lyrics || null,
+            type: formData.type,
+            is_public: formData.is_public,
+            links: Object.keys(filteredLinks).length > 0 ? (filteredLinks as any) : null,
         };
 
         try {
+            // Update album name if it has changed
+            if (track.albums && formData.album_name !== track.albums.name) {
+                await updateAlbumMutation.mutateAsync({
+                    id: track.album_id,
+                    updates: {
+                        name: formData.album_name,
+                    },
+                });
+            }
+
             // Update track data
             await updateTrackMutation.mutateAsync({
                 id: track.id,
-                values: updateData,
+                updates: updateData,
             });
 
             // Handle remix data
@@ -172,7 +217,6 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     original_song: remixData.original_song,
                     url: remixData.url || null,
                     original_artists: remixData.original_artists,
-                    additional_artists: remixData.additional_artists?.length ? remixData.additional_artists : null,
                 });
             } else if (isCurrentlyRemix && willBeRemix) {
                 // Track remains a remix - update existing remix record
@@ -181,7 +225,6 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     original_song: remixData.original_song,
                     url: remixData.url || null,
                     original_artists: remixData.original_artists,
-                    additional_artists: remixData.additional_artists?.length ? remixData.additional_artists : null,
                 });
             } else if (isCurrentlyRemix && !willBeRemix) {
                 // Track is no longer a remix - delete remix record
@@ -289,16 +332,46 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 />
             </div>
 
+            {/* Album Name */}
+            <div>
+                <label htmlFor="album_name" className="block text-sm font-medium text-gray-300 mb-2">
+                    Album Name *
+                </label>
+                <input
+                    type="text"
+                    id="album_name"
+                    name="album_name"
+                    value={formData.album_name}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                />
+                <div className="text-xs text-gray-400 mt-2">
+                    <p>• Current album type: {track.albums?.type || "Unknown"}</p>
+                    {track.albums?.type === "Single" && <p>• Singles typically have the same name as the track</p>}
+                </div>
+            </div>
+
             {/* File Replacement */}
             <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">Replace Track Audio (Optional)</label>
-                <input
-                    type="file"
-                    id="file"
-                    accept="audio/*"
-                    onChange={handleFileChange}
-                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
-                />
+                <div className="relative">
+                    <input
+                        type="file"
+                        id="file"
+                        accept="audio/*"
+                        onChange={handleFileChange}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    />
+                    <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white border-dashed hover:border-gray-600 transition-colors cursor-pointer">
+                        <div className="flex items-center gap-3">
+                            <div className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm font-medium transition-colors">
+                                Choose File
+                            </div>
+                            <span className="text-gray-400">{selectedFile ? selectedFile.name : "No file selected"}</span>
+                        </div>
+                    </div>
+                </div>
                 {selectedFile && (
                     <p className="text-sm text-green-400 mt-2">
                         Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
@@ -307,7 +380,6 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 <div className="text-xs text-gray-400 mt-2 space-y-1">
                     <p>• Supported formats: MP3, WAV, OGG, M4A (Max 50MB)</p>
                     <p>• This will replace the current audio file and update duration automatically</p>
-                    {track.album?.type === "Single" && <p>• Since this is a Single, changing the title will also update the album name</p>}
                 </div>
             </div>
 
@@ -396,6 +468,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     <option value="Remix">Remix</option>
                 </select>
             </div>
+
             {/* Remix Credits / Copyright */}
             <RemixCreditForm
                 track={{
@@ -425,20 +498,22 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
             <div>
                 <h3 className="text-lg font-medium text-gray-300 mb-4">Music Platform Links</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label htmlFor={`links.spotify`} className="block text-sm font-medium text-gray-400 mb-2 capitalize">
-                            Spotify
-                        </label>
-                        <input
-                            type="url"
-                            id={`links.spotify`}
-                            name={`links.spotify`}
-                            value={formData.links.spotify}
-                            onChange={handleInputChange}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                            placeholder={`https://spotify.com/...`}
-                        />
-                    </div>
+                    {Object.keys(formData.links).map((platform) => (
+                        <div key={platform}>
+                            <label htmlFor={`links.${platform}`} className="block text-sm font-medium text-gray-400 mb-2 capitalize">
+                                {platform}
+                            </label>
+                            <input
+                                type="url"
+                                id={`links.${platform}`}
+                                name={`links.${platform}`}
+                                value={formData.links[platform as keyof MusicLinks]}
+                                onChange={handleInputChange}
+                                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                                placeholder={`https://${platform}.com/...`}
+                            />
+                        </div>
+                    ))}
                 </div>
             </div>
 
@@ -477,10 +552,12 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
             <div className="flex gap-4 pt-6">
                 <button
                     type="submit"
-                    disabled={updateTrackMutation.isPending || replaceFileMutation.isPending}
+                    disabled={updateTrackMutation.isPending || updateAlbumMutation.isPending || replaceFileMutation.isPending}
                     className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
                 >
-                    {updateTrackMutation.isPending || replaceFileMutation.isPending ? "Updating..." : "Update Track"}
+                    {updateTrackMutation.isPending || updateAlbumMutation.isPending || replaceFileMutation.isPending
+                        ? "Updating..."
+                        : "Update Track"}
                 </button>
 
                 <button
@@ -493,7 +570,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
             </div>
 
             {/* Error Message */}
-            {(updateTrackMutation.error || replaceFileMutation.error) && (
+            {(updateTrackMutation.error || updateAlbumMutation.error || replaceFileMutation.error) && (
                 <div className="text-red-400 text-sm mt-2">Error updating track. Please try again.</div>
             )}
         </form>

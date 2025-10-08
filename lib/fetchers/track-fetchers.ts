@@ -76,3 +76,15 @@ export async function fetchUserTrackLike(trackId: string, userId: string) {
     if (error) throw error;
     return data;
 }
+
+export async function fetchLikedTrackIdsByUser(userId: string): Promise<string[]> {
+    if (!userId) return [];
+    const { data, error } = await supabase
+        .from("track_likes")
+        .select("track_id, created_at")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+    if (error) throw error;
+    return (data ?? []).map((row: { track_id: string }) => row.track_id);
+}

@@ -14,6 +14,7 @@ import { useProfile } from "@/hooks/public/use-profiles";
 import AddToPlaylistButton from "./add-to-playlist-button";
 import { useTrackWithRelations } from "@/hooks/music/use-tracks";
 import type { Tables } from "@/lib/types/supabase-types";
+import RemixCard from "./remix-card";
 
 // Type for track with relations that matches the actual hook response
 export type TrackWithRelationsResponse = {
@@ -73,6 +74,7 @@ interface ITrackCardProps {
 /**
  * TrackCard
  * Displays a single track with image, play button, type label, and optional artist actions
+ * Automatically renders RemixCard for remix tracks
  */
 const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
@@ -97,6 +99,12 @@ const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
         );
     }
 
+    // ✅ Render RemixCard for remix tracks
+    if (track.type === "Remix") {
+        return <RemixCard track={track} playlist={playlist} onUnlock={onUnlock} />;
+    }
+
+    // ✅ Regular track card for non-remix tracks
     const albumImages = track.albums.album_images || [];
     const albumCover = albumImages.find((img) => img.album_id === track.albums.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
 

@@ -2,7 +2,6 @@ import { Heart } from "lucide-react";
 import React from "react";
 import { useToggleTrackLike, useUserTrackLike } from "@/hooks/music/use-tracks";
 import { useAuthStore } from "@/stores/auth-store";
-import { useCurrentUserProfile } from "@/hooks/public/use-profiles";
 
 interface ILikeButtonProps {
     trackId: string;
@@ -11,9 +10,6 @@ interface ILikeButtonProps {
 const LikeButton: React.FC<ILikeButtonProps> = ({ trackId }) => {
     const { user } = useAuthStore(); // Get current user from auth store
     const userId = user?.id;
-
-    // Get user profile (optional - if you need profile data)
-    const { data: userProfile } = useCurrentUserProfile(userId);
 
     // Fetch current liked state for the track
     const { data: userLike, isLoading: isFetching } = useUserTrackLike(
@@ -38,7 +34,7 @@ const LikeButton: React.FC<ILikeButtonProps> = ({ trackId }) => {
         if (isLoading) return;
 
         try {
-            await toggleLike();
+            toggleLike();
         } catch (error) {
             console.error("Failed to toggle like:", error);
             // Optional: Show error toast/notification

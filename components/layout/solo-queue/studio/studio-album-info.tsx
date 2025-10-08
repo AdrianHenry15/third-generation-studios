@@ -2,11 +2,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AlbumType } from "@/lib/solo-queue-types/music-types";
 import React from "react";
 import { Upload, Image } from "lucide-react";
 import { Button } from "@/components/ui/buttons/button";
 import { AlbumUploadData } from "./studio-upload-form";
+import type { Database } from "@/lib/types/supabase-types";
+
+// Use Supabase generated types
+type AlbumType = Database["public"]["Enums"]["album_type"];
 
 interface IStudioAlbumInfoProps {
     albumData: AlbumUploadData;

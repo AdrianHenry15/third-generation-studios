@@ -1,6 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
 import { supabase } from "@/lib/supabase/client";
+import type { Tables, TablesInsert, TablesUpdate } from "@/lib/types/supabase-types";
+
+// -------------------------
+// TYPES
+// -------------------------
+
+// Use proper Supabase types
+export type RemixRow = Tables<"remixes">;
+export type RemixInsert = TablesInsert<"remixes">;
+export type RemixUpdate = TablesUpdate<"remixes">;
+
+// Interface for mutation data - simplified to match what we actually need
+interface RemixMutationData {
+    track_id: string;
+    original_song: string;
+    url?: string | null;
+    original_artists: string[]; // Will be converted to Json in mutations
+}
 
 // -------------------------
 // QUERIES
@@ -10,7 +28,11 @@ import { supabase } from "@/lib/supabase/client";
 export function useRemixesQuery() {
     return useQuery({
         queryKey: QUERY_KEYS.remixes,
-        queryFn: () => supabase.from("remixes").select("*"),
+        queryFn: async () => {
+            const { data, error } = await supabase.from("remixes").select("*");
+            if (error) throw error;
+            return data as RemixRow[];
+        },
     });
 }
 
@@ -18,7 +40,12 @@ export function useRemixesQuery() {
 export function useRemixByTrackIdQuery(trackId: string) {
     return useQuery({
         queryKey: [...QUERY_KEYS.remixes, "track", trackId],
-        queryFn: () => supabase.from("remixes").select("*").eq("track_id", trackId).single(),
+        queryFn: async () => {
+            const { data, error } = await supabase.from("remixes").select("*").eq("track_id", trackId).single();
+
+            if (error) throw error;
+            return data as RemixRow;
+        },
         enabled: !!trackId,
     });
 }
@@ -27,33 +54,25 @@ export function useRemixByTrackIdQuery(trackId: string) {
 // MUTATIONS
 // -------------------------
 
-interface RemixData {
-    track_id: string;
-    original_song: string;
-    url?: string | null;
-    original_artists: string[];
-    additional_artists?: string[] | null;
-}
-
 // Insert new remix
 export const useRemixInsert = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: RemixData) => {
-            const { error } = await supabase.from("remixes").insert({
+        mutationFn: async (data: RemixMutationData) => {
+            const insertData: RemixInsert = {
                 track_id: data.track_id,
                 original_song: data.original_song,
                 url: data.url,
-                original_artists: data.original_artists,
-                additional_artists: data.additional_artists,
-            });
+                original_artists: data.original_artists as any, // Json type in Supabase
+            };
 
+            const { error } = await supabase.from("remixes").insert(insertData);
             if (error) throw error;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["remixes"] });
-            queryClient.invalidateQueries({ queryKey: ["tracks"] });
+            queryClient.invalidateQueries({ queryKey: QUERY_KEYS.remixes });
+            queryClient.invalidateQueries({ queryKey: QUERY_KEYS.tracks.all });
         },
     });
 };
@@ -63,23 +82,21 @@ export const useRemixUpdate = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (data: RemixData) => {
-            const { error } = await supabase
-                .from("remixes")
-                .update({
-                    original_song: data.original_song,
-                    url: data.url,
-                    original_artists: data.original_artists,
-                    additional_artists: data.additional_artists,
-                    updated_at: new Date().toISOString(),
-                })
-                .eq("track_id", data.track_id);
+        mutationFn: async (data: RemixMutationData) => {
+            const updateData: RemixUpdate = {
+                original_song: data.original_song,
+                url: data.url,
+                original_artists: data.original_artists as any, // Json type in Supabase
+                updated_at: new Date().toISOString(),
+            };
+
+            const { error } = await supabase.from("remixes").update(updateData).eq("track_id", data.track_id);
 
             if (error) throw error;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["remixes"] });
-            queryClient.invalidateQueries({ queryKey: ["tracks"] });
+            queryClient.invalidateQueries({ queryKey: QUERY_KEYS.remixes });
+            queryClient.invalidateQueries({ queryKey: QUERY_KEYS.tracks.all });
         },
     });
 };
@@ -95,8 +112,8 @@ export const useRemixDelete = () => {
             if (error) throw error;
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["remixes"] });
-            queryClient.invalidateQueries({ queryKey: ["tracks"] });
+            queryClient.invalidateQueries({ queryKey: QUERY_KEYS.remixes });
+            queryClient.invalidateQueries({ queryKey: QUERY_KEYS.tracks.all });
         },
     });
 };

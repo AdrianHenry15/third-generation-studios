@@ -412,7 +412,6 @@ export type Database = {
       }
       remixes: {
         Row: {
-          additional_artists: Json | null
           created_at: string | null
           id: string
           original_artists: Json
@@ -422,7 +421,6 @@ export type Database = {
           url: string | null
         }
         Insert: {
-          additional_artists?: Json | null
           created_at?: string | null
           id?: string
           original_artists?: Json
@@ -432,7 +430,6 @@ export type Database = {
           url?: string | null
         }
         Update: {
-          additional_artists?: Json | null
           created_at?: string | null
           id?: string
           original_artists?: Json

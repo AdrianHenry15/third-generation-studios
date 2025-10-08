@@ -1,12 +1,12 @@
 "use client";
 
-import { useTrackByIdWithJoinsQuery } from "@/hooks/music/use-tracks";
 import { useAlbumCoverUpdate } from "@/hooks/storage/use-music-storage";
 import TrackUpdateForm from "@/components/layout/music/track-update-form";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Upload, X } from "lucide-react";
+import { useTrack, useTrackWithRelations } from "@/hooks/music/use-tracks";
 
 export default function TrackUpdatePage() {
     const params = useParams();
@@ -16,18 +16,8 @@ export default function TrackUpdatePage() {
     const [uploadStatus, setUploadStatus] = useState<"idle" | "success" | "error">("idle");
     const [uploadError, setUploadError] = useState<string>("");
 
-    const { data: track, isLoading, error } = useTrackByIdWithJoinsQuery(trackId);
+    const { data: track, isLoading, error } = useTrackWithRelations(trackId);
     const albumCoverUpload = useAlbumCoverUpdate();
-
-    // Debug logging to see what data we're getting
-    useEffect(() => {
-        if (track) {
-            console.log("Track data:", track);
-            console.log("Album data:", track.album);
-            console.log("Album ID:", track.album?.id);
-            console.log("Artist ID:", track.artist_id);
-        }
-    }, [track]);
 
     // Handle album cover file selection
     const handleCoverChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,12 +37,12 @@ export default function TrackUpdatePage() {
 
     // Get current album cover
     const getCurrentCover = () => {
-        return track?.album?.images?.[0]?.url || "/placeholder-album.png";
+        return track?.albums?.album_images?.[0]?.url || "/placeholder-albums.png";
     };
 
     // Handle album cover upload
     const handleUploadCover = async () => {
-        if (!newAlbumCover || !track?.album?.id || !track?.artist_id) {
+        if (!newAlbumCover || !track?.albums?.id || !track?.artist_id) {
             setUploadStatus("error");
             setUploadError("Missing required data: album ID or artist ID");
             return;
@@ -63,13 +53,13 @@ export default function TrackUpdatePage() {
 
         try {
             console.log("Starting upload with:", {
-                albumId: track.album.id,
+                albumId: track.albums.id,
                 artistId: track.artist_id,
                 fileName: newAlbumCover.name,
             });
 
             const result = await albumCoverUpload.mutateAsync({
-                albumId: track.album.id,
+                albumId: track.albums.id,
                 artistId: track.artist_id,
                 albumImageFile: newAlbumCover,
             });
@@ -131,8 +121,8 @@ export default function TrackUpdatePage() {
                     {/* Debug info */}
                     {track && (
                         <div className="mt-2 text-sm text-gray-400">
-                            Track: {track.title} | Album: {track.album?.name || "No album"} | Artist:{" "}
-                            {track.artists?.[0]?.stage_name || "No artist"}
+                            Track: {track.title} | Album: {track.albums?.name || "No album"} | Artist:{" "}
+                            {track.artists?.stage_name || "No artist"}
                         </div>
                     )}
                 </div>
@@ -163,7 +153,7 @@ export default function TrackUpdatePage() {
                                 <div className="relative w-64 h-64 mx-auto bg-neutral-800 rounded-lg overflow-hidden">
                                     <Image src={getCurrentCover()} alt={`${track?.title} album cover`} className="object-cover" fill />
                                 </div>
-                                <p className="text-neutral-400 text-sm text-center">{track?.album?.name || "No album assigned"}</p>
+                                <p className="text-neutral-400 text-sm text-center">{track?.albums?.name || "No album assigned"}</p>
                             </div>
 
                             {/* New Cover Upload */}
@@ -175,22 +165,24 @@ export default function TrackUpdatePage() {
                                         <Image src={previewUrl} alt="New album cover preview" fill className="object-cover" sizes="256px" />
                                         <button
                                             onClick={removeCover}
-                                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-colors"
+                                            className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full transition-colors z-10"
                                         >
                                             <X size={16} />
                                         </button>
                                     </div>
                                 ) : (
-                                    <div className="w-64 h-64 mx-auto border-2 border-dashed border-neutral-600 rounded-lg flex flex-col items-center justify-center hover:border-purple-500 transition-colors cursor-pointer">
+                                    <div className="relative w-64 h-64 mx-auto border-2 border-dashed border-neutral-600 rounded-lg flex flex-col items-center justify-center hover:border-purple-500 transition-colors cursor-pointer">
                                         <input
                                             type="file"
                                             accept="image/*"
                                             onChange={handleCoverChange}
-                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                                         />
-                                        <Upload size={48} className="text-neutral-400 mb-4" />
-                                        <p className="text-neutral-400 text-center">Click to upload new cover</p>
-                                        <p className="text-neutral-500 text-sm text-center mt-2">PNG, JPG up to 10MB</p>
+                                        <div className="flex flex-col items-center justify-center pointer-events-none">
+                                            <Upload size={48} className="text-neutral-400 mb-4" />
+                                            <p className="text-neutral-400 text-center">Click to upload new cover</p>
+                                            <p className="text-neutral-500 text-sm text-center mt-2">PNG, JPG up to 10MB</p>
+                                        </div>
                                     </div>
                                 )}
 

@@ -86,6 +86,8 @@ export default function MusicPage() {
                 return filtered.filter((track) => track.type === "Released");
             case "unreleased":
                 return filtered.filter((track) => track.type !== "Released");
+            case "remix":
+                return filtered.filter((track) => track.type === "Remix");
             default:
                 // Default sorting by plays (most popular first)
                 return [...filtered].sort((a, b) => (b.plays || 0) - (a.plays || 0));

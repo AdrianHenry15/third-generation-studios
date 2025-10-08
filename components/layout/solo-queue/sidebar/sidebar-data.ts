@@ -22,7 +22,7 @@ export const sidebarData: Record<string, SidebarSection> = {
         title: "Your Library",
         items: [
             { icon: Clock, label: "Recently Played", href: "/solo-queue/recently-played" },
-            { icon: Heart, label: "Liked Songs", href: "/solo-queue/liked" },
+            { icon: Heart, label: "Liked Songs", href: "/solo-queue/liked-songs" },
             { icon: Star, label: "Favorites", href: "/solo-queue/favorites" },
             { icon: PlayCircle, label: "Playlists", href: "/solo-queue/playlists" },
         ],

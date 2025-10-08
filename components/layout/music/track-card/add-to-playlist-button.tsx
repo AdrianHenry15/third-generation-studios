@@ -2,7 +2,13 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useAuthStore } from "@/stores/auth-store";
-import { usePlaylistsByUser, useAddTrackToPlaylist, useCreatePlaylist, type PlaylistInsert } from "@/hooks/music/use-playlists";
+import {
+    usePlaylistsByUser,
+    useAddTrackToPlaylist,
+    useCreatePlaylist,
+    type PlaylistInsert,
+    PlaylistTrack,
+} from "@/hooks/music/use-playlists";
 
 // -------------------------
 // TYPES & INTERFACES
@@ -122,7 +128,7 @@ const AddToPlaylistButton = ({ trackId }: IAddToPlaylistButtonProps) => {
     const isTrackInPlaylist = (playlistId: string) => {
         const playlist = userPlaylists?.find((p) => p.id === playlistId);
         // Check if any track in the playlist matches our trackId
-        return playlist?.tracks?.some((playlistTrack) => playlistTrack.track_id === trackId) || false;
+        return playlist?.tracks?.some((playlistTrack: PlaylistTrack) => playlistTrack.track_id === trackId) || false;
     };
 
     // -------------------------

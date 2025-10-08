@@ -2,15 +2,12 @@ import React, { useCallback } from "react";
 import { Button } from "@/components/ui/buttons/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, X } from "lucide-react";
 import { RemixUploadData } from "./studio-upload-form";
-import { CreditRoleType } from "@/lib/solo-queue-types/music-types";
 
 interface OriginalCredit {
     id: string;
     name: string;
-    role: CreditRoleType;
 }
 
 interface RemixCreditFormProps {
@@ -30,13 +27,6 @@ const RemixCreditForm: React.FC<RemixCreditFormProps> = ({ track, remixData, onT
         original_artists: remixData?.original_artists || [],
         additional_artists: remixData?.additional_artists || [],
     };
-
-    // Convert original_artists array to credits format for UI
-    const originalCredits: OriginalCredit[] = currentRemixData.original_artists.map((name, index) => ({
-        id: `${index}-${name}`,
-        name,
-        role: "main-artist" as CreditRoleType,
-    }));
 
     const updateRemixData = useCallback(
         (field: string, value: any) => {
@@ -140,17 +130,6 @@ const RemixCreditForm: React.FC<RemixCreditFormProps> = ({ track, remixData, onT
                             </p>
                         )}
                     </div>
-                </div>
-            )}
-
-            {!isRemix && onTrackChange && (
-                <div>
-                    <Label>Copyright Information (Optional)</Label>
-                    <Input
-                        value={track.copyright || ""}
-                        onChange={(e) => onTrackChange("copyright", e.target.value)}
-                        placeholder="© 2024 Artist Name (Optional)"
-                    />
                 </div>
             )}
         </div>

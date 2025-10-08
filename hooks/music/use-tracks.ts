@@ -12,10 +12,11 @@ import {
     incrementTrackPlays,
     likeTrack,
     unlikeTrack,
-    fetchUserTrackLike,
     type Track,
     type TrackInsert,
     type TrackUpdate,
+    fetchLikedTrackIdsByUser,
+    fetchUserTrackLike,
 } from "@/lib/fetchers/track-fetchers";
 
 // Query Keys
@@ -30,6 +31,7 @@ export const trackKeys = {
     public: () => [...trackKeys.all, "public"] as const,
     withRelations: (id: string) => [...trackKeys.detail(id), "relations"] as const,
     userLike: (trackId: string, userId: string) => [...trackKeys.detail(trackId), "like", userId] as const,
+    likedByUser: (userId: string) => [...trackKeys.all, "liked", userId] as const,
 };
 
 // Basic Query Hooks
@@ -82,15 +84,6 @@ export function useTrackWithRelations(id: string, enabled = true) {
         queryFn: () => fetchTrackWithRelations(id),
         enabled: !!id && enabled,
         staleTime: 10 * 60 * 1000,
-    });
-}
-
-export function useUserTrackLike(trackId: string, userId: string, enabled = true) {
-    return useQuery({
-        queryKey: trackKeys.userLike(trackId, userId),
-        queryFn: () => fetchUserTrackLike(trackId, userId),
-        enabled: !!trackId && !!userId && enabled,
-        staleTime: 30 * 1000, // 30 seconds for like status
     });
 }
 
@@ -164,14 +157,24 @@ export function useIncrementTrackPlays() {
     });
 }
 
+export function useUserTrackLike(trackId: string, userId: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.userLike(trackId, userId),
+        queryFn: () => fetchUserTrackLike(trackId, userId),
+        enabled: !!trackId && !!userId && enabled,
+        staleTime: 15 * 1000,
+    });
+}
+
 export function useLikeTrack() {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: ({ trackId, userId }: { trackId: string; userId: string }) => likeTrack(trackId, userId),
         onSuccess: (_, { trackId, userId }) => {
-            // Update like status in cache
             queryClient.invalidateQueries({ queryKey: trackKeys.userLike(trackId, userId) });
+            // NEW: refresh the user's liked list
+            queryClient.invalidateQueries({ queryKey: trackKeys.likedByUser(userId) });
         },
     });
 }
@@ -182,9 +185,19 @@ export function useUnlikeTrack() {
     return useMutation({
         mutationFn: ({ trackId, userId }: { trackId: string; userId: string }) => unlikeTrack(trackId, userId),
         onSuccess: (_, { trackId, userId }) => {
-            // Update like status in cache
             queryClient.invalidateQueries({ queryKey: trackKeys.userLike(trackId, userId) });
+            // NEW: refresh the user's liked list
+            queryClient.invalidateQueries({ queryKey: trackKeys.likedByUser(userId) });
         },
+    });
+}
+
+export function useLikedTrackIds(userId: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.likedByUser(userId),
+        queryFn: () => fetchLikedTrackIdsByUser(userId),
+        enabled: !!userId && enabled,
+        staleTime: 30 * 1000,
     });
 }
 
