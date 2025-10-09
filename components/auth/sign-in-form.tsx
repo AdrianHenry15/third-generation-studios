@@ -166,8 +166,8 @@ const SignInForm = memo(({ searchParams }: { searchParams: Message }) => {
                     // and update the Zustand store, so we don't need to manually set anything
 
                     // Redirect user
-                    const redirectTo = urlSearchParams.get("redirect_url") || "/solo-q";
-                    const finalRedirectTo = redirectTo === "/solo-q" ? redirectTo : decodeURIComponent(redirectTo);
+                    const redirectTo = urlSearchParams.get("redirect_url") || "/solo-queue";
+                    const finalRedirectTo = redirectTo === "/solo-queue" ? redirectTo : decodeURIComponent(redirectTo);
 
                     console.log("🔄 Redirecting to:", finalRedirectTo);
 

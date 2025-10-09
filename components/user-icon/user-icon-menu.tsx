@@ -142,7 +142,7 @@ const UserIconMenu = (props: IUserIconMenuProps) => {
 
                 <div className="my-1 border-t border-neutral-100 dark:border-neutral-800" />
 
-                <div className="px-3 py-2">
+                {/* <div className="px-3 py-2">
                     <div className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">Theme</div>
                     <div className="flex flex-col gap-1">
                         <button
@@ -191,9 +191,9 @@ const UserIconMenu = (props: IUserIconMenuProps) => {
                             <Laptop className="mr-2 h-4 w-4" /> System
                         </button>
                     </div>
-                </div>
+                </div> */}
 
-                <div className="my-1 border-t border-neutral-100 dark:border-neutral-800" />
+                {/* <div className="my-1 border-t border-neutral-100 dark:border-neutral-800" /> */}
 
                 <button
                     role="menuitem"

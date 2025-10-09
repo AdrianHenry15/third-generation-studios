@@ -1,10 +1,6 @@
 import { supabase } from "../supabase/client";
-import type { Tables, TablesInsert, TablesUpdate } from "../types/supabase-types";
+import { Track, TrackInsert, TrackUpdate } from "../types/database";
 import { fetchTable, fetchRowById, insertRow, updateRow, deleteRow } from "./generic-fetchers";
-
-export type Track = Tables<"tracks">;
-export type TrackInsert = TablesInsert<"tracks">;
-export type TrackUpdate = TablesUpdate<"tracks">;
 
 // Basic CRUD operations
 export const fetchAllTracks = () => fetchTable("tracks");

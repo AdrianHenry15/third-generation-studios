@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Home, Search, Heart, PlayCircle, User, Music, Upload } from "lucide-react";
 import SidebarSection from "./sidebar-section";
 import PlaylistSidebarSection from "./playlist-sidebar-section";
+import { useAuthStore } from "@/stores/auth-store";
+import { useArtist } from "@/hooks/music/use-artists";
 
 const mainItems = [
     { icon: Home, label: "Home", href: "/solo-queue" },
@@ -32,6 +34,8 @@ interface ISidebarProps {
 
 export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen, setIsMobileMenuOpen }: ISidebarProps) {
     const [isMobile, setIsMobile] = useState(false);
+    const { user } = useAuthStore();
+    const { data: artist } = useArtist(user?.id || "");
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -76,12 +80,14 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
                     isMobile={isMobile}
                     onMobileClose={() => setIsMobileMenuOpen(false)}
                 />
-                <SidebarSection
-                    section={{ title: "Artist", items: artistItems }}
-                    isCollapsed={isCollapsed}
-                    isMobile={isMobile}
-                    onMobileClose={() => setIsMobileMenuOpen(false)}
-                />
+                {artist && (
+                    <SidebarSection
+                        section={{ title: "Artist", items: artistItems }}
+                        isCollapsed={isCollapsed}
+                        isMobile={isMobile}
+                        onMobileClose={() => setIsMobileMenuOpen(false)}
+                    />
+                )}
                 {/* Replace static playlists with dynamic playlist section */}
                 <PlaylistSidebarSection isCollapsed={isCollapsed} isMobile={isMobile} onMobileClose={() => setIsMobileMenuOpen(false)} />
             </div>

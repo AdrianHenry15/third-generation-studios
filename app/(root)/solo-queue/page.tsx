@@ -1,25 +1,23 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { Play, Heart, MoreHorizontal } from "lucide-react";
-import Image from "next/image";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { usePublicTracks } from "@/hooks/music/use-tracks";
+import { useArtist } from "@/hooks/music/use-artists";
+import { useAlbumImages } from "@/hooks/music/use-albums";
 import type { Database } from "@/lib/types/supabase-types";
+import { useAudioPlayerStore } from "@/stores/audio-player-store";
+import { ExploreTrackCard } from "@/components/layout/solo-queue/explore-track-card";
+import { TrackListItem } from "@/components/layout/solo-queue/track-list-item";
+import { TrackListSkeleton, TrackGridSkeleton } from "@/components/layout/solo-queue/loading-skeleton";
+import { EmptyState } from "@/components/layout/solo-queue/empty-state";
 
 // Use proper Supabase types
 type Track = Database["public"]["Tables"]["tracks"]["Row"];
-type Album = Database["public"]["Tables"]["albums"]["Row"];
-type Artist = Database["public"]["Tables"]["artists"]["Row"];
-type AlbumImage = Database["public"]["Tables"]["album_images"]["Row"];
 
-// Extended track type with relations
-interface TrackWithRelations extends Track {
-    albums?: Album & {
-        album_images?: AlbumImage[];
-    };
-    artists?: Artist;
-}
+// Create a placeholder image as a data URL
+const PLACEHOLDER_IMAGE =
+    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMjYyNjI2Ii8+CjxwYXRoIGQ9Ik08MCA2MEg2MFY4MEg0MFYxMDBINjBWMTIwSDgwVjE0MEgxMDBWMTIwSDEyMFYxNDBIMTQwVjEyMEgxNjBWMTAwSDE0MFY4MEgxMjBWNjBIMTAwVjQwSDgwVjYwWiIgZmlsbD0iIzQwNDA0MCIvPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjIwIiBmaWxsPSIjNTI1MjUyIi8+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOCIgZmlsbD0iIzI2MjYyNiIvPgo8L3N2Zz4K";
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -41,27 +39,133 @@ const itemVariants: Variants = {
 };
 
 export default function SoloQHomePage() {
-    const { data: tracks, isLoading, error } = usePublicTracks();
-    const [displayedTracks, setDisplayedTracks] = useState<TrackWithRelations[]>([]);
+    const { data: tracks, isLoading: tracksLoading, error: tracksError } = usePublicTracks();
+
+    // Audio player store
+    const { playTrack, pauseTrack, currentTrackId, isPlaying } = useAudioPlayerStore();
+
+    // Extract unique artist and album IDs with stable references
+    const { uniqueArtistIds, uniqueAlbumIds } = useMemo(() => {
+        if (!tracks?.length) return { uniqueArtistIds: [], uniqueAlbumIds: [] };
+
+        const artistIds = [...new Set(tracks.map((track) => track.artist_id).filter(Boolean))].sort();
+        const albumIds = [...new Set(tracks.map((track) => track.album_id).filter(Boolean))].sort();
+
+        return { uniqueArtistIds: artistIds, uniqueAlbumIds: albumIds };
+    }, [tracks]);
+
+    // Create stable arrays for hooks - always call the same number of hooks
+    const maxArtists = 50; // Set a reasonable maximum
+    const maxAlbums = 50; // Set a reasonable maximum
+
+    const stableArtistIds = useMemo(() => {
+        const ids = [...uniqueArtistIds];
+        // Pad with empty strings to ensure consistent length
+        while (ids.length < maxArtists) {
+            ids.push("");
+        }
+        return ids.slice(0, maxArtists);
+    }, [uniqueArtistIds]);
+
+    const stableAlbumIds = useMemo(() => {
+        const ids = [...uniqueAlbumIds];
+        // Pad with empty strings to ensure consistent length
+        while (ids.length < maxAlbums) {
+            ids.push("");
+        }
+        return ids.slice(0, maxAlbums);
+    }, [uniqueAlbumIds]);
+
+    // Always call hooks with stable arrays - this ensures consistent hook calls
+    const artistQueries = stableArtistIds.map((id, index) => ({
+        id,
+        index,
+        ...useArtist(id, !!id), // Only enabled if id exists
+    }));
+
+    const albumImageQueries = stableAlbumIds.map((id, index) => ({
+        albumId: id,
+        index,
+        ...useAlbumImages(id, !!id), // Only enabled if id exists
+    }));
+
+    // Process artist data
+    const { artistMap, artistsLoading, artistsError } = useMemo(() => {
+        const artistMap = new Map();
+        let hasLoading = false;
+        let hasError = false;
+
+        artistQueries.forEach((query) => {
+            if (query.id) {
+                // Only process non-empty ids
+                if (query.isLoading) hasLoading = true;
+                if (query.isError) hasError = true;
+                if (query.data) {
+                    artistMap.set(query.id, query.data);
+                }
+            }
+        });
+
+        return {
+            artistMap,
+            artistsLoading: hasLoading,
+            artistsError: hasError,
+        };
+    }, [artistQueries]);
+
+    // Process album image data
+    const { imageMap, imagesLoading, imagesError } = useMemo(() => {
+        const imageMap = new Map();
+        let hasLoading = false;
+        let hasError = false;
+
+        albumImageQueries.forEach((query) => {
+            if (query.albumId) {
+                // Only process non-empty ids
+                if (query.isLoading) hasLoading = true;
+                if (query.isError) hasError = true;
+                if (query.data?.length) {
+                    // Store first image for each album
+                    imageMap.set(query.albumId, query.data[0]);
+                }
+            }
+        });
+
+        return {
+            imageMap,
+            imagesLoading: hasLoading,
+            imagesError: hasError,
+        };
+    }, [albumImageQueries]);
+
+    const [displayedTracks, setDisplayedTracks] = useState<Track[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const tracksPerPage = 20;
 
-    // Get recently played tracks (for now, just the first 3)
-    const recentlyPlayed = tracks?.slice(0, 3) || [];
+    // Consolidated loading and error states
+    const isLoading = tracksLoading || artistsLoading || imagesLoading;
+    const hasError = !!tracksError || artistsError || imagesError;
+    const error = tracksError;
 
-    // Initialize displayed tracks and set up infinite scroll
+    // Memoized recently played tracks
+    const recentlyPlayed = useMemo(() => {
+        return tracks?.slice(0, 3) || [];
+    }, [tracks]);
+
+    // Initialize displayed tracks
     useEffect(() => {
-        if (tracks && tracks.length > 0) {
+        if (tracks?.length) {
             const initialTracks = tracks.slice(0, tracksPerPage);
             setDisplayedTracks(initialTracks);
             setHasMore(tracks.length > tracksPerPage);
+            setCurrentPage(1);
         }
     }, [tracks]);
 
-    // Load more tracks
+    // Optimized load more function
     const loadMoreTracks = useCallback(() => {
-        if (!tracks || !hasMore) return;
+        if (!tracks?.length || !hasMore) return;
 
         const startIndex = currentPage * tracksPerPage;
         const endIndex = startIndex + tracksPerPage;
@@ -76,34 +180,62 @@ export default function SoloQHomePage() {
         }
     }, [tracks, currentPage, hasMore]);
 
-    // Infinite scroll handler
+    // Infinite scroll handler with throttling
     useEffect(() => {
+        let timeoutId: NodeJS.Timeout;
+
         const handleScroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1000) {
-                loadMoreTracks();
-            }
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1000) {
+                    loadMoreTracks();
+                }
+            }, 100);
         };
 
         window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+            clearTimeout(timeoutId);
+        };
     }, [loadMoreTracks]);
 
-    // Format duration from seconds to mm:ss
-    const formatDuration = (seconds: number) => {
+    // Memoized utility functions
+    const formatDuration = useCallback((seconds: number) => {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${mins}:${secs.toString().padStart(2, "0")}`;
-    };
+    }, []);
 
-    // Get album cover image
-    const getTrackImage = (track: TrackWithRelations) => {
-        return track.albums?.album_images?.[0]?.url || "/placeholder-albums.png";
-    };
+    const getTrackImage = useCallback(
+        (track: Track) => {
+            if (!track.album_id) return PLACEHOLDER_IMAGE;
+            const image = imageMap.get(track.album_id);
+            return image?.url && image.url.trim() !== "" ? image.url : PLACEHOLDER_IMAGE;
+        },
+        [imageMap],
+    );
 
-    // Get artist name
-    const getArtistName = (track: TrackWithRelations) => {
-        return track.artists?.stage_name || "Unknown Artist";
-    };
+    const getArtistName = useCallback(
+        (track: Track) => {
+            if (!track.artist_id) return "Unknown Artist";
+            const artist = artistMap.get(track.artist_id);
+            return artist?.stage_name || "Unknown Artist";
+        },
+        [artistMap],
+    );
+
+    // Handle track play/pause
+    const handleTrackPlay = useCallback(
+        (track: Track) => {
+            if (currentTrackId === track.id && isPlaying) {
+                pauseTrack();
+            } else {
+                playTrack(track, tracks || []);
+            }
+        },
+        [currentTrackId, isPlaying, pauseTrack, playTrack, tracks],
+    );
 
     return (
         <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-8 pt-24 px-4">
@@ -121,75 +253,36 @@ export default function SoloQHomePage() {
                 </div>
 
                 {isLoading ? (
-                    <div className="space-y-2">
-                        {[...Array(3)].map((_, i) => (
-                            <div key={i} className="flex items-center gap-4 p-3 rounded-lg bg-neutral-800/20 animate-pulse">
-                                <div className="w-12 h-12 bg-neutral-700 rounded"></div>
-                                <div className="flex-1 space-y-2">
-                                    <div className="h-4 bg-neutral-700 rounded w-1/3"></div>
-                                    <div className="h-3 bg-neutral-700 rounded w-1/4"></div>
-                                </div>
-                                <div className="h-3 bg-neutral-700 rounded w-12"></div>
-                            </div>
-                        ))}
-                    </div>
-                ) : error ? (
-                    <div className="text-red-400 text-center py-8">Failed to load tracks</div>
+                    <TrackListSkeleton count={3} />
+                ) : hasError ? (
+                    <div className="text-red-400 text-center py-8">Failed to load tracks: {error?.message || "Unknown error"}</div>
                 ) : recentlyPlayed.length === 0 ? (
-                    <div className="text-center py-12 space-y-4">
-                        <div className="text-6xl mb-4">🎵</div>
-                        <h3 className="text-xl font-semibold text-white">No tracks available yet</h3>
-                        <p className="text-neutral-400 max-w-md mx-auto">
-                            Looks like there are no tracks in your library. Start by exploring new music or uploading your own tracks to get
-                            started!
-                        </p>
-                        <div className="flex gap-4 justify-center mt-6">
-                            <button className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
-                                Browse Music
-                            </button>
-                            <button className="px-6 py-2 border border-neutral-600 hover:border-neutral-500 text-white rounded-lg transition-colors">
-                                Upload Track
-                            </button>
-                        </div>
-                    </div>
+                    <EmptyState
+                        title="No tracks available yet"
+                        description="Looks like there are no tracks in your library. Start by exploring new music or uploading your own tracks to get started!"
+                        actions={
+                            <>
+                                <button className="px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors">
+                                    Browse Music
+                                </button>
+                                <button className="px-6 py-2 border border-neutral-600 hover:border-neutral-500 text-white rounded-lg transition-colors">
+                                    Upload Track
+                                </button>
+                            </>
+                        }
+                    />
                 ) : (
                     <div className="space-y-2">
-                        {recentlyPlayed.map((track: TrackWithRelations) => (
-                            <div
+                        {recentlyPlayed.map((track) => (
+                            <TrackListItem
                                 key={track.id}
-                                className="group flex items-center gap-4 p-3 rounded-lg hover:bg-neutral-800/50 transition-colors cursor-pointer"
-                            >
-                                <div className="relative">
-                                    <div className="w-12 h-12 rounded relative overflow-hidden">
-                                        <Image
-                                            src={getTrackImage(track)}
-                                            alt={track.title}
-                                            fill
-                                            className="object-cover"
-                                            sizes="48px"
-                                            quality={95}
-                                            priority={false}
-                                            unoptimized={false}
-                                        />
-                                    </div>
-                                    <button className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
-                                        <Play size={16} fill="white" className="text-white" />
-                                    </button>
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-white font-medium truncate">{track.title}</p>
-                                    <p className="text-neutral-400 text-sm truncate">{getArtistName(track)}</p>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <button className="p-2 opacity-0 group-hover:opacity-100 transition-opacity hover:text-green-400">
-                                        <Heart size={16} />
-                                    </button>
-                                    <span className="text-neutral-400 text-sm w-16 text-right">{formatDuration(track.duration)}</span>
-                                    <button className="p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <MoreHorizontal size={16} />
-                                    </button>
-                                </div>
-                            </div>
+                                track={track}
+                                showPlayButton
+                                getTrackImage={getTrackImage}
+                                getArtistName={getArtistName}
+                                formatDuration={formatDuration}
+                                onTrackPlay={handleTrackPlay}
+                            />
                         ))}
                     </div>
                 )}
@@ -203,60 +296,27 @@ export default function SoloQHomePage() {
                 </div>
 
                 {isLoading ? (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                        {[...Array(10)].map((_, i) => (
-                            <div key={i} className="bg-neutral-800/20 rounded-lg p-4 animate-pulse">
-                                <div className="w-full aspect-square bg-neutral-700 rounded-lg mb-4"></div>
-                                <div className="h-4 bg-neutral-700 rounded mb-2"></div>
-                                <div className="h-3 bg-neutral-700 rounded w-3/4"></div>
-                            </div>
-                        ))}
-                    </div>
-                ) : error ? (
-                    <div className="text-red-400 text-center py-8">Failed to load tracks</div>
+                    <TrackGridSkeleton count={10} />
+                ) : hasError ? (
+                    <div className="text-red-400 text-center py-8">Failed to load tracks: {error?.message || "Unknown error"}</div>
                 ) : displayedTracks.length === 0 ? (
-                    <div className="text-center py-12 space-y-4">
-                        <div className="text-6xl mb-4">🎵</div>
-                        <h3 className="text-xl font-semibold text-white">No tracks available</h3>
-                        <p className="text-neutral-400 max-w-md mx-auto">
-                            There are no tracks to explore right now. Check back later or upload some tracks to get started!
-                        </p>
-                    </div>
+                    <EmptyState
+                        title="No tracks available"
+                        description="There are no tracks to explore right now. Check back later or upload some tracks to get started!"
+                    />
                 ) : (
                     <>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                             {displayedTracks.map((track, index) => (
-                                <div
+                                <ExploreTrackCard
                                     key={track.id}
-                                    className="group bg-neutral-800/20 hover:bg-neutral-700/30 rounded-lg p-4 transition-all duration-200 cursor-pointer"
-                                >
-                                    <div className="relative mb-4">
-                                        <div className="w-full aspect-square rounded-lg relative overflow-hidden bg-neutral-800">
-                                            <Image
-                                                src={getTrackImage(track)}
-                                                alt={`${track.title} by ${getArtistName(track)}`}
-                                                fill
-                                                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                                                sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
-                                                quality={95}
-                                                priority={index < 10}
-                                                unoptimized={false}
-                                                onError={(e) => {
-                                                    const target = e.target as HTMLImageElement;
-                                                    target.src = "/placeholder-albums.png";
-                                                }}
-                                            />
-                                        </div>
-                                        <button className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-400 text-black p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200 hover:scale-105 shadow-lg">
-                                            <Play size={16} fill="currentColor" />
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-white font-medium mb-1 truncate">{track.title}</h3>
-                                        <p className="text-neutral-400 text-sm line-clamp-2">{getArtistName(track)}</p>
-                                        <p className="text-neutral-500 text-xs mt-1">{formatDuration(track.duration)}</p>
-                                    </div>
-                                </div>
+                                    track={track}
+                                    index={index}
+                                    getTrackImage={getTrackImage}
+                                    getArtistName={getArtistName}
+                                    formatDuration={formatDuration}
+                                    onTrackPlay={handleTrackPlay}
+                                />
                             ))}
                         </div>
 

@@ -12,12 +12,10 @@ import {
     incrementTrackPlays,
     likeTrack,
     unlikeTrack,
-    type Track,
-    type TrackInsert,
-    type TrackUpdate,
     fetchLikedTrackIdsByUser,
     fetchUserTrackLike,
 } from "@/lib/fetchers/track-fetchers";
+import { Track, TrackInsert, TrackUpdate } from "@/lib/types/database";
 
 // Query Keys
 export const trackKeys = {

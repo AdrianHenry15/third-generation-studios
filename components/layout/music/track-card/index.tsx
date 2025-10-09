@@ -15,7 +15,7 @@ import AddToPlaylistButton from "./add-to-playlist-button";
 import { useTrackWithRelations } from "@/hooks/music/use-tracks";
 import type { Tables } from "@/lib/types/supabase-types";
 import RemixCard from "./remix-card";
-import { TrackWithRelations } from "@/lib/types/music-types";
+import { TrackWithRelations } from "@/lib/types/database";
 
 // Type for track with relations that matches the actual hook response
 export type TrackWithRelationsResponse = {

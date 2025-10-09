@@ -3,19 +3,12 @@
 import { useEffect, useState, useMemo } from "react";
 import TrackFilter from "@/components/layout/music/track-filter";
 import TrackCard from "@/components/layout/music/track-card";
-import { useAllTracks } from "@/hooks/music/use-tracks";
+import { usePublicTracks } from "@/hooks/music/use-tracks";
 import type { Tables } from "@/lib/types/supabase-types";
+import { TrackWithRelations } from "@/lib/types/database";
 
 // Track type from Supabase
 type Track = Tables<"tracks">;
-
-// Extended track type with relations (what we get from the fetcher)
-interface TrackWithRelations extends Track {
-    artists?: Tables<"artists">;
-    album?: Tables<"albums">;
-    credits?: Tables<"track_credits">[];
-    likes?: Tables<"track_likes">[];
-}
 
 const filterOptions = [
     { value: "default", label: "Default" },
@@ -29,7 +22,7 @@ const filterOptions = [
 
 export default function MusicPage() {
     // Fetch tracks data using music hooks
-    const { data: tracks, isLoading, error } = useAllTracks();
+    const { data: tracks, isLoading, error } = usePublicTracks();
 
     const [unlocked, setUnlocked] = useState<string[]>([]);
     const [filter, setFilter] = useState<string>("default");
@@ -54,7 +47,7 @@ export default function MusicPage() {
                 const searchLower = debouncedSearch.toLowerCase();
                 const matchesSearch =
                     track.title?.toLowerCase().includes(searchLower) ||
-                    track.artists?.stage_name?.toLowerCase().includes(searchLower) ||
+                    track.artist?.stage_name?.toLowerCase().includes(searchLower) ||
                     track.album?.name?.toLowerCase().includes(searchLower) ||
                     track.genre?.toLowerCase().includes(searchLower);
                 if (!matchesSearch) return false;
@@ -72,8 +65,8 @@ export default function MusicPage() {
         switch (filter) {
             case "artist":
                 return [...filtered].sort((a, b) => {
-                    const aName = a.artists?.stage_name || "";
-                    const bName = b.artists?.stage_name || "";
+                    const aName = a.artist?.stage_name || "";
+                    const bName = b.artist?.stage_name || "";
                     return aName.localeCompare(bName);
                 });
             case "genre":

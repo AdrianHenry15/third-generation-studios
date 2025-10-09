@@ -43,7 +43,7 @@ export default function Footer() {
         },
     };
 
-    if (pathname.startsWith("/solo-q")) {
+    if (pathname.startsWith("/solo-queue")) {
         return null; // Don't render the footer on /solo-queue routes
     }
 

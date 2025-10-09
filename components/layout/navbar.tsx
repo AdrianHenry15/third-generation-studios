@@ -53,7 +53,7 @@ export default function Navbar() {
         { name: "Blog", href: "/blog" },
         { name: "About", href: "/about" },
     ];
-    if (pathname.startsWith("/solo-q")) {
+    if (pathname.startsWith("/solo-queue")) {
         return null; // Don't render the navbar on /solo-queue routes
     }
     return (

@@ -1,5 +1,6 @@
 import { supabase } from "../supabase/client";
-import type { Database, Tables } from "../types/supabase-types";
+import { TrackWithRelations } from "../types/database";
+import type { Database } from "../types/supabase-types";
 
 // Use proper Supabase types
 type PlaylistRow = Database["public"]["Tables"]["playlists"]["Row"];
@@ -50,36 +51,6 @@ export interface PlaylistWithRelations extends PlaylistRow {
 
 export interface PlaylistTrackWithRelations extends PlaylistTrackRow {
     track: TrackWithRelations;
-}
-
-export interface TrackWithRelations extends TrackRow {
-    artists: {
-        id: string;
-        stage_name: string;
-        profile_image_url: string | null;
-        verified: boolean;
-        created_at: string;
-        updated_at: string;
-    };
-    albums: {
-        id: string;
-        name: string;
-        type: Database["public"]["Enums"]["album_type"];
-        release_date: string;
-        created_at: string;
-        updated_at: string;
-        album_images: AlbumImageRow[];
-    };
-    track_credits: TrackCreditRow[];
-    remixes?: {
-        id: string;
-        original_song: string;
-        original_artists: any;
-        url: string | null;
-        created_at: string | null;
-        updated_at: string | null;
-    } | null;
-    is_liked: boolean;
 }
 
 // Helper to shape playlist data with proper types
