@@ -260,7 +260,7 @@ export default function TrackUpdatePage() {
                 {/* Track Update Form */}
                 <div className="bg-gray-900/80 rounded-2xl shadow-2xl overflow-hidden">
                     <div className="p-8 space-y-6">
-                        <TrackUpdateForm track={track} />
+                        <TrackUpdateForm track={track as any} />
                     </div>
                 </div>
             </div>

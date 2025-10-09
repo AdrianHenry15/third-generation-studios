@@ -1,13 +1,11 @@
 import React from "react";
-import { Database } from "@/lib/types/supabase-types";
-import { TrackTypeEnum } from "@/lib/types/music-types";
 
 interface ITypeLabelProps {
-    type: TrackTypeEnum;
+    type: any;
 }
 
 const TypeLabel: React.FC<ITypeLabelProps> = ({ type }) => {
-    const getTypeColor = (type: TrackTypeEnum) => {
+    const getTypeColor = (type: any) => {
         switch (type.toLowerCase()) {
             case "released":
                 return "bg-blue-500";

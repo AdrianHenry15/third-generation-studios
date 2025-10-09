@@ -1,8 +1,7 @@
 import React from "react";
-import { TrackWithRelations } from "@/lib/types/music-types";
 
 interface ITrackInfoProps {
-    track: TrackWithRelations;
+    track: any;
 }
 
 const TrackInfo: React.FC<ITrackInfoProps> = ({ track }) => {

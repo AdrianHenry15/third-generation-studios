@@ -3,8 +3,8 @@
 import { motion, Variants } from "framer-motion";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { usePublicTracks } from "@/hooks/music/use-tracks";
-import { useArtist } from "@/hooks/music/use-artists";
-import { useAlbumImages } from "@/hooks/music/use-albums";
+import { useAllArtists } from "@/hooks/music/use-artists";
+import { useAlbumsWithImages } from "@/hooks/music/use-albums";
 import type { Database } from "@/lib/types/supabase-types";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import { ExploreTrackCard } from "@/components/layout/solo-queue/explore-track-card";
@@ -40,103 +40,28 @@ const itemVariants: Variants = {
 
 export default function SoloQHomePage() {
     const { data: tracks, isLoading: tracksLoading, error: tracksError } = usePublicTracks();
+    const { data: artists, isLoading: artistsLoading, error: artistsError } = useAllArtists();
+    const { data: albumsWithImages, isLoading: albumsLoading, error: albumsError } = useAlbumsWithImages();
 
     // Audio player store
     const { playTrack, pauseTrack, currentTrackId, isPlaying } = useAudioPlayerStore();
 
-    // Extract unique artist and album IDs with stable references
-    const { uniqueArtistIds, uniqueAlbumIds } = useMemo(() => {
-        if (!tracks?.length) return { uniqueArtistIds: [], uniqueAlbumIds: [] };
+    // Create maps for efficient lookups
+    const artistMap = useMemo(() => {
+        if (!artists?.length) return new Map();
+        return new Map(artists.map((artist) => [artist.id, artist]));
+    }, [artists]);
 
-        const artistIds = [...new Set(tracks.map((track) => track.artist_id).filter(Boolean))].sort();
-        const albumIds = [...new Set(tracks.map((track) => track.album_id).filter(Boolean))].sort();
-
-        return { uniqueArtistIds: artistIds, uniqueAlbumIds: albumIds };
-    }, [tracks]);
-
-    // Create stable arrays for hooks - always call the same number of hooks
-    const maxArtists = 50; // Set a reasonable maximum
-    const maxAlbums = 50; // Set a reasonable maximum
-
-    const stableArtistIds = useMemo(() => {
-        const ids = [...uniqueArtistIds];
-        // Pad with empty strings to ensure consistent length
-        while (ids.length < maxArtists) {
-            ids.push("");
-        }
-        return ids.slice(0, maxArtists);
-    }, [uniqueArtistIds]);
-
-    const stableAlbumIds = useMemo(() => {
-        const ids = [...uniqueAlbumIds];
-        // Pad with empty strings to ensure consistent length
-        while (ids.length < maxAlbums) {
-            ids.push("");
-        }
-        return ids.slice(0, maxAlbums);
-    }, [uniqueAlbumIds]);
-
-    // Always call hooks with stable arrays - this ensures consistent hook calls
-    const artistQueries = stableArtistIds.map((id, index) => ({
-        id,
-        index,
-        ...useArtist(id, !!id), // Only enabled if id exists
-    }));
-
-    const albumImageQueries = stableAlbumIds.map((id, index) => ({
-        albumId: id,
-        index,
-        ...useAlbumImages(id, !!id), // Only enabled if id exists
-    }));
-
-    // Process artist data
-    const { artistMap, artistsLoading, artistsError } = useMemo(() => {
-        const artistMap = new Map();
-        let hasLoading = false;
-        let hasError = false;
-
-        artistQueries.forEach((query) => {
-            if (query.id) {
-                // Only process non-empty ids
-                if (query.isLoading) hasLoading = true;
-                if (query.isError) hasError = true;
-                if (query.data) {
-                    artistMap.set(query.id, query.data);
-                }
-            }
-        });
-
-        return {
-            artistMap,
-            artistsLoading: hasLoading,
-            artistsError: hasError,
-        };
-    }, [artistQueries]);
-
-    // Process album image data
-    const { imageMap, imagesLoading, imagesError } = useMemo(() => {
+    const albumImageMap = useMemo(() => {
+        if (!albumsWithImages?.length) return new Map();
         const imageMap = new Map();
-        let hasLoading = false;
-        let hasError = false;
-
-        albumImageQueries.forEach((query) => {
-            if (query.albumId) {
-                // Only process non-empty ids
-                if (query.isLoading) hasLoading = true;
-                if (query.isError) hasError = true;
-                if (query.data?.length) {
-                    // Store first image for each album
-                    imageMap.set(query.albumId, query.data[0]);
-                }
+        albumsWithImages.forEach((album) => {
+            if (album.album_images?.length) {
+                imageMap.set(album.id, album.album_images[0]);
             }
         });
-
-        return {
-            imageMap,
-            imagesLoading: hasLoading,
-            imagesError: hasError,
-        };
-    }, [albumImageQueries]);
+        return imageMap;
+    }, [albumsWithImages]);
 
     const [displayedTracks, setDisplayedTracks] = useState<Track[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -144,8 +69,8 @@ export default function SoloQHomePage() {
     const tracksPerPage = 20;
 
     // Consolidated loading and error states
-    const isLoading = tracksLoading || artistsLoading || imagesLoading;
-    const hasError = !!tracksError || artistsError || imagesError;
+    const isLoading = tracksLoading || artistsLoading || albumsLoading;
+    const hasError = !!tracksError || artistsError || albumsError;
     const error = tracksError;
 
     // Memoized recently played tracks
@@ -210,10 +135,10 @@ export default function SoloQHomePage() {
     const getTrackImage = useCallback(
         (track: Track) => {
             if (!track.album_id) return PLACEHOLDER_IMAGE;
-            const image = imageMap.get(track.album_id);
+            const image = albumImageMap.get(track.album_id);
             return image?.url && image.url.trim() !== "" ? image.url : PLACEHOLDER_IMAGE;
         },
-        [imageMap],
+        [albumImageMap],
     );
 
     const getArtistName = useCallback(

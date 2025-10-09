@@ -13,58 +13,8 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useProfile } from "@/hooks/public/use-profiles";
 import AddToPlaylistButton from "./add-to-playlist-button";
 import { useTrackWithRelations } from "@/hooks/music/use-tracks";
-import type { Tables } from "@/lib/types/supabase-types";
 import RemixCard from "./remix-card";
 import { TrackWithRelations } from "@/lib/types/database";
-
-// Type for track with relations that matches the actual hook response
-export type TrackWithRelationsResponse = {
-    album_id: string;
-    artist_id: string;
-    created_at: string;
-    duration: number;
-    genre: string | null;
-    id: string;
-    is_public: boolean | null;
-    links: any | null;
-    locked: boolean;
-    lyrics: string | null;
-    plays: number;
-    release_date: string | null;
-    title: string;
-    type: string | null;
-    updated_at: string;
-    url: string;
-    artists: {
-        stage_name: string;
-        profile_image_url: string | null;
-    };
-    albums: {
-        id: string;
-        name: string;
-        type: "Single" | "EP" | "Album";
-        album_images: Tables<"album_images">[];
-    };
-    track_credits: {
-        id?: string;
-        created_at?: string;
-        updated_at?: string;
-        track_id?: string;
-        name: string;
-        role: "composer" | "producer" | "lyricist" | "featured-artist" | "main-artist";
-    }[];
-    // ✅ Fix: make remixes flexible so it supports partial data
-    remixes: {
-        id?: string;
-        track_id?: string;
-        created_at?: string | null;
-        updated_at?: string | null;
-        url?: string | null;
-        original_song: string;
-        original_artists: any;
-        additional_artists?: any;
-    } | null;
-};
 
 interface ITrackCardProps {
     trackId: string;

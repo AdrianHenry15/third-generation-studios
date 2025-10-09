@@ -13,11 +13,10 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useProfile } from "@/hooks/public/use-profiles";
 import AddToPlaylistButton from "./add-to-playlist-button";
 import { useRemixByTrackIdQuery } from "@/hooks/music/use-remixes";
-import { TrackTypeEnum, TrackWithRelations } from "@/lib/types/music-types";
 
 interface IRemixCardProps {
-    track: TrackWithRelations;
-    playlist?: TrackWithRelations[];
+    track: any;
+    playlist?: any[];
     onUnlock?: (trackId: string) => void;
 }
 
@@ -32,7 +31,8 @@ const RemixCard = ({ track, playlist, onUnlock }: IRemixCardProps) => {
     const router = useRouter();
 
     const albumImages = track.albums.album_images || [];
-    const albumCover = albumImages.find((img) => img.album_id === track.albums.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
+    const albumCover =
+        albumImages.find((img: any) => img.album_id === track.albums.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
 
     // Parse original artists from JSON - matches Supabase schema
     const originalArtists = React.useMemo(() => {
@@ -60,7 +60,7 @@ const RemixCard = ({ track, playlist, onUnlock }: IRemixCardProps) => {
 
                 {/* Overlays */}
                 <LikeButton trackId={track.id} />
-                <TypeLabel type={track.type as TrackTypeEnum} />
+                <TypeLabel type={track.type} />
                 {track.locked && <LockButton onUnlock={onUnlock} trackId={track.id} />}
             </div>
 

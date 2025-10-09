@@ -19,9 +19,6 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import { useMusicQueryById } from "@/hooks/music/use-music";
 import { useMusicInsert } from "@/hooks/music/use-music";
-
-import type { Database } from "@/lib/types/supabase-types";
-import { TrackCreditTableInsert } from "@/lib/types/music-types";
 import LoadingOverlay from "@/components/layout/upload/loading-overlay";
 
 export default function StudioUploadPage() {
@@ -145,7 +142,7 @@ export default function StudioUploadPage() {
                         track_id: uploadedTrack.id,
                         name: artist?.stage_name || "Unknown Artist",
                         role: "main-artist",
-                    } as TrackCreditTableInsert),
+                    }),
                 ),
             );
 

@@ -10,7 +10,7 @@ import { RemixUploadData } from "../../solo-queue/studio/studio-upload-form";
 import { useUpdateTrack } from "@/hooks/music/use-tracks";
 import { useUpdateAlbum } from "@/hooks/music/use-albums";
 import type { Enums } from "@/lib/types/supabase-types";
-import { TrackWithRelations } from "@/lib/types/music-types";
+import { TrackWithRelations } from "@/lib/types/database";
 
 // Use Supabase types
 type TrackType = Enums<"track_type">;
@@ -46,7 +46,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
 
     const [formData, setFormData] = useState({
         title: track.title || "",
-        album_name: track.albums?.name || "",
+        album_name: track.album?.name || "",
         release_date: track.release_date ? track.release_date.split("T")[0] : "",
         genre: track.genre || "",
         locked: track.locked || false,
@@ -150,7 +150,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 await replaceFileMutation.mutateAsync({
                     trackId: track.id,
                     albumId: track.album_id,
-                    albumType: track.albums?.type || "Single",
+                    albumType: track.album?.type || "Single",
                     artistId: track.artist_id,
                     newFile: selectedFile,
                     newTitle: formData.title !== track.title ? formData.title : undefined,
@@ -191,7 +191,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
 
         try {
             // Update album name if it has changed
-            if (track.albums && formData.album_name !== track.albums.name) {
+            if (track.album && formData.album_name !== track.album.name) {
                 await updateAlbumMutation.mutateAsync({
                     id: track.album_id,
                     updates: {
@@ -347,8 +347,8 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                     required
                 />
                 <div className="text-xs text-gray-400 mt-2">
-                    <p>• Current album type: {track.albums?.type || "Unknown"}</p>
-                    {track.albums?.type === "Single" && <p>• Singles typically have the same name as the track</p>}
+                    <p>• Current album type: {track.album?.type || "Unknown"}</p>
+                    {track.album?.type === "Single" && <p>• Singles typically have the same name as the track</p>}
                 </div>
             </div>
 
