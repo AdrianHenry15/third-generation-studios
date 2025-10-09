@@ -135,7 +135,6 @@ export const signUpAction = async (formData: FormData) => {
             password,
             options: {
                 data: {
-                    display_name: username,
                     username: username, // Add username to metadata for trigger
                 },
                 captchaToken: hcaptchaToken,

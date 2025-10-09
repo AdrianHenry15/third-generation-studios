@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Home, Search, Heart, PlayCircle, User, Music, Upload } from "lucide-react";
+import { Menu, X, Home, Search, Heart, PlayCircle, User, Music, Upload, LogOut } from "lucide-react";
 import SidebarSection from "./sidebar-section";
 import PlaylistSidebarSection from "./playlist-sidebar-section";
 import { useAuthStore } from "@/stores/auth-store";
 import { useArtist } from "@/hooks/music/use-artists";
+import { signOutAction } from "@/app/actions";
+import { useRouter } from "next/navigation";
 
 const mainItems = [
     { icon: Home, label: "Home", href: "/solo-queue" },
@@ -34,8 +36,10 @@ interface ISidebarProps {
 
 export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen, setIsMobileMenuOpen }: ISidebarProps) {
     const [isMobile, setIsMobile] = useState(false);
-    const { user } = useAuthStore();
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const { user, signOut } = useAuthStore();
     const { data: artist } = useArtist(user?.id || "");
+    const router = useRouter();
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -43,6 +47,32 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
     }, []);
+
+    const handleLogout = async () => {
+        if (isLoggingOut) return;
+
+        setIsLoggingOut(true);
+        try {
+            // Call the server action
+            const result = await signOutAction();
+
+            if (result.success) {
+                // Update the auth store
+                signOut();
+                // Close mobile menu if open
+                setIsMobileMenuOpen(false);
+                // Redirect to sign in page
+                router.push("/sign-in");
+            } else {
+                console.error("Logout failed:", result.error);
+                // You could show a toast notification here
+            }
+        } catch (error) {
+            console.error("Logout error:", error);
+        } finally {
+            setIsLoggingOut(false);
+        }
+    };
 
     const SidebarContent = () => (
         <div className="flex flex-col h-full">
@@ -88,7 +118,6 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
                         onMobileClose={() => setIsMobileMenuOpen(false)}
                     />
                 )}
-                {/* Replace static playlists with dynamic playlist section */}
                 <PlaylistSidebarSection isCollapsed={isCollapsed} isMobile={isMobile} onMobileClose={() => setIsMobileMenuOpen(false)} />
             </div>
 
@@ -100,6 +129,20 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
                     isMobile={isMobile}
                     onMobileClose={() => setIsMobileMenuOpen(false)}
                 />
+
+                {/* Logout Item - Special styling */}
+                <div className="px-2 mb-2">
+                    <button
+                        onClick={handleLogout}
+                        disabled={isLoggingOut}
+                        className={`w-full text-sm flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 group ${
+                            isLoggingOut ? "text-red-400/50 cursor-not-allowed" : "text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                        }`}
+                    >
+                        <LogOut size={20} className={isLoggingOut ? "animate-spin" : ""} />
+                        {(!isCollapsed || isMobile) && <span className="font-medium">{isLoggingOut ? "Signing out..." : "Logout"}</span>}
+                    </button>
+                </div>
             </div>
         </div>
     );
