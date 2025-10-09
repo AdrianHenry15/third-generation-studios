@@ -2,18 +2,19 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "../ui/buttons/button";
+import { useModalStore } from "@/stores/modal-store";
 
 type NavItem = { name: string; href: string } | { name: string; onClick: () => void };
 
 interface IMobileNavDropdownMenuProps {
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     menuRef: React.RefObject<HTMLDivElement | null>;
     navItems: NavItem[];
     isUserIcon: boolean;
 }
 
 const MobileNavDropdownMenu = (props: IMobileNavDropdownMenuProps) => {
-    const { setIsOpen, menuRef, navItems, isUserIcon } = props;
+    const { closeModal, modalType } = useModalStore();
+    const { menuRef, navItems, isUserIcon } = props;
     return (
         <motion.div
             ref={menuRef}
@@ -25,12 +26,7 @@ const MobileNavDropdownMenu = (props: IMobileNavDropdownMenuProps) => {
             <div className="px-4 py-4 flex flex-col space-y-4">
                 {navItems.map((item) =>
                     "href" in item ? (
-                        <Link
-                            key={item.name}
-                            href={item.href}
-                            className="text-gray-300 hover:text-white py-2"
-                            onClick={() => setIsOpen(false)}
-                        >
+                        <Link key={item.name} href={item.href} className="text-gray-300 hover:text-white py-2" onClick={() => closeModal()}>
                             {item.name}
                         </Link>
                     ) : (
@@ -40,7 +36,7 @@ const MobileNavDropdownMenu = (props: IMobileNavDropdownMenuProps) => {
                             className="text-left text-gray-300 hover:text-white py-2"
                             onClick={() => {
                                 item.onClick();
-                                setIsOpen(false);
+                                closeModal();
                             }}
                         >
                             {item.name}
@@ -48,7 +44,7 @@ const MobileNavDropdownMenu = (props: IMobileNavDropdownMenuProps) => {
                     ),
                 )}
                 {!isUserIcon && (
-                    <Link href="/contact-us" onClick={() => setIsOpen(false)}>
+                    <Link href="/contact-us" onClick={() => closeModal()}>
                         <Button className="bg-gradient-to-r from-green-600 to-green-800 text-white rounded-xl hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:from-green-500 hover:to-green-700 transition-all duration-300">
                             Get in Touch
                         </Button>

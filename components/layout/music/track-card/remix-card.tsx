@@ -13,9 +13,10 @@ import { useAuthStore } from "@/stores/auth-store";
 import { useProfile } from "@/hooks/public/use-profiles";
 import AddToPlaylistButton from "./add-to-playlist-button";
 import { useRemixByTrackIdQuery } from "@/hooks/music/use-remixes";
+import { TrackWithRelations } from "@/lib/types/database";
 
 interface IRemixCardProps {
-    track: any;
+    track: TrackWithRelations;
     playlist?: any[];
     onUnlock?: (trackId: string) => void;
 }
@@ -30,10 +31,9 @@ const RemixCard = ({ track, playlist, onUnlock }: IRemixCardProps) => {
     const { data: remixData } = useRemixByTrackIdQuery(track.id);
     const router = useRouter();
 
-    const albumImages = track.albums.album_images || [];
+    const albumImages = track.album?.images || [];
     const albumCover =
-        albumImages.find((img: any) => img.album_id === track.albums.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
-
+        albumImages.find((img: any) => img.album_id === track.album?.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
     // Parse original artists from JSON - matches Supabase schema
     const originalArtists = React.useMemo(() => {
         if (!remixData?.original_artists) return [];
@@ -143,10 +143,10 @@ const RemixCard = ({ track, playlist, onUnlock }: IRemixCardProps) => {
                 {user && <AddToPlaylistButton trackId={track.id} />}
 
                 {/* Optional External Links */}
-                {track.type === "Released" && track.albums.name && (
+                {track.type === "Released" && track.album!.name && (
                     <ExternalLinkButton
-                        albumName={track.albums.name}
-                        link={`https://album.link/tgs-${track.albums.name.toLowerCase().replace(/\s+/g, "-")}`}
+                        albumName={track.album!.name}
+                        link={`https://album.link/tgs-${track.album!.name.toLowerCase().replace(/\s+/g, "-")}`}
                     />
                 )}
             </div>

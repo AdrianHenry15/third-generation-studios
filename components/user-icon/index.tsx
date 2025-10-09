@@ -60,7 +60,7 @@ const UserIcon = () => {
         <div className="relative flex justify-end">
             <button
                 className="flex items-center gap-2 p-1 transition-colors rounded-full duration-200 hover:bg-neutral-200 dark:hover:bg-neutral-800 focus:outline-none"
-                aria-label={`User menu for ${profile?.username || user?.email || "user"}`}
+                aria-label={`User menu for ${profile?.username}`}
                 aria-expanded={menuOpen}
                 type="button"
                 onClick={toggleMenu}

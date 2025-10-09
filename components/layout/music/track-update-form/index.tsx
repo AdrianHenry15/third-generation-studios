@@ -66,14 +66,14 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
 
     // Separate state for remix data since it's not part of tracks table
     const [remixData, setRemixData] = useState({
-        original_song: track.remixes?.original_song || "",
-        url: track.remixes?.url || "",
+        original_song: track.remixes?.[0]?.original_song || "",
+        url: track.remixes?.[0]?.url || "",
         original_artists: (() => {
-            if (!track.remixes?.original_artists) return [];
+            if (!track.remixes?.[0]?.original_artists) return [];
             try {
-                return Array.isArray(track.remixes.original_artists)
-                    ? (track.remixes.original_artists as string[])
-                    : (JSON.parse(track.remixes.original_artists as string) as string[]);
+                return Array.isArray(track.remixes[0].original_artists)
+                    ? (track.remixes[0].original_artists as string[])
+                    : (JSON.parse(track.remixes[0].original_artists as string) as string[]);
             } catch {
                 return [];
             }

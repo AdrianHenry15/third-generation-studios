@@ -1,7 +1,8 @@
+import { TrackWithRelations } from "@/lib/types/database";
 import React from "react";
 
 interface ITrackInfoProps {
-    track: any;
+    track: TrackWithRelations;
 }
 
 const TrackInfo: React.FC<ITrackInfoProps> = ({ track }) => {
@@ -27,9 +28,9 @@ const TrackInfo: React.FC<ITrackInfoProps> = ({ track }) => {
     return (
         <div>
             <h2 className="text-xl font-bold text-white mb-1 truncate">{title}</h2>
-            <p className="text-gray-400 text-sm mb-1 truncate">{track.artists?.stage_name || "Unknown Artist"}</p>
-            {title === track.albums.name ? null : (
-                <p className="text-gray-300 text-xs mb-2 truncate font-medium">{track.albums?.name || "Unknown Album"}</p>
+            <p className="text-gray-400 text-sm mb-1 truncate">{track.artist?.stage_name || "Unknown Artist"}</p>
+            {title === track.album?.name ? null : (
+                <p className="text-gray-300 text-xs mb-2 truncate font-medium">{track.album?.name || "Unknown Album"}</p>
             )}
 
             <div className="flex items-center text-xs text-gray-400 space-x-3 mb-2">

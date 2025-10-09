@@ -54,30 +54,55 @@ export type VerificationStatus = Enums<"verification_status">;
 
 // When selecting tracks with related album and artist
 export type TrackWithRelations = Track & {
-    album?: Album | null;
-    artist?: Artist | null;
-    remixes?: Remix | null;
-    credits?: TrackCredit[];
-    likes?: TrackLike[];
+    album?: AlbumWithRelations | null;
+    artist?: ArtistWithRelations | null;
+    remixes?: RemixWithRelations[] | null;
+    credits?: TrackCreditWithRelations[] | null;
+    likes?: TrackLikeWithRelations[] | null;
 };
 
-// When selecting playlists with tracks and creator
-export type PlaylistWithRelations = Playlist & {
-    tracks?: (PlaylistTrack & { track: TrackWithRelations })[];
-    created_by_profile?: Profile;
-    likes?: PlaylistLike[];
+// When selecting albums with related artist and images
+export type AlbumWithRelations = Album & {
+    artist?: ArtistWithRelations | null;
+    images?: AlbumImage[] | null;
+    tracks?: TrackWithRelations[] | null;
 };
 
 // When selecting an artist with albums or tracks
 export type ArtistWithRelations = Artist & {
-    albums?: Album[];
-    tracks?: Track[];
+    albums?: AlbumWithRelations[] | null;
+    tracks?: TrackWithRelations[] | null;
+};
+
+// When selecting a remix with its original track and remixer
+export type RemixWithRelations = Remix & {
+    original_track?: TrackWithRelations | null;
+    remixer?: ArtistWithRelations | null;
+};
+
+// When selecting a track credit with its profile and role
+export type TrackCreditWithRelations = TrackCredit & {
+    profile?: ProfileWithRelations | null;
+    track?: TrackWithRelations | null;
+};
+
+// When selecting a track like with its profile and track
+export type TrackLikeWithRelations = TrackLike & {
+    profile?: ProfileWithRelations | null;
+    track?: TrackWithRelations | null;
 };
 
 // When selecting a user profile with playlists and liked tracks
 export type ProfileWithRelations = Profile & {
-    playlists?: Playlist[];
-    liked_tracks?: (TrackLike & { track: TrackWithRelations })[];
+    playlists?: PlaylistWithRelations[] | null;
+    liked_tracks?: TrackLikeWithRelations[] | null;
+};
+
+// When selecting playlists with tracks and creator
+export type PlaylistWithRelations = Playlist & {
+    tracks?: (PlaylistTrack & { track: TrackWithRelations })[] | null;
+    created_by_profile?: ProfileWithRelations | null;
+    likes?: PlaylistLike[] | null;
 };
 
 /* ============================================================

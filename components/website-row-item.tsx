@@ -6,14 +6,18 @@ import Image from "next/image";
 import { WebsiteType } from "@/lib/types/generic-types";
 import OpenLinkModal from "@/components/modals/open-link-modal";
 import Logo from "@/public/logos/tgs-logo.png";
+import { useModalStore } from "@/stores/modal-store";
 
 interface IWebsiteRowItemProps {
     currentWebsite: WebsiteType;
 }
 
 export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // State
     const [modalData, setModalData] = useState<{ title: string; link: string } | null>(null);
+
+    // Stores
+    const { isModalOpen, openModal, modalType } = useModalStore();
 
     const getTechStackLink = (tech: string): string | undefined => {
         switch (tech.toLowerCase()) {
@@ -81,7 +85,7 @@ export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps)
                                             e.stopPropagation();
                                             if (techLink) {
                                                 setModalData({ title: tech, link: techLink });
-                                                setIsModalOpen(true);
+                                                openModal("link");
                                             }
                                         }}
                                         type="button"
@@ -98,7 +102,7 @@ export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps)
                         onClick={(e) => {
                             e.stopPropagation();
                             setModalData({ title: currentWebsite.title, link: currentWebsite.link });
-                            setIsModalOpen(true);
+                            openModal("link");
                         }}
                         type="button"
                     >
@@ -108,9 +112,7 @@ export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps)
             </div>
 
             {/* Modal */}
-            {isModalOpen && modalData && (
-                <OpenLinkModal isOpen={true} closeModal={() => setIsModalOpen(false)} title={modalData.title} link={modalData.link} />
-            )}
+            {isModalOpen && modalType === "link" && modalData && <OpenLinkModal title={modalData.title} link={modalData.link} />}
         </>
     );
 }

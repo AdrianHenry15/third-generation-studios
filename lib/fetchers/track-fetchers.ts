@@ -28,27 +28,52 @@ export async function fetchPublicTracks(): Promise<Track[]> {
     return data ?? [];
 }
 
-export async function fetchTrackWithRelations(id: string) {
+export async function fetchTrackWithRelations(id: string): Promise<Track | null> {
     const { data, error } = await supabase
         .from("tracks")
         .select(
             `
-            *,
-            artists(stage_name, profile_image_url),
-            albums(
-                id,
-                name, 
-                type,
-                album_images(*)
+             *,
+            album:albums (
+                *,
+                artist:artists (
+                    *,
+                    albums:albums (
+                        *,
+                        album_images:album_images(*)
+                    ),
+                    tracks:tracks(*)
+                ),
+                album_images:album_images(*),
+                tracks:tracks(*)
             ),
-            track_credits(name, role),
-            remixes(original_song, original_artists)
+            artist:artists (
+                *,
+                albums:albums(*),
+                tracks:tracks(*)
+            ),
+            remixes:remixes (
+                *,
+                original_track:tracks(*),
+                remixer:artists(*)
+            ),
+            credits:track_credits (
+                *,
+                profile:profiles(*),
+                track:tracks(*)
+            ),
+            likes:track_likes (
+                *,
+                profile:profiles(*),
+                track:tracks(*)
+            )
         `,
         )
         .eq("id", id)
-        .single();
+        .maybeSingle();
+
     if (error) throw error;
-    return data;
+    return data ?? null;
 }
 
 // Track interaction functions

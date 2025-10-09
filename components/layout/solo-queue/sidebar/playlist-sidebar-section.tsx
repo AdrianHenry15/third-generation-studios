@@ -9,6 +9,7 @@ import { Plus, PlayCircle } from "lucide-react";
 import SidebarSection from "./sidebar-section";
 import { useAuthStore } from "@/stores/auth-store";
 import { usePlaylistsByUser, useCreatePlaylist } from "@/hooks/music/use-playlists";
+import { useModalStore } from "@/stores/modal-store";
 
 /**
  * PlaylistSidebarSection
@@ -29,11 +30,11 @@ export default function PlaylistSidebarSection({
     onMobileClose: () => void;
 }) {
     // State
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [playlistName, setPlaylistName] = useState("");
 
-    // Store
+    // Stores
     const { user } = useAuthStore(); // Get current user
+    const { isModalOpen, openModal, closeModal } = useModalStore();
 
     // Queries / Mutations using new hooks
     const { data: playlists = [], isLoading } = usePlaylistsByUser(user?.id || "", !!user?.id);
@@ -59,7 +60,7 @@ export default function PlaylistSidebarSection({
             },
             {
                 onSuccess: () => {
-                    setIsModalOpen(false);
+                    closeModal();
                     setPlaylistName("");
                 },
                 onError: (error) => {
@@ -77,7 +78,7 @@ export default function PlaylistSidebarSection({
             console.warn("User must be logged in to create playlists");
             return;
         }
-        setIsModalOpen(true);
+        openModal("playlist");
     };
 
     return (
@@ -125,7 +126,7 @@ export default function PlaylistSidebarSection({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="fixed inset-0 flex items-center justify-center bg-black/70 z-50"
-                    onClick={(e) => e.target === e.currentTarget && setIsModalOpen(false)}
+                    onClick={(e) => e.target === e.currentTarget && closeModal()}
                 >
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
@@ -142,7 +143,7 @@ export default function PlaylistSidebarSection({
                                 if (e.key === "Enter") {
                                     handleCreatePlaylist();
                                 } else if (e.key === "Escape") {
-                                    setIsModalOpen(false);
+                                    closeModal();
                                     setPlaylistName("");
                                 }
                             }}
@@ -159,7 +160,7 @@ export default function PlaylistSidebarSection({
                         <div className="flex justify-end space-x-2">
                             <button
                                 onClick={() => {
-                                    setIsModalOpen(false);
+                                    closeModal();
                                     setPlaylistName("");
                                 }}
                                 className="px-4 py-2 rounded bg-neutral-800 hover:bg-neutral-700 text-white transition-colors disabled:opacity-50"

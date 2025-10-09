@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Upload, X } from "lucide-react";
 import { useTrack, useTrackWithRelations } from "@/hooks/music/use-tracks";
+import { useAlbumWithImages } from "@/hooks/music/use-albums";
+import { useArtist } from "@/hooks/music/use-artists";
 
 export default function TrackUpdatePage() {
     const params = useParams();
@@ -17,6 +19,8 @@ export default function TrackUpdatePage() {
     const [uploadError, setUploadError] = useState<string>("");
 
     const { data: track, isLoading, error } = useTrackWithRelations(trackId);
+    const { data: album } = useAlbumWithImages(track?.album_id || "");
+    const { data: artist } = useArtist(track?.artist_id || "");
     const albumCoverUpload = useAlbumCoverUpdate();
 
     // Handle album cover file selection
@@ -37,12 +41,12 @@ export default function TrackUpdatePage() {
 
     // Get current album cover
     const getCurrentCover = () => {
-        return track?.albums?.album_images?.[0]?.url || "/placeholder-albums.png";
+        return album?.album_images?.[0]?.url || "/placeholder-albums.png";
     };
 
     // Handle album cover upload
     const handleUploadCover = async () => {
-        if (!newAlbumCover || !track?.albums?.id || !track?.artist_id) {
+        if (!newAlbumCover || !album?.id || !track?.artist_id) {
             setUploadStatus("error");
             setUploadError("Missing required data: album ID or artist ID");
             return;
@@ -53,13 +57,13 @@ export default function TrackUpdatePage() {
 
         try {
             console.log("Starting upload with:", {
-                albumId: track.albums.id,
+                albumId: album.id,
                 artistId: track.artist_id,
                 fileName: newAlbumCover.name,
             });
 
             const result = await albumCoverUpload.mutateAsync({
-                albumId: track.albums.id,
+                albumId: album.id,
                 artistId: track.artist_id,
                 albumImageFile: newAlbumCover,
             });
@@ -121,8 +125,7 @@ export default function TrackUpdatePage() {
                     {/* Debug info */}
                     {track && (
                         <div className="mt-2 text-sm text-gray-400">
-                            Track: {track.title} | Album: {track.albums?.name || "No album"} | Artist:{" "}
-                            {track.artists?.stage_name || "No artist"}
+                            Track: {track.title} | Album: {album?.name || "No album"} | Artist: {artist?.stage_name || "No artist"}
                         </div>
                     )}
                 </div>
@@ -153,7 +156,7 @@ export default function TrackUpdatePage() {
                                 <div className="relative w-64 h-64 mx-auto bg-neutral-800 rounded-lg overflow-hidden">
                                     <Image src={getCurrentCover()} alt={`${track?.title} album cover`} className="object-cover" fill />
                                 </div>
-                                <p className="text-neutral-400 text-sm text-center">{track?.albums?.name || "No album assigned"}</p>
+                                <p className="text-neutral-400 text-sm text-center">{album?.name || "No album assigned"}</p>
                             </div>
 
                             {/* New Cover Upload */}

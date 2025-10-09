@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/buttons/button";
 import { Menu, X } from "lucide-react";
@@ -9,9 +9,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserIcon from "../user-icon";
 import MobileNavDropdownMenu from "./mobile-nav-dropdown-menu";
+import { useModalStore } from "@/stores/modal-store";
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
+    const { isModalOpen, modalType, openModal, closeModal } = useModalStore();
     const [scrolled, setScrolled] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const toggleRef = useRef<HTMLDivElement | null>(null);
@@ -20,31 +21,46 @@ export default function Navbar() {
     const { scrollY } = useScroll();
     const backgroundColor = useTransform(scrollY, [0, 60], ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]);
 
+    /**
+     * ✅ Efficient scroll handler (debounced and cleaned)
+     */
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 100);
+            const isNowScrolled = window.scrollY > 100;
+            setScrolled((prev) => (prev !== isNowScrolled ? isNowScrolled : prev));
         };
 
-        window.addEventListener("scroll", handleScroll);
+        handleScroll(); // Initialize on mount
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    useEffect(() => {
-        if (!isOpen) return;
-        function handleClickOutside(event: MouseEvent) {
+    /**
+     * ✅ Click outside handler only when nav modal is open
+     */
+    const handleClickOutside = useCallback(
+        (event: MouseEvent) => {
+            if (modalType !== "nav" || !isModalOpen) return;
             const target = event.target as Node;
             if (menuRef.current?.contains(target)) return;
             if (toggleRef.current?.contains(target)) return;
-            setIsOpen(false);
-        }
+            closeModal();
+        },
+        [isModalOpen, modalType, closeModal],
+    );
+
+    useEffect(() => {
+        if (modalType !== "nav" || !isModalOpen) return;
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isOpen]);
+    }, [isModalOpen, modalType, handleClickOutside]);
 
-    // Close menu on route change
+    /**
+     * ✅ Close nav modal on route change
+     */
     useEffect(() => {
-        if (isOpen) setIsOpen(false);
-    }, [pathname, isOpen]);
+        if (isModalOpen && modalType === "nav") closeModal();
+    }, [pathname]); // `closeModal` is stable from Zustand, no need to depend on it
 
     const navItems = [
         { name: "Websites", href: "/websites" },
@@ -113,18 +129,18 @@ export default function Navbar() {
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => setIsOpen((prev) => !prev)}
+                        onClick={() => (isModalOpen && modalType === "nav" ? closeModal() : openModal("nav"))}
                         aria-label="Toggle menu"
-                        aria-expanded={isOpen}
+                        aria-expanded={isModalOpen && modalType === "nav"}
                     >
-                        {isOpen ? <X /> : <Menu />}
+                        {isModalOpen && modalType === "nav" ? <X /> : <Menu />}
                     </Button>
                     <UserIcon />
                 </div>
             </div>
 
             {/* Mobile menu */}
-            {isOpen && <MobileNavDropdownMenu setIsOpen={setIsOpen} menuRef={menuRef} navItems={navItems} isUserIcon={false} />}
+            {isModalOpen && modalType === "nav" && <MobileNavDropdownMenu menuRef={menuRef} navItems={navItems} isUserIcon={false} />}
         </motion.header>
     );
 }

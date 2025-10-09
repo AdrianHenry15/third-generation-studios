@@ -6,15 +6,16 @@ import { motion } from "framer-motion";
 import { XCircle } from "lucide-react";
 
 import Button from "../ui/buttons/alt-button";
+import { useModalStore } from "@/stores/modal-store";
 
 interface IOpenWebsiteModalProps {
-    isOpen: boolean;
-    closeModal: () => void;
     title: string;
     link: string;
 }
 
-export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpenWebsiteModalProps) {
+export default function OpenLinkModal({ title, link }: IOpenWebsiteModalProps) {
+    // Stores
+    const { isModalOpen, closeModal } = useModalStore();
     const overlayVariants = {
         hidden: { opacity: 0 },
         visible: { opacity: 1, transition: { duration: 0.3 } },
@@ -26,7 +27,7 @@ export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpen
     };
 
     return (
-        <Transition show={isOpen} as={Fragment} appear>
+        <Transition show={isModalOpen} as={Fragment} appear>
             <Dialog as="div" className="relative z-50" onClose={closeModal}>
                 {/* Overlay */}
                 <TransitionChild

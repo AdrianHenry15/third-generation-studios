@@ -10,6 +10,7 @@
         "start": "next start",
         "lint": "next lint",
         "typegen": "npx sanity@latest schema extract && npx sanity@latest typegen generate",
+        "gen:types": "npx supabase gen types typescript --project-id --schema public > lib/types/supabase-types.ts",
         "ts-prune": "ts-prune"
     },
     "author": "",

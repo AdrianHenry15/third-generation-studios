@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
@@ -14,11 +14,13 @@ import { useProfile } from "@/hooks/public/use-profiles";
 import AddToPlaylistButton from "./add-to-playlist-button";
 import { useTrackWithRelations } from "@/hooks/music/use-tracks";
 import RemixCard from "./remix-card";
-import { TrackWithRelations } from "@/lib/types/database";
+import { AlbumWithRelations, TrackWithRelations } from "@/lib/types/database";
+import { useAlbumWithRelations } from "@/hooks/music/use-albums";
 
 interface ITrackCardProps {
-    trackId: string;
+    track: TrackWithRelations;
     playlist?: TrackWithRelations[];
+    album: AlbumWithRelations;
     onUnlock?: (trackId: string) => void;
 }
 
@@ -27,28 +29,11 @@ interface ITrackCardProps {
  * Displays a single track with image, play button, type label, and optional artist actions
  * Automatically renders RemixCard for remix tracks
  */
-const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
+const TrackCard = ({ track, album, playlist, onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
     const { data: profile } = useProfile(user?.id || "", !!user?.id);
 
-    const { data: track, isLoading, error } = useTrackWithRelations(trackId);
     const router = useRouter();
-
-    if (isLoading) {
-        return (
-            <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden h-80 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
-            </div>
-        );
-    }
-
-    if (error || !track) {
-        return (
-            <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden h-80 flex items-center justify-center">
-                <p className="text-red-400 text-sm">Failed to load track</p>
-            </div>
-        );
-    }
 
     // ✅ Render RemixCard for remix tracks
     if (track.type === "Remix") {
@@ -56,8 +41,11 @@ const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
     }
 
     // ✅ Regular track card for non-remix tracks
-    const albumImages = track.albums.album_images || [];
-    const albumCover = albumImages.find((img) => img.album_id === track.albums.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
+    const albumImages = album?.images || [];
+    const albumCover =
+        albumImages.find((img: { album_id: string }) => img.album_id === track.album_id)?.url ||
+        albumImages[0]?.url ||
+        "/placeholder-album.png";
 
     return (
         <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
@@ -111,10 +99,10 @@ const TrackCard = ({ trackId, playlist, onUnlock }: ITrackCardProps) => {
                 {user && <AddToPlaylistButton trackId={track.id} />}
 
                 {/* Optional External Links */}
-                {track.type === "Released" && track.albums.name && (
+                {track.type === "Released" && album?.name && (
                     <ExternalLinkButton
-                        albumName={track.albums.name}
-                        link={`https://album.link/tgs-${track.albums.name.toLowerCase().replace(/\s+/g, "-")}`}
+                        albumName={album.name}
+                        link={`https://album.link/tgs-${album.name.toLowerCase().replace(/\s+/g, "-")}`}
                     />
                 )}
             </div>

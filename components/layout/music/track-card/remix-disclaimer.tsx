@@ -2,7 +2,7 @@
 
 import { Info } from "lucide-react";
 import React from "react";
-import RemixDisclaimerModal from "../modals/remix-disclaimer-modal";
+import RemixDisclaimerModal from "../../../modals/remix-disclaimer-modal";
 
 const RemixDisclaimer = () => {
     const [showRemixDisclaimer, setShowRemixDisclaimer] = React.useState(false);
