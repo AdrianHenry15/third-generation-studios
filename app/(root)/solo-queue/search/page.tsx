@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import { Search, Music, User, PlayCircle } from "lucide-react";
+import { Search } from "lucide-react";
 import {
     useSearchArtistsQuery,
     useSearchPlaylistsQuery,
@@ -14,27 +12,6 @@ import {
 import ArtistSearchItem from "./artist-search-item";
 import TrackSearchItem from "./track-search-item";
 import PlaylistSearchItem from "./playlist-search-item";
-const { useAudioPlayerStore } = await import("@/stores/audio-player-store");
-
-// -----------------------------
-// Cover helpers
-// -----------------------------
-function PlaylistCover({ name, cover }: { name: string; cover?: string | null }) {
-    return (
-        <div className="relative aspect-square rounded-md overflow-hidden bg-gradient-to-br from-neutral-800 to-neutral-700 flex items-center justify-center">
-            {cover ? (
-                <Image src={cover} alt={`${name} cover`} fill sizes="(max-width: 1024px) 33vw, 16vw" className="object-cover" />
-            ) : (
-                <Music size={36} className="text-neutral-400" />
-            )}
-            <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <div className="p-2 rounded-full bg-green-600 text-white shadow-lg">
-                    <PlayCircle size={18} />
-                </div>
-            </div>
-        </div>
-    );
-}
 
 export default function SearchPage() {
     // URL + debounce
@@ -43,7 +20,6 @@ export default function SearchPage() {
     const initialQ = sp.get("q") ?? "";
     const [q, setQ] = useState(initialQ);
     const [debouncedQ, setDebouncedQ] = useState(initialQ);
-    const { playTrack } = useAudioPlayerStore.getState();
     useEffect(() => {
         const id = setTimeout(() => setDebouncedQ(q), 300);
         return () => clearTimeout(id);
@@ -215,7 +191,7 @@ export default function SearchPage() {
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
                                 {playlists.map((playlist) => {
                                     const coverImage = playlist.tracks?.[0]?.track.album?.images?.[0]?.url || null;
-                                    return <PlaylistSearchItem playlist={playlist} coverImage={coverImage!} />;
+                                    return <PlaylistSearchItem key={playlist.id} playlist={playlist} coverImage={coverImage!} />;
                                 })}
                             </div>
                         )}

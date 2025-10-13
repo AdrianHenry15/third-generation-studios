@@ -69,7 +69,7 @@ export default function MusicPage() {
     const error = tracksError || artistsError || albumsError;
 
     return (
-        <div className="space-y-8 pt-24 px-4">
+        <div className="space-y-8 py-24 px-4">
             <header className="space-y-2">
                 <h1 className="text-4xl font-bold text-white">Music Library</h1>
                 <p className="text-neutral-400 text-lg">Browse all tracks by Third Generation Studios</p>
@@ -96,7 +96,7 @@ export default function MusicPage() {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                         {filteredTracks.map((track) => (
-                            <TrackCard album={track.album} key={track.id} track={track} />
+                            <TrackCard key={track.id} track={track} />
                         ))}
                     </div>
                 )}

@@ -90,7 +90,11 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                 )}
 
                 {/* Add to Playlist Button */}
-                {user && <AddToPlaylistButton trackId={track.id} />}
+                {user && (
+                    <div className="mt-4">
+                        <AddToPlaylistButton trackId={track.id} />
+                    </div>
+                )}
 
                 {/* External Links */}
                 {track.type === "Released" && album?.name && (

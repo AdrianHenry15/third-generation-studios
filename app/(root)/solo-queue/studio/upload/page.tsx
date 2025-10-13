@@ -162,6 +162,7 @@ export default function StudioUploadPage() {
                                     original_song: remixInfo.original_song,
                                     url: remixInfo.url || null,
                                     original_artists: remixInfo.original_artists,
+                                    artist_id: user?.id!,
                                 });
                             }
                             return null;

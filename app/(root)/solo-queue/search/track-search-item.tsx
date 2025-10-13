@@ -4,7 +4,7 @@ import { TrackWithRelations } from "@/lib/types/database";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import { Music, Pause, Play } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useCallback } from "react";
 
 interface ITrackSearchItemProps {
     track: TrackWithRelations;
@@ -29,6 +29,12 @@ const TrackSearchItem: React.FC<ITrackSearchItemProps> = ({ track, tracks }) => 
             playTrack(track, tracks);
         }
     };
+
+    const formatDuration = useCallback((seconds: number) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, "0")}`;
+    }, []);
 
     return (
         <li className="flex items-center justify-between gap-3 px-4 py-3 hover:bg-neutral-900/50 group relative">
@@ -60,8 +66,9 @@ const TrackSearchItem: React.FC<ITrackSearchItemProps> = ({ track, tracks }) => 
             </button>
             {/* Right: Like and Add to Playlist Buttons */}
             <div className="flex gap-2 items-center">
-                <LikeButton size={18} trackId={track.id} />
+                <LikeButton iconSize={18} trackId={track.id} />
                 <AddToPlaylistButton trackId={track.id} />
+                <span className="text-xs text-gray-400">{formatDuration(track.duration)}</span>
             </div>
         </li>
     );

@@ -1,16 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { MoreHorizontal } from "lucide-react";
 import { useCallback } from "react";
 import { PlayButton } from "./play-button";
 import type { Database } from "@/lib/types/supabase-types";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import LikeButton from "@/components/ui/buttons/like-button";
+import AddToPlaylistButton from "@/components/ui/buttons/add-to-playlist/playlist-button";
 
 type Track = Database["public"]["Tables"]["tracks"]["Row"];
 
-interface TrackListItemProps {
+interface DashboardTrackListItemProps {
     track: Track;
     showPlayButton?: boolean;
     getTrackImage: (track: Track) => string;
@@ -19,14 +19,14 @@ interface TrackListItemProps {
     onTrackPlay: (track: Track) => void;
 }
 
-export function TrackListItem({
+export function DashboardTrackListItem({
     track,
     showPlayButton = false,
     getTrackImage,
     getArtistName,
     formatDuration,
     onTrackPlay,
-}: TrackListItemProps) {
+}: DashboardTrackListItemProps) {
     const { currentTrackId } = useAudioPlayerStore();
 
     const handleClick = useCallback(() => {
@@ -47,7 +47,6 @@ export function TrackListItem({
                         alt={track.title}
                         fill
                         className="object-cover"
-                        sizes="48px"
                         quality={85}
                         unoptimized={getTrackImage(track).startsWith("data:")}
                     />
@@ -68,12 +67,10 @@ export function TrackListItem({
                 </p>
                 <p className="text-neutral-400 text-sm truncate">{getArtistName(track)}</p>
             </div>
-            <div className="flex items-center gap-2">
-                <LikeButton trackId={track.id} />
+            <div className="flex items-center gap-3">
                 <span className="text-neutral-400 text-sm w-16 text-right">{formatDuration(track.duration)}</span>
-                <button className="p-2 text-neutral-500 hover:text-white transition-all duration-200 opacity-60 group-hover:opacity-100">
-                    <MoreHorizontal size={16} />
-                </button>
+                <LikeButton trackId={track.id} />
+                <AddToPlaylistButton iconSize={12} trackId={track.id} />
             </div>
         </div>
     );

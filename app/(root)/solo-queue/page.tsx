@@ -5,10 +5,9 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { usePublicTracks } from "@/hooks/music/use-tracks";
 import { useAllArtists } from "@/hooks/music/use-artists";
 import { useAlbumsWithImages } from "@/hooks/music/use-albums";
-import type { Database } from "@/lib/types/supabase-types";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import { ExploreTrackCard } from "@/components/layout/solo-queue/explore-track-card";
-import { TrackListItem } from "@/components/layout/solo-queue/track-list-item";
+import { DashboardTrackListItem } from "@/components/layout/solo-queue/dashboard-track-list-item";
 import { TrackListSkeleton, TrackGridSkeleton } from "@/components/layout/solo-queue/loading-skeleton";
 import { EmptyState } from "@/components/layout/solo-queue/empty-state";
 import { TrackWithRelations } from "@/lib/types/database";
@@ -175,7 +174,7 @@ export default function SoloQHomePage() {
             <motion.section variants={itemVariants} className="space-y-4">
                 <div className="flex items-center justify-between">
                     <h2 className="text-2xl font-bold text-white">Recently played</h2>
-                    <button className="text-neutral-400 hover:text-white text-sm font-medium transition-colors">Show all</button>
+                    {/* <button className="text-neutral-400 hover:text-white text-sm font-medium transition-colors">Show all</button> */}
                 </div>
 
                 {isLoading ? (
@@ -200,7 +199,7 @@ export default function SoloQHomePage() {
                 ) : (
                     <div className="space-y-2">
                         {recentlyPlayed.map((track) => (
-                            <TrackListItem
+                            <DashboardTrackListItem
                                 key={track.id}
                                 track={track}
                                 showPlayButton

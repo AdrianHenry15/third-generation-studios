@@ -6,10 +6,10 @@ import { useAuthStore } from "@/stores/auth-store";
 interface ILikeButtonProps {
     trackId: string;
     className?: string; // Allow custom styling from parent
-    size?: number; // Allow custom icon size
+    iconSize?: number; // Allow custom icon size
 }
 
-const LikeButton: React.FC<ILikeButtonProps> = ({ trackId, className = "", size = 20 }) => {
+const LikeButton: React.FC<ILikeButtonProps> = ({ trackId, className = "", iconSize = 20 }) => {
     const { user } = useAuthStore();
     const userId = user?.id;
 
@@ -46,7 +46,7 @@ const LikeButton: React.FC<ILikeButtonProps> = ({ trackId, className = "", size 
                 title="Login to like tracks"
                 disabled
             >
-                <Heart size={size} className="text-white/60" fill="none" strokeWidth={2.2} />
+                <Heart size={iconSize} className="text-white/60" fill="none" strokeWidth={2.2} />
             </button>
         );
     }
@@ -61,7 +61,7 @@ const LikeButton: React.FC<ILikeButtonProps> = ({ trackId, className = "", size 
             disabled={isLoading}
         >
             <Heart
-                size={size}
+                size={iconSize}
                 className={`transition-colors duration-200 ${liked ? "text-red-500 fill-red-500" : "text-white/80 hover:text-red-400"}`}
                 fill={liked ? "currentColor" : "none"}
                 strokeWidth={2.2}
