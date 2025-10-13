@@ -16,6 +16,49 @@ export async function fetchTracksByArtist(artistId: string): Promise<Track[]> {
     return data ?? [];
 }
 
+export async function fetchTracksWithRelationsByArtist(artistId: string): Promise<Track[]> {
+    const { data, error } = await supabase
+        .from("tracks")
+        .select(
+            `
+            *,
+            album:albums (
+                id,
+                name,
+                release_date,
+                album_images:album_images(id, url),
+                artist:artists(id, stage_name, profile_image_url)
+            ),
+            artist:artists (
+                id,
+                stage_name,
+                profile_image_url
+            ),
+            remixes:remixes (
+                id,
+                url,
+                original_song,
+                original_artists,
+                created_at,
+                remixer:artists(id, stage_name, profile_image_url)
+            ),
+            credits:track_credits (
+                id,
+                role,
+                artist:artists(id, stage_name, profile_image_url)
+            ),
+            likes:track_likes (
+                id,
+                profile:profiles(id, username)
+            )
+        `,
+        )
+        .eq("artist_id", artistId);
+
+    if (error) throw error;
+    return data ?? [];
+}
+
 export async function fetchTracksByAlbum(albumId: string): Promise<Track[]> {
     const { data, error } = await supabase.from("tracks").select("*").eq("album_id", albumId).order("title");
     if (error) throw error;
@@ -33,46 +76,44 @@ export async function fetchTrackWithRelations(id: string): Promise<Track | null>
         .from("tracks")
         .select(
             `
-             *,
-            album:albums (
-                *,
-                artist:artists (
-                    *,
-                    albums:albums (
-                        *,
-                        album_images:album_images(*)
-                    ),
-                    tracks:tracks(*)
-                ),
-                album_images:album_images(*),
-                tracks:tracks(*)
-            ),
-            artist:artists (
-                *,
-                albums:albums(*),
-                tracks:tracks(*)
-            ),
-            remixes:remixes (
-                *,
-                original_track:tracks(*),
-                remixer:artists(*)
-            ),
-            credits:track_credits (
-                *,
-                profile:profiles(*),
-                track:tracks(*)
-            ),
-            likes:track_likes (
-                *,
-                profile:profiles(*),
-                track:tracks(*)
-            )
-        `,
+      *,
+      album:albums (
+        id,
+        name,
+        release_date,
+        album_images:album_images(id, url),
+        artist:artists(id, stage_name, profile_image_url)
+      ),
+      artist:artists (
+        id,
+        stage_name,
+        profile_image_url
+      ),
+      remixes:remixes (
+        id,
+        url,
+        original_song,
+        original_artists,
+        created_at,
+        remixer:artists(id, stage_name, profile_image_url)
+      ),
+      credits:track_credits (
+        id,
+        role,
+        artist:artists(id, stage_name, profile_image_url)
+      ),
+      likes:track_likes (
+        id,
+        profile:profiles(id, username)
+      )
+      `,
         )
         .eq("id", id)
         .maybeSingle();
 
-    if (error) throw error;
+    if (error) {
+        throw new Error(`[fetchTrackWithRelations] ${error.message || error.details || "Unknown error"} (code: ${error.code || "?"})`);
+    }
     return data ?? null;
 }
 

@@ -4,14 +4,14 @@ import { useAuthStore } from "@/stores/auth-store";
 import { TrackWithRelations } from "@/lib/types/database";
 
 interface IPlayPauseButtonProps {
-    track: any;
-    playlist?: TrackWithRelations[];
+    track: TrackWithRelations;
+    playlist: TrackWithRelations[];
     locked: boolean;
 }
 
 const PlayPauseButton = (props: IPlayPauseButtonProps) => {
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "";
-    const { track, playlist, locked } = props;
+    const { track, locked, playlist } = props;
 
     const {
         currentTrackId,

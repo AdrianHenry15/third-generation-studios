@@ -412,6 +412,7 @@ export type Database = {
       }
       remixes: {
         Row: {
+          artist_id: string
           created_at: string | null
           id: string
           original_artists: Json
@@ -421,6 +422,7 @@ export type Database = {
           url: string | null
         }
         Insert: {
+          artist_id: string
           created_at?: string | null
           id?: string
           original_artists?: Json
@@ -430,6 +432,7 @@ export type Database = {
           url?: string | null
         }
         Update: {
+          artist_id?: string
           created_at?: string | null
           id?: string
           original_artists?: Json
@@ -439,6 +442,13 @@ export type Database = {
           url?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "remixes_remixer_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "remixes_track_id_fkey"
             columns: ["track_id"]
@@ -450,6 +460,7 @@ export type Database = {
       }
       track_credits: {
         Row: {
+          artist_id: string | null
           created_at: string
           id: string
           name: string
@@ -458,6 +469,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          artist_id?: string | null
           created_at?: string
           id?: string
           name: string
@@ -466,6 +478,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          artist_id?: string | null
           created_at?: string
           id?: string
           name?: string
@@ -474,6 +487,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "track_credits_artist_id_fkey"
+            columns: ["artist_id"]
+            isOneToOne: false
+            referencedRelation: "artists"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "track_credits_track_id_fkey"
             columns: ["track_id"]

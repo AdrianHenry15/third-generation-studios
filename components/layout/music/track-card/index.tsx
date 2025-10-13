@@ -1,51 +1,47 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
 import LockButton from "./lock-button";
 import TypeLabel from "./type-label";
-import LikeButton from "./like-button";
+import LikeButton from "../../../ui/buttons/like-button";
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfile } from "@/hooks/public/use-profiles";
-import AddToPlaylistButton from "./add-to-playlist-button";
-import { useTrackWithRelations } from "@/hooks/music/use-tracks";
+import AddToPlaylistButton from "../../../ui/buttons/add-to-playlist/playlist-button";
 import RemixCard from "./remix-card";
-import { AlbumWithRelations, TrackWithRelations } from "@/lib/types/database";
-import { useAlbumWithRelations } from "@/hooks/music/use-albums";
+import { TrackWithRelations } from "@/lib/types/database";
 
 interface ITrackCardProps {
     track: TrackWithRelations;
     playlist?: TrackWithRelations[];
-    album: AlbumWithRelations;
     onUnlock?: (trackId: string) => void;
 }
 
-/**
- * TrackCard
- * Displays a single track with image, play button, type label, and optional artist actions
- * Automatically renders RemixCard for remix tracks
- */
-const TrackCard = ({ track, album, playlist, onUnlock }: ITrackCardProps) => {
+const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
     const { data: profile } = useProfile(user?.id || "", !!user?.id);
-
     const router = useRouter();
 
-    // ✅ Render RemixCard for remix tracks
-    if (track.type === "Remix") {
-        return <RemixCard track={track} playlist={playlist} onUnlock={onUnlock} />;
+    // If this is a remix, delegate to RemixCard and pass only the track
+    if (track.type === "Remix" && track.remixes && track.remixes.length > 0) {
+        // Pass the first remix relation (or adjust as needed)
+        return <RemixCard track={track} remixData={track.remixes[0]} onUnlock={onUnlock} />;
     }
 
-    // ✅ Regular track card for non-remix tracks
-    const albumImages = album?.images || [];
-    const albumCover =
-        albumImages.find((img: { album_id: string }) => img.album_id === track.album_id)?.url ||
-        albumImages[0]?.url ||
-        "/placeholder-album.png";
+    // Compute album cover safely
+    const albumCover = useMemo(() => {
+        const albumImages = track.album?.images ?? [];
+        if (!albumImages.length) return "/earth-splash.jpg";
+        const match = albumImages.find((img) => img.album_id === track.album_id);
+        return match?.url || albumImages[0]?.url || "/earth-splash.jpg";
+    }, [track]);
+
+    // Use album from track for external link
+    const album = track.album;
 
     return (
         <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
@@ -53,7 +49,7 @@ const TrackCard = ({ track, album, playlist, onUnlock }: ITrackCardProps) => {
             <div className="relative h-48 w-full">
                 <Image
                     src={albumCover}
-                    alt={track.title}
+                    alt={track.title || "Track Cover"}
                     fill
                     className={`object-cover group-hover:brightness-90 transition ${track.locked ? "blur-sm" : ""}`}
                     sizes="(max-width: 768px) 100vw, 33vw"
@@ -61,7 +57,7 @@ const TrackCard = ({ track, album, playlist, onUnlock }: ITrackCardProps) => {
 
                 {/* Overlays */}
                 <LikeButton trackId={track.id} />
-                <TypeLabel type={track.type!} />
+                <TypeLabel type={track.type || "Unknown"} />
                 {track.locked && <LockButton onUnlock={onUnlock} trackId={track.id} />}
             </div>
 
@@ -70,9 +66,7 @@ const TrackCard = ({ track, album, playlist, onUnlock }: ITrackCardProps) => {
                 <TrackInfo track={track} />
 
                 {!track.url && (
-                    <p className="mt-2 text-xs text-red-400 text-center">
-                        Preview not available to play here — use links below for full track
-                    </p>
+                    <p className="mt-2 text-xs text-red-400 text-center">Preview not available — use links below for full track</p>
                 )}
 
                 <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
@@ -95,10 +89,10 @@ const TrackCard = ({ track, album, playlist, onUnlock }: ITrackCardProps) => {
                     </button>
                 )}
 
-                {/* Add to Playlist Button for authenticated users */}
+                {/* Add to Playlist Button */}
                 {user && <AddToPlaylistButton trackId={track.id} />}
 
-                {/* Optional External Links */}
+                {/* External Links */}
                 {track.type === "Released" && album?.name && (
                     <ExternalLinkButton
                         albumName={album.name}

@@ -18,6 +18,7 @@ interface RemixMutationData {
     original_song: string;
     url?: string | null;
     original_artists: string[]; // Will be converted to Json in mutations
+    artist_id: string; // Add artist_id to match RemixInsert requirements
 }
 
 // -------------------------
@@ -65,6 +66,7 @@ export const useRemixInsert = () => {
                 original_song: data.original_song,
                 url: data.url,
                 original_artists: data.original_artists as any, // Json type in Supabase
+                artist_id: data.artist_id, // Provide artist_id as required
             };
 
             const { error } = await supabase.from("remixes").insert(insertData);

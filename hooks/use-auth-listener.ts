@@ -18,10 +18,10 @@ export function useAuthListener() {
                 setLoading(false);
                 queryClient.setQueryData(["supabase-session"], data.session ?? null);
 
-                console.log("✅ useAuthListener: Session set", {
-                    hasSession: !!data.session,
-                    userId: data.session?.user?.id,
-                });
+                // console.log("✅ useAuthListener: Session set", {
+                //     hasSession: !!data.session,
+                //     userId: data.session?.user?.id,
+                // });
             } catch (error) {
                 console.error("❌ useAuthListener: Session check failed", error);
                 setLoading(false);
@@ -37,7 +37,7 @@ export function useAuthListener() {
             queryClient.setQueryData(["supabase-session"], session ?? null);
 
             if (!session) {
-                console.log("🧹 useAuthListener: Clearing user-related queries");
+                // console.log("🧹 useAuthListener: Clearing user-related queries");
                 queryClient.removeQueries({ queryKey: ["profiles"] });
             }
 

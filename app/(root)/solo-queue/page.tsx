@@ -11,9 +11,10 @@ import { ExploreTrackCard } from "@/components/layout/solo-queue/explore-track-c
 import { TrackListItem } from "@/components/layout/solo-queue/track-list-item";
 import { TrackListSkeleton, TrackGridSkeleton } from "@/components/layout/solo-queue/loading-skeleton";
 import { EmptyState } from "@/components/layout/solo-queue/empty-state";
+import { TrackWithRelations } from "@/lib/types/database";
 
 // Use proper Supabase types
-type Track = Database["public"]["Tables"]["tracks"]["Row"];
+// type Track = Database["public"]["Tables"]["tracks"]["Row"];
 
 // Create a placeholder image as a data URL
 const PLACEHOLDER_IMAGE =
@@ -63,7 +64,7 @@ export default function SoloQHomePage() {
         return imageMap;
     }, [albumsWithImages]);
 
-    const [displayedTracks, setDisplayedTracks] = useState<Track[]>([]);
+    const [displayedTracks, setDisplayedTracks] = useState<TrackWithRelations[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const tracksPerPage = 20;
@@ -133,7 +134,7 @@ export default function SoloQHomePage() {
     }, []);
 
     const getTrackImage = useCallback(
-        (track: Track) => {
+        (track: TrackWithRelations) => {
             if (!track.album_id) return PLACEHOLDER_IMAGE;
             const image = albumImageMap.get(track.album_id);
             return image?.url && image.url.trim() !== "" ? image.url : PLACEHOLDER_IMAGE;
@@ -142,7 +143,7 @@ export default function SoloQHomePage() {
     );
 
     const getArtistName = useCallback(
-        (track: Track) => {
+        (track: TrackWithRelations) => {
             if (!track.artist_id) return "Unknown Artist";
             const artist = artistMap.get(track.artist_id);
             return artist?.stage_name || "Unknown Artist";
@@ -152,7 +153,7 @@ export default function SoloQHomePage() {
 
     // Handle track play/pause
     const handleTrackPlay = useCallback(
-        (track: Track) => {
+        (track: TrackWithRelations) => {
             if (currentTrackId === track.id && isPlaying) {
                 pauseTrack();
             } else {
@@ -163,7 +164,7 @@ export default function SoloQHomePage() {
     );
 
     return (
-        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-8 pt-24 px-4">
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="space-y-8">
             {/* Header */}
             <motion.header variants={itemVariants} className="space-y-2">
                 <h1 className="text-4xl font-bold text-white">Welcome To Solo Queue</h1>

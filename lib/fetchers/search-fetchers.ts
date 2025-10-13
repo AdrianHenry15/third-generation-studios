@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
-import { ArtistWithRelations, PlaylistWithRelations, TrackWithRelations } from "@/lib/types/database";
+import { ArtistWithRelations, PlaylistWithRelations, TrackWithRelations } from "../types/database";
 
-/* ============================================================
+/* ===============================
    Helpers
-============================================================ */
+   =============================== */
 function sanitizeForFilter(value: string) {
     return value.replace(/[^\w\s-]/g, "").trim();
 }
@@ -13,9 +13,9 @@ function toPattern(value: string) {
     return `%${value}%`;
 }
 
-/* ============================================================
-   Track select fields for reusability
-============================================================ */
+/* ===============================
+   Reusable track selection
+   =============================== */
 const trackSelectFields = `
   id,
   album_id,
@@ -43,20 +43,10 @@ const trackSelectFields = `
   )
 `;
 
-/* ============================================================
-   Track mapping helper
-============================================================ */
-function mapTrackDefaults(track: any): TrackWithRelations {
-    return {
-        ...track,
-        release_date: track.release_date ?? null,
-        type: track.type ?? null,
-    };
-}
-
-/* ============================================================
-   Playlist search
-============================================================ */
+/* ===============================
+   Playlists Search
+   Fetches playlist info + first track only for cover
+   =============================== */
 export function useSearchPlaylistsQuery(q: string, enabled: boolean) {
     return useQuery<PlaylistWithRelations[]>({
         queryKey: ["search", "playlists", q],
@@ -97,22 +87,31 @@ export function useSearchPlaylistsQuery(q: string, enabled: boolean) {
 
             if (error) throw error;
 
-            return (data ?? []).map((playlist) => ({
+            // Map the returned data to fit PlaylistWithRelations and TrackWithRelations types
+            return (data ?? []).map((playlist: any) => ({
                 ...playlist,
                 tracks: (playlist.tracks ?? []).map((pt: any) => ({
                     ...pt,
-                    track: pt.track ? mapTrackDefaults(pt.track) : undefined,
+                    track: pt.track
+                        ? {
+                              ...pt.track,
+                              // Provide missing fields with default values if not present
+                              release_date: pt.track.release_date ?? null,
+                              type: pt.track.type ?? null,
+                          }
+                        : undefined,
                 })),
-            }));
+            })) as PlaylistWithRelations[];
         },
         staleTime: 30_000,
         retry: 1,
     });
 }
 
-/* ============================================================
-   Tracks search
-============================================================ */
+/* ===============================
+   Tracks Search
+   Fetches tracks + album + artist info
+   =============================== */
 export function useSearchTracksQuery(q: string, enabled: boolean) {
     return useQuery<TrackWithRelations[]>({
         queryKey: ["search", "tracks", q],
@@ -122,25 +121,29 @@ export function useSearchTracksQuery(q: string, enabled: boolean) {
             if (!query) return [];
 
             const pattern = toPattern(query);
-            const orExpr = `title.ilike.${pattern},genre.ilike.${pattern}`;
             const { data, error } = await supabase
                 .from("tracks")
                 .select(trackSelectFields)
-                .or(orExpr)
+                .or(`title.ilike.${pattern},genre.ilike.${pattern}`)
                 .order("plays", { ascending: false })
                 .limit(12);
 
             if (error) throw error;
-            return (data ?? []).map(mapTrackDefaults);
+            // Ensure all required fields are present for TrackWithRelations
+            return (data ?? []).map((track: any) => ({
+                ...track,
+                release_date: track.release_date ?? null,
+                type: track.type ?? null,
+            })) as TrackWithRelations[];
         },
         staleTime: 30_000,
         retry: 1,
     });
 }
 
-/* ============================================================
-   Artists search
-============================================================ */
+/* ===============================
+   Artists Search
+   =============================== */
 export function useSearchArtistsQuery(q: string, enabled: boolean) {
     return useQuery<ArtistWithRelations[]>({
         queryKey: ["search", "artists", q],
@@ -177,9 +180,10 @@ export function useSearchArtistsQuery(q: string, enabled: boolean) {
                 .limit(12);
 
             if (error) throw error;
-
+            // Ensure all required fields are present for ArtistWithRelations
             return (data ?? []).map((artist: any) => ({
-                ...artist,
+                id: artist.id,
+                stage_name: artist.stage_name,
                 profile_image_url: artist.profile_image_url ?? null,
                 verified: artist.verified ?? false,
                 active: artist.active ?? false,
@@ -194,16 +198,17 @@ export function useSearchArtistsQuery(q: string, enabled: boolean) {
                 twitter_url: artist.twitter_url ?? null,
                 updated_at: artist.updated_at ?? "",
                 youtube_url: artist.youtube_url ?? null,
-            }));
+            })) as ArtistWithRelations[];
         },
         staleTime: 30_000,
         retry: 1,
     });
 }
 
-/* ============================================================
-   Tracks by matching artists
-============================================================ */
+/* ===============================
+   Tracks by Matching Artists
+   Includes album info
+   =============================== */
 export function useSearchTracksByArtistsQuery(q: string, enabled: boolean) {
     return useQuery<TrackWithRelations[]>({
         queryKey: ["search", "tracks-by-artists", q],
@@ -231,7 +236,12 @@ export function useSearchTracksByArtistsQuery(q: string, enabled: boolean) {
                 .limit(24);
 
             if (tracksErr) throw tracksErr;
-            return (tracks ?? []).map(mapTrackDefaults);
+            // Ensure all required fields are present
+            return (tracks ?? []).map((track: any) => ({
+                ...track,
+                release_date: track.release_date ?? null,
+                type: track.type ?? null,
+            })) as TrackWithRelations[];
         },
         staleTime: 30_000,
         retry: 1,

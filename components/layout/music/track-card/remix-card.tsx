@@ -8,16 +8,15 @@ import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
 import LockButton from "./lock-button";
 import TypeLabel from "./type-label";
-import LikeButton from "./like-button";
+import LikeButton from "../../../ui/buttons/like-button";
 import { useAuthStore } from "@/stores/auth-store";
 import { useProfile } from "@/hooks/public/use-profiles";
-import AddToPlaylistButton from "./add-to-playlist-button";
-import { useRemixByTrackIdQuery } from "@/hooks/music/use-remixes";
-import { TrackWithRelations } from "@/lib/types/database";
+import AddToPlaylistButton from "../../../ui/buttons/add-to-playlist/playlist-button";
+import { RemixWithRelations, TrackWithRelations } from "@/lib/types/database";
 
 interface IRemixCardProps {
     track: TrackWithRelations;
-    playlist?: any[];
+    remixData: RemixWithRelations;
     onUnlock?: (trackId: string) => void;
 }
 
@@ -25,15 +24,26 @@ interface IRemixCardProps {
  * RemixCard
  * Specialized card for displaying remix tracks with original song information
  */
-const RemixCard = ({ track, playlist, onUnlock }: IRemixCardProps) => {
+const RemixCard = ({ track, remixData, onUnlock }: IRemixCardProps) => {
     const { user } = useAuthStore();
     const { data: profile } = useProfile(user?.id || "", !!user?.id);
-    const { data: remixData } = useRemixByTrackIdQuery(track.id);
     const router = useRouter();
 
-    const albumImages = track.album?.images || [];
-    const albumCover =
-        albumImages.find((img: any) => img.album_id === track.album?.id)?.url || albumImages[0]?.url || "/placeholder-album.png";
+    // TypeScript-safe way to get the best image for a track
+    const getTrackImage = (track: TrackWithRelations): string => {
+        // If the track has its own image field, use it first (add this if your schema supports it)
+        // if (track.cover_url) return track.cover_url;
+
+        // Otherwise, use the album images
+        const albumImages = track.album?.images ?? [];
+        // Try to find an image that matches the album_id
+        const match = albumImages.find((img) => img.album_id === track.album_id);
+        // Fallback to the first album image, or a placeholder
+        return match?.url || albumImages[0]?.url || "/earth-splash.jpg";
+    };
+
+    const albumCover = getTrackImage(track);
+
     // Parse original artists from JSON - matches Supabase schema
     const originalArtists = React.useMemo(() => {
         if (!remixData?.original_artists) return [];
@@ -119,7 +129,7 @@ const RemixCard = ({ track, playlist, onUnlock }: IRemixCardProps) => {
                     </p>
                 )}
 
-                <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
+                <PlayPauseButton track={track} playlist={[]} locked={track.locked} />
 
                 {/* Artist-only update button */}
                 {profile?.role === "artist" && (
@@ -143,10 +153,10 @@ const RemixCard = ({ track, playlist, onUnlock }: IRemixCardProps) => {
                 {user && <AddToPlaylistButton trackId={track.id} />}
 
                 {/* Optional External Links */}
-                {track.type === "Released" && track.album!.name && (
+                {track.type === "Released" && track.album?.name && (
                     <ExternalLinkButton
-                        albumName={track.album!.name}
-                        link={`https://album.link/tgs-${track.album!.name.toLowerCase().replace(/\s+/g, "-")}`}
+                        albumName={track.album.name}
+                        link={`https://album.link/tgs-${track.album.name.toLowerCase().replace(/\s+/g, "-")}`}
                     />
                 )}
             </div>

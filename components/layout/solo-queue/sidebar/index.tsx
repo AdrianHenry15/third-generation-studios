@@ -184,7 +184,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed, isMobileMenuOpen,
                             animate={{ x: 0 }}
                             exit={{ x: -300 }}
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="md:hidden fixed left-0 top-0 h-screen w-80 max-w-[85vw] bg-neutral-900 border-r border-neutral-800 z-50 shadow-2xl"
+                            className="md:hidden fixed left-0 top-0 h-screen w-[279px] max-w-[85vw] bg-neutral-900 border-r border-neutral-800 z-50 shadow-2xl"
                         >
                             <SidebarContent />
                         </motion.aside>

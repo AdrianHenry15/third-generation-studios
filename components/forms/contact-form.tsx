@@ -13,13 +13,12 @@ import Input from "./components/input";
 import sendEmail, { sendConfirmationEmail, subscribeToNewsletter } from "@/lib/email-service";
 import Textarea from "../inputs/textarea";
 import PrivacyPolicyCheckbox from "./components/privacy-policy-checkbox";
-import StatusModal from "../modals/status-modal";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { verifyHCaptchaClient } from "@/lib/verify-hcaptcha";
 import NewsletterSubscriptionCheckbox from "./components/newsletter-subscription-checkbox";
 import { useModalStore } from "@/stores/modal-store";
 
-const HCAPTCHA_SITEKEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY as string;
+const HCAPTCHA_SITEKEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY as string;
 
 // Available plan options
 const PLAN_OPTIONS = ["", "Studio Basic", "Studio Plus", "Studio Pro", "Studio Commerce"];
@@ -38,11 +37,9 @@ const ContactFormOverlay = () => {
     const pathname = usePathname();
 
     // Stores
-    const { isModalOpen, modalType, openModal, closeModal } = useModalStore();
+    const { openModal } = useModalStore();
 
     const [loading, setLoading] = useState(false);
-    const [successModal, setSuccessModal] = useState(false);
-    const [errorModal, setErrorModal] = useState(false);
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
     const [captchaError, setCaptchaError] = useState<string | null>(null);
 

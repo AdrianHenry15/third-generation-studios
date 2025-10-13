@@ -4,9 +4,9 @@ import Image from "next/image";
 import { MoreHorizontal } from "lucide-react";
 import { useCallback } from "react";
 import { PlayButton } from "./play-button";
-import { LikeButton } from "./rp-like-button";
 import type { Database } from "@/lib/types/supabase-types";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
+import LikeButton from "@/components/ui/buttons/like-button";
 
 type Track = Database["public"]["Tables"]["tracks"]["Row"];
 
@@ -69,7 +69,7 @@ export function TrackListItem({
                 <p className="text-neutral-400 text-sm truncate">{getArtistName(track)}</p>
             </div>
             <div className="flex items-center gap-2">
-                <LikeButton track={track} />
+                <LikeButton trackId={track.id} />
                 <span className="text-neutral-400 text-sm w-16 text-right">{formatDuration(track.duration)}</span>
                 <button className="p-2 text-neutral-500 hover:text-white transition-all duration-200 opacity-60 group-hover:opacity-100">
                     <MoreHorizontal size={16} />

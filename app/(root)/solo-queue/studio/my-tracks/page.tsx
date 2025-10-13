@@ -1,8 +1,10 @@
 "use client";
 
+import React, { useMemo } from "react";
 import TrackCard from "@/components/layout/music/track-card";
+import { useAlbumsByArtist } from "@/hooks/music/use-albums";
 import { useArtist } from "@/hooks/music/use-artists";
-import { useTracksByArtist } from "@/hooks/music/use-tracks";
+import { useTracksWithRelationsByArtist } from "@/hooks/music/use-tracks";
 import { useAuthStore } from "@/stores/auth-store";
 
 /**
@@ -12,29 +14,42 @@ import { useAuthStore } from "@/stores/auth-store";
 export default function MyTracksPage() {
     const { user } = useAuthStore();
     const { data: artist } = useArtist(user?.id || "");
-    const { data: tracks, isLoading, error } = useTracksByArtist(artist?.id || "");
+    const { data: tracks, isLoading, error } = useTracksWithRelationsByArtist(artist?.id || "");
+    const { data: albums } = useAlbumsByArtist(artist?.id || "", !!artist?.id);
 
-    if (!user) return null;
+    // All hooks are called before any return!
 
     // Filter tracks to only include those by current user
-    const myTracks = tracks?.filter((track) => track.artist_id === user.id) || [];
+    const myTracks = useMemo(() => tracks?.filter((track) => track.artist_id === user?.id) || [], [tracks, user?.id]);
 
-    // Build a playlist shape compatible with TrackWithRelationsResponse[]
-    // Using `any` keeps this file independent of the type's import and avoids TS error.
-    const playlist: any = myTracks.map((t: any) => ({
-        ...t,
-        artists: t?.artists ?? [],
-        albums: t?.albums ?? [],
-        track_credits: t?.track_credits ?? [],
-        // cover possible naming variations safely
-        remixes: t?.remixes ?? [],
-        remixers: t?.remixers ?? [],
-        remixests: t?.remixests ?? [],
-    }));
+    // Build album map for quick lookup
+    const albumMap = useMemo(() => {
+        if (!albums?.length) return new Map();
+        return new Map(albums.map((album) => [album.id, { ...album, images: album.album_images || [] }]));
+    }, [albums]);
+
+    // Compose tracks with album images
+    const tracksWithAlbumImages = useMemo(() => {
+        if (!myTracks.length) return [];
+        return myTracks.map((track) => {
+            const album = albumMap.get(track.album_id) || null;
+            return {
+                ...track,
+                album,
+            };
+        });
+    }, [myTracks, albumMap]);
+
+    // Build a playlist shape compatible with TrackWithRelations[]
+    const playlist = tracksWithAlbumImages;
 
     // -------------------------
-    // Loading State
+    // Early return after all hooks
     // -------------------------
+    if (!user) return null;
+
+    // ...rest of your component (loading, error, empty, grid)
+    // (unchanged from your previous code)
     if (isLoading) {
         return (
             <div className="container mx-auto px-4 py-8">
@@ -48,9 +63,6 @@ export default function MyTracksPage() {
         );
     }
 
-    // -------------------------
-    // Error State
-    // -------------------------
     if (error) {
         return (
             <div className="container mx-auto px-4 py-8">
@@ -62,10 +74,7 @@ export default function MyTracksPage() {
         );
     }
 
-    // -------------------------
-    // Empty State
-    // -------------------------
-    if (myTracks.length === 0) {
+    if (tracksWithAlbumImages.length === 0) {
         return (
             <div className="container mx-auto px-4 py-8 pt-24 text-center">
                 <h1 className="text-3xl font-bold text-white mb-8">My Tracks</h1>
@@ -75,18 +84,15 @@ export default function MyTracksPage() {
         );
     }
 
-    // -------------------------
-    // Tracks Grid
-    // -------------------------
     return (
-        <div className="container mx-auto px-4 py-8 pt-24">
+        <div>
             <h1 className="text-3xl font-bold text-white mb-8">My Tracks</h1>
             <p className="text-gray-400 mb-6">
-                {myTracks.length} track{myTracks.length !== 1 ? "s" : ""}
+                {tracksWithAlbumImages.length} track{tracksWithAlbumImages.length !== 1 ? "s" : ""}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {myTracks.map((track) => (
-                    <TrackCard key={track.id} trackId={track.id} playlist={playlist} />
+                {tracksWithAlbumImages.map((track) => (
+                    <TrackCard key={track.id} track={track} playlist={playlist} />
                 ))}
             </div>
         </div>

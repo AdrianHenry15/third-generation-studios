@@ -59,10 +59,9 @@ const UserIconMenu = (props: IUserIconMenuProps) => {
         closeMenu();
         try {
             await signOut();
-            router.push("/sign-in");
             router.refresh();
         } catch {
-            router.push("/sign-in");
+            router.refresh();
         }
     };
 

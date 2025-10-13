@@ -70,7 +70,7 @@ export default function SoloQProfilePage() {
 
     // Success state
     return (
-        <div className="text-white max-w-4xl mx-auto p-6 pt-24">
+        <div className="text-white max-w-4xl mx-auto p-6">
             <div className="mb-8">
                 <h1 className="text-4xl font-bold mb-2">Your Profile</h1>
                 <p className="text-neutral-400 text-lg">Manage your account settings and preferences</p>

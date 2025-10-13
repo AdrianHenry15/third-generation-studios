@@ -11,6 +11,10 @@ import {
     useSearchTracksQuery,
     useSearchTracksByArtistsQuery,
 } from "@/hooks/music/use-search";
+import ArtistSearchItem from "./artist-search-item";
+import TrackSearchItem from "./track-search-item";
+import PlaylistSearchItem from "./playlist-search-item";
+const { useAudioPlayerStore } = await import("@/stores/audio-player-store");
 
 // -----------------------------
 // Cover helpers
@@ -39,6 +43,7 @@ export default function SearchPage() {
     const initialQ = sp.get("q") ?? "";
     const [q, setQ] = useState(initialQ);
     const [debouncedQ, setDebouncedQ] = useState(initialQ);
+    const { playTrack } = useAudioPlayerStore.getState();
     useEffect(() => {
         const id = setTimeout(() => setDebouncedQ(q), 300);
         return () => clearTimeout(id);
@@ -133,7 +138,7 @@ export default function SearchPage() {
     };
 
     return (
-        <div className="px-4 sm:px-6 lg:px-8 py-6 pt-24 lg:pt-6">
+        <div className="px-4 sm:px-6 lg:px-8">
             {/* Search input */}
             <div className="mb-6">
                 <div className="relative">
@@ -208,21 +213,10 @@ export default function SearchPage() {
                             <p className="text-neutral-500 text-sm">No playlists found</p>
                         ) : (
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6">
-                                {playlists.map((pl) => (
-                                    <Link
-                                        key={pl.id}
-                                        href={`/solo-queue/playlists/${pl.id}`}
-                                        className="group rounded-xl p-4 border border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800 transition-colors"
-                                    >
-                                        <PlaylistCover name={pl.name} cover={pl.cover_image_url} />
-                                        <div className="mt-3">
-                                            <h3 className="text-sm font-semibold text-white truncate">{pl.name}</h3>
-                                            <p className="text-xs text-neutral-400 truncate">
-                                                {pl.track_count ? `${pl.track_count} tracks` : "Playlist"}
-                                            </p>
-                                        </div>
-                                    </Link>
-                                ))}
+                                {playlists.map((playlist) => {
+                                    const coverImage = playlist.tracks?.[0]?.track.album?.images?.[0]?.url || null;
+                                    return <PlaylistSearchItem playlist={playlist} coverImage={coverImage!} />;
+                                })}
                             </div>
                         )}
                     </div>
@@ -233,23 +227,9 @@ export default function SearchPage() {
                         {tracks.length === 0 ? (
                             <p className="text-neutral-500 text-sm">No tracks found</p>
                         ) : (
-                            <ul className="divide-y divide-neutral-800 rounded-xl border border-neutral-800 overflow-hidden">
+                            <ul className="divide-y divide-neutral-800 rounded-xl border border-neutral-800">
                                 {tracks.map((t) => (
-                                    <li key={t.id} className="flex items-center gap-3 px-4 py-3 hover:bg-neutral-900/50">
-                                        <div className="h-9 w-9 rounded bg-neutral-800 flex items-center justify-center text-neutral-400">
-                                            <Music size={16} />
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <p className="text-sm text-white truncate">{t.title}</p>
-                                            <p className="text-xs text-neutral-500">Track</p>
-                                        </div>
-                                        <Link
-                                            href={`/solo-queue/search?play=${t.id}`}
-                                            className="px-2 py-1 rounded bg-neutral-800 border border-neutral-700 text-xs text-neutral-200 hover:bg-neutral-700"
-                                        >
-                                            Play
-                                        </Link>
-                                    </li>
+                                    <TrackSearchItem key={t.id} track={t} tracks={tracks} />
                                 ))}
                             </ul>
                         )}
@@ -263,29 +243,7 @@ export default function SearchPage() {
                         ) : (
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6">
                                 {artists.map((a) => (
-                                    <Link
-                                        key={a.id}
-                                        href={`/solo-queue/profile/${a.id}`}
-                                        className="group rounded-xl p-4 border border-neutral-800 bg-neutral-900/50 hover:bg-neutral-800 transition-colors flex flex-col items-center text-center"
-                                    >
-                                        <div className="relative h-24 w-24 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center">
-                                            {a.profile_image_url ? (
-                                                <Image
-                                                    src={a.profile_image_url}
-                                                    alt={a.stage_name}
-                                                    fill
-                                                    sizes="96px"
-                                                    className="object-cover"
-                                                />
-                                            ) : (
-                                                <User size={28} className="text-neutral-400" />
-                                            )}
-                                        </div>
-                                        <div className="mt-3">
-                                            <h3 className="text-sm font-semibold text-white truncate max-w-[12rem]">{a.stage_name}</h3>
-                                            {a.verified && <p className="text-xs text-green-500">Verified</p>}
-                                        </div>
-                                    </Link>
+                                    <ArtistSearchItem key={a.id} artist={a} />
                                 ))}
                             </div>
                         )}
@@ -298,22 +256,8 @@ export default function SearchPage() {
                             <p className="text-neutral-500 text-sm">No tracks found for matching artists</p>
                         ) : (
                             <ul className="divide-y divide-neutral-800 rounded-xl border border-neutral-800 overflow-hidden">
-                                {artistTracks.map((t) => (
-                                    <li key={t.id} className="flex items-center gap-3 px-4 py-3 hover:bg-neutral-900/50">
-                                        <div className="h-9 w-9 rounded bg-neutral-800 flex items-center justify-center text-neutral-400">
-                                            <Music size={16} />
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <p className="text-sm text-white truncate">{t.title}</p>
-                                            <p className="text-xs text-neutral-500">Track</p>
-                                        </div>
-                                        <Link
-                                            href={`/solo-queue/search?play=${t.id}`}
-                                            className="px-2 py-1 rounded bg-neutral-800 border border-neutral-700 text-xs text-neutral-200 hover:bg-neutral-700"
-                                        >
-                                            Play
-                                        </Link>
-                                    </li>
+                                {artistTracks.map((track) => (
+                                    <TrackSearchItem key={track.id} track={track} tracks={artistTracks} />
                                 ))}
                             </ul>
                         )}

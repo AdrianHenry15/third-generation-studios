@@ -55,7 +55,7 @@ export default function SoloQLayout({ children }: { children: React.ReactNode })
                     marginLeft: getMarginLeft(),
                 }}
             >
-                <div>{children}</div>
+                <div className="px-6 pb-10 pt-24 md:pt-10">{children}</div>
             </main>
         </div>
     );

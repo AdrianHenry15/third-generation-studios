@@ -185,7 +185,7 @@ export default function PlaylistPage() {
     const playlistTracks = playlist?.tracks ?? [];
 
     return (
-        <div className="px-4 sm:px-6 lg:px-8 py-6 pt-24 lg:pt-0">
+        <div>
             {/* Loading */}
             {isLoading && (
                 <div className="space-y-6">
@@ -225,14 +225,7 @@ export default function PlaylistPage() {
                     <div className="flex flex-col sm:flex-row sm:items-end gap-6 mb-6">
                         <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-md overflow-hidden bg-neutral-800 border border-neutral-800 flex items-center justify-center">
                             {coverUrl ? (
-                                <Image
-                                    src={coverUrl}
-                                    alt={`${playlist.name} cover`}
-                                    fill
-                                    sizes="192px"
-                                    className="object-cover"
-                                    priority={false}
-                                />
+                                <Image src={coverUrl} alt={`${playlist.name} cover`} fill className="object-cover" />
                             ) : (
                                 <Music size={48} className="text-neutral-500" />
                             )}

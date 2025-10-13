@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useQueries } from "@tanstack/react-query";
 import {
     fetchAllTracks,
     fetchTrackById,
@@ -14,6 +14,7 @@ import {
     unlikeTrack,
     fetchLikedTrackIdsByUser,
     fetchUserTrackLike,
+    fetchTracksWithRelationsByArtist,
 } from "@/lib/fetchers/track-fetchers";
 import { Track, TrackInsert, TrackUpdate } from "@/lib/types/database";
 
@@ -50,10 +51,58 @@ export function useTrack(id: string, enabled = true) {
     });
 }
 
+// Fetch multiple tracks by IDs
+export function useTracksByIds(ids: string[], enabled = true) {
+    return useQueries({
+        queries: ids.map((id) => ({
+            queryKey: trackKeys.detail(id),
+            queryFn: () => fetchTrackById(id),
+            enabled: !!id && enabled,
+            staleTime: 10 * 60 * 1000,
+        })),
+    });
+}
+
+export function useTracksWithRelationsByIds(ids: string[], enabled = true) {
+    return useQueries({
+        queries: ids.map((id) => ({
+            queryKey: trackKeys.withRelations(id),
+            queryFn: async () => {
+                try {
+                    console.log(`🔍 Fetching track with relations for ID: ${id}`);
+                    const data = await fetchTrackWithRelations(id);
+                    console.log(`✅ Successfully fetched track ${id}:`, data);
+                    return data;
+                } catch (error) {
+                    if (error instanceof Error) {
+                        console.error(`❌ Error fetching track ${id}:`, error.message, error.stack);
+                    } else if (typeof error === "object" && error !== null) {
+                        console.error(`❌ Error fetching track ${id}:`, JSON.stringify(error));
+                    } else {
+                        console.error(`❌ Error fetching track ${id}:`, error);
+                    }
+                    throw error;
+                }
+            },
+            enabled: !!id && enabled,
+            staleTime: 10 * 60 * 1000,
+        })),
+    });
+}
+
 export function useTracksByArtist(artistId: string, enabled = true) {
     return useQuery({
         queryKey: trackKeys.byArtist(artistId),
         queryFn: () => fetchTracksByArtist(artistId),
+        enabled: !!artistId && enabled,
+        staleTime: 5 * 60 * 1000,
+    });
+}
+
+export function useTracksWithRelationsByArtist(artistId: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.byArtist(artistId),
+        queryFn: () => fetchTracksWithRelationsByArtist(artistId),
         enabled: !!artistId && enabled,
         staleTime: 5 * 60 * 1000,
     });

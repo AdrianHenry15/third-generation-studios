@@ -160,7 +160,7 @@ export default function AvailablePlans() {
                                 )}
                             </div>
                             <div className="text-gray-300 text-sm mb-2">{plan.desc}</div>
-                            <Link href="/contact-us" passHref legacyBehavior>
+                            <Link href="/contact-us" passHref>
                                 <span
                                     className={`inline-block px-4 py-2 rounded-full font-semibold text-sm shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400/60 focus:ring-offset-2 whitespace-nowrap ${plan.popular ? "bg-green-600 text-white hover:bg-green-700" : "bg-zinc-700 text-white hover:bg-blue-600"}`}
                                 >

@@ -1,13 +1,47 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import TrackCard from "@/components/layout/music/track-card";
 import { useAuthStore } from "@/stores/auth-store";
-import { useLikedTrackIds } from "@/hooks/music/use-tracks";
+import { useLikedTrackIds, useTracksWithRelationsByIds } from "@/hooks/music/use-tracks";
+import { useAlbumsWithImages } from "@/hooks/music/use-albums";
+import { TrackWithRelations } from "@/lib/types/database";
 
 export default function LikedSongsPage() {
     const { user } = useAuthStore();
-    const { data: likedIds, isLoading, error } = useLikedTrackIds(user?.id || "", !!user?.id);
+    const { data: likedIds, isLoading: isLoadingLikedIds, error: likedIdsError } = useLikedTrackIds(user?.id || "", !!user?.id);
+
+    // Memoize likedIds so it doesn't trigger repeated fetches unnecessarily
+    const memoizedLikedIds = useMemo(() => (likedIds ? [...likedIds] : []), [likedIds ? likedIds.join(",") : ""]);
+
+    // Fetch track data for liked IDs
+    const tracksQueries = useTracksWithRelationsByIds(memoizedLikedIds, !!user && memoizedLikedIds.length > 0);
+    const tracks = useMemo(() => tracksQueries.map((q) => q.data).filter((t): t is TrackWithRelations => !!t), [tracksQueries]);
+
+    // Fetch all albums with images (like in /music page)
+    const { data: albumsWithImages, isLoading: albumsLoading, error: albumsError } = useAlbumsWithImages();
+
+    // Build album map for quick lookup
+    const albumMap = useMemo(() => {
+        if (!albumsWithImages?.length) return new Map();
+        return new Map(albumsWithImages.map((album) => [album.id, { ...album, images: album.album_images || [] }]));
+    }, [albumsWithImages]);
+
+    // Compose tracks with album images
+    const tracksWithAlbumImages = useMemo(() => {
+        if (!tracks.length) return [];
+        return tracks.map((track) => {
+            const album = albumMap.get(track.album_id) || null;
+            return {
+                ...track,
+                album,
+            };
+        });
+    }, [tracks, albumMap]);
+
+    // Loading and error states
+    const isLoading = isLoadingLikedIds || tracksQueries.some((q) => q.isLoading) || albumsLoading;
+    const error = likedIdsError || tracksQueries.find((q) => q.error)?.error || albumsError;
 
     if (!user) {
         return (
@@ -19,7 +53,7 @@ export default function LikedSongsPage() {
     }
 
     return (
-        <div className="p-6">
+        <div>
             <h1 className="text-2xl font-semibold mb-4">Liked Songs</h1>
 
             {isLoading && (
@@ -37,14 +71,16 @@ export default function LikedSongsPage() {
                 </div>
             )}
 
-            {error && <p className="text-red-400">Failed to load liked songs. Please try again.</p>}
+            {error && <p className="text-red-400 mb-4">Failed to load liked songs. Please try again.</p>}
 
-            {!isLoading && likedIds?.length === 0 && <p className="text-gray-300">You haven’t liked any songs yet.</p>}
+            {!isLoading && (!memoizedLikedIds.length || tracksWithAlbumImages.length === 0) && (
+                <p className="text-gray-300">You haven’t liked any songs yet.</p>
+            )}
 
-            {!!likedIds?.length && (
+            {!isLoading && tracksWithAlbumImages.length > 0 && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {likedIds.map((trackId) => (
-                        <TrackCard key={trackId} trackId={trackId} />
+                    {tracksWithAlbumImages.map((track) => (
+                        <TrackCard key={track.id} track={track} playlist={tracksWithAlbumImages} />
                     ))}
                 </div>
             )}

@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useQueries } from "@tanstack/react-query";
 import {
     fetchAllAlbums,
     fetchAlbumById,
@@ -123,6 +123,17 @@ export function useRecentAlbums(limit = 10) {
         queryKey: albumKeys.recent(limit),
         queryFn: () => fetchRecentAlbums(limit),
         staleTime: 5 * 60 * 1000, // 5 minutes
+    });
+}
+
+export function useAlbumsByIds(ids: string[], enabled = true) {
+    return useQueries({
+        queries: ids.map((id) => ({
+            queryKey: ["album", id],
+            queryFn: () => fetchAlbumById(id),
+            enabled: !!id && enabled,
+            staleTime: 10 * 60 * 1000,
+        })),
     });
 }
 

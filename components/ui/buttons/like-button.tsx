@@ -1,68 +1,78 @@
-"use client";
-
 import { Heart } from "lucide-react";
 import React from "react";
+import { useToggleTrackLike, useUserTrackLike } from "@/hooks/music/use-tracks";
 import { useAuthStore } from "@/stores/auth-store";
-import { useToggleTrackLike } from "@/hooks/music/use-tracks";
-import { useLikedTrackIds } from "@/hooks/music/use-tracks";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase/client";
-import type { Database } from "@/lib/types/supabase-types";
 
-// Use proper Supabase types
-type TrackLike = Database["public"]["Tables"]["track_likes"]["Row"];
-
-interface Props {
+interface ILikeButtonProps {
     trackId: string;
+    className?: string; // Allow custom styling from parent
+    size?: number; // Allow custom icon size
 }
 
-export default function LikeButton({ trackId }: Props) {
+const LikeButton: React.FC<ILikeButtonProps> = ({ trackId, className = "", size = 20 }) => {
     const { user } = useAuthStore();
     const userId = user?.id;
 
-    // Get user's liked track IDs
-    const { data: likedTrackIds = new Set<string>() } = useLikedTrackIds(userId || "", !!userId);
+    // Fetch current liked state for the track
+    const { data: userLike, isLoading: isFetching } = useUserTrackLike(trackId, userId || "", !!userId);
 
-    // Get like count for this track
-    const { data: likeCount = 0 } = useQuery({
-        queryKey: ["trackLikeCount", trackId],
-        queryFn: async () => {
-            const { data, error } = await supabase.from("track_likes").select("id", { count: "exact" }).eq("track_id", trackId);
+    // Use the toggle like hook for mutations
+    const { isLiked, toggleLike, isLoading: isMutating } = useToggleTrackLike(trackId, userId || "");
 
-            if (error) throw error;
-            return data?.length || 0;
-        },
-        enabled: !!trackId,
-        staleTime: 1000 * 60 * 2, // 2 minutes
-    });
+    const isLoading = isFetching || isMutating;
+    const liked = isLiked || !!userLike;
 
-    // Toggle like functionality
-    const { isLiked, toggleLike, isLoading } = useToggleTrackLike(trackId, userId || "");
+    const handleToggleLike = React.useCallback(async () => {
+        if (!userId) {
+            // Optional: Show login prompt or redirect to login
+            console.warn("User must be logged in to like tracks");
+            return;
+        }
+        if (isLoading) return;
+        try {
+            toggleLike();
+        } catch (error) {
+            console.error("Failed to toggle like:", error);
+        }
+    }, [userId, isLoading, toggleLike]);
 
-    const handleClick = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        if (!userId || isLoading) return;
-        toggleLike();
-    };
-
-    // Don't render if user is not authenticated
-    if (!userId) return null;
+    // Show disabled state for unauthenticated users
+    if (!userId) {
+        return (
+            <button
+                type="button"
+                aria-label="Login to like"
+                className={`text-2xl focus:outline-none opacity-60 cursor-not-allowed ${className}`}
+                title="Login to like tracks"
+                disabled
+            >
+                <Heart size={size} className="text-white/60" fill="none" strokeWidth={2.2} />
+            </button>
+        );
+    }
 
     return (
         <button
-            onClick={handleClick}
+            type="button"
+            aria-label={liked ? "Unlike track" : "Like track"}
+            onClick={handleToggleLike}
+            className={`text-2xl focus:outline-none disabled:opacity-60 transition-transform hover:scale-110 active:scale-95 ${className}`}
+            title={liked ? "Unlike track" : "Like track"}
             disabled={isLoading}
-            aria-label={isLiked ? "Unlike track" : "Like track"}
-            className={`flex items-center gap-1 px-3 py-2 rounded-full transition-all duration-200 z-[1] ${
-                isLiked ? "bg-red-500/20 hover:bg-red-500/30" : "bg-white/10 hover:bg-white/20"
-            } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
             <Heart
-                className={`w-5 h-5 transition-all duration-200 ${
-                    isLiked ? "text-red-400 fill-red-400 scale-110" : "text-white fill-transparent hover:text-red-300"
-                }`}
+                size={size}
+                className={`transition-colors duration-200 ${liked ? "text-red-500 fill-red-500" : "text-white/80 hover:text-red-400"}`}
+                fill={liked ? "currentColor" : "none"}
+                strokeWidth={2.2}
             />
-            <span className="text-xs font-bold text-white">{likeCount}</span>
+            {isLoading && (
+                <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin" />
+                </span>
+            )}
         </button>
     );
-}
+};
+
+export default LikeButton;
