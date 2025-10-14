@@ -17,7 +17,8 @@ export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps)
     const [modalData, setModalData] = useState<{ title: string; link: string } | null>(null);
 
     // Stores
-    const { isModalOpen, openModal, modalType } = useModalStore();
+    const { isModalOpen, modalType } = useModalStore();
+    const openModal = useModalStore((state) => state.openModal);
 
     const getTechStackLink = (tech: string): string | undefined => {
         switch (tech.toLowerCase()) {
@@ -85,7 +86,10 @@ export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps)
                                             e.stopPropagation();
                                             if (techLink) {
                                                 setModalData({ title: tech, link: techLink });
-                                                openModal("link");
+                                                openModal("link", {
+                                                    title: tech,
+                                                    link: techLink,
+                                                });
                                             }
                                         }}
                                         type="button"
@@ -102,7 +106,7 @@ export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps)
                         onClick={(e) => {
                             e.stopPropagation();
                             setModalData({ title: currentWebsite.title, link: currentWebsite.link });
-                            openModal("link");
+                            openModal("link", { title: currentWebsite.title, link: currentWebsite.link });
                         }}
                         type="button"
                     >

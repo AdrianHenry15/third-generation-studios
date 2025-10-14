@@ -8,6 +8,7 @@ import Footer from "@/components/layout/footer";
 import AudioPlayer from "@/components/layout/music/audio-player";
 import { useAuthListener } from "@/hooks/use-auth-listener";
 import { queryClient } from "@/lib/query-client";
+import ModalRoot from "@/components/modals";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     // Wire Supabase session → Zustand store
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <QueryClientProvider client={queryClient}>
             <Navbar />
             {children}
+            <ModalRoot />
             <Footer />
             <AudioPlayer />
         </QueryClientProvider>

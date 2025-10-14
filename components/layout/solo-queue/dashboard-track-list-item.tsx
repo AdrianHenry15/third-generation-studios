@@ -3,20 +3,18 @@
 import Image from "next/image";
 import { useCallback } from "react";
 import { PlayButton } from "./play-button";
-import type { Database } from "@/lib/types/supabase-types";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import LikeButton from "@/components/ui/buttons/like-button";
 import AddToPlaylistButton from "@/components/ui/buttons/add-to-playlist/playlist-button";
-
-type Track = Database["public"]["Tables"]["tracks"]["Row"];
+import { TrackWithRelations } from "@/lib/types/database";
 
 interface DashboardTrackListItemProps {
-    track: Track;
+    track: TrackWithRelations;
     showPlayButton?: boolean;
-    getTrackImage: (track: Track) => string;
-    getArtistName: (track: Track) => string;
+    getTrackImage: (track: TrackWithRelations) => string;
+    getArtistName: (track: TrackWithRelations) => string;
     formatDuration: (seconds: number) => string;
-    onTrackPlay: (track: Track) => void;
+    onTrackPlay: (track: TrackWithRelations) => void;
 }
 
 export function DashboardTrackListItem({

@@ -2,7 +2,7 @@ import AddToPlaylistButton from "@/components/ui/buttons/add-to-playlist/playlis
 import LikeButton from "@/components/ui/buttons/like-button";
 import { TrackWithRelations } from "@/lib/types/database";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
-import { Music, Pause, Play } from "lucide-react";
+import { Music } from "lucide-react";
 import Image from "next/image";
 import React, { useCallback } from "react";
 

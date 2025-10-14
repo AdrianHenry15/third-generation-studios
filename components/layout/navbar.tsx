@@ -12,7 +12,10 @@ import MobileNavDropdownMenu from "./mobile-nav-dropdown-menu";
 import { useModalStore } from "@/stores/modal-store";
 
 export default function Navbar() {
-    const { isModalOpen, modalType, openModal, closeModal } = useModalStore();
+    const { isModalOpen, modalType } = useModalStore();
+    const openModal = useModalStore((state) => state.openModal);
+    const closeModal = useModalStore((state) => state.closeModal);
+
     const [scrolled, setScrolled] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
     const toggleRef = useRef<HTMLDivElement | null>(null);
@@ -129,7 +132,7 @@ export default function Navbar() {
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => (isModalOpen && modalType === "nav" ? closeModal() : openModal("nav"))}
+                        onClick={() => (isModalOpen && modalType === "nav" ? closeModal() : openModal("nav", undefined))}
                         aria-label="Toggle menu"
                         aria-expanded={isModalOpen && modalType === "nav"}
                     >

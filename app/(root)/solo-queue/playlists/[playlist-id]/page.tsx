@@ -8,19 +8,16 @@ import { supabase } from "@/lib/supabase/client";
 import { useParams, useRouter } from "next/navigation";
 import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist, PlaylistTrack } from "@/hooks/music/use-playlists";
 import { useArtist } from "@/hooks/music/use-artists";
+import { useModalStore } from "@/stores/modal-store";
 
 // Resolve a playlist cover strictly from the first track's album image
 function getPlaylistCoverUrl(playlist: any): string | undefined {
-    console.log("Playlist data:", playlist); // Debug log
-
     // Check if we have any tracks
     if (!playlist?.tracks || playlist.tracks.length === 0) {
-        console.log("No tracks found in playlist");
         return undefined;
     }
 
     const firstTrack = playlist.tracks[0];
-    console.log("First track:", firstTrack); // Debug log
 
     // Handle different possible data structures
     let track = firstTrack;
@@ -28,10 +25,7 @@ function getPlaylistCoverUrl(playlist: any): string | undefined {
     // If the track is nested under a 'track' property (playlist_tracks relation)
     if (firstTrack.track) {
         track = firstTrack.track;
-        console.log("Using nested track:", track);
     }
-
-    console.log("Final track object:", track); // Debug log
 
     // Try different possible paths for album images
     let coverUrl;
@@ -39,20 +33,16 @@ function getPlaylistCoverUrl(playlist: any): string | undefined {
     // Path 1: Direct albums relation with album_images
     if (track?.albums?.album_images?.length > 0) {
         coverUrl = track.albums.album_images[0].url;
-        console.log("Found cover via albums.album_images:", coverUrl);
     }
     // Path 2: Legacy album structure
     else if (track?.album?.images?.length > 0) {
         coverUrl = track.album.images[0].url;
-        console.log("Found cover via album.images:", coverUrl);
     }
     // Path 3: Direct album_images array on track
     else if (track?.album_images?.length > 0) {
         coverUrl = track.album_images[0].url;
-        console.log("Found cover via track.album_images:", coverUrl);
     }
 
-    console.log("Final cover URL:", coverUrl); // Debug log
     return coverUrl;
 }
 
@@ -120,6 +110,10 @@ export default function PlaylistPage() {
     const raw = params["playlist-id"];
     const playlistId = decodeURIComponent(Array.isArray(raw) ? raw[0] : raw);
 
+    // Store
+    const openModal = useModalStore((state) => state.openModal);
+
+    // Hooks
     const { data: playlist, isLoading, isError, refetch } = usePlaylist(playlistId);
     const { mutate: removeTrack, isPending: removing } = useRemoveTrackFromPlaylist();
     const router = useRouter();
@@ -181,6 +175,20 @@ export default function PlaylistPage() {
         }
     };
 
+    const handleDelete = (e: React.MouseEvent) => {
+        if (!playlist?.id) return;
+        openModal("confirm", {
+            title: "Delete playlist",
+            confirmText: "Delete",
+            onConfirm: () => {
+                deletePlaylist(playlist.id, {
+                    onSuccess: () => router.push("/solo-queue/playlists"),
+                });
+            },
+            onCancel: () => {},
+        });
+    };
+
     const coverUrl = playlist ? getPlaylistCoverUrl(playlist) : undefined;
     const playlistTracks = playlist?.tracks ?? [];
 
@@ -223,20 +231,22 @@ export default function PlaylistPage() {
                 <>
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row sm:items-end gap-6 mb-6">
-                        <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-md overflow-hidden bg-neutral-800 border border-neutral-800 flex items-center justify-center">
-                            {coverUrl ? (
-                                <Image src={coverUrl} alt={`${playlist.name} cover`} fill className="object-cover" />
-                            ) : (
-                                <Music size={48} className="text-neutral-500" />
-                            )}
-                        </div>
+                        {isEditingTitle ? null : (
+                            <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-md overflow-hidden bg-neutral-800 border border-neutral-800 flex items-center justify-center">
+                                {coverUrl ? (
+                                    <Image src={coverUrl} alt={`${playlist.name} cover`} fill className="object-cover" />
+                                ) : (
+                                    <Music size={48} className="text-neutral-500" />
+                                )}
+                            </div>
+                        )}
                         <div className="flex-1">
                             <p className="text-xs uppercase text-neutral-400">Playlist</p>
 
                             {/* Title + inline edit controls */}
-                            <div className="flex items-center gap-3 flex-wrap">
+                            <div className="flex items-center justify-start gap-3 flex-wrap">
                                 {isEditingTitle ? (
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex flex-col items-center gap-2">
                                         <input
                                             ref={titleInputRef}
                                             value={titleDraft}
@@ -245,26 +255,28 @@ export default function PlaylistPage() {
                                             disabled={renaming}
                                             className="bg-transparent text-3xl sm:text-5xl font-extrabold text-white leading-tight border-b border-transparent focus:border-neutral-600 focus:outline-none transition-colors"
                                         />
-                                        <button
-                                            type="button"
-                                            onClick={saveTitle}
-                                            disabled={renaming}
-                                            className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-green-600/90 hover:bg-green-600 text-white disabled:opacity-60"
-                                            aria-label="Save playlist name"
-                                            title="Save"
-                                        >
-                                            {renaming ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={cancelEdit}
-                                            disabled={renaming}
-                                            className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-neutral-800 hover:bg-neutral-700 text-neutral-200"
-                                            aria-label="Cancel renaming"
-                                            title="Cancel"
-                                        >
-                                            <X className="h-4 w-4" />
-                                        </button>
+                                        <div className="flex items-start w-full gap-2">
+                                            <button
+                                                type="button"
+                                                onClick={saveTitle}
+                                                disabled={renaming}
+                                                className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-green-600/90 hover:bg-green-600 text-white disabled:opacity-60"
+                                                aria-label="Save playlist name"
+                                                title="Save"
+                                            >
+                                                {renaming ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={cancelEdit}
+                                                disabled={renaming}
+                                                className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-neutral-800 hover:bg-neutral-700 text-neutral-200"
+                                                aria-label="Cancel renaming"
+                                                title="Cancel"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
                                     </div>
                                 ) : (
                                     <div className="flex items-center gap-2">
@@ -297,20 +309,14 @@ export default function PlaylistPage() {
                             Play
                         </button>
                         <Link
-                            href="/solo-queue/search"
+                            href="/solo-queue"
                             className="px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800 hover:bg-neutral-800 text-neutral-200"
                         >
                             Add tracks
                         </Link>
                         <button
-                            onClick={() => {
-                                if (!playlist?.id) return;
-                                const ok = window.confirm("Delete this playlist? This cannot be undone.");
-                                if (!ok) return;
-                                deletePlaylist(playlist.id, {
-                                    onSuccess: () => router.push("/solo-queue/playlists"),
-                                });
-                            }}
+                            type="button"
+                            onClick={(e) => handleDelete(e)}
                             disabled={deleting}
                             className="px-3 py-2 rounded-full bg-red-600/90 hover:bg-red-600 text-white border border-red-700/40 disabled:opacity-60"
                         >

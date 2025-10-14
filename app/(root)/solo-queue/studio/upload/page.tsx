@@ -20,6 +20,7 @@ import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import { useMusicQueryById } from "@/hooks/music/use-music";
 import { useMusicInsert } from "@/hooks/music/use-music";
 import LoadingOverlay from "@/components/layout/upload/loading-overlay";
+import { useModalStore } from "@/stores/modal-store";
 
 export default function StudioUploadPage() {
     // -------------------- STATE & STORE --------------------
@@ -29,10 +30,10 @@ export default function StudioUploadPage() {
     const [uploadStep, setUploadStep] = useState<string>("");
     const [totalTracks, setTotalTracks] = useState<number>(0);
 
+    const openModal = useModalStore((state) => state.openModal);
     const { user } = useAuthStore();
     const { data: profile } = useProfileByIdQuery(user?.id || "");
     const { data: artist } = useMusicQueryById("artists", "artists", user?.id || "");
-    const router = useRouter();
 
     // -------------------- HOOKS --------------------
     const useAlbumInsert = useAlbumInsertWithCover();
@@ -175,6 +176,13 @@ export default function StudioUploadPage() {
             setUploadStep("Upload completed successfully!");
             setTimeout(() => {
                 setUploadSuccess(true);
+                openModal("success", {
+                    title: "Upload Successful",
+                    confirmText: "OK",
+                    cancelText: "Cancel",
+                    onConfirm: () => {},
+                    onCancel: () => {},
+                });
             }, 1000);
         } catch (err) {
             console.error("Upload error:", err);
@@ -214,17 +222,6 @@ export default function StudioUploadPage() {
 
             {/* Loading Overlay */}
             {isUploading && <LoadingOverlay currentStep={uploadStep} totalTracks={totalTracks} />}
-
-            {/* Success Modal */}
-            {uploadSuccess && (
-                <SuccessModal
-                    title="Upload Successful! 🎵"
-                    confirmText="Go to My Tracks"
-                    cancelText="Upload More"
-                    onCancel={() => setUploadSuccess(false)}
-                    onConfirm={() => router.push("/solo-queue/studio/my-tracks")}
-                />
-            )}
         </>
     );
 }

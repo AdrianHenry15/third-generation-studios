@@ -15,6 +15,7 @@ import {
     fetchLikedTrackIdsByUser,
     fetchUserTrackLike,
     fetchTracksWithRelationsByArtist,
+    fetchTracksWithRelations,
 } from "@/lib/fetchers/track-fetchers";
 import { Track, TrackInsert, TrackUpdate } from "@/lib/types/database";
 
@@ -105,6 +106,15 @@ export function useTracksWithRelationsByArtist(artistId: string, enabled = true)
         queryFn: () => fetchTracksWithRelationsByArtist(artistId),
         enabled: !!artistId && enabled,
         staleTime: 5 * 60 * 1000,
+    });
+}
+
+export function useTracksWithRelations(enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.all,
+        queryFn: fetchTracksWithRelations,
+        enabled,
+        staleTime: 10 * 60 * 1000, // 10 minutes
     });
 }
 

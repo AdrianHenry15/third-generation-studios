@@ -2,7 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { usePublicTracks } from "@/hooks/music/use-tracks";
+import { usePublicTracks, useTracksWithRelations, useTrackWithRelations } from "@/hooks/music/use-tracks";
 import { useAllArtists } from "@/hooks/music/use-artists";
 import { useAlbumsWithImages } from "@/hooks/music/use-albums";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
@@ -11,9 +11,6 @@ import { DashboardTrackListItem } from "@/components/layout/solo-queue/dashboard
 import { TrackListSkeleton, TrackGridSkeleton } from "@/components/layout/solo-queue/loading-skeleton";
 import { EmptyState } from "@/components/layout/solo-queue/empty-state";
 import { TrackWithRelations } from "@/lib/types/database";
-
-// Use proper Supabase types
-// type Track = Database["public"]["Tables"]["tracks"]["Row"];
 
 // Create a placeholder image as a data URL
 const PLACEHOLDER_IMAGE =
@@ -39,7 +36,8 @@ const itemVariants: Variants = {
 };
 
 export default function SoloQHomePage() {
-    const { data: tracks, isLoading: tracksLoading, error: tracksError } = usePublicTracks();
+    // const { data: tracks, isLoading: tracksLoading, error: tracksError } = usePublicTracks();
+    const { data: tracks, isLoading: tracksLoading, error: tracksError } = useTracksWithRelations();
     const { data: artists, isLoading: artistsLoading, error: artistsError } = useAllArtists();
     const { data: albumsWithImages, isLoading: albumsLoading, error: albumsError } = useAlbumsWithImages();
 

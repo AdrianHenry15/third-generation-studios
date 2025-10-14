@@ -16,6 +16,48 @@ export async function fetchTracksByArtist(artistId: string): Promise<Track[]> {
     return data ?? [];
 }
 
+export async function fetchTracksWithRelations(): Promise<Track[]> {
+    const { data, error } = await supabase.from("tracks").select(
+        `
+            *,
+            album:albums (
+                id,
+                name,
+                release_date,
+                album_images:album_images(id, url),
+                artist:artists(id, stage_name, profile_image_url)
+            ),
+            artist:artists (
+                id,
+                stage_name,
+                profile_image_url
+            ),
+            remixes:remixes (
+                id,
+                url,
+                original_song,
+                original_artists,
+                created_at,
+                remixer:artists(id, stage_name, profile_image_url)
+            ),
+            credits:track_credits (
+                id,
+                role,
+                artist:artists(id, stage_name, profile_image_url)
+            ),
+            likes:track_likes (
+                id,
+                profile:profiles(id, username)
+            )
+            `,
+    );
+
+    if (error) {
+        throw new Error(`[fetchTracksWithRelations] ${error.message || error.details || "Unknown error"} (code: ${error.code || "?"})`);
+    }
+    return data ?? [];
+}
+
 export async function fetchTracksWithRelationsByArtist(artistId: string): Promise<Track[]> {
     const { data, error } = await supabase
         .from("tracks")

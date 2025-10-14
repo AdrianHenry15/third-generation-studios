@@ -8,6 +8,7 @@ interface ModalState {
     payload?: any;
     openModal: (type: ModalType, payload?: any) => void;
     closeModal: () => void;
+    reset: () => void;
 }
 
 export const useModalStore = create<ModalState>((set, get) => ({
@@ -15,11 +16,14 @@ export const useModalStore = create<ModalState>((set, get) => ({
     modalType: null,
     payload: undefined,
     openModal: (modalType, payload) => {
-        set({ isModalOpen: true, modalType, payload });
-        console.log("[ModalStore] openModal:", { modalType, isModalOpen: get().isModalOpen });
+        set({
+            isModalOpen: true,
+            modalType,
+            payload: payload ? JSON.parse(JSON.stringify(payload)) : undefined,
+        });
     },
     closeModal: () => {
         set({ isModalOpen: false, modalType: null, payload: undefined });
-        console.log("[ModalStore] closeModal:", { isModalOpen: get().isModalOpen });
     },
+    reset: () => set({ isModalOpen: false, modalType: null, payload: undefined }),
 }));

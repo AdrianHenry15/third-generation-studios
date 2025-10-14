@@ -37,7 +37,7 @@ const ContactFormOverlay = () => {
     const pathname = usePathname();
 
     // Stores
-    const { openModal } = useModalStore();
+    const openModal = useModalStore((state) => state.openModal);
 
     const [loading, setLoading] = useState(false);
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
