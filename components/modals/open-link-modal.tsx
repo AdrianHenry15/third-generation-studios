@@ -15,7 +15,8 @@ interface IOpenWebsiteModalProps {
 
 export default function OpenLinkModal({ title, link }: IOpenWebsiteModalProps) {
     // Stores
-    const { isModalOpen, closeModal } = useModalStore();
+    const { isModalOpen } = useModalStore();
+    const closeModal = useModalStore((state) => state.closeModal);
     const overlayVariants = {
         hidden: { opacity: 0 },
         visible: { opacity: 1, transition: { duration: 0.3 } },

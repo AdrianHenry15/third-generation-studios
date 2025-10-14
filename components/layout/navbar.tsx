@@ -132,7 +132,15 @@ export default function Navbar() {
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => (isModalOpen && modalType === "nav" ? closeModal() : openModal("nav", undefined))}
+                        onClick={() =>
+                            isModalOpen && modalType === "nav"
+                                ? closeModal()
+                                : openModal("nav", {
+                                      menuRef: menuRef,
+                                      navItems: navItems,
+                                      isUserIcon: false,
+                                  })
+                        }
                         aria-label="Toggle menu"
                         aria-expanded={isModalOpen && modalType === "nav"}
                     >
@@ -141,9 +149,6 @@ export default function Navbar() {
                     <UserIcon />
                 </div>
             </div>
-
-            {/* Mobile menu */}
-            {isModalOpen && modalType === "nav" && <MobileNavDropdownMenu menuRef={menuRef} navItems={navItems} isUserIcon={false} />}
         </motion.header>
     );
 }

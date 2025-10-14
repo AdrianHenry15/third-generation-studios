@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, CheckCircle, Music } from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useRouter } from "next/navigation";
 
 import StudioUploadForm, {
     UploadMode,
@@ -11,7 +10,6 @@ import StudioUploadForm, {
     AlbumUploadData,
     RemixUploadData,
 } from "@/components/layout/solo-queue/studio/studio-upload-form";
-import SuccessModal from "@/components/modals/success-modal";
 
 import { useAlbumInsertWithCover, useTrackUpload } from "@/hooks/storage/use-music-storage";
 import { useRemixInsert } from "@/hooks/music/use-remixes";

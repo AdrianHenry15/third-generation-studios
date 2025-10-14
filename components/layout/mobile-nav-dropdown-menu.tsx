@@ -13,7 +13,7 @@ interface IMobileNavDropdownMenuProps {
 }
 
 const MobileNavDropdownMenu = (props: IMobileNavDropdownMenuProps) => {
-    const { closeModal, modalType } = useModalStore();
+    const closeModal = useModalStore((state) => state.closeModal);
     const { menuRef, navItems, isUserIcon } = props;
     return (
         <motion.div

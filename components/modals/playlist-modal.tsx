@@ -2,13 +2,13 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useModalStore } from "@/stores/modal-store";
 import { useAuthStore } from "@/stores/auth-store";
-import { useCreatePlaylist, usePlaylistsByUser } from "@/hooks/music/use-playlists";
+import { useCreatePlaylist } from "@/hooks/music/use-playlists";
 
 const PlaylistModal = () => {
     // State
     const [playlistName, setPlaylistName] = React.useState("");
     // Stores
-    const { closeModal } = useModalStore();
+    const closeModal = useModalStore((state) => state.closeModal);
     const { user } = useAuthStore(); // Get current user
 
     // Queries / Mutations using new hooks

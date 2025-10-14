@@ -1,10 +1,6 @@
 "use client";
 
-// Sidebar "Playlists" section: lists a quick action ("Create Playlist") and recent playlists.
-// Includes a small modal to create a playlist without leaving the sidebar.
-
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Plus, PlayCircle } from "lucide-react";
 import SidebarSection from "./sidebar-section";
 import { useAuthStore } from "@/stores/auth-store";
@@ -79,7 +75,7 @@ export default function PlaylistSidebarSection({
             console.warn("User must be logged in to create playlists");
             return;
         }
-        openModal("playlist", undefined);
+        openModal("playlist", {});
     };
 
     return (

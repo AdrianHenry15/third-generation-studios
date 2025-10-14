@@ -112,6 +112,7 @@ export default function PlaylistPage() {
 
     // Store
     const openModal = useModalStore((state) => state.openModal);
+    const closeModal = useModalStore((state) => state.closeModal);
 
     // Hooks
     const { data: playlist, isLoading, isError, refetch } = usePlaylist(playlistId);
@@ -177,15 +178,19 @@ export default function PlaylistPage() {
 
     const handleDelete = (e: React.MouseEvent) => {
         if (!playlist?.id) return;
+
+        const confirm = () => {
+            deletePlaylist(playlist.id, {
+                onSuccess: () => router.push("/solo-queue/playlists"),
+            });
+            closeModal();
+        };
+
         openModal("confirm", {
             title: "Delete playlist",
             confirmText: "Delete",
-            onConfirm: () => {
-                deletePlaylist(playlist.id, {
-                    onSuccess: () => router.push("/solo-queue/playlists"),
-                });
-            },
-            onCancel: () => {},
+            onCancel: () => closeModal(),
+            onConfirm: confirm,
         });
     };
 
@@ -316,7 +321,7 @@ export default function PlaylistPage() {
                         </Link>
                         <button
                             type="button"
-                            onClick={(e) => handleDelete(e)}
+                            onClick={handleDelete}
                             disabled={deleting}
                             className="px-3 py-2 rounded-full bg-red-600/90 hover:bg-red-600 text-white border border-red-700/40 disabled:opacity-60"
                         >
