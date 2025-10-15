@@ -2,7 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { usePublicTracks, useTracksWithRelations, useTrackWithRelations } from "@/hooks/music/use-tracks";
+import { useTracksWithRelations } from "@/hooks/music/use-tracks";
 import { useAllArtists } from "@/hooks/music/use-artists";
 import { useAlbumsWithImages } from "@/hooks/music/use-albums";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";

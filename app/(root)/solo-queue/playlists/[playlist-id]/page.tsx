@@ -9,6 +9,7 @@ import { useParams, useRouter } from "next/navigation";
 import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist, PlaylistTrack } from "@/hooks/music/use-playlists";
 import { useArtist } from "@/hooks/music/use-artists";
 import { useModalStore } from "@/stores/modal-store";
+import { useAudioPlayerStore } from "@/stores/audio-player-store";
 
 // Resolve a playlist cover strictly from the first track's album image
 function getPlaylistCoverUrl(playlist: any): string | undefined {
@@ -113,7 +114,7 @@ export default function PlaylistPage() {
     // Store
     const openModal = useModalStore((state) => state.openModal);
     const closeModal = useModalStore((state) => state.closeModal);
-
+    const playTrack = useAudioPlayerStore((state) => state.playTrack);
     // Hooks
     const { data: playlist, isLoading, isError, refetch } = usePlaylist(playlistId);
     const { mutate: removeTrack, isPending: removing } = useRemoveTrackFromPlaylist();
@@ -309,7 +310,18 @@ export default function PlaylistPage() {
 
                     {/* Actions */}
                     <div className="mb-6 flex items-center gap-3">
-                        <button className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-600 hover:bg-green-500 text-white transition-colors">
+                        <button
+                            onClick={() => {
+                                if (playlistTracks.length > 0) {
+                                    // Each playlistTrack has a .track property
+                                    playTrack(
+                                        playlistTracks[0].track,
+                                        playlistTracks.map((pt) => pt.track),
+                                    );
+                                }
+                            }}
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-600 hover:bg-green-500 text-white transition-colors"
+                        >
                             <PlayCircle size={20} />
                             Play
                         </button>

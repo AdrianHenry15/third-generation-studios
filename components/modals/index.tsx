@@ -15,7 +15,6 @@ export default function ModalRoot() {
     const isModalOpen = useModalStore((state) => state.isModalOpen);
     const modalType = useModalStore((state) => state.modalType);
     const payload = useModalStore((state) => state.payload);
-    const closeModal = useModalStore((state) => state.closeModal);
 
     if (!isModalOpen || !modalType) return null;
 
