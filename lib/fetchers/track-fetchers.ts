@@ -42,7 +42,10 @@ export async function fetchTracksWithRelations(): Promise<Track[]> {
             ),
             credits:track_credits (
                 id,
-                role,
+                performed_by,
+                written_by,
+                produced_by,
+                remixed_by,
                 artist:artists(id, stage_name, profile_image_url)
             ),
             likes:track_likes (
@@ -86,7 +89,10 @@ export async function fetchTracksWithRelationsByArtist(artistId: string): Promis
             ),
             credits:track_credits (
                 id,
-                role,
+                performed_by,
+                written_by,
+                produced_by,
+                remixed_by,
                 artist:artists(id, stage_name, profile_image_url)
             ),
             likes:track_likes (
@@ -141,7 +147,10 @@ export async function fetchTrackWithRelations(id: string): Promise<Track | null>
       ),
       credits:track_credits (
         id,
-        role,
+        performed_by,
+        written_by,
+        produced_by,
+        remixed_by,
         artist:artists(id, stage_name, profile_image_url)
       ),
       likes:track_likes (

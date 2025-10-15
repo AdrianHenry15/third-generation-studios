@@ -214,6 +214,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 // Track is becoming a remix - insert new remix record
                 await remixInsertMutation.mutateAsync({
                     track_id: track.id,
+                    artist_id: track.artist_id,
                     original_song: remixData.original_song,
                     url: remixData.url || null,
                     original_artists: remixData.original_artists,
@@ -222,6 +223,7 @@ const TrackUpdateForm: React.FC<TrackUpdateFormProps> = ({ track }) => {
                 // Track remains a remix - update existing remix record
                 await remixUpdateMutation.mutateAsync({
                     track_id: track.id,
+                    artist_id: track.artist_id,
                     original_song: remixData.original_song,
                     url: remixData.url || null,
                     original_artists: remixData.original_artists,

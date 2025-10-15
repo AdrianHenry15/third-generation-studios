@@ -9,6 +9,7 @@ import RemixCreditForm from "./remix-credit-form";
 import type { TrackUploadData, UploadMode, RemixUploadData } from "./studio-upload-form";
 import { TrackCreditInsert } from "@/lib/types/database";
 import { Constants } from "@/lib/types/supabase-types";
+import { trackGenres } from "@/lib/constants";
 
 // Types
 type TrackType = string;
@@ -61,7 +62,7 @@ const StudioTrackInfoCard: React.FC<IStudioTrackInfoProps> = ({
             <Label className="text-sm text-blue-400">{label}</Label>
             <Input
                 type="text"
-                placeholder={`Enter ${label.toLowerCase()} separated by commas`}
+                placeholder={`Artist Name(s)`}
                 value={value.join(", ")}
                 onChange={(e) =>
                     handleCreditChange(
@@ -113,8 +114,8 @@ const StudioTrackInfoCard: React.FC<IStudioTrackInfoProps> = ({
                                 <Image
                                     src={URL.createObjectURL(track.trackImageFile)}
                                     alt="track-cover"
-                                    width={80}
-                                    height={80}
+                                    width={300}
+                                    height={300}
                                     className="rounded-lg border border-neutral-700 shadow-md object-cover"
                                 />
                             )}
@@ -170,11 +171,20 @@ const StudioTrackInfoCard: React.FC<IStudioTrackInfoProps> = ({
                     </div>
                     <div>
                         <Label className="text-blue-400">Genre *</Label>
-                        <Input
+                        <select
                             value={track.genre || ""}
                             onChange={(e) => handleTrackChange(track.id, "genre", e.target.value)}
-                            className="bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-400/30 rounded-lg text-white placeholder:text-neutral-400 transition"
-                        />
+                            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white transition"
+                        >
+                            <option value="" disabled>
+                                Select genre
+                            </option>
+                            {trackGenres.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                     <div>
                         <Label className="text-blue-400">Type *</Label>
@@ -197,11 +207,7 @@ const StudioTrackInfoCard: React.FC<IStudioTrackInfoProps> = ({
 
                 {/* Remix credits */}
                 {remixData && onRemixDataChange && (
-                    <RemixCreditForm
-                        track={track}
-                        remixData={remixData}
-                        onRemixDataChange={onRemixDataChange}
-                    />
+                    <RemixCreditForm track={track} remixData={remixData} onRemixDataChange={onRemixDataChange} />
                 )}
 
                 {/* Track credits */}
@@ -212,7 +218,9 @@ const StudioTrackInfoCard: React.FC<IStudioTrackInfoProps> = ({
                             {renderCreditInput("Performed By", "performed_by", trackCreditData?.performed_by ?? [])}
                             {renderCreditInput("Written By", "written_by", trackCreditData?.written_by ?? [])}
                             {renderCreditInput("Produced By", "produced_by", trackCreditData?.produced_by ?? [])}
-                            {renderCreditInput("Remixed By", "remixed_by", trackCreditData?.remixed_by ?? [])}
+                            {remixData &&
+                                onRemixDataChange &&
+                                renderCreditInput("Remixed By", "remixed_by", trackCreditData?.remixed_by ?? [])}
                         </div>
                     </div>
                 )}
