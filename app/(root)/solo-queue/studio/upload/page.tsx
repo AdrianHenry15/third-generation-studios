@@ -19,6 +19,7 @@ import { useMusicQueryById } from "@/hooks/music/use-music";
 import { useMusicInsert } from "@/hooks/music/use-music";
 import LoadingOverlay from "@/components/layout/upload/loading-overlay";
 import { useModalStore } from "@/stores/modal-store";
+import { TrackCreditInsert } from "@/lib/types/database";
 
 export default function StudioUploadPage() {
     // -------------------- STATE & STORE --------------------
@@ -85,6 +86,7 @@ export default function StudioUploadPage() {
         mode: UploadMode;
         tracks: TrackUploadData[];
         albumData: AlbumUploadData;
+        trackCreditData: Record<string, TrackCreditInsert>;
         remixData: Record<string, RemixUploadData>;
     }) => {
         if (!validateUpload(data)) return;
@@ -134,15 +136,22 @@ export default function StudioUploadPage() {
             );
 
             // ---------- 3️⃣ Insert Track Credits ----------
+            // ---------- 3️⃣ Insert Track Credits ----------
             setUploadStep("Setting up track credits...");
             await Promise.all(
-                uploadedTracks.map((uploadedTrack) =>
-                    useTrackCreditInsertHook.mutateAsync({
+                uploadedTracks.map((uploadedTrack, idx) => {
+                    const trackData = data.tracks[idx];
+                    const creditData = data.trackCreditData[trackData.id] || {};
+
+                    return useTrackCreditInsertHook.mutateAsync({
                         track_id: uploadedTrack.id,
-                        name: artist?.stage_name || "Unknown Artist",
-                        role: "main-artist",
-                    }),
-                ),
+                        artist_id: artist?.id || user?.id!, // fallback to user ID
+                        performed_by: creditData.performed_by || [],
+                        written_by: creditData.written_by || [],
+                        produced_by: creditData.produced_by || [],
+                        remixed_by: creditData.remixed_by || [], // new column
+                    });
+                }),
             );
 
             // ---------- 4️⃣ Insert Remix Data ----------

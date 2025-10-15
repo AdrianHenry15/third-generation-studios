@@ -2,7 +2,7 @@
    🎵 Core Table Types
    ============================================================ */
 
-import { Enums, Tables, TablesInsert, TablesUpdate } from "./supabase-types";
+import { Database, Enums, Tables, TablesInsert, TablesUpdate } from "./supabase-types";
 
 export type Track = Tables<"tracks">;
 export type TrackInsert = TablesInsert<"tracks">;
@@ -32,6 +32,8 @@ export type PlaylistTrack = Tables<"playlist_tracks">;
 export type PlaylistLike = Tables<"playlist_likes">;
 
 export type TrackCredit = Tables<"track_credits">;
+export type TrackCreditInsert = TablesInsert<"track_credits">;
+export type TrackCreditUpdate = TablesUpdate<"track_credits">;
 export type TrackLike = Tables<"track_likes">;
 
 export type Remix = Tables<"remixes">;
@@ -80,10 +82,12 @@ export type RemixWithRelations = Remix & {
     remixer?: ArtistWithRelations | null;
 };
 
-// When selecting a track credit with its profile and role
-export type TrackCreditWithRelations = TrackCredit & {
-    profile?: ProfileWithRelations | null;
-    track?: TrackWithRelations | null;
+export type TrackCreditWithRelations = Database["public"]["Tables"]["track_credits"]["Row"] & {
+    artist: Database["public"]["Tables"]["artists"]["Row"] & {
+        albums: Database["public"]["Tables"]["albums"]["Row"][];
+        tracks: Database["public"]["Tables"]["tracks"]["Row"][];
+    };
+    track: Database["public"]["Tables"]["tracks"]["Row"];
 };
 
 // When selecting a track like with its profile and track

@@ -7,6 +7,7 @@ import StudioAlbumInfo from "./studio-album-info";
 import ConfirmModal from "@/components/modals/confirm-modal";
 import ErrorModal from "@/components/modals/error-modal";
 import type { Database, Enums } from "@/lib/types/supabase-types";
+import { TrackCreditInsert } from "@/lib/types/database";
 
 export type UploadMode = "single" | "album" | "singles";
 
@@ -46,6 +47,7 @@ interface IStudioUploadFormProps {
         mode: UploadMode;
         tracks: TrackUploadData[];
         albumData: AlbumUploadData;
+        trackCreditData: { [trackId: string]: TrackCreditInsert };
         remixData: { [trackId: string]: RemixUploadData };
     }) => void;
     isUploading: boolean;
@@ -55,7 +57,8 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
     const [confirmation, setConfirmation] = useState(false);
     const [uploadMode, setUploadMode] = useState<UploadMode>("single");
 
-    // Separate state for remix data
+    // --- New state for track credits ---
+    const [trackCreditData, setTrackCreditData] = useState<{ [trackId: string]: TrackCreditInsert }>({});
     const [remixData, setRemixData] = useState<{ [trackId: string]: RemixUploadData }>({});
     // Validation errors
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
@@ -111,6 +114,22 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         }
     };
 
+    const handleTrackCreditChange = (trackId: string, creditInfo: Partial<TrackCreditInsert>) => {
+        setTrackCreditData((prev) => ({
+            ...prev,
+            [trackId]: {
+                // Always provide required fields, fallback to empty string if missing
+                track_id: prev[trackId]?.track_id ?? (typeof creditInfo.track_id === "string" ? creditInfo.track_id : trackId),
+                artist_id: prev[trackId]?.artist_id ?? (typeof creditInfo.artist_id === "string" ? creditInfo.artist_id : ""),
+                performed_by: prev[trackId]?.performed_by ?? [],
+                written_by: prev[trackId]?.written_by ?? [],
+                produced_by: prev[trackId]?.produced_by ?? [],
+                remixed_by: prev[trackId]?.remixed_by ?? [],
+                ...creditInfo,
+            },
+        }));
+    };
+
     const handleTrackChange = (trackId: string, field: keyof TrackUploadData, value: string | number | TrackType | boolean | any) => {
         setTracks((prev) =>
             prev.map((track) => {
@@ -122,6 +141,22 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         // For single mode, auto-set album name to track title
         if (uploadMode === "single" && field === "title" && typeof value === "string") {
             setAlbumData((prev) => ({ ...prev, name: value }));
+        }
+
+        // If type is changed to "Remix", ensure remixData exists for this track
+        if (field === "type") {
+            setRemixData((prev) => {
+                if (value === "Remix") {
+                    return {
+                        ...prev,
+                        [trackId]: prev[trackId] || { original_song: "", original_artists: [], url: "" },
+                    };
+                } else {
+                    // Remove remixData if type is changed away from Remix
+                    const { [trackId]: _, ...rest } = prev;
+                    return rest;
+                }
+            });
         }
     };
 
@@ -176,13 +211,6 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         if (tracks.length > 1) {
             setTracks((prev) => prev.filter((track) => track.id !== trackId));
         }
-    };
-
-    const handleRemixDataChange = (trackId: string, remixInfo: RemixUploadData) => {
-        setRemixData((prev) => ({
-            ...prev,
-            [trackId]: remixInfo,
-        }));
     };
 
     // Basic validation for required fields
@@ -250,6 +278,7 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             mode: uploadMode,
             tracks,
             remixData,
+            trackCreditData,
             albumData:
                 uploadMode === "album"
                     ? albumData
@@ -264,6 +293,25 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                         },
         });
     };
+
+    // Keep trackCreditData/remixData in sync with tracks
+    React.useEffect(() => {
+        // Remove credit/remix data for deleted tracks
+        setTrackCreditData((prev) => {
+            const updated: typeof prev = {};
+            tracks.forEach((track) => {
+                if (prev[track.id]) updated[track.id] = prev[track.id];
+            });
+            return updated;
+        });
+        setRemixData((prev) => {
+            const updated: typeof prev = {};
+            tracks.forEach((track) => {
+                if (prev[track.id]) updated[track.id] = prev[track.id];
+            });
+            return updated;
+        });
+    }, [tracks]);
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8 max-w-full overflow-x-hidden">
@@ -332,14 +380,16 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                     track={track}
                     tracks={tracks}
                     uploadMode={uploadMode}
-                    albumType={albumData.type} // Pass the actual AlbumType
+                    albumType={albumData.type}
                     index={index}
                     handleTrackChange={handleTrackChange}
                     handleFileSelect={handleFileSelect}
                     handleTrackImageSelect={handleTrackImageSelect}
                     removeTrack={removeTrack}
                     remixData={remixData[track.id]}
-                    onRemixDataChange={(remixInfo) => handleRemixDataChange(track.id, remixInfo)}
+                    onRemixDataChange={(remixInfo) => setRemixData((prev) => ({ ...prev, [track.id]: remixInfo }))}
+                    trackCreditData={trackCreditData[track.id]}
+                    onTrackCreditChange={handleTrackCreditChange}
                 />
             ))}
 

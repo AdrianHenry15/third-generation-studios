@@ -2,14 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { PlayCircle, Music, Trash2, Pencil, Check, X, Loader2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { PlayCircle, Music, Trash2, Pencil, Check, X, Loader2, Ellipsis } from "lucide-react";
+import { use, useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useParams, useRouter } from "next/navigation";
 import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist, PlaylistTrack } from "@/hooks/music/use-playlists";
 import { useArtist } from "@/hooks/music/use-artists";
 import { useModalStore } from "@/stores/modal-store";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
+import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
+import { TrackRow } from "./track-row";
 
 // Resolve a playlist cover strictly from the first track's album image
 function getPlaylistCoverUrl(playlist: any): string | undefined {
@@ -47,65 +49,6 @@ function getPlaylistCoverUrl(playlist: any): string | undefined {
     return coverUrl;
 }
 
-function formatDuration(duration?: number) {
-    if (!duration && duration !== 0) return "--:--";
-
-    // convert milliseconds if the number is too large
-    let seconds = duration;
-    if (duration > 3600) {
-        seconds = Math.floor(duration / 1000);
-    }
-    const totalSec = Math.floor(seconds);
-    const m = Math.floor(totalSec / 60);
-    const s = totalSec % 60;
-    return `${m}:${s.toString().padStart(2, "0")}`;
-}
-
-// Component for individual track row with artist data
-function TrackRow({
-    playlistTrack,
-    index,
-    onRemove,
-    isRemoving,
-}: {
-    playlistTrack: any;
-    index: number;
-    onRemove: () => void;
-    isRemoving: boolean;
-}) {
-    const track = playlistTrack.track;
-    const title = track?.title ?? "Untitled";
-    const duration = track?.duration;
-
-    // Fetch artist data using the artist hook
-    const { data: artist, isLoading: artistLoading } = useArtist(track?.artist_id || "", !!track?.artist_id);
-
-    const artistName = artistLoading ? "Loading..." : (artist?.stage_name ?? "Unknown artist");
-
-    return (
-        <li className="grid grid-cols-[auto_1fr_auto] gap-3 items-center px-4 py-3 hover:bg-neutral-900/50">
-            <div className="w-6 text-right text-neutral-400">{index + 1}</div>
-            <div className="min-w-0">
-                <div className="text-sm text-white truncate">{title}</div>
-                <div className="text-xs text-neutral-400 truncate">
-                    {artistLoading ? <div className="h-3 w-24 bg-neutral-700 animate-pulse rounded" /> : artistName}
-                </div>
-            </div>
-            <div className="flex items-center gap-3">
-                <span className="text-xs text-neutral-400">{formatDuration(duration)}</span>
-                <button
-                    aria-label="Remove from playlist"
-                    onClick={onRemove}
-                    disabled={isRemoving}
-                    className="p-1.5 rounded hover:bg-neutral-800 text-neutral-400 hover:text-white transition-colors disabled:opacity-50"
-                >
-                    {isRemoving ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
-                </button>
-            </div>
-        </li>
-    );
-}
-
 export default function PlaylistPage() {
     const params = useParams<{ "playlist-id": string | string[] }>();
     const raw = params["playlist-id"];
@@ -115,6 +58,8 @@ export default function PlaylistPage() {
     const openModal = useModalStore((state) => state.openModal);
     const closeModal = useModalStore((state) => state.closeModal);
     const playTrack = useAudioPlayerStore((state) => state.playTrack);
+    // Audio State Store
+    const { currentTrack, isPlaying } = useAudioPlayerStore();
     // Hooks
     const { data: playlist, isLoading, isError, refetch } = usePlaylist(playlistId);
     const { mutate: removeTrack, isPending: removing } = useRemoveTrackFromPlaylist();
@@ -193,6 +138,15 @@ export default function PlaylistPage() {
             onCancel: () => closeModal(),
             onConfirm: confirm,
         });
+    };
+
+    const onPlayPause = (playlistTrack: PlaylistTrackWithRelations) => {
+        if (playlistTrack.track) {
+            playTrack(
+                playlistTrack.track,
+                playlistTracks.map((pt) => pt.track),
+            );
+        }
     };
 
     const coverUrl = playlist ? getPlaylistCoverUrl(playlist) : undefined;
@@ -352,13 +306,18 @@ export default function PlaylistPage() {
                             <div className="px-4 py-8 text-center text-neutral-400">No tracks in this playlist yet.</div>
                         ) : (
                             <ul className="divide-y divide-neutral-800">
-                                {playlistTracks.map((playlistTrack: PlaylistTrack, idx: number) => (
+                                {playlistTracks.map((playlistTrack: PlaylistTrackWithRelations, idx: number) => (
                                     <TrackRow
                                         key={playlistTrack.id}
                                         playlistTrack={playlistTrack}
                                         index={idx}
                                         onRemove={() => removeTrack({ playlistTrackId: playlistTrack.id })}
                                         isRemoving={removing}
+                                        isCurrent={currentTrack?.id === playlistTrack.track_id}
+                                        isPlaying={isPlaying}
+                                        onPlayPause={() => {
+                                            onPlayPause(playlistTrack);
+                                        }}
                                     />
                                 ))}
                             </ul>

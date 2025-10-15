@@ -1,238 +1,242 @@
-import { Button } from "@/components/ui/buttons/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Music, X, Upload } from "lucide-react";
 import React from "react";
-import { TrackUploadData, UploadMode, RemixUploadData } from "./studio-upload-form";
-import { trackGenres } from "@/lib/constants";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import RemixCreditForm from "./remix-credit-form";
-import type { Enums } from "@/lib/types/supabase-types";
+import { Music, X, Upload } from "lucide-react";
 import Image from "next/image";
+import RemixCreditForm from "./remix-credit-form";
+import type { TrackUploadData, UploadMode, RemixUploadData } from "./studio-upload-form";
+import { TrackCreditInsert } from "@/lib/types/database";
+import { Constants } from "@/lib/types/supabase-types";
 
-// Use Supabase types
-type TrackType = Enums<"track_type">;
-type AlbumType = Enums<"album_type">;
-
-// StudioTrackInfoCard: form card for per-track metadata, uploads, and visibility.
-// Used in "single" or "album" upload modes with optional remix credit support.
+// Types
+type TrackType = string;
+type AlbumType = string;
 
 interface IStudioTrackInfoProps {
-    // Track data and context
     track: TrackUploadData;
     uploadMode: UploadMode;
-    albumType?: AlbumType;
+    albumType?: string;
     index: number;
     tracks: TrackUploadData[];
 
-    // Handlers
-    handleTrackChange: (id: string, field: keyof TrackUploadData, value: string | number | TrackType | any) => void;
+    handleTrackChange: (id: string, field: keyof TrackUploadData, value: any) => void;
     removeTrack: (id: string) => void;
     handleFileSelect: (id: string, event: React.ChangeEvent<HTMLInputElement>) => void;
     handleTrackImageSelect: (id: string, event: React.ChangeEvent<HTMLInputElement>) => void;
 
-    // Remix (optional)
-    remixData?: RemixUploadData; // Add remix data prop
-    onRemixDataChange?: (remixData: RemixUploadData) => void; // Add remix data change handler
+    remixData?: RemixUploadData;
+    onRemixDataChange?: (remixData: RemixUploadData) => void;
+
+    trackCreditData?: TrackCreditInsert;
+    onTrackCreditChange?: (trackId: string, creditInfo: Partial<TrackCreditInsert>) => void;
 }
 
-const StudioTrackInfoCard = (props: IStudioTrackInfoProps) => {
-    const {
-        track,
-        tracks,
-        uploadMode,
-        albumType,
-        index,
-        handleTrackChange,
-        handleFileSelect,
-        handleTrackImageSelect,
-        removeTrack,
-        remixData,
-        onRemixDataChange,
-    } = props;
-
-    // Whether to show cover upload for single mode or Single album types
-    // Keeps album flow clean while ensuring singles have cover art
+const StudioTrackInfoCard: React.FC<IStudioTrackInfoProps> = ({
+    track,
+    tracks,
+    uploadMode,
+    albumType,
+    index,
+    handleTrackChange,
+    handleFileSelect,
+    handleTrackImageSelect,
+    removeTrack,
+    remixData,
+    onRemixDataChange,
+    trackCreditData,
+    onTrackCreditChange,
+}) => {
     const showCoverUpload = uploadMode === "single" || albumType === "Single";
 
+    const handleCreditChange = (field: keyof TrackCreditInsert, value: string[]) => {
+        if (onTrackCreditChange) {
+            onTrackCreditChange(track.id, { [field]: value });
+        }
+    };
+
+    const renderCreditInput = (label: string, field: keyof TrackCreditInsert, value: string[] = []) => (
+        <div className="flex flex-col gap-1">
+            <Label className="text-sm text-blue-400">{label}</Label>
+            <Input
+                type="text"
+                placeholder={`Enter ${label.toLowerCase()} separated by commas`}
+                value={value.join(", ")}
+                onChange={(e) =>
+                    handleCreditChange(
+                        field,
+                        e.target.value.split(",").map((s) => s.trim()),
+                    )
+                }
+                className="bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-400/30 rounded-lg text-white placeholder:text-neutral-400 transition"
+            />
+        </div>
+    );
+
+    // Use enum for track type options
+    const trackTypeOptions = Constants.public.Enums.track_type;
+
     return (
-        <Card key={track.id}>
-            {/* Header: Title + optional remove button */}
-            <CardHeader>
-                <div className="flex items-center justify-between">
-                    <div>
-                        <CardTitle className="flex items-center gap-2">
-                            <Music className="h-5 w-5" />
-                            {uploadMode === "single" ? "Track Information" : `Track ${index + 1}`}
-                        </CardTitle>
-                        <CardDescription>
-                            {uploadMode === "single" ? "Details about your track" : `Details for track ${index + 1}`}
-                        </CardDescription>
-                    </div>
-                    {uploadMode === "album" && tracks!.length > 1 && (
-                        <Button type="button" variant="ghost" size="sm" onClick={() => removeTrack(track.id)}>
-                            <X className="h-4 w-4" />
-                        </Button>
-                    )}
+        <Card
+            key={track.id}
+            className="bg-gradient-to-br from-gray-900 via-gray-950 to-gray-800 border-none shadow-2xl rounded-2xl overflow-hidden"
+        >
+            <CardHeader className="flex flex-row justify-between items-center bg-gradient-to-r from-gray-900/60 to-gray-800/60 px-6 py-4">
+                <div>
+                    <CardTitle className="text-white text-xl">
+                        {uploadMode === "single" ? "Track Information" : `Track ${index + 1}`}
+                    </CardTitle>
+                    <CardDescription className="text-neutral-400">
+                        {uploadMode === "single" ? "Details about your track" : `Details for track ${index + 1}`}
+                    </CardDescription>
                 </div>
+                {uploadMode === "album" && tracks.length > 1 && (
+                    <button
+                        type="button"
+                        onClick={() => removeTrack(track.id)}
+                        className="ml-2 p-2 rounded-full bg-red-500/10 hover:bg-red-500/30 text-red-400 hover:text-red-200 transition"
+                        title="Remove track"
+                    >
+                        <X size={18} />
+                    </button>
+                )}
             </CardHeader>
-            <CardContent className="space-y-6">
-                {/* ========== Cover Image Upload (single / Single album only) ========== */}
+
+            <CardContent className="space-y-6 px-6 py-8">
+                {/* Track cover upload */}
                 {showCoverUpload && (
                     <div>
-                        <Label className="text-lg font-semibold">Track Cover {uploadMode === "single" ? "*" : "(Optional)"}</Label>
-                        <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center mt-2 relative">
-                            <Image
-                                src={track.trackImageFile ? URL.createObjectURL(track.trackImageFile) : ""}
-                                alt="track-cover"
-                                className="h-16 w-16 mx-auto mb-4 text-muted-foreground"
-                            />
-                            <div className="space-y-3">
-                                <p className="text-sm text-muted-foreground font-medium">
-                                    {track.trackImageFileName || "No cover image selected"}
-                                </p>
-                                <p className="text-xs text-muted-foreground">Recommended: 1400x1400px, JPG or PNG</p>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="default"
-                                    onClick={() => {
-                                        const input = document.createElement("input");
-                                        input.type = "file";
-                                        input.accept = "image/*";
-                                        input.onchange = (e) => handleTrackImageSelect(track.id, e as any);
-                                        input.click();
-                                    }}
-                                >
-                                    <Upload className="h-4 w-4 mr-2" />
-                                    Choose Cover Image
-                                </Button>
-                            </div>
+                        <Label className="text-neutral-300">Track Cover {uploadMode === "single" ? "*" : "(Optional)"}</Label>
+                        <div className="flex items-center gap-4 mt-2">
+                            {track.trackImageFile && (
+                                <Image
+                                    src={URL.createObjectURL(track.trackImageFile)}
+                                    alt="track-cover"
+                                    width={80}
+                                    height={80}
+                                    className="rounded-lg border border-neutral-700 shadow-md object-cover"
+                                />
+                            )}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    const input = document.createElement("input");
+                                    input.type = "file";
+                                    input.accept = "image/*";
+                                    input.onchange = (e) => handleTrackImageSelect(track.id, e as any);
+                                    input.click();
+                                }}
+                                className="flex items-center gap-2 px-4 py-2 bg-neutral-700 hover:bg-neutral-800 text-white rounded-lg shadow transition font-medium"
+                            >
+                                <Upload size={18} /> Choose Cover
+                            </button>
                         </div>
                     </div>
                 )}
 
-                {/* ========== Audio File Upload ========== */}
+                {/* Audio File */}
                 <div>
-                    <Label className="text-base font-medium">Audio File *</Label>
-                    <div className="border-2 border-dashed border-muted rounded-lg p-6 text-center mt-2">
-                        <Music className="h-12 w-12 mx-auto mb-3 text-muted-foreground" />
-                        <div className="space-y-2">
-                            <p className="text-sm text-muted-foreground">{track.audioFileName || "No audio file selected"}</p>
-                            <p className="text-xs text-muted-foreground">Supported: MP3, WAV, FLAC (max 100MB)</p>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => {
-                                    const input = document.createElement("input");
-                                    input.type = "file";
-                                    input.accept = "audio/*";
-                                    input.onchange = (e) => handleFileSelect(track.id, e as any);
-                                    input.click();
-                                }}
-                            >
-                                <Music className="h-4 w-4 mr-2" />
-                                Choose Audio File
-                            </Button>
-                        </div>
+                    <Label className="text-blue-400">Audio File *</Label>
+                    <div className="flex items-center gap-4 mt-2">
+                        <span className="text-neutral-300 text-sm">
+                            {track.audioFileName || <span className="italic text-neutral-500">No file selected</span>}
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const input = document.createElement("input");
+                                input.type = "file";
+                                input.accept = "audio/*";
+                                input.onchange = (e) => handleFileSelect(track.id, e as any);
+                                input.click();
+                            }}
+                            className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition font-medium"
+                        >
+                            <Music size={18} /> Choose Audio
+                        </button>
                     </div>
                 </div>
 
-                {/* ========== Track Details (Title / Genre) ========== */}
+                {/* Track details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <Label>Track Title *</Label>
+                        <Label className="text-blue-400">Title *</Label>
                         <Input
                             value={track.title}
                             onChange={(e) => handleTrackChange(track.id, "title", e.target.value)}
-                            placeholder="Enter track title"
+                            className="bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-400/30 rounded-lg text-white placeholder:text-neutral-400 transition"
                         />
                     </div>
                     <div>
-                        <Label>Genre *</Label>
-                        <Select value={track.genre || ""} onValueChange={(value: string) => handleTrackChange(track.id, "genre", value)}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select a genre" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {trackGenres.map((genre) => (
-                                    <SelectItem key={genre} value={genre}>
-                                        {genre}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
-
-                {/* ========== Type / Release Date ========== */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <Label>Track Type</Label>
-                        <Select
-                            value={track.type || "Unreleased"}
-                            onValueChange={(value: TrackType) => handleTrackChange(track.id, "type", value)}
-                        >
-                            <SelectTrigger>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Released">Released</SelectItem>
-                                <SelectItem value="Unreleased">Unreleased</SelectItem>
-                                <SelectItem value="Work In Progress">Work In Progress</SelectItem>
-                                <SelectItem value="Demo">Demo</SelectItem>
-                                <SelectItem value="Remix">Remix</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                    <div>
-                        <Label>Release Date</Label>
+                        <Label className="text-blue-400">Genre *</Label>
                         <Input
-                            type="date"
-                            value={track.release_date || ""}
-                            onChange={(e) => handleTrackChange(track.id, "release_date", e.target.value)}
+                            value={track.genre || ""}
+                            onChange={(e) => handleTrackChange(track.id, "genre", e.target.value)}
+                            className="bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-400/30 rounded-lg text-white placeholder:text-neutral-400 transition"
                         />
+                    </div>
+                    <div>
+                        <Label className="text-blue-400">Type *</Label>
+                        <select
+                            value={track.type || ""}
+                            onChange={(e) => handleTrackChange(track.id, "type", e.target.value)}
+                            className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white transition"
+                        >
+                            <option value="" disabled>
+                                Select type
+                            </option>
+                            {trackTypeOptions.map((option) => (
+                                <option key={option} value={option}>
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
-                {/* ========== Remix Credits / Copyright ========== */}
-                <RemixCreditForm
-                    track={track}
-                    remixData={remixData}
-                    onTrackChange={(field: string, value: any) => handleTrackChange(track.id, field as keyof TrackUploadData, value)}
-                    onRemixDataChange={onRemixDataChange}
-                />
+                {/* Remix credits */}
+                {remixData && onRemixDataChange && (
+                    <RemixCreditForm
+                        track={track}
+                        remixData={remixData}
+                        onRemixDataChange={onRemixDataChange}
+                    />
+                )}
 
-                {/* ========== Lyrics ========== */}
+                {/* Track credits */}
+                {onTrackCreditChange && (
+                    <div className="space-y-3 mt-4 bg-gray-800/60 rounded-xl p-4 border border-gray-700/40">
+                        <h4 className="font-semibold text-blue-300 mb-2">Track Credits</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {renderCreditInput("Performed By", "performed_by", trackCreditData?.performed_by ?? [])}
+                            {renderCreditInput("Written By", "written_by", trackCreditData?.written_by ?? [])}
+                            {renderCreditInput("Produced By", "produced_by", trackCreditData?.produced_by ?? [])}
+                            {renderCreditInput("Remixed By", "remixed_by", trackCreditData?.remixed_by ?? [])}
+                        </div>
+                    </div>
+                )}
+
+                {/* Lyrics */}
                 <div>
-                    <Label>Lyrics (Optional)</Label>
-                    <Textarea
+                    <Label className="text-blue-400">Lyrics</Label>
+                    <textarea
                         value={track.lyrics || ""}
                         onChange={(e) => handleTrackChange(track.id, "lyrics", e.target.value)}
-                        placeholder="Enter your lyrics here..."
                         rows={4}
+                        className="w-full bg-gray-800 border border-gray-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-400/30 rounded-lg text-white placeholder:text-neutral-400 transition p-2 mt-1"
+                        placeholder="Paste lyrics here (optional)"
                     />
                 </div>
 
-                {/* ========== Visibility ========== */}
-                <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                        <Switch
-                            id={`track-${index}-public`}
-                            checked={track.is_public || false}
-                            onCheckedChange={(checked) => handleTrackChange(track.id, "is_public", checked)}
-                        />
-                        <Label htmlFor={`track-${index}-public`} className="text-sm font-medium">
-                            Make this track public
-                        </Label>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                        Public tracks can be discovered and played by other users. Private tracks are only visible to you.
-                    </p>
+                {/* Visibility */}
+                <div className="flex items-center space-x-3 mt-2">
+                    <Switch
+                        checked={track.is_public || false}
+                        onCheckedChange={(checked) => handleTrackChange(track.id, "is_public", checked)}
+                        className="data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-gray-700"
+                    />
+                    <Label className="text-neutral-200">Make this track public</Label>
                 </div>
             </CardContent>
         </Card>

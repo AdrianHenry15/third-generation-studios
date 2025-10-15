@@ -1,17 +1,31 @@
+import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
 import { create } from "zustand";
 
-export type ModalType = "playlist" | "link" | "success" | "error" | "status" | "remix-disclaimer" | "nav" | "share" | "confirm";
+export type ModalType =
+    | "add_to_playlist"
+    | "playlist_track_options"
+    | "link"
+    | "success"
+    | "error"
+    | "status"
+    | "remix_disclaimer"
+    | "nav"
+    | "share"
+    | "confirm"
+    | "track_credits";
 
 export type ModalPayloads = {
-    playlist: {};
+    add_to_playlist: {};
+    playlist_track_options: { playlistTrack: PlaylistTrackWithRelations };
     link: { title: string; link: string };
     success: { title?: string; confirmText?: string; cancelText?: string; onConfirm: () => void; onCancel: () => void };
     error: { open: boolean; title?: string; errors: string[]; onClose: () => void };
     status: { title: string; description: string; status: "success" | "error"; buttonText?: string; onButtonClick?: () => void };
-    "remix-disclaimer": { setShowRemixDisclaimer: (show: boolean) => void };
+    remix_disclaimer: { setShowRemixDisclaimer: (show: boolean) => void };
     nav: { menuRef: React.RefObject<HTMLDivElement | null>; navItems: { name: string; href: string }[]; isUserIcon: boolean };
     share: { imageUrl: string; setShowShareModal: (show: boolean) => void; copied: boolean; setCopied: (copied: boolean) => void };
     confirm: { title?: string; confirmText?: string; cancelText?: string; onConfirm: () => void; onCancel: () => void };
+    track_credits: { trackId: string };
 };
 interface ModalState {
     isModalOpen: boolean;

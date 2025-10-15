@@ -75,7 +75,7 @@ export default function PlaylistSidebarSection({
             console.warn("User must be logged in to create playlists");
             return;
         }
-        openModal("playlist", {});
+        openModal("add_to_playlist", {});
     };
 
     return (

@@ -12,7 +12,7 @@ interface RemixCreditFormProps {
     onRemixDataChange?: (remixData: RemixUploadData) => void;
 }
 
-const RemixCreditForm: React.FC<RemixCreditFormProps> = ({ track, remixData, onTrackChange, onRemixDataChange }) => {
+const RemixCreditForm: React.FC<RemixCreditFormProps> = ({ track, remixData, onRemixDataChange }) => {
     const isRemix = track.type === "Remix";
 
     // Memoize the current remix data to prevent unnecessary re-renders
