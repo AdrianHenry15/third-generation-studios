@@ -56,7 +56,9 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                 />
 
                 {/* Overlays */}
-                <LikeButton trackId={track.id} />
+                <div className="absolute top-2 left-2">
+                    <LikeButton trackId={track.id} />
+                </div>
                 <TypeLabel type={track.type || "Unknown"} />
                 {track.locked && <LockButton onUnlock={onUnlock} trackId={track.id} />}
             </div>
@@ -97,12 +99,12 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                 )}
 
                 {/* External Links */}
-                {track.type === "Released" && album?.name && (
+                {/* {track.type === "Released" && album?.name && (
                     <ExternalLinkButton
                         albumName={album.name}
                         link={`https://album.link/tgs-${album.name.toLowerCase().replace(/\s+/g, "-")}`}
                     />
-                )}
+                )} */}
             </div>
         </div>
     );

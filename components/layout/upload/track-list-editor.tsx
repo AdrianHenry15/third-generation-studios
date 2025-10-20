@@ -48,8 +48,6 @@ export default function TrackListEditor() {
     };
 
     const removeTrack = (id: string) => setTracks(tracks.filter((t) => t.id !== id));
-    const getSpotifyUrl = (track: any) =>
-        Array.isArray(track.links) ? (track.links.find((link: any) => (link as any).platform === "Spotify") as any)?.url || "" : "";
 
     return (
         <div className="space-y-6">
@@ -157,10 +155,10 @@ export default function TrackListEditor() {
                                 }
                             />
                             {/* Spotify URL */}
-                            <Input
+                            {/* <Input
                                 type="text"
                                 placeholder="Spotify URL"
-                                value={getSpotifyUrl(track)}
+                                value={track.links!.url}
                                 onChange={(e) =>
                                     setTracks(
                                         tracks.map((t) =>
@@ -168,7 +166,7 @@ export default function TrackListEditor() {
                                         ),
                                     )
                                 }
-                            />
+                            /> */}
                         </div>
 
                         <div className="flex flex-col w-full col-span-1 md:col-span-2">

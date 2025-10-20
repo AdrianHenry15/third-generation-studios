@@ -112,6 +112,7 @@ export default function AlbumUploadUpdateForm() {
                                 artist_id: userId,
                                 release_date: track.release_date ?? new Date().toISOString(),
                                 links: track.links || [],
+                                genre: track.genre,
                             },
                             audioFile: track.file!,
                             onProgress: (percent: number) => {
@@ -188,6 +189,7 @@ export default function AlbumUploadUpdateForm() {
                             artist_id: userId,
                             release_date: singleTrack.release_date ?? new Date().toISOString(),
                             links: singleTrack.links || [],
+                            genre: singleTrack.genre,
                         },
                         audioFile: singleTrack.audioFile!,
                         onProgress: (percent: number) => {

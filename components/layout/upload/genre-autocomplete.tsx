@@ -39,6 +39,16 @@ export default function GenreAutocomplete({ id, value, onChange }: { id: string;
         [onChange],
     );
 
+    const handleInputChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const newValue = e.target.value;
+            setQuery(newValue);
+            onChange(newValue);
+            setOpen(true);
+        },
+        [onChange],
+    );
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (!open) return;
         if (e.key === "ArrowDown") {
@@ -64,11 +74,7 @@ export default function GenreAutocomplete({ id, value, onChange }: { id: string;
                 value={query}
                 placeholder="Genre"
                 autoComplete="off"
-                onChange={(e) => {
-                    setQuery(e.target.value);
-                    onChange(e.target.value);
-                    setOpen(true);
-                }}
+                onChange={handleInputChange}
                 onFocus={() => setOpen(true)}
                 onKeyDown={handleKeyDown}
                 className="w-full text-sm"

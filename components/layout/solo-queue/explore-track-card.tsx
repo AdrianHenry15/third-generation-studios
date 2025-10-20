@@ -5,6 +5,8 @@ import { useCallback } from "react";
 import { PlayButton } from "./play-button";
 import type { Database } from "@/lib/types/supabase-types";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
+import LikeButton from "@/components/ui/buttons/like-button";
+import AddToPlaylistButton from "@/components/ui/buttons/add-to-playlist/playlist-button";
 
 type Track = Database["public"]["Tables"]["tracks"]["Row"];
 
@@ -44,6 +46,15 @@ export function ExploreTrackCard({ track, index, getTrackImage, getArtistName, f
                         unoptimized={getTrackImage(track).startsWith("data:")}
                     />
                 </div>
+                {/* Like Button */}
+                <div className="absolute left-2 top-2">
+                    <LikeButton trackId={track.id} />
+                </div>
+                {/* Add To Playlist Button */}
+                <div className="absolute right-2 top-2">
+                    <AddToPlaylistButton trackId={track.id} />
+                </div>
+                {/* Play Button */}
                 <div
                     className={`absolute bottom-2 right-2 w-12 h-12 text-black rounded-full transition-all duration-200 hover:scale-105 shadow-lg flex items-center justify-center ${
                         currentTrackId === track.id && isPlaying
