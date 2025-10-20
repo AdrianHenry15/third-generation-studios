@@ -155,22 +155,40 @@ export function useAlbumCoverUpdate() {
 // -------------------------
 
 // Helper function to get audio duration
-async function getAudioDuration(file: File): Promise<number> {
+export async function getAudioDuration(file: File): Promise<number> {
+    // Ensure this only runs in the browser
+    if (typeof window === "undefined") {
+        console.warn("getAudioDuration called during SSR — skipping");
+        return 0;
+    }
+
+    // Validate that we actually got a File object
+    if (!(file instanceof File)) {
+        console.error("getAudioDuration called with invalid file:", file);
+        return 0;
+    }
+
     return new Promise((resolve, reject) => {
-        const audio = new Audio();
-        const url = URL.createObjectURL(file);
+        try {
+            const audio = new Audio();
+            const url = URL.createObjectURL(file);
 
-        audio.addEventListener("loadedmetadata", () => {
-            URL.revokeObjectURL(url);
-            resolve(Math.floor(audio.duration)); // Duration in seconds
-        });
+            const cleanup = () => URL.revokeObjectURL(url);
 
-        audio.addEventListener("error", () => {
-            URL.revokeObjectURL(url);
-            reject(new Error("Could not load audio file"));
-        });
+            audio.addEventListener("loadedmetadata", () => {
+                cleanup();
+                resolve(Math.floor(audio.duration) || 0);
+            });
 
-        audio.src = url;
+            audio.addEventListener("error", () => {
+                cleanup();
+                reject(new Error("Could not load audio file metadata"));
+            });
+
+            audio.src = url;
+        } catch (err) {
+            reject(err);
+        }
     });
 }
 
@@ -182,12 +200,14 @@ export function useTrackUpload() {
     return useMutation({
         mutationFn: async ({
             trackData,
+            onProgress,
             audioFile,
             trackImageFile,
         }: {
-            trackData: TrackInsert;
+            trackData: Omit<TrackInsert, "url" | "duration" | "plays" | "locked">;
             audioFile: File;
             trackImageFile?: File;
+            onProgress?: (progress: number) => void;
         }) => {
             // Validate required fields
             if (!trackData.album_id || !trackData.artist_id || !trackData.title) {
@@ -202,8 +222,11 @@ export function useTrackUpload() {
                 bucket: "track-urls",
                 file: audioFile,
                 userId: trackData.artist_id,
-                albumName: trackData.title, // Use title as fallback for album name
+                albumName: trackData.title,
                 trackName: trackData.title,
+                onUploadProgress: (percent: number) => {
+                    if (onProgress) onProgress(percent);
+                },
             });
 
             if (!audioUrl) throw new Error("Failed to upload track file");
@@ -213,8 +236,8 @@ export function useTrackUpload() {
                 ...trackData,
                 url: audioUrl,
                 duration,
-                plays: trackData.plays ?? 0,
-                locked: trackData.locked ?? false,
+                plays: 0,
+                locked: false,
             });
 
             // Upload track image if provided (for singles)
@@ -223,10 +246,13 @@ export function useTrackUpload() {
                     bucket: "album-covers",
                     file: trackImageFile,
                     userId: track.artist_id,
+                    onUploadProgress: (percent: number) => {
+                        // Optionally track image upload progress here
+                        if (onProgress) onProgress(percent);
+                    },
                 });
 
                 if (imageUrl) {
-                    // Add track image to album_images table
                     await insertTrackImage.mutateAsync({
                         album_id: track.album_id,
                         url: imageUrl,
@@ -275,7 +301,7 @@ export function useAlbumWithTrackUpload() {
             coverImageFile,
         }: {
             albumData: AlbumInsert;
-            trackData: Omit<TrackInsert, "album_id" | "artist_id">; // These will be set from album
+            trackData: Omit<TrackInsert, "album_id" | "artist_id" | "url" | "duration" | "plays" | "locked">;
             audioFile: File;
             coverImageFile?: File;
         }) => {
@@ -308,8 +334,8 @@ export function useAlbumWithTrackUpload() {
                 artist_id: album.artist_id,
                 url: audioUrl,
                 duration,
-                plays: trackData.plays ?? 0,
-                locked: trackData.locked ?? false,
+                plays: 0,
+                locked: false,
             });
 
             // Upload cover image if provided

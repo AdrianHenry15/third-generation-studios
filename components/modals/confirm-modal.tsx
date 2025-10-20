@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { useModalStore } from "@/stores/modal-store";
 
 // ========================
 // Types
@@ -10,7 +11,6 @@ interface ConfirmModalProps {
     confirmText?: string;
     cancelText?: string;
     onConfirm: () => void | Promise<void>;
-    onCancel: () => void;
 }
 
 // ========================
@@ -21,8 +21,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     confirmText = "Confirm",
     cancelText = "Cancel",
     onConfirm,
-    onCancel,
 }) => {
+    const closeModal = useModalStore((state) => state.closeModal);
     // ------------------------
     // Refs
     // ------------------------
@@ -37,7 +37,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         confirmBtnRef.current?.focus();
         // Close on Escape
         const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onCancel();
+            if (e.key === "Escape") closeModal();
         };
         document.addEventListener("keydown", onKey);
         // Prevent background scroll while open
@@ -47,7 +47,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
             document.removeEventListener("keydown", onKey);
             document.body.style.overflow = prevOverflow;
         };
-    }, [onCancel]);
+    }, [closeModal]);
 
     // ------------------------
     // Render (portal + animation)
@@ -62,7 +62,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 exit={{ opacity: 0 }}
             >
                 {/* Overlay - click outside to cancel */}
-                <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" onClick={onCancel} />
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" onClick={closeModal} />
                 {/* Dialog */}
                 <motion.div
                     role="dialog"
@@ -100,7 +100,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                             <div className="mt-5 flex items-center justify-end gap-2">
                                 <button
                                     className="px-4 py-2 rounded-lg border border-neutral-700 bg-neutral-800/60 text-neutral-200 hover:bg-neutral-800 hover:border-neutral-600 transition-colors"
-                                    onClick={onCancel}
+                                    onClick={closeModal}
                                 >
                                     {cancelText}
                                 </button>

@@ -18,6 +18,7 @@ import {
     fetchTracksWithRelations,
 } from "@/lib/fetchers/track-fetchers";
 import { Track, TrackInsert, TrackUpdate } from "@/lib/types/database";
+import { useTrackUpload as useTrackStorageUpload } from "@/hooks/storage/use-music-storage";
 
 // Query Keys
 export const trackKeys = {
@@ -256,6 +257,11 @@ export function useLikedTrackIds(userId: string, enabled = true) {
         enabled: !!userId && enabled,
         staleTime: 30 * 1000,
     });
+}
+
+// Re-export the storage upload hook for track uploads with audio files
+export function useTrackUploadWithFile() {
+    return useTrackStorageUpload();
 }
 
 // Combined hook for like/unlike toggle

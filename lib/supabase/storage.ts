@@ -11,39 +11,66 @@ interface UploadOptions {
     userId?: string; // for structured paths
     albumName?: string; // for album-based organization
     trackName?: string; // for track-specific naming
+    onUploadProgress?: (progress: number) => void;
 }
 
 /**
  * Uploads a file to the specified Supabase storage bucket.
  * Returns the public URL if successful.
  */
-export async function uploadFile({ bucket, file, path, userId, albumName, trackName }: UploadOptions): Promise<string | null> {
+export async function uploadFile({
+    bucket,
+    file,
+    path,
+    userId,
+    albumName,
+    trackName,
+    onUploadProgress,
+}: UploadOptions): Promise<string | null> {
     const fileExt = (file instanceof File ? file.name.split(".").pop() : "bin") || "bin";
 
     let fileName: string;
     let filePath: string;
 
-    if (bucket === "track-urls" && albumName && trackName) {
-        // For tracks: album/trackname-uuid.ext
+    if (bucket === "track-urls" && userId && albumName && trackName) {
         const sanitizedAlbum = albumName.replace(/[^a-zA-Z0-9\-_\s]/g, "").replace(/\s+/g, "-");
         const sanitizedTrack = trackName.replace(/[^a-zA-Z0-9\-_\s]/g, "").replace(/\s+/g, "-");
-        const uniqueId = uuidv4().split("-")[0]; // Use first part of UUID for shorter names
+        const uniqueId = uuidv4().split("-")[0];
         fileName = `${sanitizedTrack}-${uniqueId}.${fileExt}`;
-        filePath = `${sanitizedAlbum}/${fileName}`;
+        filePath = `${userId}/${sanitizedAlbum}/${fileName}`; // <-- add userId here
     } else {
         // Default behavior for other buckets
         fileName = `${uuidv4()}.${fileExt}`;
         filePath = path || (userId ? `${userId}/${fileName}` : fileName);
     }
 
-    const { error } = await supabase.storage.from(bucket).upload(filePath, file);
+    // If progress callback is provided, simulate progress
+    if (onUploadProgress) {
+        let simulated = 0;
+        const interval = setInterval(() => {
+            simulated += Math.random() * 5; // increment 0-5%
+            if (simulated >= 95) simulated = 95; // cap at 95%
+            onUploadProgress(Math.round(simulated));
+        }, 200);
 
-    if (error) {
-        console.error("Error uploading file:", error.message);
-        return null;
+        const { error } = await supabase.storage.from(bucket).upload(filePath, file);
+        clearInterval(interval);
+
+        if (error) {
+            console.error("Error uploading file:", error.message);
+            return null;
+        }
+
+        onUploadProgress(100); // mark complete
+        return getPublicUrl(bucket, filePath);
+    } else {
+        const { error } = await supabase.storage.from(bucket).upload(filePath, file);
+        if (error) {
+            console.error("Error uploading file:", error.message);
+            return null;
+        }
+        return getPublicUrl(bucket, filePath);
     }
-
-    return getPublicUrl(bucket, filePath);
 }
 
 /**

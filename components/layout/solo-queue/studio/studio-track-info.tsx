@@ -11,10 +11,6 @@ import { TrackCreditInsert } from "@/lib/types/database";
 import { Constants } from "@/lib/types/supabase-types";
 import { trackGenres } from "@/lib/constants";
 
-// Types
-type TrackType = string;
-type AlbumType = string;
-
 interface IStudioTrackInfoProps {
     track: TrackUploadData;
     uploadMode: UploadMode;
@@ -106,9 +102,9 @@ const StudioTrackInfoCard: React.FC<IStudioTrackInfoProps> = ({
 
             <CardContent className="space-y-6 px-6 py-8">
                 {/* Track cover upload */}
-                {showCoverUpload && (
+                {showCoverUpload && uploadMode === "singles" && (
                     <div>
-                        <Label className="text-neutral-300">Track Cover {uploadMode === "single" ? "*" : "(Optional)"}</Label>
+                        <Label className="text-neutral-300">Track Cover </Label>
                         <div className="flex items-center gap-4 mt-2">
                             {track.trackImageFile && (
                                 <Image

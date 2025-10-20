@@ -18,13 +18,13 @@ export type ModalPayloads = {
     add_to_playlist: {};
     playlist_track_options: { playlistTrack: PlaylistTrackWithRelations };
     link: { title: string; link: string };
-    success: { title?: string; confirmText?: string; cancelText?: string; onConfirm: () => void; onCancel: () => void };
-    error: { open: boolean; title?: string; errors: string[]; onClose: () => void };
+    success: { title?: string; confirmText?: string; cancelText?: string; onConfirm: () => void };
+    error: { title?: string; errors: string[] };
     status: { title: string; description: string; status: "success" | "error"; buttonText?: string; onButtonClick?: () => void };
     remix_disclaimer: { setShowRemixDisclaimer: (show: boolean) => void };
     nav: { menuRef: React.RefObject<HTMLDivElement | null>; navItems: { name: string; href: string }[]; isUserIcon: boolean };
     share: { imageUrl: string; setShowShareModal: (show: boolean) => void; copied: boolean; setCopied: (copied: boolean) => void };
-    confirm: { title?: string; confirmText?: string; cancelText?: string; onConfirm: () => void; onCancel: () => void };
+    confirm: { title?: string; confirmText?: string; cancelText?: string; onConfirm: () => void };
     track_credits: { trackId: string };
 };
 interface ModalState {

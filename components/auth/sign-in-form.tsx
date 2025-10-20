@@ -13,7 +13,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
 import { SubmitButton } from "../submit-button";
 import { useHCaptchaStore } from "@/stores/hcaptcha-store";
-import { useAuthStore } from "@/stores/auth-store";
 
 // Animation variants moved outside component to prevent recreation
 const formVariants = {

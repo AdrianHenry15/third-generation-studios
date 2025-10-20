@@ -4,6 +4,8 @@
 
 import { Database, Enums, Tables, TablesInsert, TablesUpdate } from "./supabase-types";
 
+export type UploadMode = "single" | "album";
+
 export type Track = Tables<"tracks">;
 export type TrackInsert = TablesInsert<"tracks">;
 export type TrackUpdate = TablesUpdate<"tracks">;
@@ -49,6 +51,30 @@ export type TrackType = Enums<"track_type">;
 export type CreditRoleType = Enums<"credit_role_type">;
 export type ProfileRole = Enums<"profile_role">;
 export type VerificationStatus = Enums<"verification_status">;
+
+// Upload Types
+// Extended track data that includes the actual file for upload
+export interface TrackUploadData extends Omit<Track, "id" | "created_at" | "updated_at" | "album_id" | "artist_id"> {
+    id: string; // Temporary ID for form management
+    audioFileName?: string; // Display name for the file
+    audioFile?: File; // Actual audio file to be uploaded
+}
+
+// Update interface for remix upload data to match database schema
+export interface RemixUploadData {
+    original_song: string;
+    original_artists: string[]; // Array of artist names
+    additional_artists?: string[]; // Optional array of additional artists
+    url?: string; // URL field (matches database)
+}
+
+// Extended album data that includes file upload fields
+export interface AlbumUploadData extends Omit<Album, "id" | "created_at" | "updated_at" | "artist_id"> {
+    artist_id?: string; // Will be set during upload
+    album_id?: string;
+    albumImageFile?: File;
+    albumImageFileName?: string;
+}
 
 /* ============================================================
    🤝 Common Joined Types (Frontend convenience)

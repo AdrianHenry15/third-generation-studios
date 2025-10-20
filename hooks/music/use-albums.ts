@@ -27,6 +27,7 @@ import {
     type AlbumImage,
     type AlbumImageInsert,
 } from "@/lib/fetchers/album-fetchers";
+import { uploadFile } from "@/lib/supabase/storage";
 
 // Types
 export type { Album, AlbumInsert, AlbumUpdate, AlbumImage, AlbumImageInsert };
@@ -219,8 +220,26 @@ export function useCreateAlbumWithImages() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ albumData, images }: { albumData: AlbumInsert; images: Omit<AlbumImageInsert, "album_id">[] }) =>
-            createAlbumWithImages(albumData, images),
+        mutationFn: async ({ albumData, images }: { albumData: AlbumInsert; images: { name?: string; file: File }[] }) => {
+            // Upload all image files to Supabase storage and get URLs
+            const uploadedImages: Omit<AlbumImageInsert, "album_id">[] = await Promise.all(
+                images.map(async (img) => {
+                    const url = await uploadFile({
+                        bucket: "album-covers",
+                        file: img.file,
+                        userId: albumData.artist_id,
+                    });
+
+                    if (!url) throw new Error("Failed to upload album image");
+
+                    return {
+                        name: img.name || img.file.name,
+                        url: url,
+                    };
+                }),
+            );
+            return createAlbumWithImages(albumData, uploadedImages);
+        },
         onSuccess: (newAlbum) => {
             // Set the new album with images in cache
             queryClient.setQueryData(albumKeys.withImages(newAlbum.id), newAlbum);

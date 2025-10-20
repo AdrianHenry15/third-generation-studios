@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import React from "react";
 import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/buttons/button";
-import { AlbumUploadData } from "./studio-upload-form";
+import { AlbumUploadData, UploadMode } from "./studio-upload-form";
 import type { Database } from "@/lib/types/supabase-types";
 import Image from "next/image";
 
@@ -13,12 +13,13 @@ import Image from "next/image";
 type AlbumType = Database["public"]["Enums"]["album_type"];
 
 interface IStudioAlbumInfoProps {
+    uploadMode: UploadMode;
     albumData: AlbumUploadData;
     handleAlbumDataChange: (field: keyof AlbumUploadData, value: string | AlbumType | File | undefined) => void;
     handleAlbumImageSelect: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlbumDataChange, handleAlbumImageSelect }) => {
+const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, uploadMode, handleAlbumDataChange, handleAlbumImageSelect }) => {
     return (
         <Card>
             <CardHeader>
@@ -27,44 +28,46 @@ const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlb
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* Album Cover Upload - Top Priority */}
-                <div>
-                    <Label className="text-lg font-semibold">Album Cover</Label>
-                    <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center mt-2">
-                        {albumData.albumImageFile ? (
-                            <Image
-                                src={URL.createObjectURL(albumData.albumImageFile)}
-                                alt="album-cover"
-                                width={64}
-                                height={64}
-                                className="h-16 w-16 mx-auto mb-4 object-cover rounded"
-                            />
-                        ) : (
-                            <Upload className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-                        )}
-                        <div className="space-y-3">
-                            <p className="text-sm text-muted-foreground font-medium">
-                                {albumData.albumImageFileName || "No cover image selected"}
-                            </p>
-                            <p className="text-xs text-muted-foreground">Recommended: 1400x1400px, JPG or PNG</p>
-                            <Button
-                                type="button"
-                                variant="outline"
-                                size="default"
-                                onClick={() => {
-                                    const input = document.createElement("input");
-                                    input.type = "file";
-                                    input.accept = "image/*";
-                                    input.onchange = (event) =>
-                                        handleAlbumImageSelect(event as unknown as React.ChangeEvent<HTMLInputElement>);
-                                    input.click();
-                                }}
-                            >
-                                <Upload className="h-4 w-4 mr-2" />
-                                Choose Cover Image
-                            </Button>
+                {uploadMode !== "singles" && (
+                    <div>
+                        <Label className="text-lg font-semibold">Album Cover</Label>
+                        <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center mt-2">
+                            {albumData.albumImageFile ? (
+                                <Image
+                                    src={URL.createObjectURL(albumData.albumImageFile)}
+                                    alt="album-cover"
+                                    width={64}
+                                    height={64}
+                                    className="h-16 w-16 mx-auto mb-4 object-cover rounded"
+                                />
+                            ) : (
+                                <Upload className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+                            )}
+                            <div className="space-y-3">
+                                <p className="text-sm text-muted-foreground font-medium">
+                                    {albumData.albumImageFileName || "No cover image selected"}
+                                </p>
+                                <p className="text-xs text-muted-foreground">Recommended: 1400x1400px, JPG or PNG</p>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="default"
+                                    onClick={() => {
+                                        const input = document.createElement("input");
+                                        input.type = "file";
+                                        input.accept = "image/*";
+                                        input.onchange = (event) =>
+                                            handleAlbumImageSelect(event as unknown as React.ChangeEvent<HTMLInputElement>);
+                                        input.click();
+                                    }}
+                                >
+                                    <Upload className="h-4 w-4 mr-2" />
+                                    Choose Cover Image
+                                </Button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                )}
 
                 {/* Album Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -76,19 +79,6 @@ const StudioAlbumInfo: React.FC<IStudioAlbumInfoProps> = ({ albumData, handleAlb
                             onChange={(e) => handleAlbumDataChange("name", e.target.value)}
                             placeholder="Enter album name"
                         />
-                    </div>
-                    <div>
-                        <Label htmlFor="album_type">Album Type</Label>
-                        <Select value={albumData.type} onValueChange={(value: AlbumType) => handleAlbumDataChange("type", value)}>
-                            <SelectTrigger>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="Single">Single</SelectItem>
-                                <SelectItem value="EP">EP</SelectItem>
-                                <SelectItem value="Album">Album</SelectItem>
-                            </SelectContent>
-                        </Select>
                     </div>
                 </div>
 

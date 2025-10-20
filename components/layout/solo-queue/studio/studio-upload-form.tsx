@@ -38,6 +38,7 @@ export interface RemixUploadData {
 // Extended album data that includes file upload fields
 export interface AlbumUploadData extends Omit<Album, "id" | "created_at" | "updated_at" | "artist_id"> {
     artist_id?: string; // Will be set during upload
+    album_id?: string;
     albumImageFile?: File;
     albumImageFileName?: string;
 }
@@ -234,13 +235,13 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
         }
 
         // Image validation based on mode/type
-        if (uploadMode === "single" && !tracks[0].trackImageFile) {
-            errs.push("Cover image is required for single tracks.");
-        }
+        // if (uploadMode === "single" && !tracks[0].trackImageFile) {
+        //     errs.push("Cover image is required for single tracks.");
+        // }
 
-        if (uploadMode === "album" && albumData.type === "Single" && tracks.some((t) => !t.trackImageFile)) {
-            errs.push("Cover image is required for all tracks in Single releases.");
-        }
+        // if (uploadMode === "album" && albumData.type === "Single" && tracks.some((t) => !t.trackImageFile)) {
+        //     errs.push("Cover image is required for all tracks in Single releases.");
+        // }
 
         if (uploadMode === "album" && albumData.type !== "Single" && !albumData.albumImageFile) {
             errs.push("Album cover image is required for EP/Album releases.");
@@ -365,13 +366,12 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
             )}
 
             {/* Album Information - Only show for album mode */}
-            {uploadMode === "album" && (
-                <StudioAlbumInfo
-                    albumData={albumData}
-                    handleAlbumDataChange={handleAlbumDataChange}
-                    handleAlbumImageSelect={handleAlbumImageSelect}
-                />
-            )}
+            <StudioAlbumInfo
+                uploadMode={uploadMode}
+                albumData={albumData}
+                handleAlbumDataChange={handleAlbumDataChange}
+                handleAlbumImageSelect={handleAlbumImageSelect}
+            />
 
             {/* Track Information */}
             {tracks.map((track, index) => (
@@ -411,23 +411,6 @@ const StudioUploadForm: React.FC<IStudioUploadFormProps> = ({ onSubmit, isUpload
                         : `Upload ${uploadMode === "album" ? "Album" : uploadMode === "singles" ? "Singles" : "Track"}`}
                 </Button>
             </div>
-
-            {/* Confirmation Modal */}
-            {confirmation && (
-                <ConfirmModal
-                    title="Are you sure you want to upload this music?"
-                    onCancel={() => setConfirmation(false)}
-                    onConfirm={handleConfirmation}
-                />
-            )}
-
-            {/* Error Modal */}
-            <ErrorModal
-                open={showErrorModal}
-                title="We found some issues"
-                errors={validationErrors}
-                onClose={() => setShowErrorModal(false)}
-            />
         </form>
     );
 };
