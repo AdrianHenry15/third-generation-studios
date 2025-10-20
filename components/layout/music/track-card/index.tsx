@@ -72,7 +72,7 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                 <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
 
                 {/* Artist-only update button */}
-                {profile?.role === "artist" && (
+                {/* {profile?.role === "artist" && (
                     <button
                         onClick={() => router.push(`/solo-queue/studio/my-tracks/update/${track.id}`)}
                         className="mt-3 w-full bg-yellow-400 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
@@ -87,7 +87,7 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                         </svg>
                         Update Track
                     </button>
-                )}
+                )} */}
 
                 {/* Add to Playlist Button */}
                 {user && (

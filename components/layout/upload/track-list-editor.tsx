@@ -14,7 +14,8 @@ import TrackFileUpload from "./track-file-upload";
 import TrackTypeDropdown from "./track-type-dropdown";
 
 export default function TrackListEditor() {
-    const { tracks, setTracks, updateTrack, albumData, setAlbumData, setTrackCreditData, trackCreditData } = useUploadFormStore();
+    const { tracks, setTracks, updateTrack, albumData, setAlbumData, setTrackCreditData, trackCreditData, isEditing } =
+        useUploadFormStore();
 
     const addTrack = () => {
         const newTrack = {
@@ -54,9 +55,12 @@ export default function TrackListEditor() {
         <div className="space-y-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-2">
                 <h3 className="text-lg font-semibold">Tracks</h3>
-                <Button variant="secondary" size="sm" onClick={addTrack} className="flex items-center">
-                    <Plus className="w-4 h-4 mr-1" /> Add Track
-                </Button>
+                {/* Only show Add Track button when not editing */}
+                {!isEditing && (
+                    <Button variant="secondary" size="sm" onClick={addTrack} className="flex items-center">
+                        <Plus className="w-4 h-4 mr-1" /> Add Track
+                    </Button>
+                )}
             </div>
 
             {tracks.length === 0 && <p className="text-sm text-muted-foreground">No tracks added yet.</p>}
@@ -209,12 +213,14 @@ export default function TrackListEditor() {
                             </div>
                         )}
 
-                        {/* Remove Track */}
-                        <div className="flex justify-end md:col-span-2">
-                            <Button variant="ghost" size="icon" onClick={() => removeTrack(track.id)}>
-                                <Trash2 className="w-4 h-4 text-destructive" />
-                            </Button>
-                        </div>
+                        {/* Remove Track - only show when not editing */}
+                        {!isEditing && (
+                            <div className="flex justify-end md:col-span-2">
+                                <Button variant="ghost" size="icon" onClick={() => removeTrack(track.id)}>
+                                    <Trash2 className="w-4 h-4 text-destructive" />
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

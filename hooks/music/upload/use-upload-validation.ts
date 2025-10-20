@@ -2,7 +2,7 @@ import { useUploadFormStore } from "@/stores/upload-form-store";
 import { useCallback } from "react";
 
 export const useUploadValidation = () => {
-    const { albumData, tracks } = useUploadFormStore();
+    const { albumData, tracks, isEditing } = useUploadFormStore();
 
     const validate = useCallback(() => {
         const errs: string[] = [];
@@ -29,7 +29,10 @@ export const useUploadValidation = () => {
 
         tracks.forEach((t, i) => {
             if (!t.title.trim()) errs.push(`Track ${i + 1}: title is required.`);
-            if (!t.audioFile) errs.push(`Track ${i + 1}: audio file is required.`);
+
+            // Only require audio file if not in editing mode (existing tracks already have audio)
+            if (!isEditing && !t.audioFile) errs.push(`Track ${i + 1}: audio file is required.`);
+
             if (!t.genre?.trim()) errs.push(`Track ${i + 1}: genre is required.`);
             if (!t.duration) errs.push(`Track ${i + 1}: duration is required.`);
             if (!t.type || t.type.trim() === "") errs.push(`Track ${i + 1}: track type is required.`);
@@ -37,11 +40,13 @@ export const useUploadValidation = () => {
 
         if (albumData.type === "Album") {
             if (!albumData.name.trim()) errs.push("Album name is required.");
-            if (!albumData.albumImageFile) errs.push("Album cover image is required.");
+
+            // Only require album image if not editing (existing albums already have images)
+            if (!isEditing && !albumData.albumImageFile) errs.push("Album cover image is required.");
         }
 
         return errs;
-    }, [albumData, tracks]);
+    }, [albumData, tracks, isEditing]);
 
     return { validate };
 };

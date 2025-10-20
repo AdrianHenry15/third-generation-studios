@@ -1,6 +1,6 @@
 "use client";
 
-import AlbumUploadForm from "@/components/layout/upload/album-upload-form";
+import AlbumUploadUpdateForm from "@/components/layout/upload/album-upload-form";
 
 export default function StudioUploadPage() {
     // -------------------- RENDER --------------------
@@ -12,7 +12,7 @@ export default function StudioUploadPage() {
                     <p className="text-muted-foreground">Share your music with the Solo-Queue community</p>
                 </header>
 
-                <AlbumUploadForm />
+                <AlbumUploadUpdateForm />
             </div>
         </>
     );

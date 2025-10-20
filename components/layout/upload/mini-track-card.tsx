@@ -5,11 +5,11 @@ import React from "react";
 type MiniTrackCardProps = {
     track: TrackUploadData;
     status: "uploading" | "finished" | "failed";
-    progress?: number; // 0-100, only relevant for uploading
+    // progress?: number; // 0-100, only relevant for uploading
 };
 
 // Compact card showing track upload status with progress indicator
-export default function MiniTrackCard({ track, status, progress }: MiniTrackCardProps) {
+export default function MiniTrackCard({ track, status }: MiniTrackCardProps) {
     return (
         <div
             className={`flex items-center gap-3 p-2 rounded border ${status === "uploading" ? "border-yellow-400" : status === "finished" ? "border-green-500" : "border-red-500"}`}
@@ -41,7 +41,7 @@ export default function MiniTrackCard({ track, status, progress }: MiniTrackCard
                     {status === "uploading" ? (
                         <>
                             Uploading...
-                            {typeof progress === "number" && <span className="ml-2 text-yellow-300">{progress}%</span>}
+                            {/* {typeof progress === "number" && <span className="ml-2 text-yellow-300">{progress}%</span>} */}
                         </>
                     ) : status === "finished" ? (
                         "Uploaded"
@@ -50,11 +50,11 @@ export default function MiniTrackCard({ track, status, progress }: MiniTrackCard
                     )}
                 </div>
                 {/* Progress bar for uploading state */}
-                {status === "uploading" && typeof progress === "number" && (
+                {/* {status === "uploading" && typeof progress === "number" && (
                     <div className="mt-1 h-2 w-full bg-neutral-800 rounded">
                         <div className="h-2 rounded bg-yellow-400 transition-all" style={{ width: `${progress}%` }} />
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

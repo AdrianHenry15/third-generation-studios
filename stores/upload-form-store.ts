@@ -11,6 +11,8 @@ interface UploadFormState {
     updateTrack: (id: string, update: Partial<TrackUploadData>) => void;
     setAlbumData: (update: Partial<AlbumUploadData>) => void;
     reset: () => void;
+    isEditing: boolean;
+    setIsEditing: (isEditing: boolean) => void;
 }
 
 export const useUploadFormStore = create<UploadFormState>((set) => ({
@@ -19,7 +21,11 @@ export const useUploadFormStore = create<UploadFormState>((set) => ({
     trackCreditData: {},
     remixData: {},
     setTrackCreditData: (data) => set({ trackCreditData: data }),
-    setTracks: (tracks) => set({ tracks }),
+    setTracks: (tracks) => {
+        console.log("📝 Store setTracks called with:", tracks);
+        set({ tracks });
+        console.log("✅ Store tracks updated");
+    },
     updateTrack: (id, update) =>
         set((state) => ({
             tracks: state.tracks.map((t) => (t.id === id ? { ...t, ...update } : t)),
@@ -32,4 +38,6 @@ export const useUploadFormStore = create<UploadFormState>((set) => ({
             trackCreditData: {},
             remixData: {},
         }),
+    isEditing: false,
+    setIsEditing: (isEditing) => set({ isEditing }),
 }));
