@@ -2,6 +2,7 @@
 
 import React, { useCallback, useRef, useState } from "react";
 import { ImagePlus, X } from "lucide-react";
+import Image from "next/image";
 
 interface UploadImageItemProps {
     label?: string;
@@ -87,14 +88,20 @@ export default function UploadAlbumImage({ label = "Upload Image", onFileSelect,
                     </div>
                 ) : (
                     <div className="relative w-full h-full">
-                        <img src={preview} alt="Preview" className="object-cover w-full h-full rounded-xl" />
+                        <Image
+                            src={preview}
+                            alt="Album Preview"
+                            fill
+                            className="object-cover rounded-xl"
+                            sizes="(max-width: 768px) 100vw, 300px"
+                        />
                         <button
                             type="button"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 handleRemove();
                             }}
-                            className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1"
+                            className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 text-white rounded-full p-1 z-10"
                         >
                             <X className="w-4 h-4" />
                         </button>

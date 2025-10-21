@@ -135,7 +135,6 @@ export default function PlaylistPage() {
         openModal("confirm", {
             title: "Delete playlist",
             confirmText: "Delete",
-            onCancel: () => closeModal(),
             onConfirm: confirm,
         });
     };

@@ -1,6 +1,6 @@
 "use client";
 
-import AlbumUploadUpdateForm from "@/components/layout/upload/album-upload-form";
+import AlbumUploadUpdateForm from "@/components/layout/upload/forms/album-upload-form";
 
 export default function StudioUploadPage() {
     // -------------------- RENDER --------------------

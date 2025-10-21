@@ -13,9 +13,9 @@ import { useUpdateTrack } from "@/hooks/music/use-tracks";
 import { useUpdateAlbum } from "@/hooks/music/use-albums";
 import { useCreateTrackCredit, useUpdateTrackCredit } from "@/hooks/music/use-track-credits";
 import { useModalStore } from "@/stores/modal-store";
-import GenreAutocomplete from "./genre-autocomplete";
-import TrackTypeDropdown from "./track-type-dropdown";
 import { TrackUpdate } from "@/lib/types/database";
+import GenreAutocomplete from "../genre-autocomplete";
+import TrackTypeDropdown from "../track-type-dropdown";
 
 interface TrackUpdateFormProps {
     trackId: string;

@@ -26,19 +26,19 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
     const { data: profile } = useProfile(user?.id || "", !!user?.id);
     const router = useRouter();
 
-    // If this is a remix, delegate to RemixCard and pass only the track
-    if (track.type === "Remix" && track.remixes && track.remixes.length > 0) {
-        // Pass the first remix relation (or adjust as needed)
-        return <RemixCard track={track} remixData={track.remixes[0]} onUnlock={onUnlock} />;
-    }
-
-    // Compute album cover safely
+    // Compute album cover safely - moved outside the conditional
     const albumCover = useMemo(() => {
         const albumImages = track.album?.images ?? [];
         if (!albumImages.length) return "/earth-splash.jpg";
         const match = albumImages.find((img) => img.album_id === track.album_id);
         return match?.url || albumImages[0]?.url || "/earth-splash.jpg";
     }, [track]);
+
+    // If this is a remix, delegate to RemixCard and pass only the track
+    if (track.type === "Remix" && track.remixes && track.remixes.length > 0) {
+        // Pass the first remix relation (or adjust as needed)
+        return <RemixCard track={track} remixData={track.remixes[0]} onUnlock={onUnlock} />;
+    }
 
     // Use album from track for external link
     const album = track.album;

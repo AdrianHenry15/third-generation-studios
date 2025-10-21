@@ -12,7 +12,7 @@ export default function LikedSongsPage() {
     const { data: likedIds, isLoading: isLoadingLikedIds, error: likedIdsError } = useLikedTrackIds(user?.id || "", !!user?.id);
 
     // Memoize likedIds so it doesn't trigger repeated fetches unnecessarily
-    const memoizedLikedIds = useMemo(() => (likedIds ? [...likedIds] : []), [likedIds ? likedIds.join(",") : ""]);
+    const memoizedLikedIds = useMemo(() => (likedIds ? [...likedIds] : []), [likedIds]);
 
     // Fetch track data for liked IDs
     const tracksQueries = useTracksWithRelationsByIds(memoizedLikedIds, !!user && memoizedLikedIds.length > 0);

@@ -63,7 +63,8 @@ export default function Navbar() {
      */
     useEffect(() => {
         if (isModalOpen && modalType === "nav") closeModal();
-    }, [pathname]); // `closeModal` is stable from Zustand, no need to depend on it
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pathname]); // We only want to run this when pathname changes, not on other dependency changes
 
     const navItems = [
         { name: "Websites", href: "/websites" },

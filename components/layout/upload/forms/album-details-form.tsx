@@ -3,7 +3,7 @@ import React from "react";
 import { useUploadFormStore } from "@/stores/upload-form-store";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import UploadAlbumImage from "./upload-album-image";
+import UploadAlbumImage from "../upload-album-image";
 
 export default function AlbumDetailsForm() {
     const { albumData, setAlbumData, setTracks, tracks } = useUploadFormStore();
