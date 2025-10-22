@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    serverExternalPackages: ['@sanity/client', '@sanity/image-url'],
     /* config options here */
     images: {
         remotePatterns: [
