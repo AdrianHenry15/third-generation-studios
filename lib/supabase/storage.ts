@@ -62,14 +62,26 @@ export async function uploadFile({
         }
 
         onUploadProgress(100); // mark complete
-        return getPublicUrl(bucket, filePath);
+
+        // For track-urls, return a signed URL, for other buckets return public URL
+        if (bucket === "track-urls") {
+            return getSignedUrl(bucket, filePath);
+        } else {
+            return getPublicUrl(bucket, filePath);
+        }
     } else {
         const { error } = await supabase.storage.from(bucket).upload(filePath, file);
         if (error) {
             console.error("Error uploading file:", error.message);
             return null;
         }
-        return getPublicUrl(bucket, filePath);
+
+        // For track-urls, return a signed URL, for other buckets return public URL
+        if (bucket === "track-urls") {
+            return getSignedUrl(bucket, filePath);
+        } else {
+            return getPublicUrl(bucket, filePath);
+        }
     }
 }
 
@@ -79,6 +91,20 @@ export async function uploadFile({
 export function getPublicUrl(bucket: BucketName, path: string): string {
     const { data } = supabase.storage.from(bucket).getPublicUrl(path);
     return data.publicUrl;
+}
+
+/**
+ * Returns a signed URL for a file in a private bucket with a default expiry of 1 hour.
+ */
+export async function getSignedUrl(bucket: BucketName, path: string, expiresIn: number = 3600): Promise<string | null> {
+    const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, expiresIn);
+
+    if (error) {
+        console.error("Error creating signed URL:", error.message);
+        return null;
+    }
+
+    return data.signedUrl;
 }
 
 /**

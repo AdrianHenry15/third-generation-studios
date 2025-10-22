@@ -3,7 +3,6 @@
 import Image from "next/image";
 import React, { useMemo } from "react";
 import { useRouter } from "next/navigation";
-import ExternalLinkButton from "../external-link-button";
 import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
 import LockButton from "./lock-button";
@@ -39,9 +38,6 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
         // Pass the first remix relation (or adjust as needed)
         return <RemixCard track={track} remixData={track.remixes[0]} onUnlock={onUnlock} />;
     }
-
-    // Use album from track for external link
-    const album = track.album;
 
     return (
         <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">

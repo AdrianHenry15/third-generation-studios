@@ -292,26 +292,17 @@ export const signInAction = async (formData: FormData) => {
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
-    // Extract fields
     const email = (formData.get("email") as string | null)?.trim();
     const hcaptchaToken = (formData.get("hcaptcha_token") as string | null)?.trim();
 
-    // Basic validation
     if (!email) return { error: "Email is required" };
-    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!EMAIL_REGEX.test(email)) return { error: "Please enter a valid email address" };
-
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Please enter a valid email address" };
     if (!hcaptchaToken) return { error: "Captcha is required" };
 
     try {
         const supabase = await createClient();
-
-        // Direct redirect to reset-password page
-        const origin = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
+        const origin = (process.env.NEXT_PUBLIC_BASE_URL as string).replace(/\/$/, "");
         const redirectTo = origin ? `${origin}/reset-password` : "/reset-password";
-
-        console.log("🔗 Password reset redirect URL:", redirectTo);
-        console.log("🌐 Origin:", origin);
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
             redirectTo,
@@ -319,40 +310,17 @@ export const forgotPasswordAction = async (formData: FormData) => {
         });
 
         if (error) {
-            console.error("❌ resetPasswordForEmail error:", error);
-
             const msg = (error.message || "").toLowerCase();
-            if (msg.includes("rate") || msg.includes("too many")) {
-                return {
-                    error: "Too many reset attempts. Please wait before trying again.",
-                    code: "rate_limited",
-                };
-            }
-            if (msg.includes("captcha")) {
-                return {
-                    error: "Captcha verification failed. Please try again.",
-                    code: "captcha_failed",
-                };
-            }
-
-            // For security, do not reveal whether the email exists
-            return {
-                success: true,
-                message: "If an account with this email exists, we've sent you a password reset link.",
-            };
+            if (msg.includes("rate") || msg.includes("too many"))
+                return { error: "Too many reset attempts. Please wait before trying again." };
+            if (msg.includes("captcha")) return { error: "Captcha verification failed. Please try again." };
         }
 
-        // Success
-        return {
-            success: true,
-            message: "If an account with this email exists, we've sent you a password reset link.",
-        };
+        // Always return success message
+        return { success: true, message: "If an account with this email exists, we've sent you a password reset link." };
     } catch (error) {
         console.error("forgotPasswordAction error:", error);
-        return {
-            success: true,
-            message: "If an account with this email exists, we've sent you a password reset link.",
-        };
+        return { success: true, message: "If an account with this email exists, we've sent you a password reset link." };
     }
 };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { uploadFile, deleteFile } from "@/lib/supabase/storage";
+import { uploadFile, deleteFile, getSignedUrl } from "@/lib/supabase/storage";
 import { useMusicInsert, useMusicUpdate } from "@/hooks/music/use-music";
 import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
 import { supabase } from "@/lib/supabase/client";
@@ -238,6 +238,7 @@ export function useTrackUpload() {
                 duration,
                 plays: 0,
                 locked: false,
+                url_refreshed_at: new Date().toISOString(),
             });
 
             // Upload track image if provided (for singles)
@@ -266,6 +267,35 @@ export function useTrackUpload() {
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"].all });
             qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"].all });
+        },
+    });
+}
+
+// New hook to refresh track URLs
+export function useRefreshTrackUrl() {
+    const qc = useQueryClient();
+    const updateTrack = useMusicUpdate("tracks", "tracks");
+
+    return useMutation({
+        mutationFn: async ({ trackId, path }: { trackId: string; path: string }) => {
+            // Get a fresh signed URL
+            const newUrl = await getSignedUrl("track-urls", path);
+
+            if (!newUrl) throw new Error("Failed to refresh track URL");
+
+            // Update the track with the new URL
+            await updateTrack.mutateAsync({
+                id: trackId,
+                values: {
+                    url: newUrl,
+                    url_refreshed_at: new Date().toISOString(),
+                },
+            });
+
+            return newUrl;
+        },
+        onSuccess: () => {
+            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"].all });
         },
     });
 }
