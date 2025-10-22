@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    /* config options here */
+    output: 'standalone',
+    experimental: {
+        serverComponentsExternalPackages: [],
+        serverActions: {
+            bodySizeLimit: '2mb',
+        },
+    },
     images: {
         remotePatterns: [
             {

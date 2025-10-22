@@ -1,6 +1,6 @@
 "use client";
 
-import TrackUpdateForm from "@/components/layout/upload/track-update-form";
+// import TrackUpdateForm from "@/components/layout/upload/track-update-form";
 import { useAuthStore } from "@/stores/auth-store";
 import { useParams } from "next/navigation";
 
@@ -11,5 +11,6 @@ export default function StudioTrackUpdatePage() {
 
     if (!user) return null;
 
-    return <TrackUpdateForm trackId={trackId} userId={user.id} />;
+    // return <TrackUpdateForm trackId={trackId} userId={user.id} />;
+    return null;
 }
