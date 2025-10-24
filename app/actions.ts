@@ -302,10 +302,9 @@ export const forgotPasswordAction = async (formData: FormData) => {
     try {
         const supabase = await createClient();
         const origin = (process.env.NEXT_PUBLIC_BASE_URL as string).replace(/\/$/, "");
-        const redirectTo = origin ? `${origin}/reset-password` : "/reset-password";
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo,
+            redirectTo: `${origin}/reset-password?token=`,
             captchaToken: hcaptchaToken,
         });
 

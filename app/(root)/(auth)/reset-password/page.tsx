@@ -1,52 +1,54 @@
 "use client";
 
-import ResetPasswordForm from "@/components/auth/reset-password-form";
-import { Suspense, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase/client";
-import { useSearchParams } from "next/navigation";
+import ResetPasswordForm from "@/components/auth/reset-password-form";
 
-function ResetPasswordContent() {
+export default function ResetPasswordPage() {
     const searchParams = useSearchParams();
+    const router = useRouter();
+    const [loading, setLoading] = useState(true);
+    const [sessionValid, setSessionValid] = useState(false);
 
     useEffect(() => {
-        // Handle token_hash from email link or code from API route
-        const exchangeTokenForSession = async () => {
-            const token_hash = searchParams.get("token_hash");
-            const type = searchParams.get("type");
-            const code = searchParams.get("code");
+        const verifyPasswordReset = async () => {
+            const token = searchParams.get("token");
 
-            if (token_hash && type) {
-                console.log("🔑 Processing token_hash from email link");
-                const { error } = await supabase.auth.verifyOtp({
-                    type: type as any,
-                    token_hash,
-                });
+            if (!token) {
+                console.log("No PKCE code found in URL — likely invalid or already verified link");
+                setLoading(false);
+                return;
+            }
+
+            try {
+                // Supabase PKCE verification step
+                const { error } = await supabase.auth.exchangeCodeForSession(token);
+
                 if (error) {
-                    console.error("Error verifying OTP:", error);
-                    window.location.href = "/auth/auth-code-error";
+                    console.error("Error exchanging PKCE code:", error.message);
+                    router.replace(`/auth/auth-code-error?error=${encodeURIComponent(error.message || "invalid_link")}`);
+                    return;
                 }
-            } else if (code) {
-                console.log("🔑 Processing code from API route");
-                const { error } = await supabase.auth.exchangeCodeForSession(code);
-                if (error) {
-                    console.error("Error exchanging code for session:", error);
-                    window.location.href = "/auth/auth-code-error";
-                }
+
+                setSessionValid(true);
+                console.log("✅ PKCE session established — user can reset password");
+            } catch (err: any) {
+                console.error("Unexpected error verifying PKCE code:", err);
+                router.replace(`/auth/auth-code-error?error=${encodeURIComponent(err.message || "unexpected_error")}`);
+            } finally {
+                setLoading(false);
             }
         };
 
-        exchangeTokenForSession();
-    }, [searchParams]);
+        verifyPasswordReset();
+    }, [searchParams, router]);
 
-    return <ResetPasswordForm />;
-}
+    if (loading) return <div className="text-center mt-20">Verifying reset link...</div>;
 
-export default function ResetPassword() {
-    return (
-        <div className="fixed inset-0 min-h-screen flex items-center justify-center w-full p-4 bg-gradient-to-br from-green-50 via-white to-green-100 dark:from-neutral-900 dark:via-neutral-950 dark:to-green-950">
-            <Suspense fallback={<div>Loading...</div>}>
-                <ResetPasswordContent />
-            </Suspense>
-        </div>
+    return sessionValid ? (
+        <ResetPasswordForm />
+    ) : (
+        <div className="text-center mt-20">Invalid or expired link. Please request a new password reset.</div>
     );
 }
