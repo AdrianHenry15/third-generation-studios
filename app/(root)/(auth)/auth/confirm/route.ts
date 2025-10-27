@@ -27,7 +27,14 @@ export async function GET(request: NextRequest) {
 
         // recovery (password reset) is now handled by PKCE at /reset-password
         if (type === "recovery") {
-            redirect(next); // send user directly to reset page
+            const { error } = await supabase.auth.verifyOtp({ type: "recovery", token_hash });
+            if (error) {
+                console.log("Error verifying recovery OTP:", error.message);
+                redirect("/error");
+            } else {
+                // Preserve token_hash for the client reset page
+                redirect(`/reset-password?token_hash=${encodeURIComponent(token_hash)}&next=${encodeURIComponent(next)}`);
+            }
         }
     }
 

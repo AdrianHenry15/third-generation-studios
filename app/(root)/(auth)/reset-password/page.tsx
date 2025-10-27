@@ -2,51 +2,35 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase/client";
 import ResetPasswordForm from "@/components/auth/reset-password-form";
 
 export default function ResetPasswordPage() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const [loading, setLoading] = useState(true);
-    const [sessionValid, setSessionValid] = useState(false);
+    const [tokenValid, setTokenValid] = useState(false);
 
     useEffect(() => {
-        const verifyPasswordReset = async () => {
-            const token = searchParams.get("token");
+        const checkToken = () => {
+            const token_hash = searchParams.get("token_hash");
 
-            if (!token) {
-                console.log("No PKCE code found in URL — likely invalid or already verified link");
-                setLoading(false);
-                return;
+            if (!token_hash) {
+                console.log("No token_hash in URL — invalid or already used link");
+                setTokenValid(false);
+            } else {
+                // Token exists in URL, assume valid (Supabase link is temporary and single-use)
+                setTokenValid(true);
             }
 
-            try {
-                // Supabase PKCE verification step
-                const { error } = await supabase.auth.exchangeCodeForSession(token);
-
-                if (error) {
-                    console.error("Error exchanging PKCE code:", error.message);
-                    router.replace(`/auth/auth-code-error?error=${encodeURIComponent(error.message || "invalid_link")}`);
-                    return;
-                }
-
-                setSessionValid(true);
-                console.log("✅ PKCE session established — user can reset password");
-            } catch (err: any) {
-                console.error("Unexpected error verifying PKCE code:", err);
-                router.replace(`/auth/auth-code-error?error=${encodeURIComponent(err.message || "unexpected_error")}`);
-            } finally {
-                setLoading(false);
-            }
+            setLoading(false);
         };
 
-        verifyPasswordReset();
-    }, [searchParams, router]);
+        checkToken();
+    }, [searchParams]);
 
     if (loading) return <div className="text-center mt-20">Verifying reset link...</div>;
 
-    return sessionValid ? (
+    return tokenValid ? (
         <ResetPasswordForm />
     ) : (
         <div className="text-center mt-20">Invalid or expired link. Please request a new password reset.</div>
