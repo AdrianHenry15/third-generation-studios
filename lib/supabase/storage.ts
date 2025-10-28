@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./client";
-import { extractTrackPathFromUrl } from "./storage-helpers";
 
 // Types of supported buckets
 type BucketName = "album-covers" | "avatars" | "track-urls";
@@ -64,12 +63,7 @@ export async function uploadFile({
 
         onUploadProgress(100); // mark complete
 
-        // For track-urls, return a signed URL, for other buckets return public URL
-        if (bucket === "track-urls") {
-            return getSignedUrl(bucket, filePath);
-        } else {
-            return getPublicUrl(bucket, filePath);
-        }
+        return getPublicUrl(bucket, filePath);
     } else {
         const { error } = await supabase.storage.from(bucket).upload(filePath, file);
         if (error) {
@@ -77,12 +71,7 @@ export async function uploadFile({
             return null;
         }
 
-        // For track-urls, return a signed URL, for other buckets return public URL
-        if (bucket === "track-urls") {
-            return getSignedUrl(bucket, filePath);
-        } else {
-            return getPublicUrl(bucket, filePath);
-        }
+        return getPublicUrl(bucket, filePath);
     }
 }
 
@@ -118,31 +107,4 @@ export async function listFiles(bucket: BucketName, folder: string = "") {
         return [];
     }
     return data;
-}
-
-export async function getSignedUrl(bucket: BucketName, pathOrUrl: string, expiresIn: number = 3600): Promise<string | null> {
-    try {
-        let path = pathOrUrl;
-
-        // If a full URL is provided, extract the relative storage path
-        if (pathOrUrl.startsWith("http")) {
-            const urlObj = new URL(pathOrUrl);
-            const prefix = `/object/${bucket}/`;
-            const idx = urlObj.pathname.indexOf(prefix);
-            if (idx === -1) throw new Error("Invalid URL for bucket");
-            path = urlObj.pathname.slice(idx + prefix.length);
-        }
-
-        const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, expiresIn);
-
-        if (error) {
-            console.error("Error creating signed URL:", error.message, { bucket, path });
-            return null;
-        }
-
-        return data.signedUrl;
-    } catch (err: any) {
-        console.error("getSignedUrl failed:", err.message);
-        return null;
-    }
 }
