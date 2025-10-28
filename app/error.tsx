@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 
 export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
@@ -15,7 +16,7 @@ export default function GlobalError({ error, reset }: { error: Error; reset: () 
                 <button onClick={() => reset()} style={{ marginRight: 12 }}>
                     Try again
                 </button>
-                <a href="/">Go home</a>
+                <Link href="/">Go home</Link>
             </div>
         </div>
     );
