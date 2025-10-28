@@ -2,6 +2,7 @@
 import { create } from "zustand";
 import { supabase } from "@/lib/supabase/client";
 import type { TrackWithRelations } from "@/lib/types/database";
+import { refreshTrackUrl } from "@/lib/supabase/admin";
 
 type AudioPlayerState = {
     // state
@@ -134,10 +135,13 @@ export const useAudioPlayerStore = create<AudioPlayerState>((set, get) => {
                     currentTime: 0,
                     duration: 0,
                 });
-
                 if (!track.url) throw new Error("No audio URL available for this track");
 
-                audio.src = track.url;
+                // Use refreshTrackUrl to get fresh signed URL
+                const signedUrl = await refreshTrackUrl(track.url);
+                if (!signedUrl) throw new Error("Failed to load track audio");
+
+                audio.src = signedUrl;
                 audio.currentTime = 0;
 
                 await audio

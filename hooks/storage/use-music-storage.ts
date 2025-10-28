@@ -7,23 +7,9 @@ import { QUERY_KEYS } from "@/lib/fetchers/query-keys";
 import { supabase } from "@/lib/supabase/client";
 import type { Database } from "@/lib/types/supabase-types";
 
-// Use Supabase generated types
-type Artist = Database["public"]["Tables"]["profiles"]["Row"];
-type Album = Database["public"]["Tables"]["albums"]["Row"];
-type Track = Database["public"]["Tables"]["tracks"]["Row"];
-type AlbumImage = Database["public"]["Tables"]["album_images"]["Row"];
-
 // Insert types
-type ArtistInsert = Database["public"]["Tables"]["profiles"]["Insert"];
 type AlbumInsert = Database["public"]["Tables"]["albums"]["Insert"];
 type TrackInsert = Database["public"]["Tables"]["tracks"]["Insert"];
-type AlbumImageInsert = Database["public"]["Tables"]["album_images"]["Insert"];
-
-// Update types
-type ArtistUpdate = Database["public"]["Tables"]["profiles"]["Update"];
-type AlbumUpdate = Database["public"]["Tables"]["albums"]["Update"];
-type TrackUpdate = Database["public"]["Tables"]["tracks"]["Update"];
-type AlbumImageUpdate = Database["public"]["Tables"]["album_images"]["Update"];
 
 // -------------------------
 // ARTISTS
@@ -267,35 +253,6 @@ export function useTrackUpload() {
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"].all });
             qc.invalidateQueries({ queryKey: QUERY_KEYS["albums"].all });
-        },
-    });
-}
-
-// New hook to refresh track URLs
-export function useRefreshTrackUrl() {
-    const qc = useQueryClient();
-    const updateTrack = useMusicUpdate("tracks", "tracks");
-
-    return useMutation({
-        mutationFn: async ({ trackId, path }: { trackId: string; path: string }) => {
-            // Get a fresh signed URL
-            const newUrl = await getSignedUrl("track-urls", path);
-
-            if (!newUrl) throw new Error("Failed to refresh track URL");
-
-            // Update the track with the new URL
-            await updateTrack.mutateAsync({
-                id: trackId,
-                values: {
-                    url: newUrl,
-                    url_refreshed_at: new Date().toISOString(),
-                },
-            });
-
-            return newUrl;
-        },
-        onSuccess: () => {
-            qc.invalidateQueries({ queryKey: QUERY_KEYS["tracks"].all });
         },
     });
 }

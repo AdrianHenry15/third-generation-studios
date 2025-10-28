@@ -1,38 +1,59 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import ResetPasswordForm from "@/components/auth/reset-password-form";
-
+import { supabase } from "@/lib/supabase/client";
 export default function ResetPasswordPage() {
     const searchParams = useSearchParams();
-    const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [tokenValid, setTokenValid] = useState(false);
+    const [sessionExists, setSessionExists] = useState(false);
 
     useEffect(() => {
-        const checkToken = () => {
+        const verifySession = async () => {
             const token_hash = searchParams.get("token_hash");
+            const access_token = searchParams.get("access_token");
+            const refresh_token = searchParams.get("refresh_token");
 
-            if (!token_hash) {
-                console.log("No token_hash in URL — invalid or already used link");
+            if (!token_hash || !access_token || !refresh_token) {
+                console.warn("Missing token in URL — invalid or expired link");
                 setTokenValid(false);
-            } else {
-                // Token exists in URL, assume valid (Supabase link is temporary and single-use)
+                setLoading(false);
+                return;
+            }
+
+            // ✅ Set the session using the tokens from URL
+            const { error } = await supabase.auth.setSession({
+                access_token,
+                refresh_token,
+            });
+
+            // ✅ Check if the Supabase session cookie exists
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
+
+            if (session) {
+                console.log("Supabase session found for reset:", session.user.email);
+                setSessionExists(true);
                 setTokenValid(true);
+            } else {
+                console.warn("No Supabase session found — user may need to restart reset flow", error);
+                setTokenValid(false);
             }
 
             setLoading(false);
         };
 
-        checkToken();
+        verifySession();
     }, [searchParams]);
 
     if (loading) return <div className="text-center mt-20">Verifying reset link...</div>;
 
-    return tokenValid ? (
-        <ResetPasswordForm />
-    ) : (
-        <div className="text-center mt-20">Invalid or expired link. Please request a new password reset.</div>
-    );
+    if (!tokenValid || !sessionExists) {
+        return <div className="text-center mt-20">Invalid or expired link. Please request a new password reset.</div>;
+    }
+
+    return <ResetPasswordForm />;
 }

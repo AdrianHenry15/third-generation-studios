@@ -1,6 +1,5 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
-import { type NextRequest } from "next/server";
-import { redirect } from "next/navigation";
+import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
@@ -9,34 +8,68 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get("type") as EmailOtpType | null;
     const next = searchParams.get("next") ?? "/";
 
-    if (token_hash && type) {
-        const supabase = await createClient();
+    if (!token_hash || !type) {
+        return NextResponse.redirect(new URL("/error", request.url));
+    }
 
-        // only verify otp for signup or magiclink (PKCE flow handles recovery itself)
-        if (type === "signup" || type === "magiclink") {
-            const { error } = await supabase.auth.verifyOtp({ type, token_hash });
-            if (!error) {
-                switch (type) {
-                    case "signup":
-                        redirect("/solo-queue"); // onboarding route
-                    case "magiclink":
-                        redirect(next); // user logged in
-                }
-            }
-        }
+    // Create Supabase client bound to the request/response lifecycle
+    const supabase = await createClient();
 
-        // recovery (password reset) is now handled by PKCE at /reset-password
-        if (type === "recovery") {
-            const { error } = await supabase.auth.verifyOtp({ type: "recovery", token_hash });
-            if (error) {
-                console.log("Error verifying recovery OTP:", error.message);
-                redirect("/error");
-            } else {
-                // Preserve token_hash for the client reset page
-                redirect(`/reset-password?token_hash=${encodeURIComponent(token_hash)}&next=${encodeURIComponent(next)}`);
-            }
+    // Handle signup and magiclink flows
+    if (type === "signup" || type === "magiclink") {
+        const { error } = await supabase.auth.verifyOtp({ type, token_hash });
+        if (!error) {
+            const redirectUrl = type === "signup" ? "/solo-queue" : next;
+            return NextResponse.redirect(new URL(redirectUrl, request.url));
         }
     }
 
-    redirect("/error");
+    // Handle recovery (password reset)
+    if (type === "recovery") {
+        const { data, error } = await supabase.auth.verifyOtp({
+            type: "recovery",
+            token_hash,
+        });
+
+        if (error) {
+            console.error("Error verifying recovery OTP:", error.message);
+            return NextResponse.redirect(new URL("/error", request.url));
+        }
+
+        const { session } = data;
+
+        if (session) {
+            // Redirect to reset-password with token_hash and next
+            const response = NextResponse.redirect(
+                new URL(
+                    `/reset-password?access_token=${session.access_token}&refresh_token=${session.refresh_token}&token_hash=${encodeURIComponent(token_hash)}&next=${encodeURIComponent(next)}`,
+                    request.url,
+                ),
+            );
+
+            // 🔹 Attach Supabase session cookies manually
+            response.cookies.set({
+                name: "sb-access-token",
+                value: session.access_token,
+                path: "/",
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production", // false for localhost
+                sameSite: "lax",
+            });
+
+            response.cookies.set({
+                name: "sb-refresh-token",
+                value: session.refresh_token,
+                path: "/",
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production", // false for localhost
+                sameSite: "lax",
+            });
+
+            return response;
+        }
+    }
+
+    // Fallback for invalid type
+    return NextResponse.redirect(new URL("/error", request.url));
 }

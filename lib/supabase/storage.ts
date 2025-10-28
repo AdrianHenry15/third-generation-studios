@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { supabase } from "./client";
+import { extractTrackPathFromUrl } from "./storage-helpers";
 
 // Types of supported buckets
 type BucketName = "album-covers" | "avatars" | "track-urls";
@@ -94,20 +95,6 @@ export function getPublicUrl(bucket: BucketName, path: string): string {
 }
 
 /**
- * Returns a signed URL for a file in a private bucket with a default expiry of 1 hour.
- */
-export async function getSignedUrl(bucket: BucketName, path: string, expiresIn: number = 3600): Promise<string | null> {
-    const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, expiresIn);
-
-    if (error) {
-        console.error("Error creating signed URL:", error.message);
-        return null;
-    }
-
-    return data.signedUrl;
-}
-
-/**
  * Deletes a file from a bucket.
  */
 export async function deleteFile(bucket: BucketName, path: string): Promise<boolean> {
@@ -131,4 +118,31 @@ export async function listFiles(bucket: BucketName, folder: string = "") {
         return [];
     }
     return data;
+}
+
+export async function getSignedUrl(bucket: BucketName, pathOrUrl: string, expiresIn: number = 3600): Promise<string | null> {
+    try {
+        let path = pathOrUrl;
+
+        // If a full URL is provided, extract the relative storage path
+        if (pathOrUrl.startsWith("http")) {
+            const urlObj = new URL(pathOrUrl);
+            const prefix = `/object/${bucket}/`;
+            const idx = urlObj.pathname.indexOf(prefix);
+            if (idx === -1) throw new Error("Invalid URL for bucket");
+            path = urlObj.pathname.slice(idx + prefix.length);
+        }
+
+        const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, expiresIn);
+
+        if (error) {
+            console.error("Error creating signed URL:", error.message, { bucket, path });
+            return null;
+        }
+
+        return data.signedUrl;
+    } catch (err: any) {
+        console.error("getSignedUrl failed:", err.message);
+        return null;
+    }
 }

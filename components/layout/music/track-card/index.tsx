@@ -22,8 +22,6 @@ interface ITrackCardProps {
 
 const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
-    const { data: profile } = useProfile(user?.id || "", !!user?.id);
-    const router = useRouter();
 
     // Compute album cover safely - moved outside the conditional
     const albumCover = useMemo(() => {
