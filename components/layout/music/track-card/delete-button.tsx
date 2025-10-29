@@ -10,28 +10,43 @@ const DeleteButton = ({ track }: { track: TrackWithRelations }) => {
     const closeModal = useModalStore((state) => state.closeModal);
     const deleteAlbum = useDeleteAlbum();
     const deleteTrack = useDeleteTrack();
+
     const handleDeleteClick = () => {
+        const isSingleOrRemix = track.album?.type === "Single" || track.album?.type === "Remix";
+        const deleteMessage = isSingleOrRemix ? `Delete "${track.title}" and its album?` : `Delete "${track.title}"?`;
+
         openModal("confirm", {
-            title: `Delete "${track.title}"?`,
+            title: deleteMessage,
             confirmText: "Delete",
             cancelText: "Cancel",
             onConfirm: async () => {
                 try {
-                    await deleteAlbum.mutateAsync(track.album_id);
+                    // Delete track first
                     await deleteTrack.mutateAsync(track.id);
+
+                    // If it's a single or remix, delete the album too
+                    if (isSingleOrRemix && track.album_id) {
+                        await deleteAlbum.mutateAsync(track.album_id);
+                    }
+
                     closeModal();
                     openModal("success", {
-                        title: `"Track Deleted.`,
+                        title: "Track Deleted",
                         confirmText: "Continue",
                         cancelText: "Close",
                         onConfirm: () => closeModal(),
                     });
                 } catch (error) {
                     console.error("Failed to delete track:", error);
+                    openModal("error", {
+                        title: "Error",
+                        errors: ["Failed to delete track. Please try again."],
+                    });
                 }
             },
         });
     };
+
     return (
         <button
             onClick={handleDeleteClick}
