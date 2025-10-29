@@ -630,7 +630,7 @@ export type Database = {
       uid_cached: { Args: never; Returns: string }
     }
     Enums: {
-      album_type: "Single" | "EP" | "Album"
+      album_type: "Single" | "Remix" | "Album"
       credit_role_type:
         | "composer"
         | "producer"
@@ -772,7 +772,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      album_type: ["Single", "EP", "Album"],
+      album_type: ["Single", "Remix", "Album"],
       credit_role_type: [
         "composer",
         "producer",

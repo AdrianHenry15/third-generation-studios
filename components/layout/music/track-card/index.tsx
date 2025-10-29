@@ -9,10 +9,12 @@ import LockButton from "./lock-button";
 import TypeLabel from "./type-label";
 import LikeButton from "../../../ui/buttons/like-button";
 import { useAuthStore } from "@/stores/auth-store";
-import { useProfile } from "@/hooks/public/use-profiles";
 import AddToPlaylistButton from "../../../ui/buttons/add-to-playlist/playlist-button";
 import RemixCard from "./remix-card";
 import { TrackWithRelations } from "@/lib/types/database";
+import { useModalStore } from "@/stores/modal-store";
+import { useDeleteTrack } from "@/hooks/music/use-tracks";
+import DeleteButton from "./delete-button";
 
 interface ITrackCardProps {
     track: TrackWithRelations;
@@ -91,6 +93,7 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                         <AddToPlaylistButton trackId={track.id} />
                     </div>
                 )}
+                {user && user.id === track.artist_id && <DeleteButton track={track} />}
 
                 {/* External Links */}
                 {/* {track.type === "Released" && album?.name && (

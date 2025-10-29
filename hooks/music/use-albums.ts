@@ -382,8 +382,8 @@ export function useSingles() {
     return useAlbumsByType("Single");
 }
 
-export function useEPs() {
-    return useAlbumsByType("EP");
+export function useRemixes() {
+    return useAlbumsByType("Remix");
 }
 
 export function useFullAlbums() {
