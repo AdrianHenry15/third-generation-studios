@@ -13,12 +13,12 @@ import Input from "./components/input";
 import sendEmail, { sendConfirmationEmail, subscribeToNewsletter } from "@/lib/email-service";
 import Textarea from "../inputs/textarea";
 import PrivacyPolicyCheckbox from "./components/privacy-policy-checkbox";
-import StatusModal from "../modals/status-modal";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { verifyHCaptchaClient } from "@/lib/verify-hcaptcha";
 import NewsletterSubscriptionCheckbox from "./components/newsletter-subscription-checkbox";
+import { useModalStore } from "@/stores/modal-store";
 
-const HCAPTCHA_SITEKEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITEKEY as string;
+const HCAPTCHA_SITEKEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY as string;
 
 // Available plan options
 const PLAN_OPTIONS = ["", "Studio Basic", "Studio Plus", "Studio Pro", "Studio Commerce"];
@@ -33,11 +33,13 @@ type FormValues = {
 };
 
 const ContactFormOverlay = () => {
+    // Pathname
     const pathname = usePathname();
 
+    // Stores
+    const openModal = useModalStore((state) => state.openModal);
+
     const [loading, setLoading] = useState(false);
-    const [successModal, setSuccessModal] = useState(false);
-    const [errorModal, setErrorModal] = useState(false);
     const [captchaToken, setCaptchaToken] = useState<string | null>(null);
     const [captchaError, setCaptchaError] = useState<string | null>(null);
 
@@ -89,16 +91,35 @@ const ContactFormOverlay = () => {
                 // Send confirmation email to the user
                 await sendConfirmationEmail(templateParams);
                 toast.success("Your estimate has been submitted successfully!");
-                setSuccessModal(true);
+
+                // Success Modal
+                openModal("status", {
+                    title: "Request Submitted Successfully!",
+                    description: "Thank you for your submission. We'll get back to you shortly.",
+                    status: "success",
+                    buttonText: "Got it, thanks!",
+                });
+
                 reset();
             } else {
                 toast.error("There was an error submitting your estimate. Please try again.");
-                setErrorModal(true);
+                openModal("status", {
+                    title: "Submission Failed",
+                    description: "There was an error processing your request. Please try again.",
+                    status: "error",
+                    buttonText: "Try Again",
+                });
                 reset();
             }
         } catch (error) {
             console.error(error);
-            setErrorModal(true);
+            openModal("status", {
+                title: "Submission Failed",
+                description: "There was an error processing your request. Please try again.",
+                status: "error",
+                buttonText: "Try Again",
+            });
+            reset();
         } finally {
             setLoading(false);
         }
@@ -107,30 +128,6 @@ const ContactFormOverlay = () => {
     return (
         <section id="contact-form-overlay" className="flex flex-col items-center justify-center min-h-screen w-full px-4">
             {loading && <Loader />}
-
-            {/* Success Modal */}
-            {successModal && (
-                <StatusModal
-                    title="Request Submitted Successfully!"
-                    description="Thank you for your submission. We'll get back to you shortly."
-                    isOpen={successModal}
-                    closeModal={() => setSuccessModal(false)}
-                    status="success"
-                    buttonText="Got it, thanks!"
-                />
-            )}
-
-            {/* Error Modal */}
-            {errorModal && (
-                <StatusModal
-                    title="Submission Failed"
-                    description="There was an error processing your request. Please try again."
-                    isOpen={errorModal}
-                    closeModal={() => setErrorModal(false)}
-                    status="error"
-                    buttonText="Try Again"
-                />
-            )}
 
             <div className="w-full py-12 max-w-md lg:max-w-lg">
                 <div className="relative overflow-hidden bg-gray-900/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-purple-500/20 p-8">

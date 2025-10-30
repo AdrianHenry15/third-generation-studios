@@ -1,14 +1,14 @@
 import EmailTemplate from "@/components/forms/email-templates/email-template";
-import { EmailTemplateParams } from "@/lib/types";
+import { EmailTemplateParamsType } from "@/lib/types/generic-types";
 import { Resend } from "resend";
 
 export async function POST(request: Request) {
     const resend = new Resend(process.env.RESEND_API_KEY as string);
     try {
-        const body = (await request.json()) as EmailTemplateParams;
-        const { name, email, plan, productDescription } = body;
+        const body = (await request.json()) as EmailTemplateParamsType;
+        const { name, email, plan } = body;
 
-        if (!name || !email || !plan || !productDescription) {
+        if (!name || !email || !plan) {
             return Response.json({ success: false, error: "Missing required fields" }, { status: 400 });
         }
 
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
             from: `${formattedPlan} Client <ahenry@thirdgenerationstudios.com>`,
             to: ["ahenry@thirdgenerationstudios.com"],
             subject: "Third Generation Studios - Form Submission",
-            react: EmailTemplate({ name, email, plan: formattedPlan, productDescription }),
+            react: EmailTemplate({ name, email, plan: formattedPlan }),
         });
 
         if (error) {

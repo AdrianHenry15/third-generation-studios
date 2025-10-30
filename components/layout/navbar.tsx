@@ -1,47 +1,81 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/buttons/button";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import UserIcon from "../user-icon";
+import MobileNavDropdownMenu from "./mobile-nav-dropdown-menu";
+import { useModalStore } from "@/stores/modal-store";
 
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
+    const { isModalOpen, modalType } = useModalStore();
+    const openModal = useModalStore((state) => state.openModal);
+    const closeModal = useModalStore((state) => state.closeModal);
+
     const [scrolled, setScrolled] = useState(false);
     const menuRef = useRef<HTMLDivElement | null>(null);
+    const toggleRef = useRef<HTMLDivElement | null>(null);
+    const pathname = usePathname();
 
     const { scrollY } = useScroll();
     const backgroundColor = useTransform(scrollY, [0, 60], ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]);
 
+    /**
+     * ✅ Efficient scroll handler (debounced and cleaned)
+     */
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 100);
+            const isNowScrolled = window.scrollY > 100;
+            setScrolled((prev) => (prev !== isNowScrolled ? isNowScrolled : prev));
         };
 
-        window.addEventListener("scroll", handleScroll);
+        handleScroll(); // Initialize on mount
+        window.addEventListener("scroll", handleScroll, { passive: true });
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    /**
+     * ✅ Click outside handler only when nav modal is open
+     */
+    const handleClickOutside = useCallback(
+        (event: MouseEvent) => {
+            if (modalType !== "nav" || !isModalOpen) return;
+            const target = event.target as Node;
+            if (menuRef.current?.contains(target)) return;
+            if (toggleRef.current?.contains(target)) return;
+            closeModal();
+        },
+        [isModalOpen, modalType, closeModal],
+    );
+
     useEffect(() => {
-        if (!isOpen) return;
-        function handleClickOutside(event: MouseEvent) {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        }
+        if (modalType !== "nav" || !isModalOpen) return;
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isOpen]);
+    }, [isModalOpen, modalType, handleClickOutside]);
+
+    /**
+     * ✅ Close nav modal on route change
+     */
+    useEffect(() => {
+        if (isModalOpen && modalType === "nav") closeModal();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pathname]); // We only want to run this when pathname changes, not on other dependency changes
 
     const navItems = [
-        { name: "Showcase", href: "/websites" },
+        { name: "Websites", href: "/websites" },
+        { name: "Music", href: "/music" },
         { name: "Pricing", href: "/pricing" },
         { name: "Blog", href: "/blog" },
         { name: "About", href: "/about" },
     ];
-
+    if (pathname.startsWith("/solo-queue")) {
+        return null; // Don't render the navbar on /solo-queue routes
+    }
     return (
         <motion.header
             style={{ backgroundColor }}
@@ -86,43 +120,36 @@ export default function Navbar() {
                             </Button>
                         </Link>
                     </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                    >
+                        <UserIcon />
+                    </motion.div>
                 </div>
 
-                <div className="md:hidden">
-                    <Button variant="ghost" size="icon" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
-                        {isOpen ? <X /> : <Menu />}
+                <div className="md:hidden flex items-center" ref={toggleRef}>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() =>
+                            isModalOpen && modalType === "nav"
+                                ? closeModal()
+                                : openModal("nav", {
+                                      menuRef: menuRef,
+                                      navItems: navItems,
+                                      isUserIcon: false,
+                                  })
+                        }
+                        aria-label="Toggle menu"
+                        aria-expanded={isModalOpen && modalType === "nav"}
+                    >
+                        {isModalOpen && modalType === "nav" ? <X /> : <Menu />}
                     </Button>
+                    <UserIcon />
                 </div>
             </div>
-
-            {/* Mobile menu */}
-            {isOpen && (
-                <motion.div
-                    ref={menuRef}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="md:hidden glass w-full rounded-b-2xl"
-                >
-                    <div className="px-4 py-4 flex flex-col space-y-4">
-                        {navItems.map((item) => (
-                            <a
-                                key={item.name}
-                                href={item.href}
-                                className="text-gray-300 hover:text-white py-2"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                {item.name}
-                            </a>
-                        ))}
-                        <Link href="/contact-us" onClick={() => setIsOpen(false)}>
-                            <Button className="bg-gradient-to-r from-green-600 to-green-800 text-white rounded-xl hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:from-green-500 hover:to-green-700 transition-all duration-300">
-                                Get in Touch
-                            </Button>
-                        </Link>
-                    </div>
-                </motion.div>
-            )}
         </motion.header>
     );
 }

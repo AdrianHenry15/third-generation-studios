@@ -2,8 +2,8 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { motion, useInView, Variants } from "framer-motion";
+import { Button } from "@/components/ui/buttons/button";
 import { ArrowRight, Code, Zap, Sparkles, Globe, Rocket } from "lucide-react";
 import Link from "next/link";
 
@@ -11,7 +11,7 @@ export default function HeroSection() {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: false, amount: 0.3 });
 
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -21,7 +21,7 @@ export default function HeroSection() {
         },
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 30 },
         visible: {
             opacity: 1,
@@ -30,7 +30,7 @@ export default function HeroSection() {
         },
     };
 
-    const codeAnimation = {
+    const codeAnimation: Variants = {
         hidden: { opacity: 1, scale: 0.9, rotateY: -15 },
         visible: {
             opacity: 1,
@@ -44,13 +44,13 @@ export default function HeroSection() {
         y: [-10, 10, -10],
         transition: {
             duration: 6,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
+            repeat: Infinity,
+            ease: "easeInOut" as const,
         },
     };
 
     return (
-        <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+        <section className="relative pt-24 pb-20 overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
             <div className="absolute inset-0">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
                 <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-full blur-3xl animate-pulse"></div>

@@ -5,24 +5,21 @@ import { Dialog, DialogTitle, Transition, TransitionChild } from "@headlessui/re
 import { motion } from "framer-motion";
 import { XCircle } from "lucide-react";
 
-import Button from "../ui/alt-button";
+import Button from "../ui/buttons/alt-button";
+import { useModalStore } from "@/stores/modal-store";
 
 interface IOpenWebsiteModalProps {
-    isOpen: boolean;
-    closeModal: () => void;
     title: string;
     link: string;
 }
 
-export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpenWebsiteModalProps) {
+export default function OpenLinkModal({ title, link }: IOpenWebsiteModalProps) {
+    // Stores
+    const { isModalOpen } = useModalStore();
+    const closeModal = useModalStore((state) => state.closeModal);
     const overlayVariants = {
         hidden: { opacity: 0 },
         visible: { opacity: 1, transition: { duration: 0.3 } },
-    };
-
-    const panelVariants = {
-        hidden: { opacity: 0, scale: 0.95, y: -20 },
-        visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
     };
 
     const openLink = () => {
@@ -31,10 +28,10 @@ export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpen
     };
 
     return (
-        <Transition show={isOpen} as={Fragment} appear>
+        <Transition show={isModalOpen} as={Fragment} appear>
             <Dialog as="div" className="relative z-50" onClose={closeModal}>
                 {/* Overlay */}
-                <Transition.Child
+                <TransitionChild
                     as={motion.div}
                     variants={overlayVariants}
                     initial="hidden"
@@ -47,7 +44,6 @@ export default function OpenLinkModal({ isOpen, closeModal, title, link }: IOpen
                 <div className="fixed inset-0 flex items-center justify-center p-4">
                     <TransitionChild
                         as={motion.div}
-                        variants={panelVariants}
                         initial="hidden"
                         animate="visible"
                         exit="hidden"

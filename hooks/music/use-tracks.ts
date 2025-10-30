@@ -1,0 +1,286 @@
+import { useQuery, useMutation, useQueryClient, useQueries } from "@tanstack/react-query";
+import {
+    fetchAllTracks,
+    fetchTrackById,
+    fetchTracksByArtist,
+    fetchTracksByAlbum,
+    fetchPublicTracks,
+    fetchTrackWithRelations,
+    createTrack,
+    updateTrack,
+    deleteTrack,
+    incrementTrackPlays,
+    likeTrack,
+    unlikeTrack,
+    fetchLikedTrackIdsByUser,
+    fetchUserTrackLike,
+    fetchTracksWithRelationsByArtist,
+    fetchTracksWithRelations,
+} from "@/lib/fetchers/track-fetchers";
+import { Track, TrackInsert, TrackUpdate } from "@/lib/types/database";
+import { useTrackUpload as useTrackStorageUpload } from "@/hooks/storage/use-music-storage";
+
+// Query Keys
+export const trackKeys = {
+    all: ["tracks"] as const,
+    lists: () => [...trackKeys.all, "list"] as const,
+    list: (filters: string) => [...trackKeys.lists(), { filters }] as const,
+    details: () => [...trackKeys.all, "detail"] as const,
+    detail: (id: string) => [...trackKeys.details(), id] as const,
+    byArtist: (artistId: string) => [...trackKeys.all, "artist", artistId] as const,
+    byAlbum: (albumId: string) => [...trackKeys.all, "album", albumId] as const,
+    public: () => [...trackKeys.all, "public"] as const,
+    withRelations: (id: string) => [...trackKeys.detail(id), "relations"] as const,
+    userLike: (trackId: string, userId: string) => [...trackKeys.detail(trackId), "like", userId] as const,
+    likedByUser: (userId: string) => [...trackKeys.all, "liked", userId] as const,
+};
+
+// Basic Query Hooks
+export function useAllTracks() {
+    return useQuery({
+        queryKey: trackKeys.lists(),
+        queryFn: fetchAllTracks,
+        staleTime: 5 * 60 * 1000, // 5 minutes
+    });
+}
+
+export function useTrack(id: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.detail(id),
+        queryFn: () => fetchTrackById(id),
+        enabled: !!id && enabled,
+        staleTime: 10 * 60 * 1000, // 10 minutes
+    });
+}
+
+// Fetch multiple tracks by IDs
+export function useTracksByIds(ids: string[], enabled = true) {
+    return useQueries({
+        queries: ids.map((id) => ({
+            queryKey: trackKeys.detail(id),
+            queryFn: () => fetchTrackById(id),
+            enabled: !!id && enabled,
+            staleTime: 10 * 60 * 1000,
+        })),
+    });
+}
+
+export function useTracksWithRelationsByIds(ids: string[], enabled = true) {
+    return useQueries({
+        queries: ids.map((id) => ({
+            queryKey: trackKeys.withRelations(id),
+            queryFn: async () => {
+                try {
+                    console.log(`🔍 Fetching track with relations for ID: ${id}`);
+                    const data = await fetchTrackWithRelations(id);
+                    console.log(`✅ Successfully fetched track ${id}:`, data);
+                    return data;
+                } catch (error) {
+                    if (error instanceof Error) {
+                        console.error(`❌ Error fetching track ${id}:`, error.message, error.stack);
+                    } else if (typeof error === "object" && error !== null) {
+                        console.error(`❌ Error fetching track ${id}:`, JSON.stringify(error));
+                    } else {
+                        console.error(`❌ Error fetching track ${id}:`, error);
+                    }
+                    throw error;
+                }
+            },
+            enabled: !!id && enabled,
+            staleTime: 10 * 60 * 1000,
+        })),
+    });
+}
+
+export function useTracksByArtist(artistId: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.byArtist(artistId),
+        queryFn: () => fetchTracksByArtist(artistId),
+        enabled: !!artistId && enabled,
+        staleTime: 5 * 60 * 1000,
+    });
+}
+
+export function useTracksWithRelationsByArtist(artistId: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.byArtist(artistId),
+        queryFn: () => fetchTracksWithRelationsByArtist(artistId),
+        enabled: !!artistId && enabled,
+        staleTime: 5 * 60 * 1000,
+    });
+}
+
+export function useTracksWithRelations(enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.all,
+        queryFn: fetchTracksWithRelations,
+        enabled,
+        staleTime: 10 * 60 * 1000, // 10 minutes
+    });
+}
+
+export function useTracksByAlbum(albumId: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.byAlbum(albumId),
+        queryFn: () => fetchTracksByAlbum(albumId),
+        enabled: !!albumId && enabled,
+        staleTime: 5 * 60 * 1000,
+    });
+}
+
+export function usePublicTracks() {
+    return useQuery({
+        queryKey: trackKeys.public(),
+        queryFn: fetchPublicTracks,
+        staleTime: 3 * 60 * 1000, // 3 minutes for public content
+    });
+}
+
+export function useTrackWithRelations(id: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.withRelations(id),
+        queryFn: () => fetchTrackWithRelations(id),
+        enabled: !!id && enabled,
+        staleTime: 10 * 60 * 1000,
+    });
+}
+
+// Mutation Hooks
+export function useCreateTrack() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (track: TrackInsert) => createTrack(track),
+        onSuccess: (newTrack) => {
+            // Invalidate and refetch tracks lists
+            queryClient.invalidateQueries({ queryKey: trackKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: trackKeys.public() });
+            queryClient.invalidateQueries({ queryKey: trackKeys.byArtist(newTrack.artist_id) });
+            queryClient.invalidateQueries({ queryKey: trackKeys.byAlbum(newTrack.album_id) });
+
+            // Set the new track in cache
+            queryClient.setQueryData(trackKeys.detail(newTrack.id), newTrack);
+        },
+    });
+}
+
+export function useUpdateTrack() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ id, updates }: { id: string; updates: TrackUpdate }) => updateTrack(id, updates),
+        onSuccess: (updatedTrack) => {
+            // Update track in cache
+            queryClient.setQueryData(trackKeys.detail(updatedTrack.id), updatedTrack);
+
+            // Invalidate related queries
+            queryClient.invalidateQueries({ queryKey: trackKeys.byArtist(updatedTrack.artist_id) });
+            queryClient.invalidateQueries({ queryKey: trackKeys.byAlbum(updatedTrack.album_id) });
+            queryClient.invalidateQueries({ queryKey: trackKeys.withRelations(updatedTrack.id) });
+        },
+    });
+}
+
+export function useDeleteTrack() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: deleteTrack,
+        onSuccess: (_, deletedId) => {
+            // Remove track from cache
+            queryClient.removeQueries({ queryKey: trackKeys.detail(deletedId) });
+
+            // Invalidate lists
+            queryClient.invalidateQueries({ queryKey: trackKeys.lists() });
+            queryClient.invalidateQueries({ queryKey: trackKeys.public() });
+            queryClient.invalidateQueries({ queryKey: trackKeys.all });
+        },
+    });
+}
+
+export function useIncrementTrackPlays() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: incrementTrackPlays,
+        onSuccess: (_, trackId) => {
+            // Optimistically update play count
+            queryClient.setQueryData(trackKeys.detail(trackId), (old: Track | undefined) => {
+                if (old) {
+                    return { ...old, plays: old.plays + 1 };
+                }
+                return old;
+            });
+        },
+    });
+}
+
+export function useUserTrackLike(trackId: string, userId: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.userLike(trackId, userId),
+        queryFn: () => fetchUserTrackLike(trackId, userId),
+        enabled: !!trackId && !!userId && enabled,
+        staleTime: 15 * 1000,
+    });
+}
+
+export function useLikeTrack() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ trackId, userId }: { trackId: string; userId: string }) => likeTrack(trackId, userId),
+        onSuccess: (_, { trackId, userId }) => {
+            queryClient.invalidateQueries({ queryKey: trackKeys.userLike(trackId, userId) });
+            // NEW: refresh the user's liked list
+            queryClient.invalidateQueries({ queryKey: trackKeys.likedByUser(userId) });
+        },
+    });
+}
+
+export function useUnlikeTrack() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ trackId, userId }: { trackId: string; userId: string }) => unlikeTrack(trackId, userId),
+        onSuccess: (_, { trackId, userId }) => {
+            queryClient.invalidateQueries({ queryKey: trackKeys.userLike(trackId, userId) });
+            // NEW: refresh the user's liked list
+            queryClient.invalidateQueries({ queryKey: trackKeys.likedByUser(userId) });
+        },
+    });
+}
+
+export function useLikedTrackIds(userId: string, enabled = true) {
+    return useQuery({
+        queryKey: trackKeys.likedByUser(userId),
+        queryFn: () => fetchLikedTrackIdsByUser(userId),
+        enabled: !!userId && enabled,
+        staleTime: 30 * 1000,
+    });
+}
+
+// Re-export the storage upload hook for track uploads with audio files
+export function useTrackUploadWithFile() {
+    return useTrackStorageUpload();
+}
+
+// Combined hook for like/unlike toggle
+export function useToggleTrackLike(trackId: string, userId: string) {
+    const { data: userLike } = useUserTrackLike(trackId, userId);
+    const likeMutation = useLikeTrack();
+    const unlikeMutation = useUnlikeTrack();
+
+    const toggleLike = () => {
+        if (userLike) {
+            unlikeMutation.mutate({ trackId, userId });
+        } else {
+            likeMutation.mutate({ trackId, userId });
+        }
+    };
+
+    return {
+        isLiked: !!userLike,
+        toggleLike,
+        isLoading: likeMutation.isPending || unlikeMutation.isPending,
+    };
+}

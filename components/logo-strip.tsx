@@ -38,7 +38,7 @@ export default function LogoStrip() {
             y: 0,
             transition: {
                 duration: 0.6,
-                ease: [0.25, 0.1, 0.25, 1], // custom cubic bezier for smoother motion
+                ease: [0.25, 0.1, 0.25, 1] as const, // custom cubic bezier for smoother motion
             },
         },
     };
