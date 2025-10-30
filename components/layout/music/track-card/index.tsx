@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
 import LockButton from "./lock-button";
@@ -12,9 +12,8 @@ import { useAuthStore } from "@/stores/auth-store";
 import AddToPlaylistButton from "../../../ui/buttons/add-to-playlist/playlist-button";
 import RemixCard from "./remix-card";
 import { TrackWithRelations } from "@/lib/types/database";
-import { useModalStore } from "@/stores/modal-store";
-import { useDeleteTrack } from "@/hooks/music/use-tracks";
 import DeleteButton from "./delete-button";
+import ExternalLinkButton from "../external-link-button";
 
 interface ITrackCardProps {
     track: TrackWithRelations;
@@ -24,6 +23,7 @@ interface ITrackCardProps {
 
 const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
+    const pathname = usePathname();
 
     // Compute album cover safely - moved outside the conditional
     const albumCover = useMemo(() => {
@@ -93,13 +93,13 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                         <AddToPlaylistButton trackId={track.id} />
                     </div>
                 )}
-                {user && user.id === track.artist_id && <DeleteButton track={track} />}
+                {user && user.id === track.artist_id && pathname === "/solo-queue/studio/my-tracks" && <DeleteButton track={track} />}
 
                 {/* External Links */}
-                {/* {track.type === "Released" && album?.name && (
+                {/* {track.album?.type === "Remix" && (
                     <ExternalLinkButton
-                        albumName={album.name}
-                        link={`https://album.link/tgs-${album.name.toLowerCase().replace(/\s+/g, "-")}`}
+                        albumName={track.album.name}
+                        link={track.album.}
                     />
                 )} */}
             </div>
