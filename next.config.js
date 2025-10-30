@@ -1,11 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'standalone',
-    // experimental: {
-    //     serverActions: {
-    //         bodySizeLimit: '2mb',
-    //     },
-    // },
+    serverExternalPackages: ['@sanity/client', '@sanity/image-url'],
+    /* config options here */
     images: {
         remotePatterns: [
             {
