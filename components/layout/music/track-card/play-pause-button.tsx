@@ -27,7 +27,13 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
     const isCurrentTrack = currentTrackId === track.id;
     const isPlaying = isCurrentTrack && contextIsPlaying;
     const loading = isCurrentTrack && contextIsLoading;
-    const disabled = locked || loading || track.url === null || track.url === "";
+    const disabled =
+        locked ||
+        loading ||
+        track.url === null ||
+        track.url === "" ||
+        (!user?.id && track.album!.type === "Remix") ||
+        (!user?.id && track.type === "Remix");
 
     const handlePlayPause = async () => {
         if (locked) return;

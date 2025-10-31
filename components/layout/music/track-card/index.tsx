@@ -10,11 +10,10 @@ import TypeLabel from "./type-label";
 import LikeButton from "../../../ui/buttons/like-button";
 import { useAuthStore } from "@/stores/auth-store";
 import AddToPlaylistButton from "../../../ui/buttons/add-to-playlist/playlist-button";
-import RemixCard from "./remix-card";
 import { TrackWithRelations } from "@/lib/types/database";
 import DeleteButton from "./delete-button";
-import ExternalLinkButton from "../external-link-button";
 import Link from "next/link";
+import TrackCreditsIcon from "./track-credits-icon";
 
 interface ITrackCardProps {
     track: TrackWithRelations;
@@ -33,12 +32,6 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
         const match = albumImages.find((img) => img.album_id === track.album_id);
         return match?.url || albumImages[0]?.url || "/earth-splash.jpg";
     }, [track]);
-
-    // If this is a remix, delegate to RemixCard and pass only the track
-    if (track.type === "Remix" && track.remixes && track.remixes.length > 0) {
-        // Pass the first remix relation (or adjust as needed)
-        return <RemixCard track={track} remixData={track.remixes[0]} onUnlock={onUnlock} />;
-    }
 
     return (
         <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
@@ -67,6 +60,8 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                 {!track.url && (
                     <p className="mt-2 text-xs text-red-400 text-center">Preview not available — use links below for full track</p>
                 )}
+
+                <TrackCreditsIcon trackId={track.id} />
 
                 <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
                 {!user && (

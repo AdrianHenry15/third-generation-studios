@@ -1,4 +1,3 @@
-// lib/api/trackCredits.ts
 import { supabase } from "@/lib/supabase/client";
 import type { TrackCreditWithRelations, TrackCreditInsert, TrackCreditUpdate } from "@/lib/types/database";
 
@@ -23,8 +22,7 @@ export async function fetchTrackCreditsByTrackId(trackId: string): Promise<Track
       )
     `,
         )
-        .eq("track_id", trackId)
-        .order("role", { ascending: true });
+        .eq("track_id", trackId);
 
     if (error) throw error;
     return data as TrackCreditWithRelations[];

@@ -5,7 +5,6 @@ import OpenLinkModal from "./open-link-modal";
 import ErrorModal from "./error-modal";
 import SuccessModal from "./success-modal";
 import StatusModal from "./status-modal";
-import RemixDisclaimerModal from "./remix-disclaimer-modal";
 import ConfirmModal from "./confirm-modal";
 import ShareModal from "./share-modal";
 import PlaylistModal from "./playlist-modal";
@@ -35,8 +34,8 @@ export default function ModalRoot() {
             return <SuccessModal {...(payload as ModalPayloads["success"])} />;
         case "status":
             return <StatusModal {...(payload as ModalPayloads["status"])} />;
-        case "remix_disclaimer":
-            return <RemixDisclaimerModal {...(payload as ModalPayloads["remix_disclaimer"])} />;
+        case "track_credits_info":
+            return <TrackCreditsModal {...(payload as ModalPayloads["track_credits_info"])} />;
         case "confirm":
             return <ConfirmModal {...(payload as ModalPayloads["confirm"])} />;
         case "share":
