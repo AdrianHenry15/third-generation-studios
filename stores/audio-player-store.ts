@@ -89,7 +89,7 @@ export const useAudioPlayerStore = create<AudioPlayerState>((set, get) => {
         hasPreviousTrack: false,
 
         // --- MAIN ACTION: playTrack ---
-        playTrack: async (track, newPlaylist) => {
+        playTrack: async (track, newPlaylist = []) => {
             if (!track) return;
 
             initAudio();
@@ -105,17 +105,16 @@ export const useAudioPlayerStore = create<AudioPlayerState>((set, get) => {
 
             try {
                 // Update playlist context
-                if (newPlaylist) {
+                if (newPlaylist.length > 0) {
+                    const index = newPlaylist.findIndex((t) => t.id === track.id);
                     set({
                         playlist: newPlaylist,
-                        currentTrackIndex: Math.max(
-                            0,
-                            newPlaylist.findIndex((t) => t.id === track.id),
-                        ),
+                        currentTrackIndex: index >= 0 ? index : 0,
                     });
                 } else {
                     const { playlist: currentList } = get();
                     const idx = currentList.findIndex((t) => t.id === track.id);
+
                     if (idx >= 0) {
                         set({ currentTrackIndex: idx });
                     } else {
