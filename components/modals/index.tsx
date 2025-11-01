@@ -10,7 +10,7 @@ import ShareModal from "./share-modal";
 import MobileNavDropdownMenu from "../layout/mobile-nav-dropdown-menu";
 import { PlaylistTrackOptionsModal } from "./playlist-track-options-modal";
 import TrackCreditsModal from "./track-credits-modal";
-import AddToPlaylistModal from "./add-to-playlist-Modal";
+import AddToPlaylistModal from "./add-to-playlist-modal";
 import CreatePlaylistModal from "./create-playlist-modal";
 
 export default function ModalRoot() {

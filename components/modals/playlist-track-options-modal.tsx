@@ -3,12 +3,13 @@ import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
 import { useModalStore } from "@/stores/modal-store";
 import { useRemoveTrackFromPlaylist } from "@/hooks/music/use-playlists";
 import { PlusCircle, Trash2, Info, Album, User, Share2 } from "lucide-react";
+import { useAuthStore } from "@/stores/auth-store";
 
-type PlaylistTrackOption = "share" | "addToPlaylist" | "remove" | "viewCredits" | "goToAlbum" | "goToArtist";
+type PlaylistTrackOption = "share" | "add_to_playlist" | "remove" | "viewCredits" | "goToAlbum" | "goToArtist";
 
 const optionLabels: Record<PlaylistTrackOption, string> = {
     share: "Share",
-    addToPlaylist: "Add to another playlist",
+    add_to_playlist: "Add to another playlist",
     remove: "Remove from this playlist",
     viewCredits: "View song credits",
     goToAlbum: "Go to album",
@@ -17,7 +18,7 @@ const optionLabels: Record<PlaylistTrackOption, string> = {
 
 const optionIcons: Record<PlaylistTrackOption, React.ReactNode> = {
     share: <Share2 size={18} />,
-    addToPlaylist: <PlusCircle size={18} />,
+    add_to_playlist: <PlusCircle size={18} />,
     remove: <Trash2 size={18} />,
     viewCredits: <Info size={18} />,
     goToAlbum: <Album size={18} />,
@@ -36,6 +37,7 @@ export const PlaylistTrackOptionsModal: React.FC<PlaylistTrackOptionsModalProps>
     const closeModal = useModalStore((state) => state.closeModal);
     // Hooks
     const { mutate: removeTrack, isPending: removing } = useRemoveTrackFromPlaylist();
+    const { user } = useAuthStore();
     // State
     const [copied, setCopied] = useState(false);
 
@@ -49,8 +51,8 @@ export const PlaylistTrackOptionsModal: React.FC<PlaylistTrackOptionsModalProps>
                 setTimeout(() => setCopied(false), 1200);
                 break;
             }
-            case "addToPlaylist":
-                openModal("add_to_playlist", { trackId: track?.id });
+            case "add_to_playlist":
+                openModal("add_to_playlist", { userId: user!.id, trackId: track?.id });
                 break;
             case "remove":
                 if (playlistTrack.id) {
@@ -76,7 +78,7 @@ export const PlaylistTrackOptionsModal: React.FC<PlaylistTrackOptionsModalProps>
         if (option !== "remove") close();
     };
 
-    const options: PlaylistTrackOption[] = ["share", "addToPlaylist", "remove", "viewCredits", "goToAlbum", "goToArtist"];
+    const options: PlaylistTrackOption[] = ["share", "add_to_playlist", "remove", "viewCredits", "goToAlbum", "goToArtist"];
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/60">
