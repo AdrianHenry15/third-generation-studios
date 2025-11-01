@@ -6,6 +6,7 @@ import { SkipBack, SkipForward, Play, Pause, X } from "lucide-react";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import PlayerSeekBar from "./player-seek-bar";
 import PlayerVolumeControl from "./player-volume-control";
+import { useAlbumWithImages } from "@/hooks/music/use-albums";
 
 interface DesktopPlayerProps {
     setExpanded: (val: boolean) => void;
@@ -28,25 +29,38 @@ const DesktopPlayer: React.FC<DesktopPlayerProps> = ({ setExpanded }) => {
         setVolume,
         muted,
         toggleMute,
+        playlist,
     } = useAudioPlayerStore();
+    const { data: albumData, isLoading: albumLoading } = useAlbumWithImages(currentTrack!.album_id, !!currentTrack);
 
     if (!currentTrack) return null;
 
     const handlePlayPause = () => {
         if (isPlaying) pauseTrack();
         else {
-            if (!canPlay) void playTrack(currentTrack);
+            if (!canPlay) void playTrack(currentTrack, playlist);
             else resume();
         }
     };
 
-    const albumCover = currentTrack.album!.images![0].url || "/placeholder-album.png";
+    const albumCover = albumData?.album_images?.[0]?.url || "/placeholder-album.png";
 
     return (
         <div className="hidden md:flex fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95vw] max-w-2xl bg-gray-900/95 rounded-2xl shadow-2xl items-center px-4 py-3 gap-4 border border-gray-800">
             {/* Album Art */}
             <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                <Image src={albumCover} alt={currentTrack.title} fill className="object-cover" />
+                {albumLoading ? (
+                    <div className="w-12 h-12 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                    <Image
+                        src={albumCover}
+                        alt={currentTrack.title}
+                        fill
+                        quality={85}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover"
+                    />
+                )}
             </div>
 
             {/* Track Info */}

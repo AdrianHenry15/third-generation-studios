@@ -34,7 +34,14 @@ export default function ImageUpload({ setAlbumData }: { setAlbumData: (data: any
             >
                 {preview ? (
                     <div className="relative w-full h-48 rounded-xl overflow-hidden">
-                        <Image src={preview} alt="Album Preview" fill className="object-cover rounded-xl" />
+                        <Image
+                            src={preview}
+                            alt="Album Preview"
+                            fill
+                            quality={85}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover rounded-xl"
+                        />
                         <button
                             onClick={clearImage}
                             className="absolute top-2 right-2 bg-black/60 hover:bg-black/80 p-1 rounded-full text-white transition"

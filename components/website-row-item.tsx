@@ -58,7 +58,14 @@ export default function WebsiteRowItem({ currentWebsite }: IWebsiteRowItemProps)
             <div className="relative flex flex-col w-full max-w-xs min-w-[18rem] h-[28rem] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-xl overflow-hidden shadow-lg group transition-all duration-300">
                 {/* Image */}
                 <div className="relative w-full h-48 sm:h-56 md:h-56 lg:h-56 flex-shrink-0">
-                    <Image src={currentWebsite.img} alt={currentWebsite.title} fill className="object-cover" />
+                    <Image
+                        src={currentWebsite.img}
+                        alt={currentWebsite.title}
+                        fill
+                        quality={85}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover"
+                    />
                     {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10" />
                     <div className="absolute bottom-2 left-2 bg-black bg-opacity-60 p-1 rounded-full z-20">

@@ -46,6 +46,7 @@ export function DashboardTrackListItem({
                         fill
                         className="object-cover"
                         quality={85}
+                        sizes="(max-width: 640px) 100vw, 200px"
                         unoptimized={getTrackImage(track).startsWith("data:")}
                     />
                 </div>
@@ -68,7 +69,9 @@ export function DashboardTrackListItem({
             <div className="flex items-center gap-3">
                 <span className="text-neutral-400 text-sm w-16 text-right">{formatDuration(track.duration)}</span>
                 <LikeButton trackId={track.id} />
-                <AddToPlaylistButton iconSize={12} trackId={track.id} />
+                <div onClick={(e) => e.stopPropagation()}>
+                    <AddToPlaylistButton iconSize={12} trackId={track.id} />
+                </div>
             </div>
         </div>
     );

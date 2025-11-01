@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Play, Pause } from "lucide-react";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
+import { useAlbumWithImages } from "@/hooks/music/use-albums";
 
 interface MobileCollapsedBarProps {
     setExpanded: (val: boolean) => void;
@@ -11,6 +12,7 @@ interface MobileCollapsedBarProps {
 
 const MobileCollapsedBar: React.FC<MobileCollapsedBarProps> = ({ setExpanded }) => {
     const { currentTrack, isPlaying, resume, pauseTrack, isLoading } = useAudioPlayerStore();
+    const { data: albumData, isLoading: albumLoading } = useAlbumWithImages(currentTrack!.album_id, !!currentTrack);
 
     if (!currentTrack) return null;
 
@@ -20,7 +22,7 @@ const MobileCollapsedBar: React.FC<MobileCollapsedBarProps> = ({ setExpanded }) 
         else resume();
     };
 
-    const albumCover = currentTrack.album!.images![0].url || "/placeholder-album.png";
+    const albumCover = albumData?.album_images?.[0]?.url || "/placeholder-album.png";
 
     return (
         <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95vw] max-w-2xl">
@@ -32,7 +34,18 @@ const MobileCollapsedBar: React.FC<MobileCollapsedBarProps> = ({ setExpanded }) 
             >
                 {/* Album */}
                 <div className="relative w-11 h-11 rounded-lg overflow-hidden flex-shrink-0">
-                    <Image src={albumCover} alt={currentTrack.title} fill className="object-cover" />
+                    {albumLoading ? (
+                        <div className="w-12 h-12 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    ) : (
+                        <Image
+                            src={albumCover}
+                            alt={currentTrack.title}
+                            fill
+                            quality={85}
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover"
+                        />
+                    )}
                 </div>
 
                 {/* Title + Artist */}

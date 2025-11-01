@@ -4,7 +4,7 @@ import { useModalStore } from "@/stores/modal-store";
 import { useAuthStore } from "@/stores/auth-store";
 import { useCreatePlaylist } from "@/hooks/music/use-playlists";
 
-const PlaylistModal = () => {
+const CreatePlaylistModal = () => {
     // State
     const [playlistName, setPlaylistName] = React.useState("");
     // Stores
@@ -98,4 +98,4 @@ const PlaylistModal = () => {
     );
 };
 
-export default PlaylistModal;
+export default CreatePlaylistModal;

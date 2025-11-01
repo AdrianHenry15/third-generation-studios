@@ -7,10 +7,11 @@ import SuccessModal from "./success-modal";
 import StatusModal from "./status-modal";
 import ConfirmModal from "./confirm-modal";
 import ShareModal from "./share-modal";
-import PlaylistModal from "./playlist-modal";
 import MobileNavDropdownMenu from "../layout/mobile-nav-dropdown-menu";
 import { PlaylistTrackOptionsModal } from "./playlist-track-options-modal";
 import TrackCreditsModal from "./track-credits-modal";
+import AddToPlaylistModal from "./add-to-playlist-Modal";
+import CreatePlaylistModal from "./create-playlist-modal";
 
 export default function ModalRoot() {
     const isModalOpen = useModalStore((state) => state.isModalOpen);
@@ -25,7 +26,9 @@ export default function ModalRoot() {
         case "nav":
             return <MobileNavDropdownMenu {...(payload as ModalPayloads["nav"])} />;
         case "add_to_playlist":
-            return <PlaylistModal {...(payload as ModalPayloads["add_to_playlist"])} />;
+            return <AddToPlaylistModal {...(payload as ModalPayloads["add_to_playlist"])} />;
+        case "create_playlist":
+            return <CreatePlaylistModal />;
         case "playlist_track_options":
             return <PlaylistTrackOptionsModal {...(payload as ModalPayloads["playlist_track_options"])} />;
         case "error":

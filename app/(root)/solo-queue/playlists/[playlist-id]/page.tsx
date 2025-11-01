@@ -192,7 +192,14 @@ export default function PlaylistPage() {
                         {isEditingTitle ? null : (
                             <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-md overflow-hidden bg-neutral-800 border border-neutral-800 flex items-center justify-center">
                                 {coverUrl ? (
-                                    <Image src={coverUrl} alt={`${playlist.name} cover`} fill className="object-cover" />
+                                    <Image
+                                        src={coverUrl}
+                                        alt={`${playlist.name} cover`}
+                                        quality={85}
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                        fill
+                                        className="object-cover"
+                                    />
                                 ) : (
                                     <Music size={48} className="text-neutral-500" />
                                 )}

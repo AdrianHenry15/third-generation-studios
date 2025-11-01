@@ -3,6 +3,7 @@ import { create } from "zustand";
 
 export type ModalType =
     | "add_to_playlist"
+    | "create_playlist"
     | "playlist_track_options"
     | "link"
     | "success"
@@ -15,7 +16,8 @@ export type ModalType =
     | "track_credits";
 
 export type ModalPayloads = {
-    add_to_playlist: {};
+    add_to_playlist: { userId: string; trackId: string };
+    create_playlist: {};
     playlist_track_options: { playlistTrack: PlaylistTrackWithRelations };
     link: { title: string; link: string };
     success: { title?: string; confirmText?: string; cancelText?: string; onConfirm: () => void };

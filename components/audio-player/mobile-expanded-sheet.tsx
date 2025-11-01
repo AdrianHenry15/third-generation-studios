@@ -10,6 +10,7 @@ import PlayerVolumeControl from "./player-volume-control";
 import LikeButton from "../ui/buttons/like-button";
 import AddToPlaylistButton from "../ui/buttons/add-to-playlist/playlist-button";
 import { useAuthStore } from "@/stores/auth-store";
+import { useAlbumWithImages } from "@/hooks/music/use-albums";
 
 interface MobileExpandedSheetProps {
     setExpanded: (val: boolean) => void;
@@ -24,10 +25,11 @@ const sheetVariants = {
 const MobileExpandedSheet: React.FC<MobileExpandedSheetProps> = ({ setExpanded }) => {
     const { currentTrack, isPlaying, pauseTrack, resume, isLoading, currentTime, duration, seekTo, volume, setVolume, muted, toggleMute } =
         useAudioPlayerStore();
+    const { data: albumData, isLoading: albumLoading } = useAlbumWithImages(currentTrack!.album_id, !!currentTrack);
 
     if (!currentTrack) return null;
 
-    const albumCover = currentTrack.album!.images![0].url || "/placeholder-album.png";
+    const albumCover = albumData?.album_images?.[0]?.url || "/placeholder-album.png";
 
     const handlePlayPause = () => {
         if (isPlaying) pauseTrack();
@@ -76,7 +78,18 @@ const MobileExpandedSheet: React.FC<MobileExpandedSheetProps> = ({ setExpanded }
                     {/* Artwork + Info */}
                     <div className="flex flex-col items-center gap-3 mt-3">
                         <div className="relative w-40 h-40 rounded-2xl overflow-hidden shadow-xl">
-                            <Image src={albumCover} alt={currentTrack.title} fill className="object-cover" />
+                            {albumLoading ? (
+                                <div className="w-12 h-12 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                                <Image
+                                    src={albumCover}
+                                    alt={currentTrack.title}
+                                    fill
+                                    quality={85}
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    className="object-cover"
+                                />
+                            )}
                         </div>
                         <div className="text-center">
                             <div className="text-white font-semibold text-lg truncate">{currentTrack.title}</div>

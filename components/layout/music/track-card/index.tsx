@@ -34,15 +34,16 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
     }, [track]);
 
     return (
-        <div className="group bg-gray-900/80 rounded-2xl shadow-lg overflow-hidden hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
+        <div className="group bg-gray-900/80 rounded-2xl shadow-lg  hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
             {/* Album Image */}
             <div className="relative h-48 w-full">
                 <Image
                     src={albumCover}
                     alt={track.title || "Track Cover"}
                     fill
-                    className={`object-cover group-hover:brightness-90 transition ${track.locked ? "blur-sm" : ""}`}
+                    className={`object-cover rounded-t-lg group-hover:brightness-90 transition ${track.locked ? "blur-sm" : ""}`}
                     sizes="(max-width: 768px) 100vw, 33vw"
+                    priority
                 />
 
                 {/* Overlays */}
@@ -73,7 +74,7 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
 
                 {/* Add to Playlist Button */}
                 {user && (
-                    <div className="mt-4">
+                    <div className="mt-4 flex justify-end">
                         <AddToPlaylistButton trackId={track.id} />
                     </div>
                 )}
