@@ -6,11 +6,11 @@ import { PlayCircle, Music, Pencil, Check, X, Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useParams, useRouter } from "next/navigation";
-import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist, PlaylistTrack } from "@/hooks/music/use-playlists";
+import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist } from "@/hooks/music/use-playlists";
 import { useModalStore } from "@/stores/modal-store";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import { TrackRow } from "./track-row";
-import { PlaylistWithRelations, TrackWithRelations } from "@/lib/types/database";
+import { TrackWithRelations } from "@/lib/types/database";
 import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
 
 // Resolve a playlist cover strictly from the first track's album image
@@ -198,6 +198,7 @@ export default function PlaylistPage() {
                                         src={coverUrl}
                                         alt={`${playlist.name} cover`}
                                         quality={85}
+                                        priority
                                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         fill
                                         className="object-cover"
