@@ -61,7 +61,7 @@ export function useSearchPlaylistsQuery(q: string, enabled: boolean) {
     return useQuery<PlaylistWithRelations[]>({
         queryKey: ["search", "playlists", q],
         enabled,
-        queryFn: async () => {
+        queryFn: async (): Promise<PlaylistWithRelations[]> => {
             const query = sanitizeForFilter(q);
             if (!query) return [];
 
@@ -97,13 +97,15 @@ export function useSearchPlaylistsQuery(q: string, enabled: boolean) {
 
             if (error) throw error;
 
-            return (data ?? []).map((playlist) => ({
+            const playlists = (data ?? []).map((playlist: any) => ({
                 ...playlist,
                 tracks: (playlist.tracks ?? []).map((pt: any) => ({
                     ...pt,
-                    track: pt.track ? mapTrackDefaults(pt.track) : undefined,
+                    track: pt.track ? mapTrackDefaults(pt.track) : null,
                 })),
             }));
+
+            return playlists;
         },
         staleTime: 30_000,
         retry: 1,

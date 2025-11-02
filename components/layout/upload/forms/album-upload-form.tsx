@@ -104,7 +104,7 @@ export default function AlbumUploadUpdateForm() {
 
                 // Upload each track
                 for (let i = 0; i < tracks.length; i++) {
-                    const track = tracks[i] as TrackWithFile;
+                    const track = tracks[i];
 
                     // Set track as uploading
                     setUploadingTracks((prev) => [...prev, track]);
@@ -122,7 +122,7 @@ export default function AlbumUploadUpdateForm() {
                                 links: track.links || [],
                                 genre: track.genre,
                             },
-                            audioFile: track.file!,
+                            audioFile: track.audioFile!,
                             onProgress: (percent: number) => {
                                 setTrackProgress((prev) => ({ ...prev, [track.id]: percent }));
                             },
@@ -298,7 +298,7 @@ export default function AlbumUploadUpdateForm() {
 
                 // Update each track
                 for (let i = 0; i < tracks.length; i++) {
-                    const track = tracks[i] as TrackWithFile;
+                    const track = tracks[i];
 
                     // Set track as uploading
                     setUploadingTracks((prev) => [...prev, track]);
@@ -308,7 +308,7 @@ export default function AlbumUploadUpdateForm() {
                         // Check if track has an existing ID (update) or needs to be created
                         const isNewTrack = !track.id || track.id.startsWith("temp-");
 
-                        if (isNewTrack && track.file) {
+                        if (isNewTrack && track.audioFile) {
                             // Create new track with audio file
                             const newTrack = await trackUpload.mutateAsync({
                                 trackData: {
@@ -320,7 +320,7 @@ export default function AlbumUploadUpdateForm() {
                                     links: track.links || [],
                                     genre: track.genre,
                                 },
-                                audioFile: track.file,
+                                audioFile: track.audioFile,
                                 onProgress: (percent: number) => {
                                     setTrackProgress((prev) => ({ ...prev, [track.id]: percent }));
                                 },
@@ -349,10 +349,10 @@ export default function AlbumUploadUpdateForm() {
                             };
 
                             // If there's a new audio file, upload it
-                            if (track.file) {
+                            if (track.audioFile) {
                                 const audioUrl = await uploadFile({
                                     bucket: "track-urls",
-                                    file: track.file,
+                                    file: track.audioFile,
                                     userId: userId,
                                     albumName: albumData.name,
                                     trackName: track.title,

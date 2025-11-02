@@ -52,7 +52,7 @@ export const PlaylistTrackOptionsModal: React.FC<PlaylistTrackOptionsModalProps>
                 break;
             }
             case "add_to_playlist":
-                openModal("add_to_playlist", { userId: user!.id, trackId: track?.id });
+                openModal("add_to_playlist", { userId: user!.id, trackId: track!.id });
                 break;
             case "remove":
                 if (playlistTrack.id) {
@@ -60,7 +60,7 @@ export const PlaylistTrackOptionsModal: React.FC<PlaylistTrackOptionsModalProps>
                 }
                 break;
             case "viewCredits":
-                openModal("track_credits", { trackId: track?.id });
+                openModal("track_credits", { trackId: track!.id });
                 break;
             case "goToAlbum":
                 if (track?.album_id) {

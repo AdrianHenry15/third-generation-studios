@@ -56,8 +56,8 @@ export type VerificationStatus = Enums<"verification_status">;
 // Extended track data that includes the actual file for upload
 export interface TrackUploadData extends Omit<Track, "id" | "created_at" | "updated_at" | "album_id" | "artist_id"> {
     id: string; // Temporary ID for form management
-    audioFileName: string; // Display name for the file
-    audioFile: File; // Actual audio file to be uploaded
+    audioFileName?: string; // Display name for the file
+    audioFile?: File; // Actual audio file to be uploaded
 }
 
 // Update interface for remix upload data to match database schema
@@ -70,10 +70,10 @@ export interface RemixUploadData {
 
 // Extended album data that includes file upload fields
 export interface AlbumUploadData extends Omit<Album, "id" | "created_at" | "updated_at" | "artist_id"> {
-    artist_id: string; // Will be set during upload
-    album_id: string;
-    albumImageFile: File;
-    albumImageFileName: string;
+    artist_id?: string; // Will be set during upload
+    album_id?: string;
+    albumImageFile?: File;
+    albumImageFileName?: string;
 }
 
 /* ============================================================
@@ -82,8 +82,8 @@ export interface AlbumUploadData extends Omit<Album, "id" | "created_at" | "upda
 
 // When selecting tracks with related album and artist
 export type TrackWithRelations = Track & {
-    album: AlbumWithRelations | null;
-    artist: ArtistWithRelations | null;
+    album?: AlbumWithRelations | null;
+    artist?: ArtistWithRelations | null;
     remixes?: RemixWithRelations[] | null;
     credits?: TrackCreditWithRelations[] | null;
     likes?: TrackLikeWithRelations[] | null;
@@ -91,9 +91,9 @@ export type TrackWithRelations = Track & {
 
 // When selecting albums with related artist and images
 export type AlbumWithRelations = Album & {
-    artist: ArtistWithRelations | null;
-    images: AlbumImage[] | null;
-    tracks: TrackWithRelations[] | null;
+    artist?: ArtistWithRelations | null;
+    images?: AlbumImage[] | null;
+    tracks?: TrackWithRelations[] | null;
 };
 
 // When selecting an artist with albums or tracks
