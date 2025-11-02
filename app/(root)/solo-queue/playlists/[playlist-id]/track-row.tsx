@@ -43,7 +43,6 @@ export const TrackRow = (props: ITrackRowProps) => {
 
             {/* Right Side: Duration, Trash, Ellipsis */}
             <div className="flex items-center gap-3">
-                <span className="text-xs text-neutral-400">{formatDuration(duration)}</span>
                 <button
                     aria-label="Remove from playlist"
                     onClick={onRemove}
@@ -58,6 +57,7 @@ export const TrackRow = (props: ITrackRowProps) => {
                 >
                     <Ellipsis size={16} />
                 </button>
+                <span className="text-xs text-neutral-400">{formatDuration(duration)}</span>
             </div>
         </li>
     );

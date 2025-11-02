@@ -1,7 +1,3 @@
-import type { Database } from "../types/supabase-types";
-
-type TableName = keyof Database["public"]["Tables"];
-
 export const QUERY_KEYS = {
     // Profile queries
     profiles: {

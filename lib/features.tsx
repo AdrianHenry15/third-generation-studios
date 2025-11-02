@@ -10,7 +10,7 @@ import {
     MdOutlineSecurity,
     MdPayments,
 } from "react-icons/md";
-import { FaDownload, FaRecycle, FaRegUserCircle, FaSearchengin } from "react-icons/fa";
+import { FaDownload, FaRegUserCircle, FaSearchengin } from "react-icons/fa";
 import { GrHost, GrHostMaintenance, GrMoney } from "react-icons/gr";
 import { RiPagesLine } from "react-icons/ri";
 import { IoShareSocial, IoSpeedometerOutline } from "react-icons/io5";
