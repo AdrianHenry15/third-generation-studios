@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
 import LockButton from "./lock-button";
@@ -25,6 +25,7 @@ interface ITrackCardProps {
 const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
     const pathname = usePathname();
+    const router = useRouter();
     const updateTrackMutation = useUpdateTrack();
     const [editingYoutube, setEditingYoutube] = useState(false);
     const [youtubeInput, setYoutubeInput] = useState("");
@@ -54,6 +55,11 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
         });
 
         setEditingYoutube(false);
+    };
+
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        router.push("/sign-in");
     };
 
     return (
@@ -125,7 +131,9 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                 )}
                 {!user && (
                     <button className="mt-2 bg-gradient-to-tr from-purple-500 to-pink-500 text-white rounded-lg py-2 text-center hover:from-purple-600 hover:to-pink-600 transition">
-                        <Link href="/sign-in">Log in</Link>
+                        <Link onClick={handleLinkClick} href="/sign-in" className="cursor-pointer">
+                            Log in
+                        </Link>
                     </button>
                 )}
                 {!user && <p className="mt-2 text-xs text-yellow-400 text-center">Log in to unlock full track playback and features</p>}
