@@ -80,23 +80,19 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
             {/* Track Info + Actions */}
             <div className="p-5 flex-1 flex flex-col justify-between">
                 <TrackInfo track={track} />
-
                 {!track.url && (
                     <p className="mt-2 text-xs text-red-400 text-center">Preview not available — use links below for full track</p>
                 )}
-
                 <TrackCreditsIcon trackId={track.id} />
                 <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
-                {!user && (
-                    <button className="mt-2 bg-gradient-to-tr from-purple-500 to-pink-500 text-white rounded-lg py-2 text-center hover:from-purple-600 hover:to-pink-600 transition">
-                        <Link href="/sign-in">Log in</Link>
-                    </button>
-                )}
-                {!user && <p className="mt-2 text-xs text-yellow-400 text-center">Log in to unlock full track playback and features</p>}
                 {(track.type === "Remix" || track.album?.type === "Remix") && (
-                    <div className="mt-3 flex flex-col w-full text-white bg-gradient-to-r from-red-500 to-red-800 hover:bg-red-950/50 rounded-lg py-2 text-center">
+                    <div>
                         {youtube && !editingYoutube && (
-                            <Link href={youtube} target="_blank" className="">
+                            <Link
+                                href={youtube}
+                                target="_blank"
+                                className="mt-3 flex flex-col w-full text-white bg-gradient-to-r from-red-500 to-red-800 hover:bg-red-950/50 rounded-lg py-2 text-center"
+                            >
                                 Play on YouTube
                             </Link>
                         )}
@@ -127,14 +123,19 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                         )}
                     </div>
                 )}
-
+                {!user && (
+                    <button className="mt-2 bg-gradient-to-tr from-purple-500 to-pink-500 text-white rounded-lg py-2 text-center hover:from-purple-600 hover:to-pink-600 transition">
+                        <Link href="/sign-in">Log in</Link>
+                    </button>
+                )}
+                {!user && <p className="mt-2 text-xs text-yellow-400 text-center">Log in to unlock full track playback and features</p>}
                 {/* Add to Playlist Button */}
                 {user && (
-                    <div className="mt-4 flex justify-end mr-10">
+                    <div className={`mt-4 flex justify-end ${isArtist && pathname === "/solo-queue/studio/my-tracks" ? "mr-10" : ""}`}>
                         <AddToPlaylistButton trackId={track.id} />
                     </div>
                 )}
-                {user && user.id === track.artist_id && pathname === "/solo-queue/studio/my-tracks" && <DeleteButton track={track} />}
+                {isArtist && pathname === "/solo-queue/studio/my-tracks" && <DeleteButton track={track} />}
             </div>
         </div>
     );

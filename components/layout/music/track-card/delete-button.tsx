@@ -50,7 +50,7 @@ const DeleteButton = ({ track }: { track: TrackWithRelations }) => {
     return (
         <button
             onClick={handleDeleteClick}
-            className="absolute bottom-[20px] right-4 p-[7px] bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
+            className="absolute bottom-[20px] z-[200] right-4 p-[7px] bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg"
             title="Delete track"
         >
             <Trash2 className="h-4 w-4" />

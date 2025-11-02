@@ -82,6 +82,8 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
             );
         }
     }
+
+    if (track.type === "Remix") return null;
     return (
         <button
             disabled={disabled}
