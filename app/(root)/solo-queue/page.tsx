@@ -42,7 +42,7 @@ export default function SoloQHomePage() {
     const { data: albumsWithImages, isLoading: albumsLoading, error: albumsError } = useAlbumsWithImages();
 
     // Audio player store
-    const { playTrack, pauseTrack, currentTrackId, isPlaying, playlist } = useAudioPlayerStore();
+    const { playTrack, pauseTrack, currentTrackId, isPlaying } = useAudioPlayerStore();
 
     // Create maps for efficient lookups
     const artistMap = useMemo(() => {

@@ -1,4 +1,3 @@
-import { useArtist } from "@/hooks/music/use-artists";
 import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
 import { formatDuration } from "@/lib/utils";
 import { useModalStore } from "@/stores/modal-store";
@@ -20,10 +19,8 @@ export const TrackRow = (props: ITrackRowProps) => {
     const title = track?.title ?? "Untitled";
     const duration = track?.duration;
 
-    // Fetch artist data using the artist hook
-    const { data: artist, isLoading: artistLoading } = useArtist(track?.artist_id || "", !!track?.artist_id);
-
-    const artistName = artistLoading ? "Loading..." : (artist?.stage_name ?? "Unknown artist");
+    // Pull artist directly from track relations
+    const artistName = track?.artist?.stage_name ?? "Unknown artist";
 
     const openModal = useModalStore((state) => state.openModal);
 
@@ -39,12 +36,11 @@ export const TrackRow = (props: ITrackRowProps) => {
                     <div className="w-6 text-right text-neutral-400">{index + 1}</div>
                     <div className="min-w-0">
                         <div className={`${isPlaying && isCurrent ? "text-green-500" : "text-white"} text-sm truncate`}>{title}</div>
-                        <div className="text-xs text-neutral-400 truncate">
-                            {artistLoading ? <div className="h-3 w-24 bg-neutral-700 animate-pulse rounded" /> : artistName}
-                        </div>
+                        <div className="text-xs text-neutral-400 truncate">{artistName}</div>
                     </div>
                 </div>
             </button>
+
             {/* Right Side: Duration, Trash, Ellipsis */}
             <div className="flex items-center gap-3">
                 <span className="text-xs text-neutral-400">{formatDuration(duration)}</span>

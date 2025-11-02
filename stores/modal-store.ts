@@ -1,4 +1,5 @@
 import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
+import { PlaylistWithRelations } from "@/lib/types/database";
 import { create } from "zustand";
 
 export type ModalType =
