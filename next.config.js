@@ -21,6 +21,7 @@ const nextConfig = {
                 hostname: "kgwxlzocwejlqaolecbf.supabase.co"
             }
         ],
+        qualities: [25, 50, 75, 85, 100] // ✅ add allowed qualities
     },
     env: {
         GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,

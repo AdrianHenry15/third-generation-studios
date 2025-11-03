@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { Plus } from "lucide-react";
 import { useAuthStore } from "@/stores/auth-store";
-import PlaylistButtonDropdown from "./playlist-button-dropdown";
+import { useModalStore } from "@/stores/modal-store";
 
 interface IAddToPlaylistButtonProps {
     trackId: string;
@@ -13,36 +13,40 @@ interface IAddToPlaylistButtonProps {
 
 const AddToPlaylistButton = ({ trackId, className = "", iconSize = 18 }: IAddToPlaylistButtonProps) => {
     const { user } = useAuthStore();
-    const [showDropdown, setShowDropdown] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const openModal = useModalStore((state) => state.openModal);
+    const closeModal = useModalStore((state) => state.closeModal);
+    const { isModalOpen } = useModalStore();
 
     // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setShowDropdown(false);
+                closeModal();
             }
         };
-        if (showDropdown) {
+        if (isModalOpen) {
             document.addEventListener("mousedown", handleClickOutside);
         }
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
-    }, [showDropdown]);
+    }, [isModalOpen, closeModal]);
+
+    const handleAddToPlaylist = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (!user) return;
+        openModal("add_to_playlist", { userId: user.id, trackId });
+    };
 
     return (
         <div
             className={`relative inline-block ${className}`}
-            ref={dropdownRef}
             // Ensure parent is relative for absolute dropdown
         >
             <button
-                onClick={(e) => {
-                    e.stopPropagation();
-                    if (!user) return;
-                    setShowDropdown((v) => !v);
-                }}
+                onClick={handleAddToPlaylist}
                 className={`p-1 rounded-full transition focus:outline-none
                     ${user ? "bg-black/60 hover:bg-black/80 text-white" : "bg-gray-600/50 text-gray-400 cursor-not-allowed"}
                 `}
@@ -52,8 +56,6 @@ const AddToPlaylistButton = ({ trackId, className = "", iconSize = 18 }: IAddToP
             >
                 <Plus size={iconSize} strokeWidth={2.2} />
             </button>
-
-            {showDropdown && user && <PlaylistButtonDropdown userId={user.id} trackId={trackId} onClose={() => setShowDropdown(false)} />}
         </div>
     );
 };

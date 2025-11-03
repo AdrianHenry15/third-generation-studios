@@ -17,7 +17,14 @@ const ArtistSearchItem = ({ artist }: IArtistSearchItemProps) => {
         >
             <div className="relative h-24 w-24 rounded-full overflow-hidden bg-neutral-800 flex items-center justify-center">
                 {artist.profile_image_url ? (
-                    <Image src={artist.profile_image_url} alt={artist.stage_name} fill sizes="96px" className="object-cover" />
+                    <Image
+                        src={artist.profile_image_url}
+                        alt={artist.stage_name}
+                        fill
+                        quality={85}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover"
+                    />
                 ) : (
                     <User size={28} className="text-neutral-400" />
                 )}

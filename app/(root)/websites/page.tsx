@@ -1,4 +1,4 @@
-import WebsiteRowItem from "@/components/website-row-item";
+import WebsiteRowItem from "@/app/(root)/websites/components/website-row-item";
 import { ClientWebsites } from "@/lib/websites";
 import { Metadata } from "next";
 

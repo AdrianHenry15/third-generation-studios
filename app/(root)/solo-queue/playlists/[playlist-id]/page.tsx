@@ -6,11 +6,12 @@ import { PlayCircle, Music, Pencil, Check, X, Loader2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { useParams, useRouter } from "next/navigation";
-import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist, PlaylistTrack } from "@/hooks/music/use-playlists";
+import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist } from "@/hooks/music/use-playlists";
 import { useModalStore } from "@/stores/modal-store";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
-import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
 import { TrackRow } from "./track-row";
+import { TrackWithRelations } from "@/lib/types/database";
+import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
 
 // Resolve a playlist cover strictly from the first track's album image
 function getPlaylistCoverUrl(playlist: any): string | undefined {
@@ -61,6 +62,7 @@ export default function PlaylistPage() {
     const { currentTrack, isPlaying } = useAudioPlayerStore();
     // Hooks
     const { data: playlist, isLoading, isError, refetch } = usePlaylist(playlistId);
+    const playlistTracks = playlist?.tracks ?? [];
     const { mutate: removeTrack, isPending: removing } = useRemoveTrackFromPlaylist();
     const router = useRouter();
     const { mutate: deletePlaylist, isPending: deleting } = useDeletePlaylist();
@@ -139,16 +141,16 @@ export default function PlaylistPage() {
     };
 
     const onPlayPause = (playlistTrack: PlaylistTrackWithRelations) => {
-        if (playlistTrack.track) {
-            playTrack(
-                playlistTrack.track,
-                playlistTracks.map((pt) => pt.track),
-            );
-        }
+        const fullTrack = playlistTrack.track; // normalize here
+        if (!fullTrack) return;
+
+        playTrack(
+            fullTrack,
+            playlistTracks.map((pt) => pt.track).filter((t): t is TrackWithRelations => !!t), // Type guard
+        );
     };
 
     const coverUrl = playlist ? getPlaylistCoverUrl(playlist) : undefined;
-    const playlistTracks = playlist?.tracks ?? [];
 
     return (
         <div>
@@ -192,7 +194,15 @@ export default function PlaylistPage() {
                         {isEditingTitle ? null : (
                             <div className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-md overflow-hidden bg-neutral-800 border border-neutral-800 flex items-center justify-center">
                                 {coverUrl ? (
-                                    <Image src={coverUrl} alt={`${playlist.name} cover`} fill className="object-cover" />
+                                    <Image
+                                        src={coverUrl}
+                                        alt={`${playlist.name} cover`}
+                                        quality={85}
+                                        priority
+                                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                        fill
+                                        className="object-cover"
+                                    />
                                 ) : (
                                     <Music size={48} className="text-neutral-500" />
                                 )}
@@ -265,11 +275,15 @@ export default function PlaylistPage() {
                         <button
                             onClick={() => {
                                 if (playlistTracks.length > 0) {
-                                    // Each playlistTrack has a .track property
-                                    playTrack(
-                                        playlistTracks[0].track,
-                                        playlistTracks.map((pt) => pt.track),
-                                    );
+                                    const firstTrack = playlistTracks[0].track;
+                                    if (!firstTrack) return; // guard in case first track is null
+
+                                    // Filter out any null/undefined tracks
+                                    const tracksToPlay: TrackWithRelations[] = playlistTracks
+                                        .map((pt) => pt.track)
+                                        .filter((t): t is TrackWithRelations => !!t);
+
+                                    playTrack(firstTrack, tracksToPlay);
                                 }
                             }}
                             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-600 hover:bg-green-500 text-white transition-colors"

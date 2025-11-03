@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase/client";
-import type { TrackCreditWithRelations, TrackCreditInsert, TrackCreditUpdate } from "@/lib/types/database";
+import type { TrackCreditInsert, TrackCreditUpdate } from "@/lib/types/database";
 import { createTrackCredit, deleteTrackCredit, fetchTrackCreditsByTrackId, updateTrackCredit } from "@/lib/fetchers/track-credit-fetchers";
 
 // Query Keys
@@ -26,10 +26,7 @@ export function useTrackCreditByTrackId(trackId: string, enabled = true) {
     return useQuery({
         queryKey: trackCreditKeys.byTrack(trackId),
         queryFn: async () => {
-            const { data, error } = await supabase
-                .from("track_credits")
-                .select("*")
-                .eq("track_id", trackId);
+            const { data, error } = await supabase.from("track_credits").select("*").eq("track_id", trackId);
 
             if (error) throw error;
             return data || [];

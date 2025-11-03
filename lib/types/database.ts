@@ -65,7 +65,7 @@ export interface RemixUploadData {
     original_song: string;
     original_artists: string[]; // Array of artist names
     additional_artists?: string[]; // Optional array of additional artists
-    url?: string; // URL field (matches database)
+    url: string; // URL field (matches database)
 }
 
 // Extended album data that includes file upload fields
@@ -98,14 +98,14 @@ export type AlbumWithRelations = Album & {
 
 // When selecting an artist with albums or tracks
 export type ArtistWithRelations = Artist & {
-    albums?: AlbumWithRelations[] | null;
-    tracks?: TrackWithRelations[] | null;
+    albums: AlbumWithRelations[] | null;
+    tracks: TrackWithRelations[] | null;
 };
 
 // When selecting a remix with its original track and remixer
 export type RemixWithRelations = Remix & {
-    original_track?: TrackWithRelations | null;
-    remixer?: ArtistWithRelations | null;
+    original_track: TrackWithRelations | null;
+    remixer: ArtistWithRelations | null;
 };
 
 export type TrackCreditWithRelations = Database["public"]["Tables"]["track_credits"]["Row"] & {
@@ -118,8 +118,8 @@ export type TrackCreditWithRelations = Database["public"]["Tables"]["track_credi
 
 // When selecting a track like with its profile and track
 export type TrackLikeWithRelations = TrackLike & {
-    profile?: ProfileWithRelations | null;
-    track?: TrackWithRelations | null;
+    profile: ProfileWithRelations | null;
+    track: TrackWithRelations | null;
 };
 
 // When selecting a user profile with playlists and liked tracks
@@ -130,8 +130,8 @@ export type ProfileWithRelations = Profile & {
 
 // When selecting playlists with tracks and creator
 export type PlaylistWithRelations = Playlist & {
-    tracks?: (PlaylistTrack & { track: TrackWithRelations })[] | null;
-    created_by_profile?: ProfileWithRelations | null;
+    tracks: (PlaylistTrack & { track: TrackWithRelations })[] | null;
+    created_by_profile: ProfileWithRelations | null;
     likes?: PlaylistLike[] | null;
 };
 

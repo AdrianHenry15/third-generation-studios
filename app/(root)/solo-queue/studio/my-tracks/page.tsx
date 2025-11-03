@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
-import TrackCard from "@/components/layout/music/track-card";
+import TrackCard from "@/app/(root)/solo-queue/components/track-card";
 import { useAlbumsByArtist } from "@/hooks/music/use-albums";
 import { useArtist } from "@/hooks/music/use-artists";
 import { useTracksWithRelationsByArtist } from "@/hooks/music/use-tracks";
