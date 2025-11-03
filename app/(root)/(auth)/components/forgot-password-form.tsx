@@ -6,9 +6,9 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { forgotPasswordAction } from "@/app/actions";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle, AlertCircle, Mail } from "lucide-react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { SubmitButton } from "../submit-button";
+import { Label } from "../../../../components/ui/label";
+import { Input } from "../../../../components/ui/input";
+import { SubmitButton } from "../../../../components/submit-button";
 import { useHCaptchaStore } from "@/stores/hcaptcha-store";
 
 // Email validation regex - moved outside to prevent recreation

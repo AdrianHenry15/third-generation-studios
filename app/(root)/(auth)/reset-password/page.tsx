@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import ResetPasswordForm from "@/components/auth/reset-password-form";
 import { supabase } from "@/lib/supabase/client";
+import ResetPasswordForm from "../components/reset-password-form";
 export default function ResetPasswordPage() {
     const searchParams = useSearchParams();
     const [loading, setLoading] = useState(true);

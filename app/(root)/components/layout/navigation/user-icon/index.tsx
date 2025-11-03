@@ -2,18 +2,13 @@
 
 import { useState, memo, useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import UserIconMenu from "./user-icon-menu";
 import { useAuthStore } from "@/stores/auth-store";
 
 const UserIcon = () => {
-    const router = useRouter();
-    const { setTheme } = useTheme();
-
     // Use auth context instead of local queries
-    const { user, loading, signOut } = useAuthStore();
+    const { user, loading } = useAuthStore();
     const { data: profile, isLoading: ProfileLoading } = useProfileByIdQuery(user?.id ?? "");
 
     const isLoading = loading || ProfileLoading;
@@ -44,7 +39,6 @@ const UserIcon = () => {
     }, []);
 
     // simplified open/close/toggle
-    const openMenu = () => setMenuOpen(true);
     const closeMenu = () => setMenuOpen(false);
     const toggleMenu = () => setMenuOpen((s) => !s);
 

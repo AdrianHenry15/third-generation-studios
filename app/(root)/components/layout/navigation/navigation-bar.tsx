@@ -7,10 +7,10 @@ import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import UserIcon from "../user-icon";
 import { useModalStore } from "@/stores/modal-store";
+import UserIcon from "./user-icon";
 
-const navItems = [
+const NavigationItems = [
     { name: "Websites", href: "/websites" },
     { name: "Music", href: "/music" },
     { name: "Pricing", href: "/pricing" },
@@ -97,7 +97,7 @@ export default function Navbar() {
                     </motion.div>
 
                     <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
-                        {navItems.map((item, index) => (
+                        {NavigationItems.map((item, index) => (
                             <motion.a
                                 key={item.name}
                                 href={item.href}
@@ -139,7 +139,7 @@ export default function Navbar() {
                                     ? closeModal()
                                     : openModal("nav", {
                                           menuRef: menuRef,
-                                          navItems: navItems,
+                                          navItems: NavigationItems,
                                           isUserIcon: false,
                                       });
                             }}
@@ -162,7 +162,7 @@ export default function Navbar() {
                         className="fixed top-[72px] left-1/2 -translate-x-1/2 w-[95%] max-w-5xl md:hidden glass rounded-b-2xl z-40"
                     >
                         <div className="px-4 py-4 flex flex-col space-y-4">
-                            {navItems.map((item) => (
+                            {NavigationItems.map((item) => (
                                 <Link
                                     key={item.name}
                                     href={item.href}

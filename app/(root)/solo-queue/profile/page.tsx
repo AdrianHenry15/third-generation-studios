@@ -1,6 +1,6 @@
 "use client";
 
-import ProfileForm from "@/components/layout/solo-queue/profile-form";
+import ProfileForm from "@/app/(root)/solo-queue/components/profile-form";
 import { useProfileByIdQuery } from "@/hooks/public/use-profiles";
 import { useAuthStore } from "@/stores/auth-store";
 import Image from "next/image";

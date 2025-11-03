@@ -2,15 +2,14 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { X, SkipBack, SkipForward, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { X, SkipBack, SkipForward, Play, Pause } from "lucide-react";
 import Image from "next/image";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
 import PlayerSeekBar from "./player-seek-bar";
 import PlayerVolumeControl from "./player-volume-control";
-import LikeButton from "../ui/buttons/like-button";
-import AddToPlaylistButton from "../ui/buttons/add-to-playlist/playlist-button";
-import { useAuthStore } from "@/stores/auth-store";
 import { useAlbumWithImages } from "@/hooks/music/use-albums";
+import LikeButton from "@/components/ui/buttons/like-button";
+import AddToPlaylistButton from "@/components/ui/buttons/add-to-playlist/playlist-button";
 
 interface MobileExpandedSheetProps {
     setExpanded: (val: boolean) => void;

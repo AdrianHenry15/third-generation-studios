@@ -5,9 +5,10 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+
 import { supabase } from "@/lib/supabase/client";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 // Animation variants moved outside component to prevent recreation
 const formVariants = {

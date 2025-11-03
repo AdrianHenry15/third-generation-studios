@@ -6,11 +6,11 @@ import { useTracksWithRelations } from "@/hooks/music/use-tracks";
 import { useAllArtists } from "@/hooks/music/use-artists";
 import { useAlbumsWithImages } from "@/hooks/music/use-albums";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
-import { ExploreTrackCard } from "@/components/layout/solo-queue/explore-track-card";
-import { DashboardTrackListItem } from "@/components/layout/solo-queue/dashboard-track-list-item";
-import { TrackListSkeleton, TrackGridSkeleton } from "@/components/layout/solo-queue/loading-skeleton";
-import { EmptyState } from "@/components/layout/solo-queue/empty-state";
+import { ExploreTrackCard } from "@/app/(root)/solo-queue/components/explore-track-card";
+import { TrackListSkeleton, TrackGridSkeleton } from "@/app/(root)/solo-queue/components/loading-skeleton";
+import { EmptyState } from "@/app/(root)/solo-queue/components/empty-state";
 import { TrackWithRelations } from "@/lib/types/database";
+import { DashboardTrackListItem } from "./components/dashboard-track-list-item";
 
 // Create a placeholder image as a data URL
 const PLACEHOLDER_IMAGE =

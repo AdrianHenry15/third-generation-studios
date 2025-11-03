@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import Sidebar from "@/components/layout/solo-queue/sidebar";
+import Sidebar from "@/app/(root)/solo-queue/components/sidebar";
 
 export default function SoloQLayout({ children }: { children: React.ReactNode }) {
     const [isCollapsed, setIsCollapsed] = useState(false);

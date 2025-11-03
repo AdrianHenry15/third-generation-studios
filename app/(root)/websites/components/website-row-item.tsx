@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 import { WebsiteType } from "@/lib/types/generic-types";
-import OpenLinkModal from "@/components/modals/open-link-modal";
+import OpenLinkModal from "@/app/(root)/components/layout/modals/open-link-modal";
 import Logo from "@/public/logos/tgs-logo.png";
 import { useModalStore } from "@/stores/modal-store";
 
