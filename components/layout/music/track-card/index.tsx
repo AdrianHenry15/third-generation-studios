@@ -57,10 +57,9 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
         setEditingYoutube(false);
     };
 
-    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        router.push("/sign-in");
-    };
+    // const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    //     router.push("/sign-in");
+    // };
 
     return (
         <div className="group bg-gray-900/80 rounded-2xl shadow-lg  hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
@@ -130,11 +129,13 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                     </div>
                 )}
                 {!user && (
-                    <button className="mt-2 bg-gradient-to-tr from-purple-500 to-pink-500 text-white rounded-lg py-2 text-center hover:from-purple-600 hover:to-pink-600 transition">
-                        <Link onClick={handleLinkClick} href="/sign-in" className="cursor-pointer">
-                            Log in
-                        </Link>
-                    </button>
+                    <Link
+                        // onClick={handleLinkClick}
+                        href="/sign-in"
+                        className="mt-2 bg-gradient-to-tr from-purple-500 to-pink-500 text-white rounded-lg py-2 text-center hover:from-purple-600 hover:to-pink-600 transition"
+                    >
+                        Log in
+                    </Link>
                 )}
                 {!user && <p className="mt-2 text-xs text-yellow-400 text-center">Log in to unlock full track playback and features</p>}
                 {/* Add to Playlist Button */}
