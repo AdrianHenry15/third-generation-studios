@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import PlayPauseButton from "./play-pause-button";
 import TrackInfo from "./track-info";
@@ -14,7 +14,6 @@ import { TrackWithRelations } from "@/lib/types/database";
 import DeleteButton from "./delete-button";
 import Link from "next/link";
 import TrackCreditsIcon from "./track-credits-icon";
-import { useUpdateTrack } from "@/hooks/music/use-tracks";
 import YoutubePlayButton from "./youtube-play-button";
 
 interface ITrackCardProps {

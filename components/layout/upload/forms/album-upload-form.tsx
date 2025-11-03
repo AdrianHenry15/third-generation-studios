@@ -12,14 +12,11 @@ import { useCreateAlbumWithImages, useUpdateAlbum, useAlbumImageManagement } fro
 import { useAuthStore } from "@/stores/auth-store";
 import { useCreateTrackCredit } from "@/hooks/music/use-track-credits";
 import { fetchAlbumsByArtist } from "@/lib/fetchers/album-fetchers";
-import { AlbumType, TrackUploadData, TrackWithRelations, UploadMode } from "@/lib/types/database";
+import { AlbumType, TrackUploadData } from "@/lib/types/database";
 import MiniTrackCard from "../mini-track-card";
 import { useTrackUpload } from "@/hooks/storage/use-music-storage";
-import { useUpdateTrack, useCreateTrack } from "@/hooks/music/use-tracks";
+import { useUpdateTrack } from "@/hooks/music/use-tracks";
 import { uploadFile } from "@/lib/supabase/storage";
-
-// Extended track type with file support for uploads
-type TrackWithFile = TrackWithRelations & { file?: File };
 
 export default function AlbumUploadUpdateForm() {
     // Track upload state management
@@ -27,7 +24,6 @@ export default function AlbumUploadUpdateForm() {
     const [finishedTracks, setFinishedTracks] = useState<TrackUploadData[]>([]);
     const [failedTracks, setFailedTracks] = useState<TrackUploadData[]>([]);
     const [selectedType, setSelectedType] = React.useState<AlbumType>("Single");
-    const [trackProgress, setTrackProgress] = useState<Record<string, number>>({});
 
     // Store and auth hooks
     const { user } = useAuthStore();
@@ -62,7 +58,6 @@ export default function AlbumUploadUpdateForm() {
         setUploadingTracks([]);
         setFinishedTracks([]);
         setFailedTracks([]);
-        setTrackProgress({});
 
         try {
             // Check for duplicate album names
@@ -108,7 +103,6 @@ export default function AlbumUploadUpdateForm() {
 
                     // Set track as uploading
                     setUploadingTracks((prev) => [...prev, track]);
-                    setTrackProgress((prev) => ({ ...prev, [track.id]: 0 }));
 
                     try {
                         // Upload audio file and create track record
@@ -123,13 +117,9 @@ export default function AlbumUploadUpdateForm() {
                                 genre: track.genre,
                             },
                             audioFile: track.audioFile!,
-                            onProgress: (percent: number) => {
-                                setTrackProgress((prev) => ({ ...prev, [track.id]: percent }));
-                            },
                         });
 
                         // Mark track as finished
-                        setTrackProgress((prev) => ({ ...prev, [track.id]: 100 }));
                         setFinishedTracks((prev) => [...prev, track]);
                         setUploadingTracks((prev) => prev.filter((t) => t.id !== track.id));
 
@@ -185,7 +175,6 @@ export default function AlbumUploadUpdateForm() {
 
                 // Set track as uploading
                 setUploadingTracks([singleTrack]);
-                setTrackProgress({ [singleTrack.id]: 0 });
 
                 try {
                     // Upload track
@@ -200,13 +189,9 @@ export default function AlbumUploadUpdateForm() {
                             genre: singleTrack.genre,
                         },
                         audioFile: singleTrack.audioFile!,
-                        onProgress: (percent: number) => {
-                            setTrackProgress((prev) => ({ ...prev, [singleTrack.id]: percent }));
-                        },
                     });
 
                     // Mark as finished
-                    setTrackProgress((prev) => ({ ...prev, [singleTrack.id]: 100 }));
                     setFinishedTracks([singleTrack]);
                     setUploadingTracks([]);
 
@@ -256,7 +241,6 @@ export default function AlbumUploadUpdateForm() {
         setUploadingTracks([]);
         setFinishedTracks([]);
         setFailedTracks([]);
-        setTrackProgress({});
 
         try {
             const albumId = albumData.album_id;
@@ -289,9 +273,9 @@ export default function AlbumUploadUpdateForm() {
                     if (imageUrl) {
                         // Try to update existing image, or add new one
                         try {
-                            await updateAlbumImage(albumId, { url: imageUrl, name: albumData.name ?? "album-image" });
+                            updateAlbumImage(albumId, { url: imageUrl, name: albumData.name ?? "album-image" });
                         } catch {
-                            await addAlbumImage({ url: imageUrl, name: albumData.name ?? "album-image" });
+                            addAlbumImage({ url: imageUrl, name: albumData.name ?? "album-image" });
                         }
                     }
                 }
@@ -302,7 +286,6 @@ export default function AlbumUploadUpdateForm() {
 
                     // Set track as uploading
                     setUploadingTracks((prev) => [...prev, track]);
-                    setTrackProgress((prev) => ({ ...prev, [track.id]: 0 }));
 
                     try {
                         // Check if track has an existing ID (update) or needs to be created
@@ -321,9 +304,6 @@ export default function AlbumUploadUpdateForm() {
                                     genre: track.genre,
                                 },
                                 audioFile: track.audioFile,
-                                onProgress: (percent: number) => {
-                                    setTrackProgress((prev) => ({ ...prev, [track.id]: percent }));
-                                },
                             });
 
                             // Insert track credits for new track
@@ -356,9 +336,6 @@ export default function AlbumUploadUpdateForm() {
                                     userId: userId,
                                     albumName: albumData.name,
                                     trackName: track.title,
-                                    onUploadProgress: (percent: number) => {
-                                        setTrackProgress((prev) => ({ ...prev, [track.id]: percent }));
-                                    },
                                 });
 
                                 if (audioUrl) {
@@ -394,7 +371,6 @@ export default function AlbumUploadUpdateForm() {
                         }
 
                         // Mark track as finished
-                        setTrackProgress((prev) => ({ ...prev, [track.id]: 100 }));
                         setFinishedTracks((prev) => [...prev, track]);
                         setUploadingTracks((prev) => prev.filter((t) => t.id !== track.id));
                     } catch (trackError) {
@@ -443,7 +419,6 @@ export default function AlbumUploadUpdateForm() {
 
                 // Set track as uploading
                 setUploadingTracks([singleTrack]);
-                setTrackProgress({ [singleTrack.id]: 0 });
 
                 try {
                     const isNewTrack = !singleTrack.id || singleTrack.id.startsWith("temp-");
@@ -461,9 +436,6 @@ export default function AlbumUploadUpdateForm() {
                                 genre: singleTrack.genre,
                             },
                             audioFile: singleTrack.audioFile,
-                            onProgress: (percent: number) => {
-                                setTrackProgress((prev) => ({ ...prev, [singleTrack.id]: percent }));
-                            },
                         });
 
                         // Insert credits
@@ -496,9 +468,6 @@ export default function AlbumUploadUpdateForm() {
                                 userId: userId,
                                 albumName: albumData.name,
                                 trackName: singleTrack.title,
-                                onUploadProgress: (percent: number) => {
-                                    setTrackProgress((prev) => ({ ...prev, [singleTrack.id]: percent }));
-                                },
                             });
 
                             if (audioUrl) {
@@ -530,7 +499,6 @@ export default function AlbumUploadUpdateForm() {
                     }
 
                     // Mark as finished
-                    setTrackProgress((prev) => ({ ...prev, [singleTrack.id]: 100 }));
                     setFinishedTracks([singleTrack]);
                     setUploadingTracks([]);
                 } catch (trackError) {

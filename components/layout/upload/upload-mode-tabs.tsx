@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { useUploadFormStore } from "@/stores/upload-form-store";
-import { AlbumType, UploadMode } from "@/lib/types/database";
+import { AlbumType } from "@/lib/types/database";
 
 export default function UploadModeTabs({
     selectedType,
@@ -11,8 +10,6 @@ export default function UploadModeTabs({
     selectedType: AlbumType;
     setSelectedType: (type: AlbumType) => void;
 }) {
-    const { albumData } = useUploadFormStore();
-
     // Track selected tab independently from albumData.type
 
     const handleAlbumTypeChange = (type: AlbumType) => {
