@@ -1,17 +1,18 @@
 "use client";
 
-import { signUpAction } from "@/app/actions";
+import { checkEmailExistsAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState, memo, useCallback, useRef } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ArrowDown } from "lucide-react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import { SubmitButton } from "../submit-button";
+import { useRouter, useSearchParams } from "next/navigation";
+import { supabase } from "@/lib/supabase/client";
 import { useHCaptchaStore } from "@/stores/hcaptcha-store";
-import { useRouter } from "next/navigation";
+import { SubmitButton } from "@/components/submit-button";
 
 // Animation variants moved outside component to prevent recreation
 const formVariants = {
@@ -31,16 +32,17 @@ const inputVariants = {
 // Password validation regex moved outside to prevent recreation
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
 
-// Memoized SignUpForm component for build optimization
-const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
+// Memoized SignInForm component for build optimization
+const SignInForm = memo(({ searchParams }: { searchParams: Message }) => {
     const router = useRouter();
+    const urlSearchParams = useSearchParams();
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirm, setShowConfirm] = useState(false);
     const [formError, setFormError] = useState<string | null>(null);
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [confirmationMessage, setConfirmationMessage] = useState<string | null>(null);
+    const [showEmailNotFound, setShowEmailNotFound] = useState(false);
+    const [captchaError, setCaptchaError] = useState<string | null>(null);
 
     // hCaptcha store integration
     const { token: hcaptchaToken, setToken } = useHCaptchaStore();
@@ -58,6 +60,7 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
         (token: string) => {
             setToken(token);
             setFormError(null); // Clear any captcha-related errors
+            setCaptchaError(null); // Clear captcha-specific errors
         },
         [setToken],
     );
@@ -65,14 +68,14 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
     // Memoized hCaptcha expiry handler
     const handleCaptchaExpire = useCallback(() => {
         setToken("");
-        setFormError("Captcha expired. Please verify again.");
+        setCaptchaError("Captcha expired. Please verify again.");
     }, [setToken]);
 
     // Memoized hCaptcha error handler
     const handleCaptchaError = useCallback(
         (error: string) => {
             setToken("");
-            setFormError("Captcha verification failed. Please try again.");
+            setCaptchaError("Captcha verification failed. Please try again.");
             console.error("hCaptcha error:", error);
         },
         [setToken],
@@ -83,6 +86,8 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
         async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             setFormError(null);
+            setShowEmailNotFound(false);
+            setCaptchaError(null);
 
             // Client-side validation
             if (!validatePassword(password)) {
@@ -92,70 +97,119 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                 return;
             }
 
-            if (password !== confirmPassword) {
-                setFormError("Passwords do not match");
-                return;
-            }
-
             // Validate hCaptcha token
             if (!hcaptchaToken) {
                 setFormError("Please complete the captcha verification.");
                 return;
             }
 
-            // Validate username format (additional client-side check)
-            if (username.length < 3) {
-                setFormError("Username must be at least 3 characters long.");
+            // Check if email exists in database using server action
+            const emailCheckFormData = new FormData();
+            emailCheckFormData.append("email", email);
+
+            const emailCheckResult = await checkEmailExistsAction(emailCheckFormData);
+
+            if ((emailCheckResult as any)?.error) {
+                setFormError("Unable to verify email. Please try again.");
                 return;
             }
 
-            if (!/^[a-zA-Z0-9_-]+$/.test(username)) {
-                setFormError("Username can only contain letters, numbers, underscores, and hyphens.");
+            if (!(emailCheckResult as any)?.exists) {
+                setFormError("Email does not exist in our database");
+                setShowEmailNotFound(true);
                 return;
             }
 
+            // Now try to sign in using client-side Supabase auth
             try {
-                const formData = new FormData();
-                formData.append("username", username);
-                formData.append("email", email);
-                formData.append("password", password);
-                formData.append("confirm_password", confirmPassword);
-                formData.append("hcaptcha_token", hcaptchaToken);
+                console.log("🔐 Starting client-side sign-in");
 
-                const result = await signUpAction(formData);
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email,
+                    password,
+                    options: {
+                        captchaToken: hcaptchaToken,
+                    },
+                });
 
-                if (result?.error) {
-                    setFormError(result.error);
-                    // Reset captcha on server error
+                if (error) {
+                    console.error("❌ Sign-in error:", error);
+
+                    // Map Supabase errors to user-friendly messages
+                    if (error.message.includes("Invalid login credentials")) {
+                        setFormError("Incorrect email or password. Please try again.");
+                    } else if (error.message.includes("Email not confirmed")) {
+                        setFormError("Your email is not confirmed. Please check your inbox for the confirmation link or resend it below.");
+                    } else if (error.message.includes("Too many requests")) {
+                        setFormError("Too many attempts. Please wait a bit and try again.");
+                    } else if (error.message.includes("captcha")) {
+                        setFormError("Please complete the captcha verification.");
+                    } else {
+                        setFormError(error.message || "Failed to sign in. Please try again.");
+                    }
+
+                    // Reset captcha on error
                     setToken("");
                     hcaptchaRef.current?.resetCaptcha();
                     return;
                 }
 
-                // On success navigate to verification page
-                if (result?.success) {
-                    // Clear form state before navigation
-                    setUsername("");
-                    setEmail("");
-                    setPassword("");
-                    setConfirmPassword("");
-                    setToken("");
+                if (data.user && data.session) {
+                    console.log("✅ Sign-in successful", {
+                        userId: data.user.id,
+                        email: data.user.email,
+                        hasSession: !!data.session,
+                    });
 
-                    router.push("/sign-up/verify");
-                    return;
+                    // The useAuthListener will automatically detect this auth state change
+                    // and update the Zustand store, so we don't need to manually set anything
+
+                    // Redirect user
+                    const redirectTo = urlSearchParams.get("redirect_url") || "/solo-queue";
+                    const finalRedirectTo = redirectTo === "/solo-queue" ? redirectTo : decodeURIComponent(redirectTo);
+
+                    console.log("🔄 Redirecting to:", finalRedirectTo);
+
+                    // Small delay to ensure auth listener has updated the store
+                    setTimeout(() => {
+                        router.push(finalRedirectTo);
+                    }, 100);
                 }
             } catch (err: any) {
-                setFormError(err.message || "Failed to sign up. Please try again.");
+                console.error("💥 Unexpected sign-in error:", err);
+                setFormError(err.message || "Failed to sign in. Please try again.");
                 // Reset captcha on error
                 setToken("");
                 hcaptchaRef.current?.resetCaptcha();
             }
         },
-        [username, email, password, confirmPassword, validatePassword, hcaptchaToken, setToken, router],
+        [email, password, validatePassword, hcaptchaToken, setToken, router, urlSearchParams],
     );
 
+    // Memoized resend confirmation handler
+    const handleResendConfirmation = useCallback(async () => {
+        setConfirmationMessage(null);
+        if (!email) {
+            setConfirmationMessage("Please enter your email above.");
+            return;
+        }
+        try {
+            const { error } = await supabase.auth.resend({
+                type: "signup",
+                email: email,
+            });
+            if (error) {
+                setConfirmationMessage(error.message || "Failed to send confirmation email.");
+            } else {
+                setConfirmationMessage("Confirmation email sent! Please check your inbox.");
+            }
+        } catch (err: any) {
+            setConfirmationMessage(err.message || "Failed to send confirmation email.");
+        }
+    }, [email]);
+
     return (
-        <section className="flex items-center justify-center w-full pb-8 pt-24 px-4" aria-label="Sign up form">
+        <section className="flex items-center justify-center w-full pb-8 pt-24 px-4" aria-label="Sign in form">
             <motion.form
                 variants={formVariants}
                 initial="hidden"
@@ -166,17 +220,24 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
             >
                 <header className="mb-6">
                     <h1 className="text-3xl sm:text-4xl font-bold text-center mb-2 bg-gradient-to-r from-green-600 to-green-400 dark:from-green-400 dark:to-green-200 bg-clip-text text-transparent drop-shadow">
-                        Sign up
+                        Sign in
                     </h1>
-                    <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 text-center">
-                        Already have an account?{" "}
+                    <div className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 text-center relative">
+                        Don't have an account?{" "}
                         <Link
-                            className="text-green-600 dark:text-green-400 font-medium underline hover:text-green-700 dark:hover:text-green-300 transition-colors duration-200"
-                            href="/sign-in"
+                            className={`text-green-600 dark:text-green-400 font-medium underline hover:text-green-700 dark:hover:text-green-300 transition-colors duration-200 ${
+                                showEmailNotFound ? "bg-yellow-100 dark:bg-yellow-900/20 px-2 py-1 rounded-md" : ""
+                            }`}
+                            href="/sign-up"
                         >
-                            Sign in
+                            Sign up
                         </Link>
-                    </p>
+                        {showEmailNotFound && (
+                            <div className="absolute bottom-6 right-1/3 transform translate-x-[9px] flex items-center">
+                                <ArrowDown className="text-yellow-500 dark:text-yellow-400 w-5 h-5 animate-bounce" />
+                            </div>
+                        )}
+                    </div>
                 </header>
 
                 {/* Error message display */}
@@ -190,32 +251,8 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                 )}
 
                 <div className="flex flex-col gap-4">
-                    {/* Username field */}
-                    <motion.div variants={inputVariants} custom={0}>
-                        <Label htmlFor="username" className="text-base sm:text-lg font-medium text-neutral-700 dark:text-neutral-300">
-                            Username
-                        </Label>
-                        <Input
-                            autoComplete="username"
-                            type="text"
-                            id="username"
-                            name="username"
-                            placeholder="Choose a username"
-                            required
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_-]/g, ""))}
-                            className="focus:ring-2 focus:ring-green-500/50 text-base sm:text-lg px-4 py-3 mt-1 rounded-lg border border-neutral-200/80 dark:border-neutral-700/80 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm transition-all hover:border-green-300 dark:hover:border-green-600"
-                            aria-describedby="username-help"
-                            minLength={3}
-                            maxLength={30}
-                        />
-                        <div id="username-help" className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
-                            3-30 characters, letters, numbers, underscores, and hyphens only
-                        </div>
-                    </motion.div>
-
                     {/* Email field */}
-                    <motion.div variants={inputVariants} custom={1}>
+                    <motion.div variants={inputVariants} custom={0}>
                         <Label htmlFor="email" className="text-base sm:text-lg font-medium text-neutral-700 dark:text-neutral-300">
                             Email
                         </Label>
@@ -232,22 +269,32 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                         />
                     </motion.div>
 
-                    {/* Password field */}
-                    <motion.div variants={inputVariants} custom={2}>
-                        <Label htmlFor="password" className="text-base sm:text-lg font-medium text-neutral-700 dark:text-neutral-300">
-                            Password
-                        </Label>
+                    {/* Password field with forgot password link */}
+                    <motion.div variants={inputVariants} custom={1}>
+                        <div className="flex justify-between items-center mb-1">
+                            <Label htmlFor="password" className="text-base sm:text-lg font-medium text-neutral-700 dark:text-neutral-300">
+                                Password
+                            </Label>
+                            <Link
+                                className="text-xs sm:text-sm text-green-600 dark:text-green-400 underline hover:text-green-700 dark:hover:text-green-300 transition-colors duration-200"
+                                href="/forgot-password"
+                            >
+                                Forgot Password?
+                            </Link>
+                        </div>
                         <div className="relative">
                             <Input
-                                autoComplete="new-password"
+                                autoComplete="current-password"
                                 id="password"
                                 type={showPassword ? "text" : "password"}
                                 name="password"
-                                placeholder="Create a password"
+                                placeholder="Your password"
                                 required
-                                title="Password must be at least 8 characters and include a lowercase letter, uppercase letter, number, and symbol."
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    if (formError && validatePassword(e.target.value)) setFormError(null);
+                                }}
                                 className="focus:ring-2 focus:ring-green-500/50 text-base sm:text-lg px-4 py-3 mt-1 rounded-lg border border-neutral-200/80 dark:border-neutral-700/80 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm transition-all pr-12 hover:border-green-300 dark:hover:border-green-600"
                                 aria-describedby="password-help"
                             />
@@ -259,38 +306,6 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                                 aria-label={showPassword ? "Hide password" : "Show password"}
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                            </button>
-                        </div>
-                    </motion.div>
-
-                    {/* Confirm Password field */}
-                    <motion.div variants={inputVariants} custom={3}>
-                        <Label
-                            htmlFor="confirm_password"
-                            className="text-base sm:text-lg font-medium text-neutral-700 dark:text-neutral-300"
-                        >
-                            Confirm Password
-                        </Label>
-                        <div className="relative">
-                            <Input
-                                autoComplete="new-password"
-                                id="confirm_password"
-                                type={showConfirm ? "text" : "password"}
-                                name="confirm_password"
-                                placeholder="Re-enter your password"
-                                required
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                className="focus:ring-2 focus:ring-green-500/50 text-base sm:text-lg px-4 py-3 mt-1 rounded-lg border border-neutral-200/80 dark:border-neutral-700/80 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm transition-all pr-12 hover:border-green-300 dark:hover:border-green-600"
-                            />
-                            <button
-                                type="button"
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-green-500 dark:hover:text-green-400 transition-colors duration-200 p-1"
-                                tabIndex={-1}
-                                onClick={() => setShowConfirm((v) => !v)}
-                                aria-label={showConfirm ? "Hide password" : "Show password"}
-                            >
-                                {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
                         </div>
                     </motion.div>
@@ -307,12 +322,28 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                         <span className="text-green-600 dark:text-green-400 font-medium">symbol</span>.
                     </div>
 
+                    {/* Resend confirmation email */}
+                    <motion.div variants={inputVariants} custom={2}>
+                        <button
+                            type="button"
+                            className="text-xs text-green-600 dark:text-green-400 underline hover:text-green-700 dark:hover:text-green-300 transition-colors duration-200 self-start"
+                            onClick={handleResendConfirmation}
+                        >
+                            Resend confirmation email
+                        </button>
+                        {confirmationMessage && (
+                            <div className="text-green-600 dark:text-green-400 text-xs mt-2 p-2 bg-green-50 dark:bg-green-900/20 rounded border border-green-200 dark:border-green-800/50">
+                                {confirmationMessage}
+                            </div>
+                        )}
+                    </motion.div>
+
                     {/* hCaptcha verification */}
-                    <motion.div variants={inputVariants} custom={4} className="flex justify-center">
+                    <motion.div variants={inputVariants} custom={3} className="flex justify-center flex-col items-center">
                         <div className="rounded-lg overflow-hidden shadow-sm border border-neutral-200 dark:border-neutral-700/50">
                             <HCaptcha
                                 ref={hcaptchaRef}
-                                sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY!}
+                                sitekey={process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY as string}
                                 onVerify={handleCaptchaVerify}
                                 onExpire={handleCaptchaExpire}
                                 onError={handleCaptchaError}
@@ -321,16 +352,22 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
                                 reCaptchaCompat={false}
                             />
                         </div>
+                        {/* Captcha-specific error message */}
+                        {captchaError && (
+                            <div className="text-red-600 dark:text-red-400 text-xs text-center mt-2 p-2 bg-red-50 dark:bg-red-900/20 rounded border border-red-200 dark:border-red-800/50">
+                                {captchaError}
+                            </div>
+                        )}
                     </motion.div>
 
                     {/* Submit button */}
-                    <motion.div variants={inputVariants} custom={5} className="mt-6">
+                    <motion.div variants={inputVariants} custom={4} className="mt-6">
                         <SubmitButton
-                            pendingText="Creating Account..."
+                            pendingText="Signing In..."
                             disabled={!hcaptchaToken}
                             className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 dark:from-green-500 dark:to-green-400 dark:hover:from-green-600 dark:hover:to-green-500 disabled:from-neutral-400 disabled:to-neutral-400 disabled:cursor-not-allowed disabled:hover:scale-100 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-green-500/25 dark:shadow-green-400/25 text-base sm:text-lg transform hover:scale-[1.02] active:scale-[0.98]"
                         >
-                            Create Account
+                            Sign in
                         </SubmitButton>
                     </motion.div>
 
@@ -343,6 +380,6 @@ const SignUpForm = memo(({ searchParams }: { searchParams: Message }) => {
 });
 
 // Display name for dev tools
-SignUpForm.displayName = "SignUpForm";
+SignInForm.displayName = "SignInForm";
 
-export default SignUpForm;
+export default SignInForm;

@@ -7,7 +7,7 @@ import SuccessModal from "./success-modal";
 import StatusModal from "./status-modal";
 import ConfirmModal from "./confirm-modal";
 import ShareModal from "./share-modal";
-import MobileNavDropdownMenu from "../layout/mobile-nav-dropdown-menu";
+import MobileNavDropdownMenu from "../navigation/mobile-navigation-dropdown-menu";
 import { PlaylistTrackOptionsModal } from "./playlist-track-options-modal";
 import TrackCreditsModal from "./track-credits-modal";
 import AddToPlaylistModal from "./add-to-playlist-modal";

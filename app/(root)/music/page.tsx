@@ -4,9 +4,9 @@ import { useState, useEffect, useMemo } from "react";
 import { usePublicTracks } from "@/hooks/music/use-tracks";
 import { useAllArtists } from "@/hooks/music/use-artists";
 import { useAlbumsWithImages } from "@/hooks/music/use-albums";
-import TrackCard from "@/components/layout/music/track-card";
-import { TrackGridSkeleton } from "@/components/layout/solo-queue/loading-skeleton";
-import { EmptyState } from "@/components/layout/solo-queue/empty-state";
+import TrackCard from "@/app/(root)/solo-queue/components/track-card";
+import { TrackGridSkeleton } from "@/app/(root)/solo-queue/components/loading-skeleton";
+import { EmptyState } from "@/app/(root)/solo-queue/components/empty-state";
 
 export default function MusicPage() {
     // Fetch tracks, artists, and albums with images

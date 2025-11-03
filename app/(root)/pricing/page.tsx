@@ -1,7 +1,7 @@
-import AvailablePlans from "@/components/layout/pricing/available-plans";
-import SplashIconRow from "@/components/layout/pricing/icon-promo/icon-row";
+import AvailablePlans from "@/app/(root)/pricing/components/available-plans";
+import SplashIconRow from "@/app/(root)/pricing/components/icon-promo/icon-row";
 import { Metadata } from "next";
-import PricingSplash from "@/components/layout/pricing/splash";
+import PricingSplash from "@/app/(root)/pricing/components/splash";
 
 export const metadata: Metadata = {
     title: "Stand out with Studio Commerce",

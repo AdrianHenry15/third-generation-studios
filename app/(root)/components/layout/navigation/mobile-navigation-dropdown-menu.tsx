@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Button } from "../ui/buttons/button";
+import { Button } from "../../../../../components/ui/buttons/button";
 import { useModalStore } from "@/stores/modal-store";
 
 type NavItem = { name: string; href: string } | { name: string; onClick: () => void };

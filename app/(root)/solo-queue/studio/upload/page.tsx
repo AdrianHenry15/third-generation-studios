@@ -1,6 +1,6 @@
 "use client";
 
-import AlbumUploadUpdateForm from "@/components/layout/upload/forms/album-upload-form";
+import AlbumUploadUpdateForm from "@/app/(root)/solo-queue/studio/upload/components/upload/forms/album-upload-form";
 
 export default function StudioUploadPage() {
     // -------------------- RENDER --------------------

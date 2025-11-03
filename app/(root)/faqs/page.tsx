@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import React from "react";
 
 import FAQContainer from "./components/container";
-import ScrollUpBtn from "@/components/scroll-up-btn";
+import ScrollUpBtn from "@/components/scroll-up-button";
 import { FaqType, NavMenuType } from "@/lib/types/generic-types";
 import FAQSidebarNav from "./components/sidebar-nav";
 const FaqNavItems: NavMenuType[] = [];

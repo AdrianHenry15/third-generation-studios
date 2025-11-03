@@ -5,7 +5,7 @@ import { Dialog, DialogTitle, Transition, TransitionChild } from "@headlessui/re
 import { motion } from "framer-motion";
 import { XCircle } from "lucide-react";
 
-import Button from "../ui/buttons/alt-button";
+import Button from "../../../../../components/ui/buttons/alt-button";
 import { useModalStore } from "@/stores/modal-store";
 
 interface IOpenWebsiteModalProps {
