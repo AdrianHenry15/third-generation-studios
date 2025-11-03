@@ -69,6 +69,7 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                     <p className="mt-2 text-xs text-red-400 text-center">Preview not available — use links below for full track</p>
                 )}
                 <TrackCreditsIcon trackId={track.id} />
+                <hr className="my-4" />
                 <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
                 {(track.type === "Remix" || track.album?.type === "Remix") && <YoutubePlayButton track={track} />}
                 {!user && (
