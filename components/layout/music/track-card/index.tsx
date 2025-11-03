@@ -15,6 +15,7 @@ import DeleteButton from "./delete-button";
 import Link from "next/link";
 import TrackCreditsIcon from "./track-credits-icon";
 import { useUpdateTrack } from "@/hooks/music/use-tracks";
+import YoutubePlayButton from "./youtube-play-button";
 
 interface ITrackCardProps {
     track: TrackWithRelations;
@@ -26,12 +27,6 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
     const { user } = useAuthStore();
     const pathname = usePathname();
     const router = useRouter();
-    const updateTrackMutation = useUpdateTrack();
-    const [editingYoutube, setEditingYoutube] = useState(false);
-    const [youtubeInput, setYoutubeInput] = useState("");
-
-    const links = track.links as Record<string, string> | null;
-    const youtube = links?.youtube || links?.youtube_url || links?.yt;
 
     const isArtist = user?.id === track.artist_id;
 
@@ -43,23 +38,9 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
         return match?.url || albumImages[0]?.url || "/earth-splash.jpg";
     }, [track]);
 
-    const handleSaveYoutube = () => {
-        updateTrackMutation.mutate({
-            id: track.id,
-            updates: {
-                links: {
-                    ...(links || {}),
-                    youtube: youtubeInput,
-                },
-            },
-        });
-
-        setEditingYoutube(false);
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        router.push("/sign-in");
     };
-
-    // const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    //     router.push("/sign-in");
-    // };
 
     return (
         <div className="group bg-gray-900/80 rounded-2xl shadow-lg  hover:scale-105 hover:shadow-2xl transition-all duration-300 relative flex flex-col">
@@ -90,47 +71,10 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                 )}
                 <TrackCreditsIcon trackId={track.id} />
                 <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
-                {(track.type === "Remix" || track.album?.type === "Remix") && (
-                    <div>
-                        {youtube && !editingYoutube && (
-                            <Link
-                                href={youtube}
-                                target="_blank"
-                                className="mt-3 flex flex-col w-full text-white bg-gradient-to-r from-red-500 to-red-800 hover:bg-red-950/50 rounded-lg py-2 text-center"
-                            >
-                                Play on YouTube
-                            </Link>
-                        )}
-
-                        {/* If no link & user is the artist → show button to add */}
-                        {!youtube && !editingYoutube && isArtist && (
-                            <button onClick={() => setEditingYoutube(true)} className="text-colorful-gradient hover:underline">
-                                Add YouTube Link
-                            </button>
-                        )}
-
-                        {/* Inline editor */}
-                        {editingYoutube && (
-                            <div className="flex items-center gap-2">
-                                <input
-                                    value={youtubeInput}
-                                    onChange={(e) => setYoutubeInput(e.target.value)}
-                                    placeholder="Enter YouTube URL"
-                                    className="px-2 py-1 text-sm rounded bg-gray-800 border border-gray-700 flex-1"
-                                />
-                                <button onClick={handleSaveYoutube} className="text-green-400 text-xs hover:text-green-300">
-                                    Save
-                                </button>
-                                <button onClick={() => setEditingYoutube(false)} className="text-red-400 text-xs hover:text-red-300">
-                                    Cancel
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                )}
+                {(track.type === "Remix" || track.album?.type === "Remix") && <YoutubePlayButton track={track} />}
                 {!user && (
                     <Link
-                        // onClick={handleLinkClick}
+                        onClick={handleLinkClick}
                         href="/sign-in"
                         className="mt-2 bg-gradient-to-tr from-purple-500 to-pink-500 text-white rounded-lg py-2 text-center hover:from-purple-600 hover:to-pink-600 transition"
                     >

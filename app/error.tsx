@@ -25,6 +25,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
                     </button>
 
                     <button
+                        type="button"
                         onClick={() => window.history.back()}
                         className="w-full py-2 rounded-lg bg-neutral-700 text-white font-medium border border-white/10 hover:bg-neutral-600 transition"
                     >
@@ -33,6 +34,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
 
                     <Link
                         href="/"
+                        prefetch={false}
                         className="w-full py-2 rounded-lg bg-neutral-700 text-white font-medium border border-white/10 hover:bg-neutral-600 transition inline-block"
                     >
                         🏠 Go Home
@@ -40,6 +42,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
                 </div>
 
                 <button
+                    type="button"
                     onClick={() => setShowDetails(!showDetails)}
                     className="mt-5 text-sm text-neutral-400 hover:text-neutral-200 transition underline"
                 >
