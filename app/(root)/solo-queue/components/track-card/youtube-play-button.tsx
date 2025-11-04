@@ -68,7 +68,7 @@ const YoutubePlayButton = ({ track }: { track: TrackWithRelations }) => {
             {!youtube && !editingYoutube && isArtist && (
                 <button
                     onClick={() => setEditingYoutube(true)}
-                    className="mt-3 flex flex-col w-full text-white bg-gradient-to-r from-red-500 to-red-800 hover:bg-red-950/50 rounded-lg py-2 text-center"
+                    className="mt-3 flex flex-col text-center w-full items-center justify-center text-white bg-gradient-to-r from-red-500 to-red-800 hover:bg-red-950/50 rounded-lg py-2"
                 >
                     Add YouTube Link
                 </button>
