@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Sidebar from "@/app/(root)/solo-queue/components/sidebar";
+import { BetaBanner } from "@/components/beta-banner";
 
 export default function SoloQLayout({ children }: { children: React.ReactNode }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -55,7 +56,12 @@ export default function SoloQLayout({ children }: { children: React.ReactNode })
                     marginLeft: getMarginLeft(),
                 }}
             >
-                <div className="px-6 pb-10 pt-24 md:pt-10">{children}</div>
+                <div className="px-6 pb-10 pt-24 md:pt-10">
+                    <div className="mb-10">
+                        <BetaBanner />
+                    </div>
+                    {children}
+                </div>
             </main>
         </div>
     );

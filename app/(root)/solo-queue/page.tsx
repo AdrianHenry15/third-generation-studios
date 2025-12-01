@@ -11,6 +11,7 @@ import { TrackListSkeleton, TrackGridSkeleton } from "@/app/(root)/solo-queue/co
 import { EmptyState } from "@/app/(root)/solo-queue/components/empty-state";
 import { TrackWithRelations } from "@/lib/types/database";
 import { DashboardTrackListItem } from "./components/dashboard-track-list-item";
+import { BetaBanner } from "@/components/beta-banner";
 
 // Create a placeholder image as a data URL
 const PLACEHOLDER_IMAGE =
