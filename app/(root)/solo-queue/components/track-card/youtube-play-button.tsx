@@ -51,7 +51,7 @@ const YoutubePlayButton = ({ track }: { track: TrackWithRelations }) => {
         setEditingYoutube(false);
         setError("");
     };
-
+    if (track.type !== "Remix" && track.album?.type !== "Remix") return null;
     return (
         <div>
             {youtube && !editingYoutube && (

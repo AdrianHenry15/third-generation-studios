@@ -17,6 +17,7 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
         currentTrackId,
         isPlaying: contextIsPlaying,
         playTrack,
+        playDemo,
         pauseTrack,
         resume,
         isLoading: contextIsLoading,
@@ -27,14 +28,7 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
     const isCurrentTrack = currentTrackId === track.id;
     const isPlaying = isCurrentTrack && contextIsPlaying;
     const loading = isCurrentTrack && contextIsLoading;
-    const disabled =
-        locked ||
-        loading ||
-        track.url === null ||
-        track.url === "" ||
-        (!user?.id && track.album!.type === "Remix") ||
-        (!user?.id && track.type === "Remix") ||
-        track.type === "Remix";
+    const disabled = locked || loading || track.url === null || track.url === "";
 
     const handlePlayPause = async () => {
         if (locked) return;
@@ -49,6 +43,11 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
                 }
             } else {
                 // Different track - play new track
+                // TODO: Check if remix license is cleared before playing demo
+                if (track.type === "Remix" || track.album?.type === "Remix") {
+                    await playDemo(track, 30); // Play demo starting at 30 seconds
+                    return;
+                }
                 await playTrack(track, playlist);
             }
         } catch (error: any) {
@@ -83,7 +82,15 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
         }
     }
 
-    if (track.type === "Remix") return null;
+    const getPlayButtonLabel = () => {
+        if (locked) return "Locked";
+        if (loading) return "Loading...";
+        if (isCurrentTrack && isPlaying) return "Pause";
+        // TODO: Add conditional for if remix license is cleared
+        if (track.type === "Remix" || track.album?.type === "Remix") return "Play Demo";
+        return "Play";
+    };
+
     return (
         <button
             disabled={disabled}
@@ -94,7 +101,7 @@ const PlayPauseButton = (props: IPlayPauseButtonProps) => {
             }`}
             onClick={handlePlayPause}
         >
-            {!locked ? (loading ? "Loading..." : isCurrentTrack && isPlaying ? "Pause" : "Play") : "Locked"}
+            {getPlayButtonLabel()}
         </button>
     );
 };

@@ -21,9 +21,14 @@ type AudioPlayerState = {
     hasNextTrack: boolean;
     hasPreviousTrack: boolean;
     recentlyPlayed: TrackWithRelations[];
+    // Demo
+    isDemo: boolean;
+    demoStart: number;
+    demoEnd: number;
 
     // actions
     playTrack: (track: TrackWithRelations, newPlaylist?: TrackWithRelations[]) => Promise<void>;
+    playDemo: (track: TrackWithRelations, startTime?: number) => Promise<void>;
     pauseTrack: () => void;
     resume: () => void;
     closePlayer: () => void;
@@ -75,6 +80,9 @@ export const useAudioPlayerStore = create<AudioPlayerState>((set, get) => {
         isPlaying: false,
         showPlayer: false,
         recentlyPlayed: [],
+        isDemo: false,
+        demoStart: 0,
+        demoEnd: 30,
 
         currentTime: 0,
         duration: 0,
@@ -256,6 +264,77 @@ export const useAudioPlayerStore = create<AudioPlayerState>((set, get) => {
             if (audio) {
                 audio.muted = next;
                 audio.volume = next ? 0 : get().volume;
+            }
+        },
+        // Demo Functions
+        playDemo: async (track: TrackWithRelations, startTime: number = 0) => {
+            if (!track) return;
+
+            initAudio();
+            if (!audio) return;
+
+            try {
+                const signedUrl = await getSignedTrackUrl(track.url);
+                if (!signedUrl) throw new Error("Failed to load 30s demo");
+
+                // Set demo state
+                set({
+                    isDemo: true,
+                    demoStart: startTime,
+                    demoEnd: startTime + 30,
+                    currentTrack: track,
+                    currentTrackId: track.id,
+                    showPlayer: true,
+                    isPlaying: false,
+                    isLoading: true,
+                    canPlay: false,
+                    currentTime: 0,
+                    duration: 0,
+                });
+
+                audio.src = signedUrl;
+
+                // When metadata loads, seek to the demo start
+                audio.onloadedmetadata = () => {
+                    if (!audio) return;
+
+                    const safeStart = Math.min(startTime, audio.duration - 1);
+                    audio.currentTime = safeStart;
+
+                    audio
+                        .play()
+                        .then(() => {
+                            set({
+                                isPlaying: true,
+                                isLoading: false,
+                                canPlay: true,
+                            });
+                        })
+                        .catch(() => {
+                            set({
+                                isPlaying: false,
+                                isLoading: false,
+                                canPlay: false,
+                            });
+                        });
+                };
+
+                // Stop automatically after the 30-second demo window
+                audio.ontimeupdate = () => {
+                    if (!audio) return;
+
+                    const { demoEnd } = get();
+
+                    if (audio.currentTime >= demoEnd) {
+                        audio.pause();
+                        set({ isPlaying: false });
+                    }
+
+                    set({ currentTime: audio.currentTime });
+                };
+            } catch (err) {
+                console.error("playDemo error:", err);
+                set({ isPlaying: false, isLoading: false, canPlay: false });
             }
         },
     };

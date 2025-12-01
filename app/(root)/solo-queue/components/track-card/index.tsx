@@ -71,7 +71,7 @@ const TrackCard = ({ track, playlist = [], onUnlock }: ITrackCardProps) => {
                 <TrackCreditsIcon trackId={track.id} />
                 <hr className="my-4" />
                 <PlayPauseButton track={track} playlist={playlist} locked={track.locked} />
-                {(track.type === "Remix" || track.album?.type === "Remix") && <YoutubePlayButton track={track} />}
+                <YoutubePlayButton track={track} />
                 {!user && (
                     <Link
                         onClick={handleLinkClick}
