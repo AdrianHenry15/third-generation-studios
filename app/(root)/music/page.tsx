@@ -7,6 +7,7 @@ import { useAlbumsWithImages } from "@/hooks/music/use-albums";
 import TrackCard from "@/app/(root)/solo-queue/components/track-card";
 import { TrackGridSkeleton } from "@/app/(root)/solo-queue/components/loading-skeleton";
 import { EmptyState } from "@/app/(root)/solo-queue/components/empty-state";
+import { BetaBanner } from "@/components/beta-banner";
 
 export default function MusicPage() {
     // Fetch tracks, artists, and albums with images
@@ -69,7 +70,8 @@ export default function MusicPage() {
     const error = tracksError || artistsError || albumsError;
 
     return (
-        <div className="space-y-8 py-24 px-4">
+        <div className="space-y-8 py-24 px-4 xl:px-24">
+            <BetaBanner />
             <header className="space-y-2">
                 <h1 className="text-4xl font-bold text-white">Music Library</h1>
                 <p className="text-neutral-400 text-lg">Browse all tracks by Third Generation Studios</p>
