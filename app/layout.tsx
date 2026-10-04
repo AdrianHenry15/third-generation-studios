@@ -1,5 +1,3 @@
-import "./globals.css";
-
 import { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import { ThemeProvider } from "next-themes";

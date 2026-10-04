@@ -21,11 +21,7 @@ export async function fetchTable<T extends TableName>(table: T): Promise<Row<T>[
 
 // Fetch by id
 export async function fetchRowById<T extends TablesWithId>(table: T, id: Row<T>["id"]): Promise<Row<T> | null> {
-    const { data, error } = await supabase
-        .from(table)
-        .select("*")
-        .eq("id", id as any)
-        .maybeSingle();
+    const { data, error } = await supabase.from(table).select("*").maybeSingle();
     if (error) throw error;
     return data as Row<T> | null;
 }
@@ -47,7 +43,6 @@ export async function updateRow<T extends TablesWithId>(table: T, id: Row<T>["id
     const { data, error } = await supabase
         .from(table)
         .update(values as any)
-        .eq("id", id as any)
         .select()
         .single();
     if (error) throw error;
@@ -57,10 +52,7 @@ export async function updateRow<T extends TablesWithId>(table: T, id: Row<T>["id
 
 // Delete a row
 export async function deleteRow<T extends TablesWithId>(table: T, id: Row<T>["id"]): Promise<boolean> {
-    const { error } = await supabase
-        .from(table)
-        .delete()
-        .eq("id", id as any);
+    const { error } = await supabase.from(table).delete();
     if (error) throw error;
     return true;
 }

@@ -9,8 +9,6 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "typegen": "npx sanity@latest schema extract && npx sanity@latest typegen generate",
-        "gen:types": "npx supabase gen types typescript --project-id kgwxlzocwejlqaolecbf --schema public > lib/types/supabase-types.ts",
         "ts-prune": "ts-prune"
     },
     "author": "",
@@ -55,7 +53,6 @@
         "framer-motion": "^12.4.1",
         "lucide-react": "^0.475.0",
         "next": "^15.1.6",
-        "next-sanity": "^9.8.54",
         "next-themes": "^0.4.6",
         "react": "^19.0.0",
         "react-calendly": "^4.4.0",
@@ -66,7 +63,6 @@
         "react-is": "^19.2.0",
         "react-spinners": "^0.15.0",
         "resend": "^4.8.0",
-        "sanity": "^3.74.1",
         "styled-components": "^6.1.15",
         "tailwind-merge": "^3.2.0",
         "tailwindcss-animate": "^1.0.7"

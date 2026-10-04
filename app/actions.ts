@@ -217,7 +217,6 @@ const maskValue = (v?: string | null) => {
 export const signInAction = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const hcaptchaToken = formData.get("hcaptcha_token")?.toString();
 
     // Early validation
     if (!email || !password) {
@@ -235,7 +234,6 @@ export const signInAction = async (formData: FormData) => {
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password,
-            options: { captchaToken: hcaptchaToken },
         });
 
         if (error) {
@@ -293,27 +291,11 @@ export const signInAction = async (formData: FormData) => {
 
 export const forgotPasswordAction = async (formData: FormData) => {
     const email = (formData.get("email") as string | null)?.trim();
-    const hcaptchaToken = (formData.get("hcaptcha_token") as string | null)?.trim();
 
     if (!email) return { error: "Email is required" };
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Please enter a valid email address" };
-    if (!hcaptchaToken) return { error: "Captcha is required" };
 
     try {
-        const supabase = await createClient();
-        // const origin = (process.env.NEXT_PUBLIC_BASE_URL as string).replace(/\/$/, "");
-
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            captchaToken: hcaptchaToken,
-        });
-
-        if (error) {
-            const msg = (error.message || "").toLowerCase();
-            if (msg.includes("rate") || msg.includes("too many"))
-                return { error: "Too many reset attempts. Please wait before trying again." };
-            if (msg.includes("captcha")) return { error: "Captcha verification failed. Please try again." };
-        }
-
         // Always return success message
         return { success: true, message: "If an account with this email exists, we've sent you a password reset link." };
     } catch (error) {
