@@ -45,7 +45,7 @@ const primaryServices: PrimaryService[] = [
             "SEO and performance foundations",
             "Ongoing support and improvements",
         ],
-        href: "/contact?service=web-design",
+        href: "/contact-us?service=web-design",
     },
     {
         eyebrow: "CRM & business systems",
@@ -61,7 +61,7 @@ const primaryServices: PrimaryService[] = [
             "Dashboards and reporting",
             "Role-based team access",
         ],
-        href: "/contact?service=crm",
+        href: "/contact-us?service=crm",
     },
 ];
 
@@ -158,7 +158,7 @@ export default function ServicesPage() {
 
                         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
                             <Link
-                                href="/contact"
+                                href="/contact-us"
                                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gray-950 px-7 py-3.5 text-sm font-semibold text-white transition hover:bg-violet-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 dark:bg-white dark:text-gray-950 dark:hover:bg-violet-400"
                             >
                                 Start a project
@@ -354,7 +354,7 @@ export default function ServicesPage() {
                     </div>
 
                     <Link
-                        href="/contact"
+                        href="/contact-us"
                         className="mt-9 inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-violet-700 transition hover:bg-gray-950 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-violet-600 lg:mt-0"
                     >
                         Tell us about your project
