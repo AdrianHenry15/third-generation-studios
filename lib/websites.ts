@@ -6,7 +6,7 @@ import Alexandria from "@/public/websites/alexandria.png";
 import Brite from "@/public/websites/brite.png";
 import TaharkaDemo from "@/public/websites/taharkabros1.webp";
 import TaharkaShopify from "@/public/websites/taharkabros2.jpg";
-import EGSImg from "@/public/websites/egs-screenshot.png";
+import EGSImg from "@/public/websites/eckert-golf.png";
 
 export const DemoWebsites: WebsiteType[] = [];
 
