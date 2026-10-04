@@ -11,10 +11,8 @@ import { useModalStore } from "@/stores/modal-store";
 import UserIcon from "./user-icon";
 
 const NavigationItems = [
-    { name: "Websites", href: "/websites" },
-    { name: "Music", href: "/music" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "Blog", href: "/blog" },
+    { name: "Home", href: "/" },
+    { name: "Services", href: "/services" },
     { name: "About", href: "/about" },
 ];
 

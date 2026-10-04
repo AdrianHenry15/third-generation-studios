@@ -9,9 +9,9 @@ import {
     useSearchTracksQuery,
     useSearchTracksByArtistsQuery,
 } from "@/hooks/music/use-search";
-import ArtistSearchItem from "./artist-search-item";
-import TrackSearchItem from "./track-search-item";
-import PlaylistSearchItem from "./playlist-search-item";
+import ArtistSearchItem from "./components/artist-search-item";
+import TrackSearchItem from "./components/track-search-item";
+import PlaylistSearchItem from "./components/playlist-search-item";
 
 export default function SearchPage() {
     // URL + debounce

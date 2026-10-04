@@ -9,7 +9,7 @@ import { useParams, useRouter } from "next/navigation";
 import { usePlaylist, useDeletePlaylist, useUpdatePlaylist, useRemoveTrackFromPlaylist } from "@/hooks/music/use-playlists";
 import { useModalStore } from "@/stores/modal-store";
 import { useAudioPlayerStore } from "@/stores/audio-player-store";
-import { TrackRow } from "./track-row";
+import { TrackRow } from "./components/track-row";
 import { TrackWithRelations } from "@/lib/types/database";
 import { PlaylistTrackWithRelations } from "@/lib/fetchers/playlist-fetchers";
 

@@ -3,12 +3,12 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import HeroSection from "./components/hero-section";
-import LogoStrip from "./components/logo-strip";
 import FeaturesSection from "./components/features-section";
 import WhyChooseUs from "./components/why-choose-us";
 import FaqSection from "./components/faq-section";
 import CtaSection from "./components/cta-section";
 import Testimonials from "./components/testimonials";
+import ClientSection from "./components/client-section";
 
 // Main Home Page Component
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
                 <HeroSection />
             </motion.div>
 
-            <LogoStrip />
+            <ClientSection />
             <FeaturesSection />
             <WhyChooseUs />
             <Testimonials />

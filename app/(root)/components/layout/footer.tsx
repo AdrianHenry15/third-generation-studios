@@ -10,10 +10,7 @@ export default function Footer() {
     const pathname = usePathname();
     const QuickLinks = [
         { name: "Home", href: "/" },
-        { name: "Websites", href: "/websites" },
-        { name: "Music", href: "/music" },
-        { name: "Pricing", href: "/pricing" },
-        { name: "Blog", href: "/blog" },
+        { name: "Services", href: "/services" },
         { name: "About Us", href: "/about" },
     ];
 
