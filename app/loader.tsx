@@ -1,4 +1,5 @@
 "use client";
+import "./globals.css";
 import { Loader } from "../components/loader";
 
 const Loading = () => {

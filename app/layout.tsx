@@ -1,3 +1,4 @@
+import "./globals.css";
 import { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -11,12 +12,10 @@ const nunito = Nunito({
 });
 export const metadata: Metadata = {
     title: "Third Generation Studios",
-    description:
-        "Expert web development and music production services. Elevate your digital presence and sound with Third Generation Studios.",
+    description: "Expert web development services. Elevate your digital presence and sound with Third Generation Studios.",
     openGraph: {
         title: "Third Generation Studios",
-        description:
-            "Providing top-tier web development and music production services. Transform your ideas into reality with our expert team.",
+        description: "Providing top-tier web development services. Transform your ideas into reality with our expert team.",
         url: "https://thirdgenerationstudios.com", // Make sure this is the homepage URL
         siteName: "Third Generation Studios",
         type: "website",
@@ -24,8 +23,7 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary_large_image",
         title: "Third Generation Studios",
-        description:
-            "Discover professional web development and music production services with Third Generation Studios. Your vision, our expertise.",
+        description: "Discover professional web development services with Third Generation Studios. Your vision, our expertise.",
     },
 };
 
