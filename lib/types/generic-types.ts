@@ -20,21 +20,6 @@ export type NavMenuType = {
     link: string;
 };
 
-export type FaqType = {
-    question: string;
-    answer: string;
-};
-
-export type WebsiteType = {
-    id: string;
-    img: any;
-    title: string;
-    description: string;
-    release_date: string;
-    link: string; // Add link property
-    tech_stack: TechStackName[];
-};
-
 export type EmailResponseProps = {
     success: boolean;
     data?: any;
@@ -49,13 +34,3 @@ export type EmailTemplateParamsType = {
 
 // For infinite queries
 export type PagedResult<T> = { data: T[]; nextCursor?: string };
-
-export interface IMusicLinkProps {
-    spotify?: string;
-    apple?: string;
-    youtube?: string;
-    soundcloud?: string;
-    amazon?: string;
-    tidal?: string;
-    deezer?: string;
-}

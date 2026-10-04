@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 
 type Client = {
@@ -45,16 +44,14 @@ const clients: Client[] = [
 ];
 
 export default function ClientCollageSection() {
-    const { resolvedTheme } = useTheme();
-    const isDark = resolvedTheme === "dark";
-
     return (
-        <section className={`w-full py-20 bg-gradient-to-b from-gray-900 to-black`}>
+        <section id="websites" className={`w-full py-20 bg-gradient-to-b from-gray-900 to-black`}>
             <div className="mx-auto max-w-7xl px-6">
                 {/* Header */}
                 <div className="mb-14 max-w-2xl">
                     <h2 className="text-3xl font-semibold tracking-tight">Work Trusted by Real Businesses</h2>
-                    <p className={`mt-3 text-sm leading-relaxed ${isDark ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className="mt-3 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
+                        {" "}
                         A selection of platforms we’ve designed and built across retail, services, wellness, and digital media.
                     </p>
                 </div>
@@ -67,9 +64,7 @@ export default function ClientCollageSection() {
                             target="_blank"
                             rel="noopener noreferrer"
                             key={client.name}
-                            className={`group relative h-64 overflow-hidden rounded-2xl border transition
-                ${isDark ? "border-gray-800 bg-gray-900" : "border-gray-200 bg-white"}
-              `}
+                            className="group relative h-64 overflow-hidden rounded-2xl border border-gray-200 bg-white transition dark:border-gray-800 dark:bg-gray-900"
                         >
                             {/* Image */}
                             <Image
@@ -80,20 +75,9 @@ export default function ClientCollageSection() {
                             />
 
                             {/* Overlay */}
-                            <div
-                                className={`absolute inset-0 flex flex-col justify-end p-5 transition-opacity duration-300
-                  ${
-                      isDark
-                          ? "bg-gradient-to-t from-black/80 via-black/40 to-transparent"
-                          : "bg-gradient-to-t from-white/90 via-white/50 to-transparent"
-                  }
-                  opacity-0 group-hover:opacity-100
-                `}
-                            >
+                            <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-white/90 via-white/50 to-transparent p-5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:from-black/80 dark:via-black/40">
                                 <h3 className="text-sm font-semibold">{client.name}</h3>
-                                <p className={`mt-1 text-xs leading-snug ${isDark ? "text-gray-300" : "text-gray-700"}`}>
-                                    {client.description}
-                                </p>
+                                <p className="mt-1 text-xs leading-snug text-gray-700 dark:text-gray-300"> {client.description}</p>
                             </div>
                         </Link>
                     ))}

@@ -55,13 +55,13 @@ export default function CtaSection() {
                     </motion.p>
 
                     <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-                        <Link href="/consultancy">
+                        <Link href="/contact-us">
                             <Button className="bg-green-600 hover:bg-green-700 hover:glow text-lg px-8 py-6">
                                 Let&apos;s Talk
                                 <ArrowRight className="ml-2 h-5 w-5" />
                             </Button>
                         </Link>
-                        <Link href="/websites">
+                        <Link href="#websites">
                             <Button
                                 variant="outline"
                                 className="border-green-500 text-green-400 hover:text-green-300 hover:border-green-400 text-lg px-8 py-6"

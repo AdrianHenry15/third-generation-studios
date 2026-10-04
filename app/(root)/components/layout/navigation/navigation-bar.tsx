@@ -1,184 +1,101 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/buttons/button";
-import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useModalStore } from "@/stores/modal-store";
-import UserIcon from "./user-icon";
 
-const NavigationItems = [
-    { name: "Home", href: "/" },
-    { name: "Services", href: "/services" },
-    { name: "About", href: "/about" },
+const navigationItems = [
+    {
+        name: "Services",
+        href: "/services",
+    },
+    {
+        name: "About",
+        href: "/about",
+    },
 ];
 
 export default function Navbar() {
-    const { isModalOpen, modalType } = useModalStore();
-    const openModal = useModalStore((state) => state.openModal);
-    const closeModal = useModalStore((state) => state.closeModal);
-
-    const [scrolled, setScrolled] = useState(false);
-    const menuRef = useRef<HTMLDivElement | null>(null);
-    const toggleRef = useRef<HTMLDivElement | null>(null);
     const pathname = usePathname();
 
-    const { scrollY } = useScroll();
-    const backgroundColor = useTransform(scrollY, [0, 60], ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.8)"]);
-
-    /**
-     * ✅ Efficient scroll handler (debounced and cleaned)
-     */
-    useEffect(() => {
-        const handleScroll = () => {
-            const isNowScrolled = window.scrollY > 100;
-            setScrolled((prev) => (prev !== isNowScrolled ? isNowScrolled : prev));
-        };
-
-        handleScroll(); // Initialize on mount
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
-
-    /**
-     * ✅ Click outside handler only when nav modal is open
-     */
-    const handleClickOutside = useCallback(
-        (event: MouseEvent) => {
-            if (modalType !== "nav" || !isModalOpen) return;
-            const target = event.target as Node;
-            if (menuRef.current?.contains(target)) return;
-            if (toggleRef.current?.contains(target)) return;
-            closeModal();
-        },
-        [isModalOpen, modalType, closeModal],
-    );
-
-    useEffect(() => {
-        if (modalType !== "nav" || !isModalOpen) return;
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [isModalOpen, modalType, handleClickOutside]);
-
-    /**
-     * ✅ Close nav modal on route change
-     */
-    useEffect(() => {
-        if (isModalOpen && modalType === "nav") closeModal();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pathname]); // We only want to run this when pathname changes, not on other dependency changes
-
-    if (pathname.startsWith("/solo-queue")) {
-        return null; // Don't render the navbar on /solo-queue routes
-    }
     return (
-        <>
-            <motion.header
-                style={{ backgroundColor }}
-                className={`fixed left-1/2 -translate-x-1/2 top-2 w-[95%] max-w-5xl glass rounded-2xl z-50 transition-all duration-300 ${scrolled ? "glass py-3" : "py-4"}`}
+        <header className="fixed inset-x-3 top-3 z-50 sm:inset-x-6">
+            <nav
+                aria-label="Primary navigation"
+                className="
+                    mx-auto flex h-14 w-full max-w-5xl
+                    items-center justify-between
+                    rounded-2xl border border-white/10
+                    bg-gray-950/80 px-3
+                    shadow-lg shadow-black/10
+                    backdrop-blur-xl
+                    sm:h-16 sm:px-5
+                "
             >
-                <div className="w-full px-4 sm:px-6 flex justify-between items-center">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="flex items-center"
-                    >
-                        <Link href="/">
-                            <div className="flex items-center">
-                                <Image src="/logos/tgs-logo.png" alt="Logo" width={40} height={40} className="mr-2" />
-                            </div>
-                        </Link>
-                    </motion.div>
+                <Link
+                    href="/"
+                    aria-label="Third Generation Studios home"
+                    className="
+                        flex shrink-0 items-center gap-2
+                        rounded-lg outline-none transition
+                        hover:opacity-80
+                        focus-visible:ring-2
+                        focus-visible:ring-green-500
+                        focus-visible:ring-offset-2
+                        focus-visible:ring-offset-gray-950
+                    "
+                >
+                    <Image src="/logos/tgs-logo.png" alt="" width={40} height={40} priority className="size-9 object-contain sm:size-10" />
 
-                    <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
-                        {NavigationItems.map((item, index) => (
-                            <motion.a
+                    <span className="hidden text-sm font-semibold text-white lg:block">Third Generation Studios</span>
+                </Link>
+
+                <div className="flex items-center gap-1 sm:gap-2">
+                    {navigationItems.map((item) => {
+                        const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+                        return (
+                            <Link
                                 key={item.name}
                                 href={item.href}
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                                className="text-gray-300 hover:text-green-600 hover:glow-text transition-all"
+                                aria-current={isActive ? "page" : undefined}
+                                className={`
+                                    rounded-lg px-2 py-2
+                                    text-xs font-medium
+                                    outline-none transition
+                                    sm:px-3 sm:text-sm
+                                    ${isActive ? "bg-white/10 text-white" : "text-gray-300 hover:bg-white/5 hover:text-white"}
+                                    focus-visible:ring-2
+                                    focus-visible:ring-green-500
+                                `}
                             >
                                 {item.name}
-                            </motion.a>
-                        ))}
-
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.5, delay: 0.5 }}
-                        >
-                            <Link href="/contact-us">
-                                <Button className="bg-gradient-to-r from-green-600 to-green-800 text-white rounded-xl hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:from-green-500 hover:to-green-700 transition-all duration-300">
-                                    Get in Touch
-                                </Button>
                             </Link>
-                        </motion.div>
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.5, delay: 0.5 }}
-                        >
-                            <UserIcon />
-                        </motion.div>
-                    </div>
+                        );
+                    })}
 
-                    <div className="md:hidden flex items-center" ref={toggleRef}>
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                                isModalOpen && modalType === "nav"
-                                    ? closeModal()
-                                    : openModal("nav", {
-                                          menuRef: menuRef,
-                                          navItems: NavigationItems,
-                                          isUserIcon: false,
-                                      });
-                            }}
-                            aria-label="Toggle menu"
-                            aria-expanded={isModalOpen && modalType === "nav"}
-                        >
-                            {isModalOpen && modalType === "nav" ? <X /> : <Menu />}
-                        </Button>
-                        <UserIcon />
-                    </div>
-                </div>
-            </motion.header>
-            <AnimatePresence>
-                {isModalOpen && modalType === "nav" && (
-                    <motion.div
-                        ref={menuRef}
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="fixed top-[72px] left-1/2 -translate-x-1/2 w-[95%] max-w-5xl md:hidden glass rounded-b-2xl z-40"
+                    <Link
+                        href="/contact-us"
+                        className="
+                            ml-1 inline-flex items-center
+                            justify-center rounded-xl
+                            bg-green-600 px-3 py-2
+                            text-xs font-semibold text-white
+                            shadow-sm outline-none transition
+                            hover:bg-green-500
+                            focus-visible:ring-2
+                            focus-visible:ring-green-400
+                            focus-visible:ring-offset-2
+                            focus-visible:ring-offset-gray-950
+                            sm:ml-2 sm:px-5 sm:text-sm
+                        "
                     >
-                        <div className="px-4 py-4 flex flex-col space-y-4">
-                            {NavigationItems.map((item) => (
-                                <Link
-                                    key={item.name}
-                                    href={item.href}
-                                    className="text-gray-300 hover:text-white py-2"
-                                    onClick={() => closeModal()}
-                                >
-                                    {item.name}
-                                </Link>
-                            ))}
-                            <Link href="/contact-us" onClick={() => closeModal()}>
-                                <Button className="bg-gradient-to-r from-green-600 to-green-800 text-white rounded-xl hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] hover:from-green-500 hover:to-green-700 transition-all duration-300">
-                                    Get in Touch
-                                </Button>
-                            </Link>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </>
+                        <span className="sm:hidden">Contact</span>
+
+                        <span className="hidden sm:inline">Get in touch</span>
+                    </Link>
+                </div>
+            </nav>
+        </header>
     );
 }

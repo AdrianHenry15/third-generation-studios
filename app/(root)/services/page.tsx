@@ -166,7 +166,7 @@ export default function ServicesPage() {
                             </Link>
 
                             <Link
-                                href="/#work"
+                                href="/#websites"
                                 className="inline-flex items-center justify-center rounded-full border border-gray-300 px-7 py-3.5 text-sm font-semibold transition hover:border-gray-950 hover:bg-gray-50 dark:border-white/20 dark:hover:border-white dark:hover:bg-white/5"
                             >
                                 View our work

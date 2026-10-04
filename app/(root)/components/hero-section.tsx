@@ -116,14 +116,14 @@ export default function HeroSection() {
                                     <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 </Button>
                             </Link>
-                            <Link href="/websites">
+                            <Link href="/services">
                                 <Button
                                     variant="outline"
                                     className="group border-2 border-green-500/50 text-green-400 hover:text-white hover:border-green-400 text-lg px-8 py-6 rounded-2xl font-semibold bg-transparent hover:bg-green-500/10 transition-all duration-300 backdrop-blur-sm"
                                 >
                                     <span className="flex items-center">
-                                        See MVP Demo
-                                        <Zap className="ml-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                                        Our Services
+                                        <Zap className="ml-2 w-5 group-hover:rotate-12 transition-transform" />
                                     </span>
                                 </Button>
                             </Link>
