@@ -12,11 +12,17 @@ export default function Footer() {
         { name: "Home", href: "/" },
         { name: "Services", href: "/services" },
         { name: "About Us", href: "/about" },
+        { name: "CoffeeShop CRM", href: "/products/coffeeshop-crm" },
+        { name: "Website Care", href: "/website-care" },
+        { name: "Studio Sessions", href: "/studio-sessions" },
+        { name: "Privacy", href: "/privacy-policy" },
+        { name: "Accessibility", href: "/accessibility" },
+        { name: "Sitemap", href: "/sitemap" },
     ];
 
     const Socials = [
         { name: "GitHub", href: "https://github.com/third-generation-studios" },
-        { name: "Instagram", href: "https://www.instagram.com/websitesblow/" },
+        { name: "Instagram", href: "https://www.instagram.com/thirdgeneration.studios/" },
         { name: "LinkedIn", href: "https://www.linkedin.com/in/adrian-henry-199595207/" },
         { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61555913473339" },
     ];
@@ -55,7 +61,7 @@ export default function Footer() {
                     <motion.div variants={itemVariants} className="col-span-1 md:col-span-2">
                         <h3 className="text-2xl font-bold gradient-text mb-4">Third Generation Studios</h3>
                         <p className="text-gray-400 mb-6 max-w-md">
-                            We convert your digital vision into reality with MVP-ready custom solutions using cutting-edge technologies.
+                            Web design, SEO, and ongoing support for service businesses.
                         </p>
                         {/* Socials */}
                         <div className="flex space-x-4">

@@ -87,6 +87,7 @@ export default function ContactForm() {
 
             const result = (await response.json()) as {
                 success?: boolean;
+                delivered?: boolean;
                 message?: string;
             };
 
@@ -99,6 +100,7 @@ export default function ContactForm() {
                 message: result.message || "Your project inquiry was submitted successfully.",
             });
 
+            if (result.delivered) window.dispatchEvent(new Event("tgs:inquiry-submitted"));
             form.reset();
         } catch (error) {
             setStatus({

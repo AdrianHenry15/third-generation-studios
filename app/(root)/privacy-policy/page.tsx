@@ -1,23 +1,7 @@
+import { pageMetadata } from "@/features/marketing/site";
 import React from "react";
-import { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-    title: "Privacy Policy | Third Generation Studios",
-    description:
-        "Read Third Generation Studios' privacy policy to learn how we collect, use, and protect your information when using our web, media, music, and engineering services.",
-    openGraph: {
-        title: "Privacy Policy | Third Generation Studios",
-        description:
-            "Learn how Third Generation Studios collects, uses, and protects your information across our web, media, and music services.",
-        url: "https://thirdgenerationstudios.com/privacy-policy",
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Privacy Policy | Third Generation Studios",
-        description: "Review Third Generation Studios' privacy policy covering web, media, and music-related data usage.",
-    },
-};
 
 const PrivacyPolicyPage = () => {
     return (
@@ -43,7 +27,7 @@ const PrivacyPolicyPage = () => {
                 <h5 className="font-bold my-10 text-xl">Our Technology Stack</h5>
                 <p className="mb-10">
                     Third Generation Studios uses a modern technology stack to deliver our services, including Next.js, TypeScript, Zustand,
-                    Supabase, Sanity, Clerk.js, EmailJS, and audio engineering tools. These tools help us build, manage, and secure your
+                    Resend for inquiry emails and Google Analytics when enabled. These tools help us build, manage, and secure your
                     projects, and may process or store some of your information as part of our service delivery. For more information about
                     how these providers handle data, please refer to their respective privacy policies.
                 </p>
@@ -278,3 +262,5 @@ const PrivacyPolicyPage = () => {
 };
 
 export default PrivacyPolicyPage;
+
+export const metadata = pageMetadata("/privacy-policy", "Privacy Policy", "How Third Generation Studios handles information submitted through its website.");

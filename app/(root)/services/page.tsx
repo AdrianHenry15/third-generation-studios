@@ -1,3 +1,4 @@
+import { pageMetadata } from "@/features/marketing/site";
 import Link from "next/link";
 import {
     ArrowRight,
@@ -42,7 +43,8 @@ const primaryServices: PrimaryService[] = [
             "Responsive development",
             "E-commerce and payments",
             "Booking and lead-generation flows",
-            "SEO and performance foundations",
+            "SEO, Search Console, and performance foundations",
+            "Inquiry tracking and conversion measurement",
             "Ongoing support and improvements",
         ],
         href: "/contact-us?service=web-design",
@@ -362,6 +364,13 @@ export default function ServicesPage() {
                     </Link>
                 </div>
             </section>
+            <section aria-label="Related services and products" className="mx-auto flex max-w-7xl flex-wrap gap-6 px-6 pb-12">
+                <Link className="underline underline-offset-4" href="/websites/eckert-golf">See the Eckert Golf refresh</Link>
+                <Link className="underline underline-offset-4" href="/website-care">Explore Website Care</Link>
+                <Link className="underline underline-offset-4" href="/products/coffeeshop-crm">Explore CoffeeShop CRM</Link>
+            </section>
         </main>
     );
 }
+
+export const metadata = pageMetadata("/services", "Web Design & Digital Marketing", "Website design, SEO, lead tracking, and ongoing support from Third Generation Studios.");

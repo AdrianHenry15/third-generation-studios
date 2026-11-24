@@ -177,6 +177,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json({
             success: true,
+            delivered: true,
             message: "Your project inquiry was submitted successfully.",
         });
     } catch (error) {

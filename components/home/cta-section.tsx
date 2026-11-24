@@ -46,18 +46,17 @@ export default function CtaSection() {
                     className="glass p-8 md:p-16 rounded-xl border border-green-500/30 max-w-5xl mx-auto text-center"
                 >
                     <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-                        Let&apos;s Launch the Future <span className="gradient-text">Together</span>
+                        Let&apos;s Improve Your Website <span className="gradient-text">Together</span>
                     </motion.h2>
 
                     <motion.p variants={itemVariants} className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                        Ready to transform your digital vision into reality? Our team of experts is ready to help you build the next
-                        generation of technology.
+                        Share what you want to improve and we’ll talk through the next step.
                     </motion.p>
 
                     <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
                         <Link href="/contact-us">
                             <Button className="bg-green-600 hover:bg-green-700 hover:glow text-lg px-8 py-6">
-                                Let&apos;s Talk
+                                Request a Website Review
                                 <ArrowRight className="ml-2 h-5 w-5" />
                             </Button>
                         </Link>
@@ -76,10 +75,10 @@ export default function CtaSection() {
                             <span className="text-green-400 font-semibold">You dream it.</span> We deploy it.
                         </span>
                         <span className="text-gray-400">
-                            <span className="text-purple-400 font-semibold">MVP-ready</span> in no time.
+                            <span className="text-purple-400 font-semibold">SEO</span> at launch.
                         </span>
                         <span className="text-gray-400">
-                            <span className="text-indigo-400 font-semibold">Powered</span> by the tech of tomorrow.
+                            <span className="text-indigo-400 font-semibold">Supported</span> after launch.
                         </span>
                     </motion.div>
                 </motion.div>

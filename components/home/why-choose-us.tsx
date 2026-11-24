@@ -11,18 +11,18 @@ export default function WhyChooseUs() {
     const reasons = [
         {
             icon: <Zap className="h-8 w-8 text-yellow-500" />,
-            title: "3x Faster Delivery",
-            description: "Our streamlined development process ensures your product gets to market faster than traditional methods.",
+            title: "Direct Access to Your Developer",
+            description: "Work directly with the person building your site.",
         },
         {
             icon: <Rocket className="h-8 w-8 text-blue-500" />,
-            title: "Built with AI/ML",
-            description: "We leverage artificial intelligence and machine learning to create smarter, more efficient solutions.",
+            title: "Clear Launch Handoff",
+            description: "Know how the site works and where to request updates.",
         },
         {
             icon: <Shield className="h-8 w-8 text-green-500" />,
-            title: "Scalable Infrastructure",
-            description: "Our solutions are built to grow with your business, ensuring long-term success and stability.",
+            title: "Ongoing Website Support",
+            description: "Get help with maintenance and improvements as your business changes.",
         },
         {
             icon: <BarChart className="h-8 w-8 text-purple-500" />,

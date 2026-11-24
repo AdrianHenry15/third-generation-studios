@@ -10,7 +10,6 @@ export type TechStackName =
     | "Liquid"
     | "Stripe"
     | "Emailjs"
-    | "Sanity.io"
     | "Supabase"
     | "Resend";
 
@@ -22,8 +21,8 @@ export type NavMenuType = {
 
 export type EmailResponseProps = {
     success: boolean;
-    data?: any;
-    error?: any;
+    data?: unknown;
+    error?: unknown;
 };
 
 export type EmailTemplateParamsType = {

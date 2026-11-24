@@ -49,15 +49,6 @@ export default function Testimonials() {
         },
     };
 
-    const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: {
-            opacity: 1,
-            y: 0,
-            transition: { duration: 0.5 },
-        },
-    };
-
     return (
         <section id="testimonials" className="py-20 md:py-32 bg-gradient-to-b from-black to-gray-900">
             <div className="container mx-auto px-4">

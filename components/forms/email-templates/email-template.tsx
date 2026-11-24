@@ -115,9 +115,4 @@ const row = {
     paddingBottom: 8,
 };
 
-const divider = {
-    borderTop: "1px solid #e5e7eb",
-    margin: "32px 48px 0 48px",
-};
-
 export default EmailTemplate;

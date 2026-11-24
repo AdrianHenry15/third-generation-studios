@@ -81,3 +81,20 @@ Full-stack developers • Music producers • Founder & Co-founder of Third Gene
 ### 📄 License
 
 © 2025 Third Generation Studios. All rights reserved.
+
+## Promo site setup
+
+Use Node 22. Run `npm ci` to install the locked dependencies and `npm run build` to verify the production build.
+
+| Variable | Purpose |
+| --- | --- |
+| `RESEND_API_KEY` | Server-only Resend key for the existing contact form. |
+| `TGS_CONTACT_FROM` | Verified sender for contact notifications and confirmations. |
+| `TGS_CONTACT_TO` | TGS inbox for new inquiries. |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Optional GA4 measurement ID. Mark `generate_lead` as a key event after testing a delivered inquiry. |
+| `GOOGLE_SITE_VERIFICATION` | Optional meta verification for a Search Console URL-prefix property. |
+| `STUDIO_SESSIONS_SPOTIFY_URL` | Public Spotify playlist URL for Studio Sessions Tryouts. |
+
+Verify the Search Console Domain property through DNS, then submit `https://www.thirdgenerationstudios.com/sitemap.xml` and inspect the homepage, Services, and Eckert Golf case study. The canonical hostname is `www.thirdgenerationstudios.com`.
+
+The contact form continues to use `POST /api/contact` and Resend. Test both the team notification and the sender confirmation on the deployed site. If CoffeeShop CRM intake is added later, connect the validated submission server-side through that route. Website Manager is introduced on the Website Care page as coming soon.

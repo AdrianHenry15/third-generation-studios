@@ -13,6 +13,7 @@ const navigationItems = [
         name: "About",
         href: "/about",
     },
+    { name: "Products", href: "/products" },
 ];
 
 export default function Navbar() {
