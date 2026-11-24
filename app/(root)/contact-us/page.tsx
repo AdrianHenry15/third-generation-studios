@@ -1,13 +1,8 @@
-import type { Metadata } from "next";
+import { pageMetadata } from "@/features/marketing/site";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, Check, Clock3, Mail, MessageSquare } from "lucide-react";
 
 import ContactForm from "@/components/forms/contact-form";
-
-export const metadata: Metadata = {
-    title: "Contact | Third Generation Studios",
-    description: "Tell Third Generation Studios about your website, CRM, design, music, Unity, or 3D project.",
-};
 
 const benefits = ["Clear project recommendations", "Straightforward pricing and scope", "No-pressure introductory conversation"];
 
@@ -145,3 +140,9 @@ export default function ContactUsPage() {
         </main>
     );
 }
+
+export const metadata = pageMetadata(
+    "/contact-us",
+    "Request a Website Review",
+    "Tell Third Generation Studios what you would like to improve about your website.",
+);

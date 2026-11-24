@@ -80,7 +80,7 @@ export default function HeroSection() {
                             className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500/10 to-blue-500/10 border border-green-500/20 rounded-full px-4 py-2 mb-6 backdrop-blur-sm"
                         >
                             <Sparkles className="w-4 h-4 text-green-400" />
-                            <span className="text-sm font-medium text-green-300">Next-Gen Development Studio</span>
+                            <span className="text-sm font-medium text-green-300">Web Design & Digital Marketing</span>
                         </motion.div>
 
                         <motion.h1
@@ -102,27 +102,27 @@ export default function HeroSection() {
                         </motion.h1>
 
                         <motion.p variants={itemVariants} className="text-xl text-slate-300 mb-8 leading-relaxed max-w-lg">
-                            We convert your digital vision into reality with <span className="text-green-400 font-semibold">MVP-ready</span>{" "}
-                            custom solutions using cutting-edge technologies.
+                            We build <span className="text-green-400 font-semibold">websites for service businesses</span> and help
+                            customers find you, understand what you offer, and get in touch.
                         </motion.p>
 
                         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 mb-8">
                             <Link href="/contact-us">
                                 <Button className="group relative bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white px-8 py-6 rounded-2xl text-lg font-semibold transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:scale-105 overflow-hidden">
                                     <span className="relative z-10 flex items-center">
-                                        Let&apos;s Talk
+                                        Request a Website Review
                                         <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                     </span>
                                     <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 </Button>
                             </Link>
-                            <Link href="/services">
+                            <Link href="#websites">
                                 <Button
                                     variant="outline"
                                     className="group border-2 border-green-500/50 text-green-400 hover:text-white hover:border-green-400 text-lg px-8 py-6 rounded-2xl font-semibold bg-transparent hover:bg-green-500/10 transition-all duration-300 backdrop-blur-sm"
                                 >
                                     <span className="flex items-center">
-                                        Our Services
+                                        See Our Work
                                         <Zap className="ml-2 w-5 group-hover:rotate-12 transition-transform" />
                                     </span>
                                 </Button>
@@ -132,15 +132,15 @@ export default function HeroSection() {
                         <motion.div variants={itemVariants} className="flex flex-wrap gap-3">
                             <div className="flex items-center gap-2 bg-blue-500/10 border border-blue-500/30 px-4 py-2 rounded-full text-sm backdrop-blur-sm">
                                 <Rocket className="w-4 h-4 text-blue-400" />
-                                <span className="text-blue-300">MVP-ready in no time</span>
+                                <span className="text-blue-300">Built for your business</span>
                             </div>
                             <div className="flex items-center gap-2 bg-purple-500/10 border border-purple-500/30 px-4 py-2 rounded-full text-sm backdrop-blur-sm">
                                 <Globe className="w-4 h-4 text-purple-400" />
-                                <span className="text-purple-300">Powered by the tech of tomorrow</span>
+                                <span className="text-purple-300">Search-ready at launch</span>
                             </div>
                             <div className="flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/30 px-4 py-2 rounded-full text-sm backdrop-blur-sm">
                                 <Code className="w-4 h-4 text-indigo-400" />
-                                <span className="text-indigo-300">We architect your innovation</span>
+                                <span className="text-indigo-300">Support after launch</span>
                             </div>
                         </motion.div>
                     </motion.div>
@@ -272,7 +272,6 @@ export default function HeroSection() {
                 </div>
             </div>
 
-            {/* eslint-disable-next-line react/jsx-no-comment-textnodes */}
             <style jsx>{`
                 @keyframes gradient-x {
                     0%,

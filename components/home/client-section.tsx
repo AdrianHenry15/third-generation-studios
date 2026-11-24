@@ -13,9 +13,9 @@ type Client = {
 const clients: Client[] = [
     {
         name: "Eckert Golf",
-        description: "Maintenance serviced for your landscape.",
+        description: "Website refresh and turf equipment catalog. Read the case study.",
         image: "/websites/eckert-golf.png",
-        link: "https://eckertgolf.com",
+        link: "/websites/eckert-golf",
     },
     {
         name: "Brite",
@@ -61,7 +61,7 @@ export default function ClientCollageSection() {
                     {clients.map((client) => (
                         <Link
                             href={client.link}
-                            target="_blank"
+                            target={client.link.startsWith("/") ? undefined : "_blank"}
                             rel="noopener noreferrer"
                             key={client.name}
                             className="group relative h-64 overflow-hidden rounded-2xl border border-gray-200 bg-white transition dark:border-gray-800 dark:bg-gray-900"
@@ -71,11 +71,12 @@ export default function ClientCollageSection() {
                                 src={client.image}
                                 alt={client.name}
                                 fill
+                                sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                             />
 
                             {/* Overlay */}
-                            <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-white/90 via-white/50 to-transparent p-5 opacity-0 transition-opacity duration-300 group-hover:opacity-100 dark:from-black/80 dark:via-black/40">
+                            <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-white/90 via-white/50 to-transparent p-5 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-visible:opacity-100 dark:from-black/80 dark:via-black/40">
                                 <h3 className="text-sm font-semibold">{client.name}</h3>
                                 <p className="mt-1 text-xs leading-snug text-gray-700 dark:text-gray-300"> {client.description}</p>
                             </div>

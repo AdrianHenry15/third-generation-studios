@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView, Variants } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Rocket, Code2, Cpu, Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -12,31 +12,31 @@ export default function FeaturesSection() {
     const features = [
         {
             icon: <Rocket className="h-10 w-10 text-blue-500" />,
-            title: "MVP Delivery",
+            title: "Website Design & Redesign",
             description:
-                "Launch your product faster with our rapid MVP development process. We focus on core features to get your product to market quickly.",
+                "Launch a site that makes your services clear and gives customers a direct way to inquire.",
         },
         {
             icon: <Code2 className="h-10 w-10 text-purple-500" />,
-            title: "Custom Web Platforms",
+            title: "SEO & Lead Tracking",
             description:
-                "Tailored development to meet your specific needs. We build scalable, responsive web applications with cutting-edge technologies.",
+                "Set up search visibility and measure which pages generate inquiries.",
         },
         {
             icon: <Cpu className="h-10 w-10 text-indigo-500" />,
-            title: "AI Integrations",
+            title: "Website Care",
             description:
-                "Enhance your product with artificial intelligence. We integrate machine learning models to provide smart solutions for your users.",
+                "Keep content current and get help when your site needs an update.",
         },
         {
             icon: <Users className="h-10 w-10 text-cyan-500" />,
-            title: "Client-Centric Approach",
+            title: "Custom Development",
             description:
-                "Your vision is our priority. We work closely with you to ensure your product meets your expectations and delights your users.",
+                "Build custom features and integrations around the way your business works.",
         },
     ];
 
-    const containerVariants: Variants = {
+    const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -46,15 +46,12 @@ export default function FeaturesSection() {
         },
     };
 
-    const itemVariants: Variants = {
+    const itemVariants = {
         hidden: { opacity: 0, y: 50 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: {
-                duration: 0.8,
-                ease: "easeOut" as const, // ✅ properly typed easing
-            },
+            transition: { duration: 0.8, ease: "easeOut" as const },
         },
     };
 
@@ -68,10 +65,10 @@ export default function FeaturesSection() {
                     className="text-center mb-16"
                 >
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        Cutting-Edge <span className="gradient-text">Solutions</span>
+                        Website & Marketing <span className="gradient-text">Services</span>
                     </h2>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                        We leverage the latest technologies to build innovative solutions that drive your business forward.
+                        Design, launch, and maintain your website with one studio.
                     </p>
                 </motion.div>
 
@@ -89,11 +86,6 @@ export default function FeaturesSection() {
                             whileHover={{
                                 y: -10,
                                 boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
-                                transition: {
-                                    type: "spring" as const, // ✅ fix type narrowing
-                                    stiffness: 400,
-                                    damping: 17,
-                                },
                             }}
                             className="h-full rounded-xl"
                         >

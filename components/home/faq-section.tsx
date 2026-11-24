@@ -10,24 +10,24 @@ export default function FaqSection() {
 
     const faqs = [
         {
-            question: "What is an MVP and why do I need one?",
-            answer: "An MVP (Minimum Viable Product) is a version of your product with just enough features to satisfy early customers and provide feedback for future development. It helps validate your idea with minimal investment, gather user feedback, and iterate quickly based on real-world usage.",
+            question: "Can you improve the website I already have?",
+            answer: "Yes. We start by reviewing what’s working, where visitors get stuck, and what would make the biggest difference for your business.",
         },
         {
-            question: "How long does it take to develop an MVP?",
-            answer: "The timeline varies depending on the complexity of your project, but we typically deliver MVPs within 4-8 weeks. Our agile approach allows us to focus on core features first, getting your product to market faster.",
+            question: "How long does a website project take?",
+            answer: "It depends on the size of the site, the content you have ready, and the features you need. We agree on milestones before work starts.",
         },
         {
-            question: "What technologies do you specialize in?",
-            answer: "We specialize in modern web and mobile technologies including React, Next.js, Node.js, Python, AI/ML frameworks, and cloud infrastructure. We select the best tech stack for each project based on specific requirements and scalability needs.",
+            question: "What search setup is included?",
+            answer: "We scope launch essentials such as page titles, descriptions, a sitemap, and Search Console. We can also set up tracking for completed inquiries.",
         },
         {
-            question: "How do you handle project management and communication?",
-            answer: "We use agile methodologies with regular sprint reviews and daily standups. You'll have access to our project management tools to track progress in real-time. We maintain open communication channels through Slack, email, and scheduled video calls.",
+            question: "How will I hear about progress?",
+            answer: "You’ll work directly with TGS. We’ll agree on when you’ll see drafts and how we’ll collect feedback.",
         },
         {
-            question: "What happens after the MVP is launched?",
-            answer: "Post-launch, we analyze user feedback and performance metrics to identify improvements. We can then work with you on the next development phase, adding features, optimizing performance, and scaling your infrastructure as your user base grows.",
+            question: "Can you help after launch?",
+            answer: "Yes. Our Website Care service covers ongoing maintenance and content updates. We scope larger changes with you as they come up.",
         },
     ];
 
