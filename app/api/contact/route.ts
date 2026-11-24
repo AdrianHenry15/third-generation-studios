@@ -169,6 +169,39 @@ export async function POST(request: Request) {
             message,
         };
 
+        const token = getString(payload.turnstileToken);
+
+        if (!token || token.length > 2048) {
+            return NextResponse.json({ success: false, message: "Please complete the verification and try again." }, { status: 400 });
+        }
+
+        const secret = process.env.TURNSTILE_SECRET_KEY;
+        const expectedHostname = process.env.TURNSTILE_EXPECTED_HOSTNAME;
+
+        if (!secret || (process.env.NODE_ENV === "production" && !expectedHostname)) {
+            throw new Error("Turnstile is missing required configuration.");
+        }
+
+        const verification = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+            method: "POST",
+            body: new URLSearchParams({ secret, response: token }),
+            signal: AbortSignal.timeout(5000),
+        });
+
+        if (!verification.ok) {
+            throw new Error("Turnstile verification service is unavailable.");
+        }
+
+        const result = (await verification.json()) as {
+            success?: boolean;
+            hostname?: string;
+            action?: string;
+        };
+
+        if (result.success !== true || (expectedHostname && (result.hostname !== expectedHostname || result.action !== "contact"))) {
+            return NextResponse.json({ success: false, message: "Verification failed. Please try again." }, { status: 400 });
+        }
+
         /*
          * Keep the app key server-side so visitors cannot
          * select another application's configuration.

@@ -1,7 +1,8 @@
 "use client";
 
 import { AlertCircle, CheckCircle2, ChevronDown, Loader2, Send } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { useState, useRef } from "react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 type ContactPayload = {
     name: string;
@@ -12,6 +13,7 @@ type ContactPayload = {
     message: string;
     website: string;
     privacyAccepted: boolean;
+    turnstileToken: string;
 };
 
 type FormStatus =
@@ -47,14 +49,27 @@ const optionStyles = "bg-white text-gray-950 dark:bg-gray-900 dark:text-white";
 
 export default function ContactForm() {
     const [isSubmitting, setIsSubmitting] = useState(false);
-
     const [status, setStatus] = useState<FormStatus>({
         type: "idle",
         message: "",
     });
+    const [turnstileToken, setTurnstileToken] = useState("");
 
-    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    const turnstileRef = useRef<TurnstileInstance>(null);
+    const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+    async function handleSubmit(event: React.ChangeEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        if (isSubmitting) return;
+
+        if (!turnstileToken) {
+            setStatus({
+                type: "error",
+                message: "Please complete the verification and try again.",
+            });
+            return;
+        }
 
         const form = event.currentTarget;
         const formData = new FormData(form);
@@ -68,6 +83,7 @@ export default function ContactForm() {
             message: String(formData.get("message") || ""),
             website: String(formData.get("website") || ""),
             privacyAccepted: formData.get("privacyAccepted") === "on",
+            turnstileToken,
         };
 
         setIsSubmitting(true);
@@ -108,6 +124,8 @@ export default function ContactForm() {
                 message: error instanceof Error ? error.message : "We couldn't submit your message. Please try again.",
             });
         } finally {
+            setTurnstileToken("");
+            turnstileRef.current?.reset();
             setIsSubmitting(false);
         }
     }
@@ -322,6 +340,27 @@ export default function ContactForm() {
 
                     <span>{status.message}</span>
                 </div>
+            )}
+
+            {siteKey ? (
+                <Turnstile
+                    ref={turnstileRef}
+                    siteKey={siteKey}
+                    options={{ action: "contact" }}
+                    onSuccess={setTurnstileToken}
+                    onExpire={() => setTurnstileToken("")}
+                    onError={() => {
+                        setTurnstileToken("");
+                        setStatus({
+                            type: "error",
+                            message: "Verification couldn’t load. Refresh the page and try again.",
+                        });
+                    }}
+                />
+            ) : (
+                <p role="status" className="text-sm text-gray-500">
+                    Verification is unavailable. Please try again later.
+                </p>
             )}
 
             <button
