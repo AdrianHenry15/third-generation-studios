@@ -125,7 +125,7 @@ export default function ContactUsPage() {
                     <div>
                         <p className="font-semibold">Still exploring what you need?</p>
 
-                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">Review our web, CRM, and creative services first.</p>
+                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">Explore website design, SEO, and ongoing website support.</p>
                     </div>
 
                     <Link

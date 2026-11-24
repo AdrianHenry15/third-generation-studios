@@ -218,20 +218,12 @@ export default function ContactForm() {
                                 Custom CRM & Business Systems
                             </option>
 
-                            <option value="Graphic Design & Branding" className={optionStyles}>
-                                Graphic Design & Branding
+                            <option value="SEO & Lead Tracking" className={optionStyles}>
+                                SEO &amp; Lead Tracking
                             </option>
 
-                            <option value="Music & Audio" className={optionStyles}>
-                                Music & Audio
-                            </option>
-
-                            <option value="Unity & Interactive Development" className={optionStyles}>
-                                Unity & Interactive Development
-                            </option>
-
-                            <option value="3D Modeling" className={optionStyles}>
-                                3D Modeling
+                            <option value="Website Care" className={optionStyles}>
+                                Website Care
                             </option>
 
                             <option value="Other" className={optionStyles}>

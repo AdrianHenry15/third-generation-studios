@@ -60,9 +60,7 @@ export default function Footer() {
                 >
                     <motion.div variants={itemVariants} className="col-span-1 md:col-span-2">
                         <h3 className="text-2xl font-bold gradient-text mb-4">Third Generation Studios</h3>
-                        <p className="text-gray-400 mb-6 max-w-md">
-                            Web design, SEO, and ongoing support for service businesses.
-                        </p>
+                        <p className="text-gray-400 mb-6 max-w-md">Web design, SEO, and ongoing support for service businesses.</p>
                         {/* Socials */}
                         <div className="flex space-x-4">
                             {Socials.map((social) => (
@@ -121,7 +119,7 @@ export default function Footer() {
                             </li>
                             <li className="flex items-start">
                                 <Phone className="h-5 w-5 text-purple-500 mr-3 mt-0.5" />
-                                <span className="text-gray-400">+1 (321) 370-0836</span>
+                                <span className="text-gray-400">+1 (407) 630-9320</span>
                             </li>
                         </ul>
                     </motion.div>

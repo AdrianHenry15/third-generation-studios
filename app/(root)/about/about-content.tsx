@@ -15,9 +15,7 @@ const AboutPage = () => {
                         Third Generation Studios
                     </h1>
                     <p className="mt-6 text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed font-medium">
-                        Where <span className="text-white font-bold">Technology</span> meets{" "}
-                        <span className="text-green-400 font-bold">Music</span> and{" "}
-                        <span className="text-blue-400 font-bold">Creativity</span>.
+                        Web design and digital marketing for service businesses.
                     </p>
                 </motion.div>
                 <div className="absolute inset-0 pointer-events-none">
@@ -41,11 +39,7 @@ const AboutPage = () => {
                         </h2>
                         <p className="text-gray-300 text-lg leading-relaxed">
                             Founded by <span className="text-white font-semibold">Adrian Henry</span> in{" "}
-                            <span className="text-green-300 font-semibold">2020</span>, Third Generation Studios is a collective of
-                            passionate creators, developers, and composers. We blend cutting-edge{" "}
-                            <span className="text-blue-300 font-semibold">web technology</span> with{" "}
-                            <span className="text-green-300 font-semibold">immersive music</span> to deliver unforgettable digital
-                            experiences for film, TV, games, and the modern web.
+                            <span className="text-green-300 font-semibold">2020</span>, Third Generation Studios helps service businesses build websites that customers can find and use.
                         </p>
                         <p className="text-gray-400 mt-4">
                             Our team thrives on collaboration, innovation, and a relentless pursuit of excellence. Every project is a canvas
@@ -79,13 +73,10 @@ const AboutPage = () => {
                             className="bg-gradient-to-br from-zinc-800 to-zinc-900 rounded-2xl p-6 shadow-lg border border-zinc-700"
                         >
                             <h3 className="text-2xl font-semibold bg-gradient-to-r from-gray-200 to-white bg-clip-text text-transparent mb-2">
-                                Music Production
+                                SEO & Website Care
                             </h3>
                             <p className="text-gray-400">
-                                From <span className="text-white font-semibold">cinematic scores</span> to{" "}
-                                <span className="text-green-300 font-semibold">game-changing soundtracks</span>, we craft original
-                                compositions that <span className="text-blue-300 font-semibold">amplify emotion</span> and{" "}
-                                <span className="text-white font-semibold">elevate stories</span> across all media.
+                                We help businesses get found in search, track website inquiries, and keep their sites current after launch.
                             </p>
                         </motion.div>
                     </div>
@@ -105,9 +96,7 @@ const AboutPage = () => {
                         Let’s Build Something Incredible
                     </h3>
                     <p className="text-gray-200 text-lg mb-8">
-                        Whether you need a <span className="text-white font-semibold">website</span> that stands out or an{" "}
-                        <span className="text-green-200 font-semibold">original soundtrack</span> that moves your audience, we’re ready to
-                        bring your vision to life.
+                        Tell us what you want to improve about your website and we’ll help you find a starting point.
                     </p>
                     <Link href="/contact-us">
                         <Button className="bg-green-600 hover:bg-green-700 text-white text-lg px-8 py-6 shadow-lg transition-all duration-200 hover:scale-105">

@@ -9,10 +9,8 @@ const MAX_REQUEST_SIZE = 25_000;
 const serviceOptions = [
     "Web Design & Development",
     "Custom CRM & Business Systems",
-    "Graphic Design & Branding",
-    "Music & Audio",
-    "Unity & Interactive Development",
-    "3D Modeling",
+    "SEO & Lead Tracking",
+    "Website Care",
     "Other",
 ];
 

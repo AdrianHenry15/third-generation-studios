@@ -2,7 +2,6 @@ import { pageMetadata } from "@/features/marketing/site";
 import React from "react";
 import Link from "next/link";
 
-
 const PrivacyPolicyPage = () => {
     return (
         <article className="flex flex-col justify-start px-4 py-10 md:p-10 mt-16">
@@ -252,8 +251,8 @@ const PrivacyPolicyPage = () => {
                     <Link className="underline underline-offset-2 text-blue-500" href="mailto:ahenry@thirdgenerationstudios.com">
                         ahenry@thirdgenerationstudios.com
                     </Link>
-                    <Link className="underline underline-offset-2" href="tel:3213700836">
-                        321-370-0836
+                    <Link className="underline underline-offset-2" href="tel:4076309320">
+                        407-630-9320
                     </Link>
                 </div>
             </section>
@@ -263,4 +262,8 @@ const PrivacyPolicyPage = () => {
 
 export default PrivacyPolicyPage;
 
-export const metadata = pageMetadata("/privacy-policy", "Privacy Policy", "How Third Generation Studios handles information submitted through its website.");
+export const metadata = pageMetadata(
+    "/privacy-policy",
+    "Privacy Policy",
+    "How Third Generation Studios handles information submitted through its website.",
+);
