@@ -1,3 +1,4 @@
+import { contactServices } from "@/features/contact/services";
 import { NextResponse } from "next/server";
 
 import { sendContactEmails, type ContactSubmission } from "@/lib/email-service";
@@ -6,13 +7,7 @@ export const runtime = "nodejs";
 
 const MAX_REQUEST_SIZE = 25_000;
 
-const serviceOptions = [
-    "Web Design & Development",
-    "Custom CRM & Business Systems",
-    "SEO & Lead Tracking",
-    "Website Care",
-    "Other",
-];
+const serviceOptions = Object.values(contactServices);
 
 function getString(value: unknown) {
     return typeof value === "string" ? value.trim() : "";

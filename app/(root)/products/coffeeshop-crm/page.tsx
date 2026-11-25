@@ -14,7 +14,7 @@ export default function CoffeeShopPage() {
             </p>
 
             <p>
-                <Link href="/contact-us">Request CoffeeShop CRM Beta Access</Link>
+                <Link href="/contact-us?service=crm-beta">Request CoffeeShop CRM Beta Access</Link>
             </p>
         </DetailPage>
     );

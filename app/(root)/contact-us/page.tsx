@@ -1,3 +1,4 @@
+import { contactServices } from "@/features/contact/services";
 import { pageMetadata } from "@/features/marketing/site";
 import Link from "next/link";
 import { ArrowRight, CalendarDays, Check, Clock3, Mail, MessageSquare } from "lucide-react";
@@ -6,7 +7,14 @@ import ContactForm from "@/components/forms/contact-form";
 
 const benefits = ["Clear project recommendations", "Straightforward pricing and scope", "No-pressure introductory conversation"];
 
-export default function ContactUsPage() {
+export default async function ContactUsPage({
+    searchParams,
+}: {
+    searchParams: Promise<{ service?: string | string[] }>;
+}) {
+    const { service } = await searchParams;
+    const initialService = Object.entries(contactServices).find(([slug]) => slug === service)?.[1] ?? "";
+
     return (
         <main className="min-h-screen overflow-hidden bg-white text-gray-950 dark:bg-gray-950 dark:text-white">
             <section className="relative isolate border-b border-gray-200 dark:border-white/10">
@@ -112,7 +120,7 @@ export default function ContactUsPage() {
                         </p>
                     </div>
 
-                    <ContactForm />
+                    <ContactForm key={initialService} initialService={initialService} />
 
                     <p className="mt-6 text-xs leading-5 text-gray-500 dark:text-gray-500">
                         By submitting this form, you agree to be contacted about your inquiry. We won’t add you to a marketing list.

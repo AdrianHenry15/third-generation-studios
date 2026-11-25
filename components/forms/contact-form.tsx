@@ -1,5 +1,7 @@
 "use client";
 
+import { contactServices } from "@/features/contact/services";
+
 import { AlertCircle, CheckCircle2, ChevronDown, Loader2, Send } from "lucide-react";
 import { useState, useRef } from "react";
 import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
@@ -47,7 +49,7 @@ const selectStyles = `
 
 const optionStyles = "bg-white text-gray-950 dark:bg-gray-900 dark:text-white";
 
-export default function ContactForm() {
+export default function ContactForm({ initialService = "" }: { initialService?: string }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [status, setStatus] = useState<FormStatus>({
         type: "idle",
@@ -205,30 +207,23 @@ export default function ContactForm() {
                     </label>
 
                     <div className="relative">
-                        <select id="service" name="service" required defaultValue="" disabled={isSubmitting} className={selectStyles}>
+                        <select
+                            id="service"
+                            name="service"
+                            required
+                            defaultValue={initialService}
+                            disabled={isSubmitting}
+                            className={selectStyles}
+                        >
                             <option value="" disabled className={optionStyles}>
                                 Select a service
                             </option>
 
-                            <option value="Web Design & Development" className={optionStyles}>
-                                Web Design & Development
-                            </option>
-
-                            <option value="Custom CRM & Business Systems" className={optionStyles}>
-                                Custom CRM & Business Systems
-                            </option>
-
-                            <option value="SEO & Lead Tracking" className={optionStyles}>
-                                SEO &amp; Lead Tracking
-                            </option>
-
-                            <option value="Website Care" className={optionStyles}>
-                                Website Care
-                            </option>
-
-                            <option value="Other" className={optionStyles}>
-                                Something else
-                            </option>
+                            {Object.entries(contactServices).map(([slug, label]) => (
+                                <option key={slug} value={label} className={optionStyles}>
+                                    {slug === "other" ? "Something else" : label}
+                                </option>
+                            ))}
                         </select>
 
                         <ChevronDown className="pointer-events-none absolute bottom-3.5 right-4 size-4 text-gray-500" aria-hidden="true" />

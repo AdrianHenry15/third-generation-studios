@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/buttons/button";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const AboutPage = () => {
     return (
@@ -33,18 +34,42 @@ const AboutPage = () => {
                     transition={{ duration: 1 }}
                     className="bg-zinc-900/80 rounded-3xl shadow-2xl p-8 md:p-16 flex flex-col md:flex-row gap-12 items-center md:items-start"
                 >
-                    <div className="flex-1 text-center md:text-left">
-                        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent mb-4">
-                            Our Story
-                        </h2>
-                        <p className="text-gray-300 text-lg leading-relaxed">
-                            Founded by <span className="text-white font-semibold">Adrian Henry</span> in{" "}
-                            <span className="text-green-300 font-semibold">2020</span>, Third Generation Studios helps service businesses build websites that customers can find and use.
+                    <div className="min-w-0 flex-1 text-center md:text-left">
+                        <h2 className="mb-5 text-3xl font-bold text-white md:text-4xl">Our Story</h2>
+
+                        <figure className="mb-6 flex flex-col items-center gap-4 sm:flex-row sm:text-left">
+                            <div className="size-28 shrink-0 overflow-hidden rounded-2xl border border-white/10">
+                                <Image
+                                    src="/adrian-henry.webp"
+                                    alt=""
+                                    width={112}
+                                    height={112}
+                                    className="size-28 shrink-0 rounded-2xl border border-white/10 object-cover"
+                                />
+                            </div>
+
+                            <figcaption>
+                                <p className="text-xl font-semibold text-white">Adrian Henry</p>
+                                <p className="mt-1 text-sm text-gray-400">Founder &amp; Web Developer</p>
+                            </figcaption>
+                        </figure>
+
+                        <p className="text-lg leading-relaxed text-gray-300">
+                            I founded Third Generation Studios in 2020. I build and maintain websites for service businesses, with a focus
+                            on making it easy for customers to find what they need and get in touch.
                         </p>
-                        <p className="text-gray-400 mt-4">
-                            Our team thrives on collaboration, innovation, and a relentless pursuit of excellence. Every project is a canvas
-                            for creativity, technical mastery, and storytelling.
+
+                        <p className="mt-4 leading-relaxed text-gray-300">
+                            You’ll work directly with me from the first conversation through launch. We’ll agree on what the site needs to
+                            do, how we’ll handle feedback, and what support makes sense after it goes live.
                         </p>
+
+                        <Link
+                            href="/websites/eckert-golf"
+                            className="mt-5 inline-block font-semibold text-green-300 underline-offset-4 hover:underline"
+                        >
+                            See the Eckert Golf website refresh
+                        </Link>
                     </div>
                     <div className="flex-1 flex flex-col gap-8 w-full">
                         <motion.div
@@ -58,11 +83,8 @@ const AboutPage = () => {
                                 Website Development
                             </h3>
                             <p className="text-gray-400">
-                                We build <span className="text-white font-semibold">high-performance</span>, visually stunning websites that
-                                are <span className="text-green-300 font-semibold">fast</span>,{" "}
-                                <span className="text-blue-300 font-semibold">interactive</span>, and{" "}
-                                <span className="text-white font-semibold">unique</span>. Our agile team ensures rapid delivery and
-                                pixel-perfect quality for every client.
+                                We design and rebuild sites around the way customers browse your services, products, and contact options.
+                                Each project starts with what the site needs to help people do.
                             </p>
                         </motion.div>
                         <motion.div
@@ -76,7 +98,8 @@ const AboutPage = () => {
                                 SEO & Website Care
                             </h3>
                             <p className="text-gray-400">
-                                We help businesses get found in search, track website inquiries, and keep their sites current after launch.
+                                We set up search visibility and inquiry tracking, then help with content updates and maintenance after
+                                launch.
                             </p>
                         </motion.div>
                     </div>
@@ -93,14 +116,14 @@ const AboutPage = () => {
                     className="bg-gradient-to-r from-green-600/80 via-blue-700/80 to-zinc-900/90 rounded-2xl shadow-xl p-10 md:p-16 text-center max-w-2xl w-full"
                 >
                     <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-green-300 bg-clip-text text-transparent mb-4">
-                        Let’s Build Something Incredible
+                        Tell us about your website
                     </h3>
                     <p className="text-gray-200 text-lg mb-8">
-                        Tell us what you want to improve about your website and we’ll help you find a starting point.
+                        Share what you want to improve, and we’ll help you identify a practical starting point.
                     </p>
                     <Link href="/contact-us">
                         <Button className="bg-green-600 hover:bg-green-700 text-white text-lg px-8 py-6 shadow-lg transition-all duration-200 hover:scale-105">
-                            Get in Touch
+                            Request a Website Review
                             <ArrowRight className="ml-2 h-5 w-5" />
                         </Button>
                     </Link>

@@ -110,16 +110,18 @@ export default function Footer() {
                         <ul className="space-y-4">
                             <li className="flex items-start">
                                 <Mail className="h-5 w-5 text-purple-500 mr-3 mt-0.5" />
-                                <Link
+                                <a
                                     href="mailto:ahenry@thirdgenerationstudios.com"
                                     className="text-gray-400 hover:text-green-400 transition-colors"
                                 >
                                     ahenry@thirdgenerationstudios.com
-                                </Link>
+                                </a>
                             </li>
                             <li className="flex items-start">
                                 <Phone className="h-5 w-5 text-purple-500 mr-3 mt-0.5" />
-                                <span className="text-gray-400">+1 (407) 630-9320</span>
+                                <a className="text-gray-400" href="tel:+14076309320">
+                                    +1 (407) 630-9320
+                                </a>
                             </li>
                         </ul>
                     </motion.div>

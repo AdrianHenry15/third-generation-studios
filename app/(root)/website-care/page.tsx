@@ -14,7 +14,7 @@ export default function WebsiteCarePage() {
                 <h2 className="mb-3 text-2xl font-bold">TGS Website Manager</h2>
                 <p>We’re building a client portal where you’ll be able to submit update requests, see their status, and review completed maintenance.</p>
             </section>
-            <p><Link href="/contact-us">Ask about website care</Link></p>
+            <p><Link href="/contact-us?service=website-care">Ask about website care</Link></p>
         </DetailPage>
     );
 }
